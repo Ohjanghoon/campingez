@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 기본 네임 스페이스 - mvc -->
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- mvc 관련 일처리태그 -->
 	<annotation-driven />
 
+	<!-- resources로 시작하여 몇 개의 계층인지 따지지않음 -->
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 
@@ -21,8 +28,46 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- base-package 하위에 있는 애들은 빈으로 자동 등록 -->
 	<context:component-scan base-package="com.kh.campingez" />
 	
+	<!-- #8 interceptor등록 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/> <!-- 모든 요청 의미 -->
+			<beans:bean id="logInterceptor" class="com.kh.campingez.common.interceptor.LogInterceptor"></beans:bean>
+		</interceptor>
+	</interceptors>
 	
+	<!-- #9.1 AOP관련 어노테이션 등록 처리 -->
+	<!-- #11.2 root-context의 트랜잭션 관련 처리를 가져와 servlet-context에 적용 -->
+	<aop:aspectj-autoproxy />
+	
+	<!-- #10.1 multipartResolver 등록 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="52428800"></beans:property> <!-- 50mb 한건의 파일요청시 첨부할 파일들의 총 용량 -->
+		<beans:property name="maxUploadSizePerFile" value="10245760"></beans:property> <!-- 10mb 한건의 파일 당 용량 -->
+		<beans:property name="maxInMemorySize" value="10240"></beans:property> <!-- 10kb이상이면 임시파일을 생성하여 관리 -->
+	</beans:bean>
+	
+	<!-- #12.1 jsonView 빈 등록 -->
+	<beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView">
+		<beans:property name="contentType" value="application/json; charset=utf-8" />
+	</beans:bean>
+	
+	<!-- #12.2 BeanNameViewResolver viewName에 해당하는 빈을 view로 연결하는 resolver -->
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<beans:property name="order" value="1" /> <!-- 우선순위가 1 -->
+	</beans:bean>
+	
+	<!-- #13.1 jackson message converter 빈 등록 -->
+	<beans:bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+	
+	<websocket:message-broker application-destination-prefix="/app"> <!-- 이곳에 해당되면 MessageHandler를 타게됨 -->
+		<websocket:stomp-endpoint path="/stomp">
+			<websocket:sockjs />
+		</websocket:stomp-endpoint>
+		<websocket:simple-broker prefix="/topic, /app"/> <!-- topic, app으로 시작하면 처리! -->
+	</websocket:message-broker>
 	
 </beans:beans>
