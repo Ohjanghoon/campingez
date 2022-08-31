@@ -15,21 +15,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User {
 
+	private String userId;
 	@NonNull
-	protected String memberId;
+	private String userName;
 	@NonNull
-	protected String password;
+	private String password;
 	@NonNull
-	protected String name;
-	protected Gender gender;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	protected LocalDate birthday;
-	protected String email;
+	private String email;
 	@NonNull
-	protected String phone;
-	protected String address;
-	protected String[] hobby;
-	protected LocalDateTime createdAt;
-	protected LocalDateTime updatedAt;
-	protected boolean enabled;
+	private String phone;
+	@NonNull
+	private Gender gedner;
+	private int yellowCard;
+	private int point;
+	private int enabled;
+	private LocalDateTime enrollDate;
+	private String enrollType;
 }
