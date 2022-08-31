@@ -7,10 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>캠핑이지</h1>
+	<h2>관리자페이지</h2>
 	
 	<ul>
-		<li><a href="${pageContext.request.contextPath}/admin/admin.do">관리자</a></li>	
+		<li><a href="${pageContext.request.contextPath}/admin/userList.do">회원관리</a></li>
 	</ul>
+	
 </body>
 </html>
