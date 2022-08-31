@@ -29,6 +29,7 @@ public class MypageController {
 		return "mypage/mypage";
 	
 	}
+	//회원 정보 수정
 	@PostMapping("/profileUpdate.do")
 	public String profileUpdate(User user, RedirectAttributes redirectAttr) {
 		int result = mypageService.profileUpdate(user);
