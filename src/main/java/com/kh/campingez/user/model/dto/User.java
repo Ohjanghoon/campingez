@@ -1,18 +1,17 @@
 package com.kh.campingez.user.model.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.NonNull;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User {
 
 	private String userId;
@@ -25,7 +24,7 @@ public class User {
 	@NonNull
 	private String phone;
 	@NonNull
-	private Gender gedner;
+	private Gender gender;
 	private int yellowCard;
 	private int point;
 	private int enabled;
