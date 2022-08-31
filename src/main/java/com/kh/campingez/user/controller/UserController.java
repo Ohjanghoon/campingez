@@ -9,5 +9,5 @@ import com.kh.campingez.user.model.service.UserService;
 public class UserController {
 
 	@Autowired
-	private UserService memberService;
+	private UserService userService;
 }
