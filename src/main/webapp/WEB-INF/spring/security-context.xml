@@ -11,8 +11,9 @@
 	
 	<!-- #7.1 암호화처리 빈 등록 -->
 	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></beans:bean>
-	
+
 	<http security="none" pattern="/resources/**"/>
+
 	<http auto-config="true">
 		<intercept-url pattern="/user/userTest.do" access="isAuthenticated()"/>
 		<!-- <intercept-url pattern="/user/userEnroll.do" access="isAnonymous()"/> -->
@@ -33,5 +34,7 @@
 	
 	<!-- @Service 클래스를 빈으로 등록하기 위해 -->
 	<context:component-scan base-package="com.kh.security" />
+	
+	
 	
 </beans:beans>
