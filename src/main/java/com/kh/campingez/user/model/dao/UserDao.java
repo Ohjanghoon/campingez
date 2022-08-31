@@ -1,11 +1,14 @@
 package com.kh.campingez.user.model.dao;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.kh.campingez.user.model.dto.User;
 
 @Mapper
-public class UserDao {
+public interface UserDao {
 
-	@Autowired
-	private UserDao memberDao;
+	int insertUser(User user);
+
+	int insertAuthority(String userId);
+
 }
