@@ -25,7 +25,7 @@ public class User {
 	@NonNull
 	private String phone;
 	@NonNull
-	private Gender gedner;
+	private Gender gender;
 	private int yellowCard;
 	private int point;
 	private int enabled;
