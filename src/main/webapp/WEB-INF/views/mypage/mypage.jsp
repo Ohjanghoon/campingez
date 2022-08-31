@@ -53,10 +53,7 @@
 				<th>포인트 : </th>
 				<td><input type="text"  name="point" id="point" value="${result.point}" readonly></td>
 			</tr>
-			
 		</table>
-			<input type="hidden"  name="enabled" id="enabled" value="${result.enabled}" readonly>
-			<input type="hidden"  name="enrollType" id="enrollType" value="${result.enrollType}" readonly>
 	<input type="submit"  value="정보수정" >
 </form>
 
