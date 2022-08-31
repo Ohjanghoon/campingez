@@ -20,7 +20,9 @@
 		<span>${inquire.inqWriter}</span>
 		<br />
 		<span>문의 유형</span>
-		<span>${inquire.categoryId }</span>
+		<span>${inquire.categoryId}</span>
+		<br />
+		
 	</div>
 </body>
 </html>
