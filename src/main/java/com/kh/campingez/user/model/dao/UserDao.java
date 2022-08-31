@@ -1,6 +1,5 @@
 package com.kh.campingez.user.model.dao;
 
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.kh.campingez.user.model.dto.User;
