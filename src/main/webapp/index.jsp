@@ -16,7 +16,7 @@
 <body>
 	<h1>캠핑이지</h1>
 
-	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userTest.do';">test</button>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userTest.do';">로그인</button>
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userEnroll.do';">회원가입</button>
 	<form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
 		<button type="submit">로그아웃</button>
