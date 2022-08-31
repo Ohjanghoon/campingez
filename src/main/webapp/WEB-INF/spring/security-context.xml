@@ -11,46 +11,4 @@
 	
 	<!-- #7.1 암호화처리 빈 등록 -->
 	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></beans:bean>
-	
-	<!-- #7.3 인증/권한 관련 설정 -->
-	<http security="none" pattern="/resources/**" />
-	<!-- intercept-url은 구체적->일반적인 설정순으로 작성 -->
-	<http auto-config="true">
-		<intercept-url pattern="/" access="permitAll"/>
-		<intercept-url pattern="/index.jsp" access="permitAll"/>
-
-		<intercept-url pattern="/**" access="isAuthenticated()"/>
-
-		<form-login 
-			login-page="/member/memberLogin.do"
-			login-processing-url="/member/memberLogin.do"
-			default-target-url="/"
-			always-use-default-target="false"
-			username-parameter="memberId"
-			password-parameter="password" 
-			authentication-success-forward-url="/member/memberLoginSuccess.do"
-			/>
-			
-		<logout
-			logout-url="/member/memberLogout.do" 
-			logout-success-url="/" />
-
-			<csrf disabled="false"/>
-
-			<remember-me 
-				data-source-ref="dataSource" 
-				token-validity-seconds="1209600"/>
-				
-			<access-denied-handler
-				error-page="/error/accessDenied.do" />
-	</http>
-	
-	<authentication-manager>
-		 <authentication-provider user-service-ref="memberSecurityService">
-		 	<password-encoder ref="bcryptPasswordEncoder"/>
-		 </authentication-provider>
-	</authentication-manager>
-	
-	<!-- @Service 클래스를 빈으로 등록 -->
-	<context:component-scan base-package="com.kh.security" />
 </beans:beans>

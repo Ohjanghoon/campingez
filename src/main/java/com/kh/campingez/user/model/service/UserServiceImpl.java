@@ -9,5 +9,5 @@ import com.kh.campingez.user.model.dao.UserDao;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private UserDao memberDao;
+	private UserDao userDao;
 }
