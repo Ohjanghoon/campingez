@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <title>캠핑이지 예약</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/campList.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/list.css" />
 </head>
 <body>
 	<h1>캠핑장 예약합시다.</h1>
@@ -63,7 +63,7 @@
 		}
 		
 	 	$.ajax({
-			url : "${pageContext.request.contextPath}/reservation/campList.do",
+			url : "${pageContext.request.contextPath}/reservation/list.do",
 			headers,
 			method : "POST", 
 			data : {checkin, checkout},
@@ -84,16 +84,16 @@
 				}
 				
 				document.querySelector(".reservation").innerHTML =`
-					<form name="reservationFrm" action="\${pageContent.request.contextPath}/reservation/reservation.do" method="POST">
-					<input type="hidden" name="resUserId" value="honggd"/>
-					<input type="hidden" name="resCheckin" value="checkin"/>
-					<input type="hidden" name="resCheckout" value="checkout"/>
+					<form:form name="reservationFrm" action="${pageContext.request.contextPath}/reservation/insertReservation.do" method="POST">
+					<input type="hidden" name="userId" value="honggd"/>
+					<input type="hidden" name="checkin" value="\${checkin}"/>
+					<input type="hidden" name="checkout" value="\${checkout}"/>
 					<h3>예약자 정보</h3>
 					<label for="resUsername">예약자 이름</label>
 					<input type="text" name="resUsername" />
 					<br />
-					<label for="resphone">예약자 번호</label>
-					<input type="text" name="resphone"/>
+					<label for="resPhone">예약자 번호</label>
+					<input type="text" name="resPhone"/>
 					<br />
 					<label for="resPerson">예약 인원</label>
 					<select name="resPerson" id="resPerson">
@@ -113,14 +113,19 @@
 					<hr />
 					<span>결제금액 = <span id="resPrice" name="resPrice"></span>원</span>
 					<hr />
-					<button id="btn2">예약하기</button>
-				</form>
+					<select name="resPayment" id="resPayment">
+					<option value="카드">카드</option>
+					<option value="무통장입금">무통장입금</option>
+					</select>
+					<button id="btn2">결제하기</button>
+					
+				</form:form>
 				`;
 				
 				document.querySelector("#cl").addEventListener('change', (e) => {
 					const campId = e.target.value;
 					$.ajax({
-						url : "${pageContext.request.contextPath}/reservation/campZoneInfo.do",
+						url : '${pageContext.request.contextPath}/reservation/campZoneInfo.do',
 						headers,
 						method : "POST",
 						data : {campId},
@@ -128,9 +133,13 @@
 							console.log(response);
 							const zonePrice = response.zonePrice;
 							document.querySelector("#resPrice").innerHTML = `\${zonePrice}`;
+							document.reservationFrm.innerHTML += `
+								<input type="hidden" name="campId" value="\${campId}"/>
+								<input type="hidden" name="resPrice" value="\${zonePrice}"/>
+							`;
 						},
 						error : console.log
-					});
+					})
 				});
 			},
 			error : console.log

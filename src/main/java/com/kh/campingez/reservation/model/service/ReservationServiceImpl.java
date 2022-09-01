@@ -27,5 +27,9 @@ public class ReservationServiceImpl implements ReservationService {
 		return reservationDao.campZoneInfo(campId);
 	}
 	
+	@Override
+	public int insertReservation(Reservation reservation) {
+		return reservationDao.insertReservation(reservation);
+	}
 	
 }
