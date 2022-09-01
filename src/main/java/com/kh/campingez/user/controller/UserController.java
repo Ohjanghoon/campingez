@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.user.model.dto.User;
 import com.kh.campingez.user.model.service.UserService;
+import com.kh.security.model.service.UserSecurityService;
 
 import lombok.extern.slf4j.Slf4j;
 

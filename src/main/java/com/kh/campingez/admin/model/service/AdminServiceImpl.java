@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.campingez.admin.model.dao.AdminDao;
+import com.kh.campingez.inquire.model.dto.Answer;
+import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.user.model.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,12 +45,40 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectUserByKeyword(rowBounds, param);
 	}
 
+	@Override
+	public int getTotalContentByKeyword(Map<String, Object> param) {
+		return adminDao.getTotalContentByKeyword(param);
+	}
+	
+	@Override
+	public User findUserByUserId(String userId) {
+		return adminDao.findUserByUserId(userId);
+	}
+	
+	@Override
+	public List<Inquire> findAllInquireList() {
+		return adminDao.findAllInquireList();
+	}
+	
+	@Override
+	public int enrollAnswer(Answer answer) {
+		return adminDao.enrollAnswer(answer);
+	}
+	
+	@Override
+	public int deleteAnswer(Answer answer) {
+		return adminDao.deleteAnswer(answer);
+	}
+	
+	@Override
+	public int updateAnswer(Answer answer) {
+		return adminDao.updateAnswer(answer);
+	}
+	
 	private RowBounds getRowBounds(Map<String, Object> param) {
 		int limit = (int)param.get("limit");
 		int offset = ((int)param.get("cPage") - 1) * limit;
 		
 		return new RowBounds(offset, limit);
 	}
-	
-	
 }

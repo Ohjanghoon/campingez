@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.campingez.admin.model.dao.AdminDao">
+  <select id="findAllUserList" resultMap="userMap">
+  	select
+    	u.*,
+    	a.user_id auth_user_id,
+    	a.auth
+	from
+    	ez_user u join authority a
+       		on u.user_id = a.user_id
+  </select>
+  
+  <resultMap type="user" id="userMap">
+  	<id column="user_id" property="userId"/>
+  	<result column="user_name" property="userName"/>
+  	<result column="password" property="password"/>
+  	<result column="email" property="email"/>
+  	<result column="gender" property="gender"/>
+  	<result column="yellowcard" property="yellowCard"/>
+  	<result column="point" property="point"/>
+  	<result column="enabled" property="enabled"/>
+  	<result column="enroll_date" property="enrollDate"/>
+  	<result column="enroll_type" property="enrollType"/>
+
+  	
+  	<collection property="authorityList" ofType="authority">
+  		<id column="auth_user_id" property="userId"/>
+  		<id column="auth" property="auth"/>
+  	</collection>
+  </resultMap>
+</mapper>

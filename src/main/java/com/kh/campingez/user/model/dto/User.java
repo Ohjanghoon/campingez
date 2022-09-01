@@ -1,5 +1,6 @@
 package com.kh.campingez.user.model.dto;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,6 +22,11 @@ import lombok.ToString;
 public class User extends UserEntity implements UserDetails {
 
     private List<SimpleGrantedAuthority> authorities;
+    private List<Authority> authorityList = new ArrayList<>();
+    
+    public void add(Authority authority) {
+    	this.authorityList.add(authority);
+    }
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
