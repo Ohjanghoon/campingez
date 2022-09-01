@@ -9,7 +9,6 @@
 </jsp:include>
 	
 	<h1>캠핑이지</h1>
-	
 	<button id="btn-weather">확인</button>
 	
 	<script>
@@ -54,5 +53,3 @@
 		</script>
 	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
-</body>
-</html>
