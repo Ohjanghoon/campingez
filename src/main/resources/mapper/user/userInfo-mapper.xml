@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.campingez.user.model.dao.UserInfoDao">
+  
+  <select id="selectInquireList" resultMap="inquireListMap">
+  	select
+	    i.*,
+	    (select count(*) from inquire_answer a where a.inq_no = i.inq_no) answer_status
+	from
+		inquire i
+	where
+		inq_writer = #{userId}
+	order by
+		i.inq_date desc
+  </select>
+  
+  <resultMap type="inquire" id="inquireListMap">
+  	<id column="inq_no" property="inqNo"/>
+  	<result column="category_id" property="categoryId"/>
+  	<result column="inq_writer" property="inqWriter"/>
+  	<result column="inq_title" property="inqTitle"/>
+  	<result column="inq_content" property="inqContent"/>
+  	<result column="inq_date" property="inqDate"/>
+  	<result column="answer_status" property="answerStatus"/>
+  </resultMap>
+</mapper>
