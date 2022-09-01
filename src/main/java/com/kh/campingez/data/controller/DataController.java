@@ -30,15 +30,12 @@ public class DataController {
 	public void data() {}
 	
 	@GetMapping("/weather.do")
-	public ResponseEntity<?> weather(@RequestParam @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date, @RequestParam String time){
-		log.debug("time = {}", time);
-		log.debug("date = {}", date.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+	public ResponseEntity<?> weather(@RequestParam String date, @RequestParam String time){
 		log.debug("test = {}", dataService.getWeather(date, time));
-//		log.debug("test = {}", dataService.getWeather(date, time).getBody().getItems());
+		log.debug("test = {}", dataService.getWeather(date, time).getBody().getItems());
 		
-		return null;
-//		return ResponseEntity.status(HttpStatus.OK)
-//				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE) // contentType=application/json; charset=utf-8
-//				.body(dataService.getWeather(date).getBody().getItems());
+		return ResponseEntity.status(HttpStatus.OK)
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE) // contentType=application/json; charset=utf-8
+				.body(dataService.getWeather(date, time).getBody().getItems());
 	}
 }

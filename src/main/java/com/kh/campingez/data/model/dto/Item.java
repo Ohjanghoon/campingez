@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
-    private LocalDateTime baseDate;
+    private String baseDate;
     private String baseTime;
     private String category;
     private int nx;

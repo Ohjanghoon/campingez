@@ -8,6 +8,6 @@ import com.kh.campingez.data.model.dto.Response;
 
 public interface DataService {
 
-	Response getWeather(LocalDate date, String time);
+	Response getWeather(String date, String time);
 
 }
