@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -102,17 +103,26 @@ public class AdminController {
 	@PostMapping("/inquireAnswer.do")
 	public String enrollAnswer(Answer answer, RedirectAttributes redirectAttr) {
 		int result = adminService.enrollAnswer(answer);
-		Map<String, Object> msg = new HashMap<>();
-		msg.put("msg", "답변이 등록되었습니다.");
-		redirectAttr.addFlashAttribute("msg", msg);
+		redirectAttr.addFlashAttribute("msg", "답변이 등록되었습니다.");
 		
 		return "redirect:/inquire/inquireDetail.do?no=" + answer.getInqNo();
 	}
 	
 	@PostMapping("/deleteAnswer.do")
 	public String deleteAnswer(Answer answer, RedirectAttributes redirectAttr) {
-		log.debug("answer@delete = {}", answer);
+		int result = adminService.deleteAnswer(answer);
 		
-		return null;
+		return "redirect:/inquire/inquireDetail.do?no=" + answer.getInqNo();
+	}
+	
+	@PostMapping("/updateAnswer.do")
+	public String updateAnswer(Answer answer, RedirectAttributes redirectAttr, HttpServletRequest request) {
+		log.debug("answer@updateAnswer = {}", answer);
+		int result = adminService.updateAnswer(answer);
+		redirectAttr.addFlashAttribute("msg", "답변이 수정되었습니다.");
+		
+		log.debug("referer = {}", request.getHeader("referer"));
+		
+		return "redirect:" + request.getHeader("Referer");
 	}
 }

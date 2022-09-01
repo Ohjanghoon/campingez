@@ -65,6 +65,16 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.enrollAnswer(answer);
 	}
 	
+	@Override
+	public int deleteAnswer(Answer answer) {
+		return adminDao.deleteAnswer(answer);
+	}
+	
+	@Override
+	public int updateAnswer(Answer answer) {
+		return adminDao.updateAnswer(answer);
+	}
+	
 	private RowBounds getRowBounds(Map<String, Object> param) {
 		int limit = (int)param.get("limit");
 		int offset = ((int)param.get("cPage") - 1) * limit;

@@ -3,9 +3,11 @@ package com.kh.campingez.admin.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
@@ -39,5 +41,11 @@ public interface AdminDao {
 	
 	@Insert("insert into inquire_answer values('IA' || seq_answer_no.nextval, #{inqNo}, #{answerContent}, default)")
 	int enrollAnswer(Answer answer);
+
+	@Delete("delete from inquire_answer where inq_no = #{inqNo}")
+	int deleteAnswer(Answer answer);
+	
+	@Update("update inquire_answer set answer_content = #{answerContent} where answer_no = #{answerNo}")
+	int updateAnswer(Answer answer);
 
 }

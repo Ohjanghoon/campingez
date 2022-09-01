@@ -1,19 +1,15 @@
-<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
-<%@page import="java.util.Arrays"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<fmt:requestEncoding value="utf-8"/>
+<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param name="title" value="캠핑이지" />
+</jsp:include>
 
-<html>
-<head>
-	<title>Home</title>
-</head>
-<body>
 <h1>
 	프로필 수정!  
 </h1>

@@ -25,4 +25,8 @@ public interface AdminService {
 
 	int enrollAnswer(Answer answer);
 
+	int deleteAnswer(Answer answer);
+
+	int updateAnswer(Answer answer);
+
 }
