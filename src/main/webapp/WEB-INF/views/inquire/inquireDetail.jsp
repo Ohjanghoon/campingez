@@ -64,8 +64,29 @@
 				
 				<span>답변 내용</span>
 				<textarea name="answerContent" rows="10" cols="30"></textarea>
+				<button id="btn-admin-answer" type="button">답변</button>
 			</c:if>
 		</sec:authorize>
 	</div>
+<script>
+document.querySelector("#btn-admin-answer").addEventListener('click', (e) => {
+	const content = document.querySelector("[name=answerContent]").value;
+	if(!content) {
+		alert("문의 내용을 입력하세요.");
+		return;
+	}
+	
+	const data = {
+		content,
+		
+	};
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/admin/inquireAnswer.do`,
+		method : "POST",
+		data : 
+	});
+});
+</script>
 </body>
 </html>

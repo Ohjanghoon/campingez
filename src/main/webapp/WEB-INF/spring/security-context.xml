@@ -19,6 +19,7 @@
 		<!-- <intercept-url pattern="/user/userEnroll.do" access="isAnonymous()"/> -->
 		<intercept-url pattern="/user/userLogin.do" access="isAnonymous()"/>
 		<intercept-url pattern="/user/userLogout.do" access="permitAll"/>
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 		<!-- <intercept-url pattern="/**" access="isAuthenticated()"/> -->
 		
 		<logout 
