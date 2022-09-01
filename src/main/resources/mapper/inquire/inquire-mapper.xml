@@ -42,6 +42,7 @@
   	<result column="inq_content" property="inqContent"/>
   	<result column="inq_date" property="inqDate"/>
   	<association property="answer" javaType="answer">
+  		<id column="answer_no" property="answerNo"/>
   		<result column="answer_content" property="answerContent"/>
   		<result column="answer_date" property="answerDate"/>
   	</association>

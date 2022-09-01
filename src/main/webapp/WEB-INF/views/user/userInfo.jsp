@@ -1,25 +1,20 @@
-<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
-<%@page import="java.util.Arrays"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<fmt:requestEncoding value="utf-8"/>
+<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param name="title" value="캠핑이지" />
+</jsp:include>
 
-<html>
-<head>
-	<title>Home</title>
-</head>
-<body>
 <h1>
 	프로필 수정!  
 </h1>
-
+<sec:authentication property="principal" var="result" scope="page" />
 <form:form action="${pageContext.request.contextPath}/userInfo/profileUpdate.do" method="POST">
-		<sec:authentication property="principal" var="result" scope="page" />
 		<table>
 			<tr>
 				<th>아이디 : </th>
@@ -55,7 +50,11 @@
 				<td><input type="text"  name="point" id="point" value="${result.point}" readonly></td>
 			</tr>
 		</table>
-	<input type="submit"  value="정보수정" >
+	<input type="submit"  value="정보수정" >	
+</form:form>
+<form:form action="${pageContext.request.contextPath}/userInfo/profileDelete.do" method="POST">
+	<input type="hidden"  name="userId" id="userId" value="${result.userId}" readonly required>
+	<input type="submit"  value="회원탈퇴" >
 </form:form>
 
 <script>

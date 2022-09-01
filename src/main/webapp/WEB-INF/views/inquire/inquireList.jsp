@@ -35,9 +35,13 @@
 			</c:forEach>
 			<tr>
 				<td>
-					<button
-						type="button"
-						onclick="location.href='${pageContext.request.contextPath}/inquire/inquireForm.do'">문의하기</button>
+					<c:if test="${empty prePageName}">
+						<button
+							type="button"
+							onclick="location.href='${pageContext.request.contextPath}/inquire/inquireForm.do'">문의하기
+						</button>
+					</c:if>
+						
 				</td>
 			</tr>
 		</tbody>
