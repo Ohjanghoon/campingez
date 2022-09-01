@@ -22,10 +22,10 @@
 		<intercept-url pattern="/user/userLogout.do" access="permitAll"/>
 		<intercept-url pattern="/camp/**" access="permitAll"/>
 		<!-- <intercept-url pattern="/**" access="isAuthenticated()"/> -->
-		
 		<logout 
 			logout-url="/user/userLogout.do"
 			logout-success-url="/"/>
+		<csrf disabled="true"/>
 	</http>
 	
 	<authentication-manager>

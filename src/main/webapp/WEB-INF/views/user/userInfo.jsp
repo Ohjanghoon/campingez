@@ -18,7 +18,8 @@
 	프로필 수정!  
 </h1>
 
-<form action="${pageContext.request.contextPath}/mypage/profileUpdate.do" method="POST" enctype="multipart/form-data">
+<form:form action="${pageContext.request.contextPath}/userInfo/profileUpdate.do" method="POST" enctype="multipart/form-data">
+		<sec:authentication property="principal" var="result" scope="page" />
 		<table>
 			<tr>
 				<th>아이디 : </th>
@@ -55,7 +56,7 @@
 			</tr>
 		</table>
 	<input type="submit"  value="정보수정" >
-</form>
+</form:form>
 
 <script>
 	
