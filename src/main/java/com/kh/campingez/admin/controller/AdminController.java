@@ -13,13 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.admin.model.service.AdminService;
 import com.kh.campingez.common.CampingEzUtils;
+import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.user.model.dto.User;
 
@@ -99,8 +100,18 @@ public class AdminController {
 	}
 	
 	@PostMapping("/inquireAnswer.do")
-	public ResponseEntity<?> enrollAnswer(@PathVariable String content, @PathVariable int inqNo) {
-		log.debug("answer = {}, {}", content, inqNo);
+	public String enrollAnswer(Answer answer, RedirectAttributes redirectAttr) {
+		int result = adminService.enrollAnswer(answer);
+		Map<String, Object> msg = new HashMap<>();
+		msg.put("msg", "답변이 등록되었습니다.");
+		redirectAttr.addFlashAttribute("msg", msg);
+		
+		return "redirect:/inquire/inquireDetail.do?no=" + answer.getInqNo();
+	}
+	
+	@PostMapping("/deleteAnswer.do")
+	public String deleteAnswer(Answer answer, RedirectAttributes redirectAttr) {
+		log.debug("answer@delete = {}", answer);
 		
 		return null;
 	}

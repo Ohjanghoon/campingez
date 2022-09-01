@@ -3,11 +3,13 @@ package com.kh.campingez.admin.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.user.model.dto.User;
 
@@ -34,5 +36,8 @@ public interface AdminDao {
 	
 	@Select("select i.*, (select category_name from category_list where category_id = i.category_id) category_name, nvl2((select answer_no from inquire_answer a where inq_no = i.inq_no), 1, 0) answer_status from inquire i order by answer_status, inq_date")
 	List<Inquire> findAllInquireList();
+	
+	@Insert("insert into inquire_answer values('IA' || seq_answer_no.nextval, #{inqNo}, #{answerContent}, default)")
+	int enrollAnswer(Answer answer);
 
 }

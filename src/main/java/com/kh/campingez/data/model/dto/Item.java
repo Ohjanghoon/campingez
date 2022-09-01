@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
-	@DateTimeFormat(pattern = "yyyyMMdd")
-    private LocalDateTime baseDate;
+    private String baseDate;
     private String baseTime;
     private String category;
     private int nx;

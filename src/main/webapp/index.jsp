@@ -36,6 +36,7 @@
 		document.querySelector("#btn-weather").addEventListener('click', (e) => {
 			const today = clockString();
 			const time = "0600";
+			console.log(typeof today);
 			console.log(today, time);
 			
 			$.ajax({

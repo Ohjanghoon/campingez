@@ -15,16 +15,21 @@
 	<http security="none" pattern="/resources/**"/>
 
 	<http auto-config="true">
+		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/user/userTest.do" access="isAuthenticated()"/>
 		<!-- <intercept-url pattern="/user/userEnroll.do" access="isAnonymous()"/> -->
 		<intercept-url pattern="/user/userLogin.do" access="isAnonymous()"/>
 		<intercept-url pattern="/user/userLogout.do" access="permitAll"/>
+<<<<<<< HEAD
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+=======
+		<intercept-url pattern="/camp/**" access="permitAll"/>
+>>>>>>> branch 'master' of https://github.com/Ohjanghoon/campingez.git
 		<!-- <intercept-url pattern="/**" access="isAuthenticated()"/> -->
-		
 		<logout 
 			logout-url="/user/userLogout.do"
 			logout-success-url="/"/>
+		<csrf disabled="true"/>
 	</http>
 	
 	<authentication-manager>

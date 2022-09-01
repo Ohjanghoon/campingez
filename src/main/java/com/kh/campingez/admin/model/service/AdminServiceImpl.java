@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.campingez.admin.model.dao.AdminDao;
+import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.user.model.dto.User;
 
@@ -57,6 +58,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<Inquire> findAllInquireList() {
 		return adminDao.findAllInquireList();
+	}
+	
+	@Override
+	public int enrollAnswer(Answer answer) {
+		return adminDao.enrollAnswer(answer);
 	}
 	
 	private RowBounds getRowBounds(Map<String, Object> param) {
