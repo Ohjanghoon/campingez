@@ -2,6 +2,8 @@ package com.kh.campingez.data.model.dto;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
+	@DateTimeFormat(pattern = "yyyyMMdd")
     private LocalDateTime baseDate;
     private String baseTime;
     private String category;

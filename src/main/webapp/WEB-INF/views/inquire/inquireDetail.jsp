@@ -59,13 +59,15 @@
 				
 				<span>답변 내용</span>
 				<textarea name="answerContent" rows="10" cols="30"></textarea>
-				<button id="btn-admin-answer" type="button">답변</button>
+				<button id="btn-admin-answer" type="button" value="${inquire.inqNo}">답변</button>
 			</c:if>
 		</sec:authorize>
 	</div>
 <script>
 document.querySelector("#btn-admin-answer").addEventListener('click', (e) => {
 	const content = document.querySelector("[name=answerContent]").value;
+	const inqNo = e.target.value;
+
 	if(!content) {
 		alert("문의 내용을 입력하세요.");
 		return;
@@ -73,14 +75,22 @@ document.querySelector("#btn-admin-answer").addEventListener('click', (e) => {
 	
 	const data = {
 		content,
-		
+		inqNo
 	};
 	
-	$.ajax({
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+ 	$.ajax({
 		url : `${pageContext.request.contextPath}/admin/inquireAnswer.do`,
+		headers,
 		method : "POST",
-		data : 
-	});
+		data : JSON.stringify(data),
+		success(response) {
+			console.log(response)
+		},
+		error : console.log
+	}); 
 });
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

@@ -39,8 +39,8 @@
 			console.log(today, time);
 			
 			$.ajax({
-				url : "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?serviceKey=nkedH2GBDF%2BTCm2VLMxTXfjbK5uG7xtbtLDOXdsDlb%2F4S5NAykAK5f4zhhjMpTM7GUf1pmqRcrC7nTOPF4iAgw%3D%3D&numOfRows=10&pageNo=1&base_date=20220901&base_time=0600&nx=55&ny=127",
-				//url : "${pageContext.request.contextPath}/data/weather.do",
+				//url : "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?serviceKey=nkedH2GBDF%2BTCm2VLMxTXfjbK5uG7xtbtLDOXdsDlb%2F4S5NAykAK5f4zhhjMpTM7GUf1pmqRcrC7nTOPF4iAgw%3D%3D&numOfRows=10&pageNo=1&base_date=20220901&base_time=0600&nx=55&ny=127",
+				url : "${pageContext.request.contextPath}/data/weather.do",
 				data : {
 					date : today, time
 				},

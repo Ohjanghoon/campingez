@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kh.campingez.data.model.dto.Response;
 import com.kh.campingez.data.model.exception.DataProcessingException;
 
@@ -22,11 +23,11 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public Response getWeather(LocalDate date, String time) {
 		Response response = null;
-		ObjectMapper xmlMapper = new XmlMapper();
+		ObjectMapper xmlMapper = new XmlMapper().registerModule(new JavaTimeModule());
 		try {
 			response = xmlMapper.readValue(urlFormatter(date, time), Response.class);
 		} catch (IOException e) {
-			throw new DataProcessingException(WEATHER_URL);
+			throw new DataProcessingException(WEATHER_URL, e);
 		}
 		return response;
 	}
