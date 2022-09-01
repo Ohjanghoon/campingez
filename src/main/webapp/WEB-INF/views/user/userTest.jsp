@@ -29,7 +29,7 @@
 		<button type="submit">로그아웃</button>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
-	<form action="${pageContext.request.contextPath}/userInfo/userInfo.do" method="GET">
+	<form action="${pageContext.request.contextPath}/userInfo/myPage.do" method="GET">
 		<button type="submit">마이페이지</button>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>		

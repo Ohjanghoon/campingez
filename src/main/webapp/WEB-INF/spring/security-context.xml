@@ -25,7 +25,7 @@
 		<logout 
 			logout-url="/user/userLogout.do"
 			logout-success-url="/"/>
-		<csrf disabled="true"/>
+		<csrf disabled="false"/>
 	</http>
 	
 	<authentication-manager>
