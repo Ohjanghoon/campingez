@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.campingez.inquire.model.dao.InquireDao;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.inquire.model.dto.InquireEntity;
 
 @Service
 public class InquireServiceImpl implements InquireService {
@@ -22,5 +23,10 @@ public class InquireServiceImpl implements InquireService {
 	@Override
 	public Inquire selectInquire(String no) {
 		return inquireDao.selectInquire(no);
+	}
+	
+	@Override
+	public int insertInquire(InquireEntity inquire) {
+		return inquireDao.insertInquire(inquire);
 	}
 }

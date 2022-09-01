@@ -4,11 +4,34 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.campingez.inquire.model.dao.InquireDao">
   
-  <select id="selectInquireList" resultMap="inquireMap">
+  <select id="selectInquireList" resultMap="inquireListMap">
   	select
 	    i.*,
 	    (select count(*) from inquire_answer a where a.inq_no = i.inq_no) answer_status
-	from inquire i
+	from
+		inquire i
+	order by
+		i.inq_date desc
+  </select>
+  
+  <resultMap type="inquire" id="inquireListMap">
+  	<id column="inq_no" property="inqNo"/>
+  	<result column="category_id" property="categoryId"/>
+  	<result column="inq_writer" property="inqWriter"/>
+  	<result column="inq_title" property="inqTitle"/>
+  	<result column="inq_content" property="inqContent"/>
+  	<result column="inq_date" property="inqDate"/>
+  	<result column="answer_status" property="answerStatus"/>
+  </resultMap>
+  
+  <select id="selectInquire" resultMap="inquireMap">
+  	select
+  		*
+  	from
+  		inquire i left join inquire_answer ia
+  		on i.inq_no = ia.inq_no
+  	where
+  		i.inq_no  = #{no}
   </select>
   
   <resultMap type="inquire" id="inquireMap">
@@ -18,6 +41,9 @@
   	<result column="inq_title" property="inqTitle"/>
   	<result column="inq_content" property="inqContent"/>
   	<result column="inq_date" property="inqDate"/>
-  	<result column="answer_status" property="answerStatus"/>
+  	<association property="answer" javaType="answer">
+  		<result column="answer_content" property="answerContent"/>
+  		<result column="answer_date" property="answerDate"/>
+  	</association>
   </resultMap>
 </mapper>
