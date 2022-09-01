@@ -18,7 +18,7 @@
 	프로필 수정!  
 </h1>
 
-<form:form action="${pageContext.request.contextPath}/userInfo/profileUpdate.do" method="POST" enctype="multipart/form-data">
+<form:form action="${pageContext.request.contextPath}/userInfo/profileUpdate.do" method="POST">
 		<sec:authentication property="principal" var="result" scope="page" />
 		<table>
 			<tr>

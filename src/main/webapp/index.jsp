@@ -10,6 +10,7 @@
 	
 	<h1>캠핑이지</h1>
 	<button id="btn-weather">확인</button>
+	<div id="weather"></div>
 	
 	<script>
 		const clockString = () => {
@@ -28,6 +29,7 @@
                 return n <10 ? "0" + n : n;
             }
             const now = new Date();
+            now.setMinutes(now.getMinutes() - 30);
             const hh = f(now.getHours());
             const mm = f(now.getMinutes());
             return hh + mm;
@@ -35,8 +37,7 @@
 		
 		document.querySelector("#btn-weather").addEventListener('click', (e) => {
 			const today = clockString();
-			const time = "0600";
-			console.log(typeof today);
+			const time = timeString();
 			console.log(today, time);
 			
 			$.ajax({
@@ -46,7 +47,30 @@
 					date : today, time
 				},
 				success(data){
-					console.log(data);
+					//console.log(data);
+					data.forEach((data) => {
+						const wrapper = document.querySelector('#weather');
+						
+						
+						const baseTime = "0" + (Number(data.baseTime) + 70);
+						if(data.fcstTime == baseTime){
+							console.log(data, data.category, data.fcstValue);
+							/* if(data.category == 'T1H'){
+								const temp = data.fcstValue;
+								console.log(temp);
+								wrapper.innerHTML = "<span>" + temp + "</span>";
+							} */
+							if(data.category == 'SKY'){
+								if(Number(data.fcstValue) >= 4){
+									console.log("흐림");
+									wrapper.innerHTML = "<span>흐림</span>";
+								}
+								else{
+									wrapper.innerHTML = "<span>안흐림</span>";
+								}
+							}
+						}
+					});					
 				},
 				error : console.log
 			});

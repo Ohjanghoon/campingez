@@ -35,7 +35,7 @@ public class MypageController {
 		int result = mypageService.profileUpdate(user);
 		System.out.println(user);
 		redirectAttr.addFlashAttribute("msg", "수정되었습니다!.");
-		return "redirect:/mypage/mypage.do";
+		return "redirect:/";
 	}
 
 }
