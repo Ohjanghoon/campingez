@@ -13,4 +13,6 @@ public interface ReservationService {
 
 	CampZone campZoneInfo(String campId);
 
+	int insertReservation(Reservation reservation);
+
 }

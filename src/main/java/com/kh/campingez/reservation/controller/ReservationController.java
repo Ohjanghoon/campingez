@@ -33,10 +33,10 @@ public class ReservationController {
 	@Autowired
 	private ReservationService reservationService;
 	
-	@GetMapping("/campList")
+	@GetMapping("/list")
 	public void campList() {}
 	
-	@PostMapping("/campList")
+	@PostMapping("/list")
 	public ResponseEntity<?> campList(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkin, 
 			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkout) {
 		Map<String, Object> param = new HashMap<>();
@@ -59,9 +59,15 @@ public class ReservationController {
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(campZone);
 	}
 	
-	@PostMapping("/reservation")
-	public String insertReservation(Reservation reservation, RedirectAttributes redirectAttr) {
-//		int result = reservationService.insertReservation(reservation);
+	@PostMapping("/insertReservation")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	public String insertReservation(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkin, 
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkout, 
+			Reservation reservation, RedirectAttributes redirectAttr) {
+		reservation.setResCheckin(checkin);
+		reservation.setResCheckout(checkout);
+		log.debug("reservation = {}", reservation);
+		int result = reservationService.insertReservation(reservation);
 		redirectAttr.addFlashAttribute("msg", "예약을 완료하였습니다.");
 		return "redirect:/";
 	}

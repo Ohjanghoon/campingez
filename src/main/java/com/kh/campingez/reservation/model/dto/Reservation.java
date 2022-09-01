@@ -17,9 +17,9 @@ public class Reservation {
 	private String userId; // 회원아이디
 	private String resUsername; // 예약자이름
 	private String resPhone; // 예약자 전화번호
-	private int person; // 예약인원
-	private int price; // 예약 금액
-	private LocalDate resCesDate; // 예약일자
+	private int resPerson; // 예약인원
+	private int resPrice; // 예약 금액
+	private LocalDate resDate; // 예약일자
 	private LocalDate resCheckin; // 입실일자
 	private LocalDate resCheckout; // 퇴실일자
 	private String resCarNo; // 차량번호
