@@ -14,7 +14,7 @@
 
 <body>
 <div id="enroll-container" class="mx-auto text-center">
-	<form name="userEnrollFrm" action="" method="POST">
+	<form:form name="userEnrollFrm" action="" method="POST">
 		<table class="mx-auto">
 			<tr>
 				<th>아이디</th>
@@ -66,9 +66,10 @@
 				</td>
 			</tr>
 		</table>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<input type="submit" value="가입"> <input type="reset"
 			value="취소">
-	</form>
+	</form:form>
 </div>
 </body>
 </html>

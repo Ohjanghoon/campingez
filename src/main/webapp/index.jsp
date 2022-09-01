@@ -10,6 +10,7 @@
 	
 	<h1>캠핑이지</h1>
 	<button id="btn-weather">확인</button>
+	<div id="weather"></div>
 	
 	<script>
 		const clockString = () => {
@@ -28,6 +29,7 @@
                 return n <10 ? "0" + n : n;
             }
             const now = new Date();
+            now.setMinutes(now.getMinutes() - 30);
             const hh = f(now.getHours());
             const mm = f(now.getMinutes());
             return hh + mm;
@@ -35,18 +37,38 @@
 		
 		document.querySelector("#btn-weather").addEventListener('click', (e) => {
 			const today = clockString();
-			const time = "0600";
-			console.log(typeof today);
+			const time = timeString();
 			console.log(today, time);
+			document.querySelector('#weather').innerHTML = "";
 			
 			$.ajax({
-				//url : "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?serviceKey=nkedH2GBDF%2BTCm2VLMxTXfjbK5uG7xtbtLDOXdsDlb%2F4S5NAykAK5f4zhhjMpTM7GUf1pmqRcrC7nTOPF4iAgw%3D%3D&numOfRows=10&pageNo=1&base_date=20220901&base_time=0600&nx=55&ny=127",
 				url : "${pageContext.request.contextPath}/data/weather.do",
 				data : {
 					date : today, time
 				},
 				success(data){
-					console.log(data);
+					//console.log(data);
+					data.forEach((data) => {
+						const wrapper = document.querySelector('#weather');
+						
+						const baseTime = "0" + (Number(data.baseTime) + 70);
+						if(data.fcstTime == baseTime){
+							//console.log(data, data.category, data.fcstValue);
+							if(data.category == 'T1H'){
+								console.log(data.fcstValue);
+								wrapper.innerHTML += `<p>현재 온도 : \${data.fcstValue}</p>`
+							}
+							if(data.category == 'SKY'){
+								if(Number(data.fcstValue) >= 4){
+									console.log("흐림");
+									wrapper.innerHTML += "<p>흐림</p>";
+								}
+								else{
+									wrapper.innerHTML += "<p>안흐림</p>";
+								}
+							}
+						}
+					});					
 				},
 				error : console.log
 			});

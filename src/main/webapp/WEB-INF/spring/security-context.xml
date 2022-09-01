@@ -17,7 +17,7 @@
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/user/userTest.do" access="isAuthenticated()"/>
-		<!-- <intercept-url pattern="/user/userEnroll.do" access="isAnonymous()"/> -->
+		<intercept-url pattern="/user/userEnroll.do" access="permitAll"/>
 		<intercept-url pattern="/user/userLogin.do" access="isAnonymous()"/>
 		<intercept-url pattern="/userInfo/profileUpdate.do" access="permitAll"/>
 		<intercept-url pattern="/user/userLogout.do" access="permitAll"/>
