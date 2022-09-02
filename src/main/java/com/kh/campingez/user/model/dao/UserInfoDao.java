@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.user.model.dto.MyPage;
 import com.kh.campingez.user.model.dto.User;
 
 @Mapper
@@ -23,5 +25,11 @@ public interface UserInfoDao {
 	
 	
 	List<Inquire> selectInquireList(User user);
+
+	
+	List<Reservation> selectReservationList(User user);
+
+	
+	List<MyPage> selectInquireCnt(User user);
 
 }
