@@ -1,6 +1,7 @@
 package com.kh.campingez.trade.model.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +23,7 @@ public class TradeEntity {
 	private String categoryId;
 	private String tradeTitle;
 	private String tradeContent;
-	private LocalDate tradeDate;
+	private LocalDateTime tradeDate;
 	private int readCount;
 	private int price;
 	private String tradeSuccess;

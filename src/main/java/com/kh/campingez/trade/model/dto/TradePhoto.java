@@ -14,10 +14,10 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class TradePhoto {
 	
-	private String tradePhotoNo;
+	private int tradePhotoNo;
 	private String tdNo;
 	@NonNull
-	private String OriginalFilename;
+	private String originalFilename;
 	@NonNull
 	private String renamedFilename;
 }
