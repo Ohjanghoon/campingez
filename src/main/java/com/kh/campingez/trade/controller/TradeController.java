@@ -68,30 +68,31 @@ public class TradeController {
 		
 	}
 	
-	@PostMapping("/tradeEnroll")
+	@PostMapping("/tradeEnroll.do")
 	public String tradeEnroll(
-			Trade trade,
 			@RequestParam(name = "upFile") List<MultipartFile> upFileList,
 			RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
 		
-		for(MultipartFile upFile : upFileList) {
-			if(!upFile.isEmpty()) {
-				String saveDirectory = application.getRealPath("/resources/upload/trade");
-				String renamedFilename = CampingEzUtils.getRenamedFilename(upFile.getOriginalFilename());
-				File destFile = new File(saveDirectory, renamedFilename);
-				upFile.transferTo(destFile);
-				
-				TradePhoto photo = new TradePhoto(upFile.getOriginalFilename(), renamedFilename);
-				trade.add(photo);
-			}
-			
-			
-		}
-		log.debug("trade = {}", trade);
+		log.debug("upFileList = {}", upFileList);
 		
-		int result = tradeService.insertTrade(trade);
-		
-		redirectAttr.addFlashAttribute("msg", "게시글 등록 완료");
+//		for(MultipartFile upFile : upFileList) {
+//			if(!upFile.isEmpty()) {
+//				String saveDirectory = application.getRealPath("/resources/upload/trade");
+//				String renamedFilename = CampingEzUtils.getRenamedFilename(upFile.getOriginalFilename());
+//				File destFile = new File(saveDirectory, renamedFilename);
+//				upFile.transferTo(destFile);
+//				
+//				TradePhoto photo = new TradePhoto(upFile.getOriginalFilename(), renamedFilename);
+//				trade.add(photo);
+//			}
+//			
+//			
+//		}
+//		log.debug("trade = {}", trade);
+//		
+//		int result = tradeService.insertTrade(trade);
+//		
+//		redirectAttr.addFlashAttribute("msg", "게시글 등록 완료");
 		
 		return "redirect:/trade/tradeList.do";
 	}

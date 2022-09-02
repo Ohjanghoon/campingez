@@ -7,7 +7,7 @@ import java.util.Date;
 public class CampingEzUtils {
 	public static String getPagebar(int cPage, int limit, int totalContent, String url) {
 		StringBuffer pagebar = new StringBuffer();
-		url += "?cPage=";
+		url += url.contains("?") ? "&cPage=" : "?cPage=";
 		
 		final int pagebarSize = 10;
 		final int totalPage = (int)Math.ceil((double)totalContent / limit);
@@ -20,14 +20,14 @@ public class CampingEzUtils {
 		if(cPage == 1) {
 	
 		} else {
-			pagebar.append("<a href='" + url + (pageNo - 1) + "'>이전</a>");
+			pagebar.append("<span class='paging' id='page"+ (pageNo - 1) + "'>이전</span>\n");
 		}
 		
 		while(pageNo <= pagebarEnd && pageNo <= totalPage) {
 			if(pageNo == cPage) {
-				pagebar.append("<span>" + pageNo + "</span>");
+				pagebar.append("<span class='paging' id='page" + pageNo + "'>" + pageNo + "</span>\n");
 			} else {
-				pagebar.append("<a href='"+ url + pageNo +"'></a>");
+				pagebar.append("<span class='paging' id='page" + pageNo + "'>" + pageNo + "</span>\n");
 			}
 			pageNo++;
 		}
@@ -35,7 +35,7 @@ public class CampingEzUtils {
 		if(pageNo > totalPage) {
 			
 		} else {
-			pagebar.append("<a href='"+ url + pageNo +"'></a>");
+			pagebar.append("<span class='paging' id='page" + pageNo + "'>다음</span>\n");
 		}
 		pagebar.append("</ul>");
 		

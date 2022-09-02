@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.campingez.admin.model.dao.AdminDao;
+import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.user.model.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -56,8 +58,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public List<Inquire> findAllInquireList() {
-		return adminDao.findAllInquireList();
+	public List<Inquire> findAllInquireList(Map<String, Object> param) {
+		return adminDao.findAllInquireList(getRowBounds(param));
 	}
 	
 	@Override
@@ -73,6 +75,39 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int updateAnswer(Answer answer) {
 		return adminDao.updateAnswer(answer);
+	}
+	
+	@Override
+	public int getInquireListTotalContent() {
+		return adminDao.getInquireListTotalContent();
+	}
+	
+	@Override
+	public List<Inquire> findInquireListByCategoryId(Map<String, Object> param) {
+		RowBounds rowBounds = getRowBounds(param);
+
+		return adminDao.findInquireListByCategoryId(rowBounds, param);
+	}
+	
+	@Override
+	public int getInquireListTotalContentByCategoryId(String categoryId) {
+		return adminDao.getInquireListTotalContentByCategoryId(categoryId);
+	}
+	
+	@Override
+	public List<Category> getCategoryList() {
+		return adminDao.getCategoryList();
+	}
+	
+	@Override
+	public List<Reservation> findReservationList(Map<String, Object> param) {
+		RowBounds rowBounds = getRowBounds(param);
+		return adminDao.findReservationList(rowBounds, param);
+	}
+	
+	@Override
+	public int getReservationListTotalContent(Map<String, Object> param) {
+		return adminDao.getReservationListTotalContent(param);
 	}
 	
 	private RowBounds getRowBounds(Map<String, Object> param) {

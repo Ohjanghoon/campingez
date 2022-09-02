@@ -12,8 +12,7 @@
 
 <section id="trade-container" class="container">
 
-<form name="tradeEnrollFrm" action="${pageContext.request.contextPath}/trade/tradeEnroll.do" method="post" enctype="multipart/form-data">
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+<form name="tradeEnrollFrm" action="${pageContext.request.contextPath}/trade/tradeEnroll.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
 
 <p>글제목: </p><input type="text" name="tradeTitle"><br>
 

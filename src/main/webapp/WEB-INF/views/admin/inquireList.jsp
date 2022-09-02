@@ -12,7 +12,18 @@
 
 <main>
 	<section>
-		<table>
+		<div id="select-bar">
+			<select name="inquireType" id="inquireType">
+				<option value="" selected disabled>문의유형</option>
+				<option value="">전체</option>
+				<c:if test="${not empty categoryList}">
+					<c:forEach items="${categoryList}" var="category">
+						<option value="${category.categoryId}">${category.categoryName}</option>
+					</c:forEach>
+				</c:if>
+			</select>
+		</div>
+		<table id="tbl-inquire-list">
 			<thead>
 				<tr>
 					<th>문의번호</th>
@@ -41,20 +52,107 @@
 						</tr>
 					</c:forEach>
 				</c:if>
+				<c:if test="${empty inquireList}">
+					<tr>
+						<td colspan="6">조회된 문의가 없습니다.</td>
+					</tr>
+				</c:if>
 			</tbody>
 		</table>
+		<nav>
+			${pagebar}
+		</nav>
 	</section>
 </main>
 <script>
 document.querySelectorAll("tr[data-inq-no]").forEach((tr) => {
 	tr.addEventListener('click', (e) => {
-		const tr = e.target.parentElement;
-		const inqNo = tr.dataset.inqNo;
-		
-		if(!inqNo) return;
-		
-		location.href = `${pageContext.request.contextPath}/inquire/inquireDetail.do?no=\${inqNo}`;
+		moveToInquireDetail(e);
 	});
-})
+});
+
+const moveToInquireDetail = (e) => {
+	const tr = e.target.parentElement;
+	const inqNo = tr.dataset.inqNo;
+	
+	if(!inqNo) return;
+	
+	location.href = `${pageContext.request.contextPath}/inquire/inquireDetail.do?no=\${inqNo}`;
+}
+
+const inquireListByCategoryIdRender = (categoryId, pageNo) => {
+	$.ajax({
+		url : `${pageContext.request.contextPath}/admin/inquireListByCategoryId.do?categoryId=\${categoryId}&cPage=\${pageNo}`,
+		method : "GET",
+		content : "application/json",
+		success(response) {
+			const {inquireList, pagebar} = response;
+			const tbody = document.querySelector("#tbl-inquire-list tbody");
+			const oldPagebar = document.querySelector("nav");
+			
+			console.log(pagebar);
+			
+			tbody.innerHTML = '';
+			oldPagebar.innerHTML = '';
+			
+			if(!inquireList) {
+				const tr = `
+				<tr>
+					<td colspan="6">조회된 문의가 없습니다.</td>
+				</tr>
+				`;
+				tbody.innerHTML += tr;
+				return;
+			}
+			
+			inquireList.forEach((inquire) => {				
+				const [yyyy, MM, dd, HH, mm] = inquire.inqDate;
+				
+				const tr = `
+				<tr data-inq-no="\${inquire.inqNo}">
+					<td>\${inquire.inqNo}</td>
+					<td>\${inquire.categoryName}</td>
+					<td>\${inquire.inqWriter}</td>
+					<td>\${inquire.inqTitle}</td>
+					<td>
+						\${inquire.answerStatus == 0 ? '답변대기' : '답변완료'}
+					</td>
+					<td>
+						\${yyyy}/\${MM}/\${dd} \${HH}:\${mm}
+					</td>
+				</tr>
+				`;
+				tbody.innerHTML += tr;
+				
+				document.querySelectorAll("tr[data-inq-no]").forEach((tr) => {
+					tr.addEventListener('click', (e) => {
+						moveToInquireDetail(e);
+					});
+				});
+			});
+			oldPagebar.innerHTML = pagebar;
+			
+			// 페이지 이동
+			document.querySelectorAll(".paging").forEach((span) => {
+				span.addEventListener('click', (e) => {
+					const pageNo = e.target.id.substring(4);
+					inquireListByCategoryIdRender(categoryId, pageNo);
+				});
+			});
+		},
+		error : console.log()
+	});
+};
+
+document.querySelector("#inquireType").addEventListener('change', (e) => {
+	const categoryId = e.target.value;
+	
+	if(!categoryId) {
+		location.href = "${pageContext.request.contextPath}/admin/inquireList.do";
+		return;
+	};
+	inquireListByCategoryIdRender(categoryId, 1);
+});
+
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
