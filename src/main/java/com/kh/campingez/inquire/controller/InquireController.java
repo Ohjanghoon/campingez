@@ -55,4 +55,9 @@ public class InquireController {
 		redirectAttr.addFlashAttribute("msg", "문의가 작성되었습니다.");
 		return "redirect:/inquire/inquireList.do";
 	}
+	
+	@GetMapping("/inquireUpdate.do")
+	public void inquireUpdate(@RequestParam String inqNo, Model model) {
+		log.debug("inqNo = {}", inqNo);
+	}
 }
