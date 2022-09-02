@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.campingez.assignment.model.dao.AssignmentDao">
+  
+  <select id="selectAssignmentList" resultMap="assignmentListMap">
+  	select
+	    *
+	from 
+	    assignment a
+	    join camp_photo cp on substr(a.res_no, 0, 2) = cp.zone_code
+	    join reservation r using(res_no, user_id)
+  </select>
+  
+  <resultMap type="assignment" id="assignmentListMap">
+  	<id column="assign_no" property="assignNo"/>
+  	<result column="user_id" property="userId"/>
+  	<result column="res_no" property="resNo"/>
+  	<result column="assign_title" property="assignTitle"/>
+  	<result column="assign_content" property="assignContent"/>
+  	<result column="assign_price" property="assignPrice"/>
+  	<result column="assign_date" property="assignDate"/>
+  	<result column="assign_like_count" property="assignLikeCount"/>
+  	<result column="assign_state" property="assignState"/>
+  	<association property="campPhoto" javaType="campPhoto">
+  		<result column="zone_code" property="zoneCode"/>
+  		<result column="original_filename" property="originalFilename"/>
+  	</association>
+  	<association property="reservation" javaType="reservation">
+  		<result column="camp_id" property="campId"/>
+  		<result column="res_price" property="resPrice"/>
+  		<result column="res_checkin" property="resCheckin"/>
+  		<result column="res_checkout" property="resCheckout"/>
+  	</association>
+  </resultMap>
+</mapper>
