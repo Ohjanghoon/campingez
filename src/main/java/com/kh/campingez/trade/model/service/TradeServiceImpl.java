@@ -11,6 +11,7 @@ import com.kh.campingez.trade.model.dao.TradeDao;
 import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.dto.TradePhoto;
 
+
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -36,29 +37,40 @@ public class TradeServiceImpl implements TradeService {
 
 
 	@Override
-	public Trade selectTradeByNo(int no) {
-		return tradeDao.selectTradeByNo(no);
+	public Trade selectTradeByNo(String no) {
+		
+		Trade trade = tradeDao.selectTradeByNo(no);
+		// List<Attachment> 조회
+		List<TradePhoto> photos = tradeDao.selectPhotoListBytradeNo(no);
+		trade.setPhotos(photos);
+		
+		return trade;
+		
+		
 	}
 
 	@Override
 	public int insertTrade(Trade trade) {
 		
 		int result = tradeDao.insertTrade(trade);
-		log.debug("board#no = {}", trade.getTradeNo());
+		log.debug("trade#no = {}", trade.getTradeNo());
 		
 		// insert attachment * n
 		List<TradePhoto> photos = trade.getPhotos();
 		if(!photos.isEmpty()) {
 			for(TradePhoto photo : photos) {
 				photo.setTdNo(trade.getTradeNo());
-				result = tradeDao.insertPhoto(photo);
+				result = insertPhoto(photo);
 			}
 		}
 		return result;
 	}
 
 
-	
+	@Override
+	public int insertPhoto(TradePhoto photo) {
+		return tradeDao.insertPhoto(photo);
+	}
 	
 }
 

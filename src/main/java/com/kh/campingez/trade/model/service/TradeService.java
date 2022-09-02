@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.campingez.trade.model.dto.Trade;
+import com.kh.campingez.trade.model.dto.TradePhoto;
 
 public interface TradeService {
 
@@ -11,9 +12,11 @@ public interface TradeService {
 
 	int getTotalContent();
 	
-	Trade selectTradeByNo(int no);
+	Trade selectTradeByNo(String no);
 
 	int insertTrade(Trade trade);
+
+	int insertPhoto(TradePhoto photo);
 
 
 }

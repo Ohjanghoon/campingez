@@ -58,15 +58,21 @@ public class TradeController {
 	}
 	
 	@GetMapping("/tradeView.do")
-	public void tradeView(@RequestParam int no, Model model) {
+	public void tradeView(@RequestParam String no, Model model) {
 		Trade trade = tradeService.selectTradeByNo(no);
 		model.addAttribute("trade", trade);
 	}
 	
-	@PostMapping("tradeEnroll.do")
-	public String tradeEnroll(Trade trade,
-							@RequestParam(name = "upFile") List<MultipartFile> upFileList,
-							RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
+	@GetMapping("/tradeEnroll.do")
+	public void tradeEnroll() {
+		
+	}
+	
+	@PostMapping("/tradeEnroll")
+	public String tradeEnroll(
+			Trade trade,
+			@RequestParam(name = "upFile") List<MultipartFile> upFileList,
+			RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
 		
 		for(MultipartFile upFile : upFileList) {
 			if(!upFile.isEmpty()) {
@@ -81,6 +87,7 @@ public class TradeController {
 			
 			
 		}
+		log.debug("trade = {}", trade);
 		
 		int result = tradeService.insertTrade(trade);
 		
