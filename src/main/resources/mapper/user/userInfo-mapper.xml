@@ -25,4 +25,49 @@
   	<result column="inq_date" property="inqDate"/>
   	<result column="answer_status" property="answerStatus"/>
   </resultMap>
+  
+   <select id="selectReservationList" resultMap="reservationMap">
+  	select
+		*
+	from
+		reservation
+	where
+		user_id = #{userId}
+	order by
+		res_date desc
+  </select>
+  
+  <resultMap type="reservation" id="reservationMap">
+  	<id column="res_no" property="resNo"/>
+  	<result column="camp_id" property="campId"/>
+  	<result column="user_id" property="userId"/>
+  	<result column="res_username" property="resUsername"/>
+  	<result column="res_phone" property="resPhone"/>
+  	<result column="res_person" property="resPerson"/>
+  	<result column="res_price" property="resPrice"/>
+  	<result column="res_date" property="resDate"/>
+  	<result column="res_checkin" property="resCheckin"/>
+  	<result column="res_checkout" property="resCheckout"/>
+  	<result column="res_car_no" property="resCarNo"/>
+  	<result column="res_request" property="resRequest"/>
+  	<result column="res_state" property="resState"/>
+  	<result column="res_payment" property="resPayment"/>
+  </resultMap>
+  
+  <select id="selectInquireCnt" resultType="MyPage">
+  	select
+    	answer_status,
+    	count(*) status_cnt
+	from(
+    	select
+	    	i.*,
+	    	(select count(*) from inquire_answer a where a.inq_no = i.inq_no) answer_status
+		from
+			inquire i
+    	where
+        	inq_writer = #{userId}
+	)
+	group by 
+    	answer_status
+  </select>
 </mapper>
