@@ -19,6 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.user.model.dto.MyPage;
 import com.kh.campingez.user.model.dto.User;
 import com.kh.campingez.user.model.service.UserInfoService;
 import com.kh.security.model.service.UserSecurityService;
@@ -39,9 +41,12 @@ public class UserInfoController {
 	
 	//회원 마이페이지 jsp 호추루루룰
 	@GetMapping("/myPage.do")
-	public ModelAndView myPage(Authentication authentication, ModelAndView mav) {
-	
+	public ModelAndView myPage(Authentication authentication, ModelAndView mav, Model model) {
+		User principal = (User)authentication.getPrincipal();
+		List<MyPage> inquireCnt = userInfoService.selectInquireCnt(principal);
+		model.addAttribute("inquireCnt",inquireCnt);
 		mav.setViewName("user/myPage");
+		
 		return mav;
 	}
 	
@@ -90,7 +95,6 @@ public class UserInfoController {
 	
 	/**
 	 * !!!!!!!!!!!!!!!!자기 문의글 보기!!!!!!!!!!!!!!!!!!!!!
-	 * @return 
 	 */
 	@GetMapping("/inquireList.do")
 	public ModelAndView inquireList(Authentication authentication ,Model model, ModelAndView mav) {
@@ -100,6 +104,19 @@ public class UserInfoController {
 		model.addAttribute("inquireList", list);
 		model.addAttribute("prePageName", "mypage");
 		mav.setViewName("inquire/inquireList");
+		return mav;
+	}
+	
+	/**
+	 * !!!!!!!!!!!!!!!!본인 예약글 확인!!!!!!!!!!!!!!!!!!!!! 
+	 */
+	@GetMapping("/myReservation.do")
+	public ModelAndView reservationCheck(Authentication authentication ,Model model, ModelAndView mav) {
+		User principal = (User)authentication.getPrincipal();
+		List<Reservation> list = userInfoService.selectReservationList(principal);
+		log.debug("list = {}", list);
+		model.addAttribute("reservationList", list);
+		mav.setViewName("user/myReservation");
 		return mav;
 	}
 }
