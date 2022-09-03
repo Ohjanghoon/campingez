@@ -56,6 +56,17 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<!-- multipart filter 추가하기 -->
+	<filter>
+		<display-name>springMultipartFilter</display-name>
+		<filter-name>springMultipartFilter</filter-name>
+		<filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springMultipartFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -64,21 +75,4 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
-	<!-- #승원 1. 멀티파트 필터 등록 -->
-	<filter>
-		<filter-name>multipartFilter</filter-name>
-		<filter-class>
-			org.springframework.web.multipart.support.MultipartFilter</filter-class>
-		<init-param>
-			<param-name>multipartResolverBeanName</param-name>
-			<param-value>multipartResolver</param-value>
-		</init-param>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>multipartFilter</filter-name>
-		<url-pattern>*.do</url-pattern>
-	</filter-mapping>
-
 </web-app>
