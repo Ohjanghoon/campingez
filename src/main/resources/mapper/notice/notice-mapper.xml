@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.campingez.notice.model.dao.NoticeDao">
+	<select id="selectByNoticeNo" resultMap="noticeMap">
+		select n.*, p.* from  notice n left join notice_photo p on n.notice_no = p.notice_no where n.notice_no = #{noticeNo}
+	</select>
+	<resultMap type="notice" id="noticeMap">
+		<id column="notice_no" property="noticeNo" />
+		<result column="category_id" property="categoryId" />
+		<result column="notice_title" property="noticeTitle" />
+		<result column="notice_content" property="noticeContent" />
+		<result column="notice_date" property="noticeDate" />
+		<result column="notice_type" property="noticeType" />
+		<collection property="photos" ofType="noticePhoto">
+			<id column="notice_photo_no" property="noticePhotoNo" />
+			<result column="notice_no" property="noticeNo"/>
+			<result column="notice_original_filename" property="noticeOriginalFilename"/>
+			<result column="notice_renamed_filename" property="noticeRenamedFilename"/>
+		</collection>
+	</resultMap>
+</mapper>
