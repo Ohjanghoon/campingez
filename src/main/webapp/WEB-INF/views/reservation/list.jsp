@@ -85,14 +85,14 @@
 				
 				document.querySelector(".reservation").innerHTML =`
 					<form:form name="reservationFrm" action="${pageContext.request.contextPath}/reservation/insertReservation.do" method="POST">
-					<input type="hidden" name="userId" value="honggd"/>
+					<input type="hidden" name="userId" value="<sec:authentication property='principal.username' />"/>
 					<input type="hidden" name="checkin" value="\${checkin}"/>
 					<input type="hidden" name="checkout" value="\${checkout}"/>
 					<h3>예약자 정보</h3>
 					<label for="resUsername">예약자 이름</label>
 					<input type="text" name="resUsername" />
 					<br />
-					<label for="resPhone">예약자 번호</label>
+					<label for="resPhone">예약자 전화번호</label>
 					<input type="text" name="resPhone"/>
 					<br />
 					<label for="resPerson">예약 인원</label>
