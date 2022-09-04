@@ -19,7 +19,7 @@
 		<th>제목</th>
 		<td>[${notice.categoryId == 'not1' ? '공지사항' : '이벤트'}] ${notice.noticeTitle}</td>
 		<th>내용</th>
-		<td>${notice.noticeContent}"</td>
+		<td>${notice.noticeContent}</td>
 		<th>작성일</th>
 		<td>${notice.noticeDate}</td>
 	</tr>
