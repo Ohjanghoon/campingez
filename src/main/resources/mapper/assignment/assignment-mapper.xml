@@ -9,8 +9,12 @@
 	    *
 	from 
 	    assignment a
-	    join camp_photo cp on substr(a.res_no, 0, 2) = cp.zone_code
+	    left join camp_photo cp on substr(a.res_no, 0, 2) = cp.zone_code
 	    join reservation r using(res_no, user_id)
+	where
+		res_checkin - 1 > current_date
+	order by
+		res_date desc
   </select>
   
   <resultMap type="assignment" id="assignmentListMap">
