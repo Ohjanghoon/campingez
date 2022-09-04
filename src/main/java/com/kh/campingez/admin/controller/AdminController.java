@@ -1,5 +1,7 @@
 package com.kh.campingez.admin.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +22,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.admin.model.service.AdminService;
+import com.kh.campingez.campzone.model.dto.CampPhoto;
+import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.CampingEzUtils;
 import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.inquire.model.dto.Answer;
@@ -37,6 +43,9 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminController {
 	@Autowired
 	AdminService adminService;
+	
+	@Autowired
+	ServletContext application;
 	
 	@RequestMapping("/admin.do")
 	public void admin() {}
@@ -173,7 +182,7 @@ public class AdminController {
 		param.put("startDate", startDate);
 		param.put("endDate", endDate);
 		param.put("searchType", searchType);
-		log.debug("searchType = {}", searchType);
+		model.addAttribute("date", param);
 		
 		// 페이징 처리
 		int limit = 5;
@@ -209,7 +218,70 @@ public class AdminController {
 		
 		return "admin/reservationList";
 	}
-
+	
+	@GetMapping("/campZoneList.do")
+	public void campZoneList(Model model) {
+		List<CampZone> campZoneList = adminService.findAllCampZoneList();
+		log.debug("campZoneList = {}", campZoneList);
+		model.addAttribute("campZoneList", campZoneList);
+	}
+	
+	@GetMapping("/updateCampZone.do")
+	public void updateCampZone(@RequestParam String zoneCode, Model model) {
+		log.debug("zoneCode = {}", zoneCode);
+		CampZone campZone = adminService.findCampZoneByZoneCode(zoneCode);
+		model.addAttribute("campZone", campZone);
+	}
+	
+	@PostMapping("/updateCampZone.do")
+	public String updateCampZone(CampZone campZone, RedirectAttributes redirectAttr) {
+		int result = adminService.updateCampZone(campZone);
+		redirectAttr.addFlashAttribute("msg", "구역 정보가 성공적으로 수정되었습니다.");
+		return "redirect:/admin/updateCampZone.do?zoneCode=" + campZone.getZoneCode();
+	}
+	
+	@GetMapping("/insertCampZone.do")
+	public void insertCampZone(Model model) {
+		List<CampZone> campZoneList = adminService.findAllCampZoneList();
+		model.addAttribute("campZoneList", campZoneList);
+	}
+	
+	@PostMapping("/insertCampZone.do")
+	public String insertCampZone(CampZone campZone, @RequestParam(name = "upFile") List<MultipartFile> upFiles, RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
+		for(MultipartFile upFile : upFiles) {
+			if(!upFile.isEmpty()) {				
+				String saveDirectory = application.getRealPath("/resources/upload/campPhoto");
+				String renamedFilename = CampingEzUtils.getRenamedFilename(upFile.getOriginalFilename());
+				File destFile = new File(saveDirectory, renamedFilename);
+				upFile.transferTo(destFile);
+				
+				CampPhoto campPhoto = new CampPhoto(upFile.getOriginalFilename(), renamedFilename);
+				campZone.campPhotoAdd(campPhoto);
+			}
+		}
+		
+		int result = adminService.insertCampZone(campZone);
+		redirectAttr.addFlashAttribute("msg", "구역을 성공적으로 추가하였습니다.");
+		
+		return "redirect:/admin/campZoneList.do";
+	}
+	
+	@PostMapping("/deleteCampZone.do")
+	public String deleteCampZone(CampZone campZone) {
+		List<CampPhoto> campPhotos = adminService.selectCampPhotoByZoneCode(campZone);
+		if(!campPhotos.isEmpty()) {
+			for(CampPhoto photo : campPhotos) {
+				String saveDirectory = application.getRealPath("/resources/upload/campPhoto");
+				File delFile = new File(saveDirectory, photo.getRenamedFilename());
+				boolean deleted = delFile.delete();
+				log.debug("deleted = {}", deleted);
+			}
+		}
+		int result = adminService.deleteCampZone(campZone.getZoneCode());
+		
+		return "redirect:/admin/campZoneList.do";
+	}
+	
 	private Date addMonth(Date date, int months) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);

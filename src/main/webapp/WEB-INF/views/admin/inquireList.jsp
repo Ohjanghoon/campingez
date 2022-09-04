@@ -95,7 +95,7 @@ const inquireListByCategoryIdRender = (categoryId, pageNo) => {
 			tbody.innerHTML = '';
 			oldPagebar.innerHTML = '';
 			
-			if(!inquireList) {
+			if(inquireList == '') {
 				const tr = `
 				<tr>
 					<td colspan="6">조회된 문의가 없습니다.</td>
@@ -103,7 +103,7 @@ const inquireListByCategoryIdRender = (categoryId, pageNo) => {
 				`;
 				tbody.innerHTML += tr;
 				return;
-			}
+			};
 			
 			inquireList.forEach((inquire) => {				
 				const [yyyy, MM, dd, HH, mm] = inquire.inqDate;

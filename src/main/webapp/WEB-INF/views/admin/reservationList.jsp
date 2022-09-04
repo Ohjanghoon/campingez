@@ -22,9 +22,9 @@
 					<option value="res_checkout" ${param.searchType eq 'res_checkout' ? 'selected' : ''}>퇴실일자</option>
 				</select>
 				
-				<input type="date" name="startDate" id="startDate" value="${param.startDate}" />
+				<input type="date" name="startDate" id="startDate" value="${param.startDate == null ? date.startDate : param.startDate}" />
 				-
-				<input type="date" name="endDate" id="endDate" value="${param.endDate}" />
+				<input type="date" name="endDate" id="endDate" value="${param.endDate == null ? date.endDate : param.endDate}" />
 				<button type="button" id="search-btn">검색</button>
 			</form>
 		</div>

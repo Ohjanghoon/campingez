@@ -14,4 +14,9 @@ public class CampPhoto {
 	private String zoneCode;
 	private String originalFilename;
 	private String renamedFilename;
+	
+	public CampPhoto(String originalFilename, String renamedFilename) {
+		this.originalFilename = originalFilename;
+		this.renamedFilename = renamedFilename;
+	}
 }

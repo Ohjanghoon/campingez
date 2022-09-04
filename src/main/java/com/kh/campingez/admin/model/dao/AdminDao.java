@@ -11,6 +11,8 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.campingez.campzone.model.dto.CampPhoto;
+import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
@@ -76,5 +78,26 @@ public interface AdminDao {
 	
 	@Select("select count(*) from reservation where to_date(${searchType}, 'YY/MM/DD') between to_date(#{startDate}, 'YY/MM/DD') and to_date(#{endDate}, 'YY/MM/DD')")
 	int getReservationListTotalContent(Map<String, Object> param);
+
+	@Select("select * from camp_zone order by zone_code")
+	List<CampZone> findAllCampZoneList();
+
+	@Select("select * from camp_zone where zone_code = #{zoneCode}")
+	CampZone findCampZoneByZoneCode(String zoneCode);
+	
+	@Update("update camp_zone set zone_name = #{zoneName}, zone_info = #{zoneInfo}, zone_maximum = #{zoneMaximum}, zone_price = #{zonePrice} where zone_code = #{zoneCode}")
+	int updateCampZone(CampZone campZone);
+	
+	@Insert("insert into camp_zone values(#{zoneCode}, #{zoneName}, #{zoneInfo}, #{zoneMaximum}, #{zonePrice})")
+	int insertCampZone(CampZone campZone);
+	
+	@Insert("insert into camp_photo values(seq_camp_photo_no.nextval, #{zoneCode}, #{originalFilename}, #{renamedFilename})")
+	void insertCampPhoto(CampPhoto photo);
+	
+	@Delete("delete from camp_zone where zone_code = #{zoneCode}")
+	int deleteCampZone(String zoneCode);
+	
+	@Select("select * from camp_photo where zone_code = #{zoneCode}")
+	List<CampPhoto> selectCampPhotoByZoneCode(CampZone campZone);
 
 }
