@@ -32,4 +32,7 @@ public interface UserInfoDao {
 	
 	List<MyPage> selectInquireCnt(User user);
 
+
+	List<Reservation> selectReservation(User user);
+
 }
