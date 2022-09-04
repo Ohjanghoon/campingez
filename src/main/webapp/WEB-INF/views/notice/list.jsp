@@ -11,8 +11,8 @@
 </head>
 <body>
 	<h2>notice</h2>
-	<button>공지사항 등록</button>
-	<button>이벤트 등록</button>
+	<button id="notice">공지사항 게시글 등록</button>
+	<button id="coupon">쿠폰 등록</button>
 	<hr />
 	<table class="table">
 		<thead>
@@ -39,6 +39,16 @@
 		</tbody>
 	</table>
 	<script>
+		// 공지사항 등록
+		document.querySelector("#notice").addEventListener('click', (e) => {
+			location.href = "${pageContext.request.contextPath}/notice/enrollNotice.do";
+		});
+		
+		// 쿠폰 등록
+		document.querySelector("#coupon").addEventListener('click', (e) => {
+			location.href = "${pageContext.request.contextPath}/notice/coupon.do";
+		});
+	
 		const insertHandler = (e) => {
 			const parent = e.target.parentElement;
 			const noticeNo = parent.dataset.noticeNo;
