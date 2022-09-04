@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.campingez.notice.model.dao.NoticeDao;
+import com.kh.campingez.notice.model.dto.Coupon;
 import com.kh.campingez.notice.model.dto.Notice;
 import com.kh.campingez.notice.model.dto.NoticePhoto;
 
@@ -64,5 +65,31 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 
 		return result;
+	}
+	
+	@Override
+	public int insertNotice(Notice notice) {
+		// insert
+		int result = noticeDao.insertNotice(notice);
+		
+		// insert
+		List<NoticePhoto> photos = notice.getPhotos();
+		if (photos != null && !photos.isEmpty()) {
+			for (NoticePhoto photo : photos) {
+				photo.setNoticeNo(notice.getNoticeNo());
+				result = noticeDao.insertPhoto(photo);
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public boolean findByCoupon(String couponCode) {
+		return noticeDao.findByCoupon(couponCode);
+	}
+	
+	@Override
+	public int insertCoupon(Coupon coupon) {
+		return noticeDao.insertCoupon(coupon);
 	}
 }
