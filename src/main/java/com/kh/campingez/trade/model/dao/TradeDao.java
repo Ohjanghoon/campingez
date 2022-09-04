@@ -27,7 +27,7 @@ public interface TradeDao {
 	List<TradePhoto> selectPhotoListBytradeNo(String no);
 	
 	@Insert("insert into trade values('T' || seq_trade_trade_no.nextval, #{userId}, #{categoryId}, #{tradeTitle}, " 
-			+ "#{tradeContent}, default, default, ${tradeSuccess}, '대기', default)")
+			+ "#{tradeContent}, default, default, #{tradeSuccess}, '대기', default)")
 	@SelectKey(statement = "select seq_trade_trade_no.currval from dual",before = false, resultType = String.class, keyProperty = "tradeNo")
 	int insertTrade(Trade trade);
 	
