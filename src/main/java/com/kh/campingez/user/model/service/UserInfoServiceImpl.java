@@ -38,4 +38,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public List<MyPage> selectInquireCnt(User user) {
 		return userInfoDao.selectInquireCnt(user);
 	}
+	@Override
+	public List<Reservation> selectReservation(User user) {
+		return userInfoDao.selectReservation(user);
+	}
 }

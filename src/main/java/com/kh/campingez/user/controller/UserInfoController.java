@@ -1,5 +1,7 @@
 package com.kh.campingez.user.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +47,9 @@ public class UserInfoController {
 	public ModelAndView myPage(Authentication authentication, ModelAndView mav, Model model) {
 		User principal = (User)authentication.getPrincipal();
 		List<MyPage> inquireCnt = userInfoService.selectInquireCnt(principal);
+		List<Reservation> reservationList= userInfoService.selectReservation(principal);
 		model.addAttribute("inquireCnt",inquireCnt);
+		model.addAttribute("reservationList",reservationList);
 		mav.setViewName("user/myPage");
 		
 		return mav;
@@ -53,13 +58,27 @@ public class UserInfoController {
 	/**
 	 * !!!!!!!!!!!!!!!!회원정보 수정!!!!!!!!!!!!!!!!!!!!!
 	 */
-	
+	//내정보 수정 인증페이지 (비밀번호 재확인으로 만들것임!)
+	@GetMapping("/authentication.do")
+	public ModelAndView authentication(ModelAndView mav) {
+		mav.setViewName("user/authentication");
+		return mav;
+	}
 	//회원 조회 jsp 호출
 	@GetMapping("/userInfo.do")
-	public ModelAndView userDetail(Authentication authentication, ModelAndView mav) {
-	
-		mav.setViewName("user/userInfo");
-		return mav;
+	public ModelAndView userDetail(@ModelAttribute User user ,Authentication authentication, Model model, ModelAndView mav) {
+		User principal = (User)authentication.getPrincipal();
+		System.out.println(user.getUserId()+"," +principal.getUserId()+"," +user.getPassword()+"," +principal.getPassword());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(user.getUserId().equals(principal.getUserId()) && encoder.matches(user.getPassword(), principal.getPassword())) {
+			model.addAttribute("msg", "success");
+			
+		}else {
+			model.addAttribute("msg", "fail");
+			
+		}
+			mav.setViewName("user/authentication");
+			return mav;
 	}
 	//회원 정보 수정
 	@PostMapping("/profileUpdate.do")

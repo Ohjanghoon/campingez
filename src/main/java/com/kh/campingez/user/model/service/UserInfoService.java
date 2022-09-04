@@ -18,4 +18,6 @@ public interface UserInfoService {
 	List<Reservation> selectReservationList(User user);
 
 	List<MyPage> selectInquireCnt(User user);
+
+	List<Reservation> selectReservation(User user);
 }
