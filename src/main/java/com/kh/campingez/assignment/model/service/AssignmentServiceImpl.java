@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.campingez.assignment.model.dao.AssignmentDao;
 import com.kh.campingez.assignment.model.dto.Assignment;
+import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.reservation.model.dto.Reservation;
 
 @Service
@@ -23,5 +24,15 @@ public class AssignmentServiceImpl implements AssignmentService {
 	@Override
 	public List<Reservation> selectReservationList(String userId) {
 		return assignmentDao.selectReservationList(userId);
+	}
+	
+	@Override
+	public Reservation selectResInfo(String resNo) {
+		return assignmentDao.selectResInfo(resNo);
+	}
+	
+	@Override
+	public int insertAssignment(AssignmentEntity assignment) {
+		return assignmentDao.insertAssignment(assignment);
 	}
 }

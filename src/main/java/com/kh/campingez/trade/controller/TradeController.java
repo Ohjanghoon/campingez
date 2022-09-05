@@ -84,6 +84,7 @@ public class TradeController {
 			@RequestParam(name = "upFile") List<MultipartFile> upFileList,
 			RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
 		
+
 		for(MultipartFile upFile : upFileList) {
 			// 서버컴퓨터에 저장
 			if(!upFile.isEmpty()) {
@@ -100,6 +101,9 @@ public class TradeController {
 			
 		}
 		log.debug("trade = {}", trade);
+
+		log.debug("upFileList = {}", upFileList);
+
 		
 		int result = tradeService.insertTrade(trade);
 		

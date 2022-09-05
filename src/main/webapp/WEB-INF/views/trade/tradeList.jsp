@@ -30,7 +30,6 @@ document.frm.submit();
 					<th>번호</th>
 					<th>작성자</th>
 					<th colspan="3">제목</th>
-					<th colspan="8">사진</th>
 					<th colspan="8">내용</th>
 					<th colspan="3">작성일</th>
 					<th>조회수</th>
@@ -47,11 +46,6 @@ document.frm.submit();
 					<td>${trade.userId}</td>
 					<td colspan="3"><input type="button" name="tradeTitle" id="tradeTitle" value="${trade.tradeTitle}"
 						onclick="location.href='${pageContext.request.contextPath}/trade/tradeView.do?no=${trade.tradeNo}'"/></td>
-					<c:if test="${not empty trade.photos}">
-						<c:forEach items="${trade.photos}" var="photo">	
-							<td colspan="8"><img src ="${pageContext.request.contextPath}/resources/upload/trade/${photo.renamedFilename}" id="upload-img"></td>
-						</c:forEach>
-					</c:if>
 					<td colspan="8">${trade.tradeContent}</td>
 					<td colspan="3">
 						

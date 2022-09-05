@@ -31,4 +31,33 @@
   		<id column="auth" property="auth"/>
   	</collection>
   </resultMap>
+  
+  <select id="findCampZoneByZoneCode" resultMap="zoneMap">
+  	select
+	    z.*,
+	    p.zone_photo_no,
+	    p.zone_code zone_photo_zone_code,
+	    p.original_filename,
+	    p.renamed_filename
+	from
+	    camp_zone z left join camp_photo p 
+	        on z.zone_code = p.zone_code
+	where
+	    z.zone_code = #{zoneCode}
+  </select>
+  
+  <resultMap type="campZone" id="zoneMap">
+  	<id column="zone_code" property="zoneCode"/>
+  	<result column="zone_name" property="zoneName"/>
+  	<result column="zone_info" property="zoneInfo"/>
+  	<result column="zone_maximum" property="zoneMaximum"/>
+  	<result column="zone_price" property="zonePrice"/>
+  	
+  	<collection property="campPhotos" ofType="campPhoto">
+   		<id column="zone_photo_no" property="zonePhotoNo"/>
+  		<result column="zone_photo_zone_code" property="zoneCode"/>
+  		<result column="original_filename" property="originalFilename"/>
+  		<result column="renamed_filename" property="renamedFilename"/>
+  	</collection>
+  </resultMap>
 </mapper>

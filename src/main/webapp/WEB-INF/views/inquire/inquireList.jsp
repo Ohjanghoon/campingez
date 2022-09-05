@@ -9,15 +9,18 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-
+	
+	
 	<table>
 		<thead>
-			<th>No</th>
-			<th>문의유형</th>
-			<th>작성자</th>
-			<th>문의제목</th>
-			<th>작성일</th>
-			<th>답변상태</th>
+			<tr>
+				<th>No</th>
+				<th>문의유형</th>
+				<th>작성자</th>
+				<th>문의제목</th>
+				<th>작성일</th>
+				<th>답변상태</th>
+			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${inquireList}" var="inq" varStatus="vs">

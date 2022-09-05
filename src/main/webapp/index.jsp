@@ -1,18 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<fmt:requestEncoding value="utf-8"/>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxa5222b687369489dad174bcba92f1a00"></script>
+<script src="./resources/js/tmap.js"></script>
+    <script>
+window.onload = () => {
+	weather();
+	initTmap();
+}
+</script>
+<fmt:requestEncoding value="utf-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-	
-	<h1>캠핑이지</h1>
-	<button id="btn-weather">날씨보기</button>
-	<div id="weather"></div>
-	
-	<script>
+<h1>캠핑이지</h1>
+<div id="weather"></div>
+
+<script>
 		const clockString = () => {
 	        const f = (n) => {
 	            return n <10 ? "0" + n : n;
@@ -37,7 +44,7 @@
             return "" + hh + mm;
         }
 		
-		document.querySelector("#btn-weather").addEventListener('click', (e) => {
+		function weather() {
 			const today = clockString();
 			const time = timeString();
 			console.log(today, time);
@@ -137,7 +144,27 @@
 				},
 				error : console.log
 			});
-		});
+		};
 		</script>
-	
-<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+	<br />
+	<button id="research" style="display: none;" onclick="research()">다시검색하기</button>
+	<div id="xyCode" style="display: inline;">
+		<input type="text" class="text_custom" id="fullAddr" name="fullAddr"
+			value="홍대">
+		<button id="btn_select1">적용하기</button>
+	</div>
+
+	<button id="btn_select2" onclick="lineSearch()">경로보기</button>
+
+	<div id="map_wrap" class="map_wrap" style="width: 700px;">
+		<div id="map_div"></div>
+	</div>
+
+	<p id="result"></p>
+
+	<div id="codeSave">
+		<input type="hidden" id="save1"> <input type="hidden"
+			id="save2">
+	</div>
+
+	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

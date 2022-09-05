@@ -13,8 +13,13 @@
 	<h2>관리자페이지</h2>
 	
 	<ul>
+		<li><a href="${pageContext.request.contextPath}/admin/reservationList.do">예약관리</a></li>
 		<li><a href="${pageContext.request.contextPath}/admin/userList.do">회원관리</a></li>
 		<li><a href="${pageContext.request.contextPath}/admin/inquireList.do">1:1문의 답변</a></li>
+		<li><a href="${pageContext.request.contextPath}/admin/campZoneList.do">캠핑구역관리</a></li>
+		<li><a href="${pageContext.request.contextPath}/admin/insertCampZone.do">캠핑구역추가</a></li>
+		<li><a href="${pageContext.request.contextPath}/admin/campList.do">캠핑자리관리</a></li>
+		<li><a href="${pageContext.request.contextPath}/admin/couponList.do">쿠폰</a></li>
 	</ul>
 	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

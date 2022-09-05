@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
-import com.kh.campingez.notice.model.dto.Coupon;
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.notice.model.dto.Notice;
 import com.kh.campingez.notice.model.dto.NoticePhoto;
 
@@ -44,14 +44,5 @@ public interface NoticeDao {
 	@Insert("insert into notice values('N1'||seq_notice_notice_no.nextval, #{categoryId}, #{noticeTitle}, #{noticeContent}, default, #{noticeType})")
 	@SelectKey(statement = "select 'N1'|| seq_notice_notice_no.currval from dual",before = false, resultType = String.class, keyProperty = "noticeNo")
 	int insertNotice(Notice notice);
-
-	@Select("select * from coupon where coupon_code = #{coupon_code}")
-	boolean findByCoupon(String couponCode);
-
-	@Insert("insert into coupon values(#{couponCode}, #{couponName}, #{couponDiscount}, #{couponStartday}, #{couponEndday}, default)")
-	int insertCoupon(Coupon coupon);
-	
-	
-
 	
 }
