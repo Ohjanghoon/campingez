@@ -1,4 +1,4 @@
-package com.kh.campingez.notice.model.dto;
+package com.kh.campingez.coupon.model.dto;
 
 import java.time.LocalDate;
 
