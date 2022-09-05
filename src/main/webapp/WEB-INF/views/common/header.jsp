@@ -22,6 +22,7 @@
 
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userTest.do';">로그인</button>
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userEnroll.do';">회원가입</button>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userEnroll.do';">쿠폰함</button>
 	<form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
 		<button type="submit">로그아웃</button>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

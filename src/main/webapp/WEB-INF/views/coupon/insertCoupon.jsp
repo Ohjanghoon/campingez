@@ -12,7 +12,7 @@
 </head>
 <body>
 	<h1>coupon</h1>
-		<form name="couponFrm" action="${pageContext.request.contextPath}/notice/coupon.do" method="post">
+		<form name="couponFrm" action="${pageContext.request.contextPath}/coupon/insertCoupon.do" method="post">
 			<sec:csrfInput/>
 			<label for="couponName">쿠폰이름</label>
 			<input type="text" name="couponName"><br><br />
