@@ -33,5 +33,6 @@
 		<li><a href="${pageContext.request.contextPath}/trade/tradeList.do">중고거래</a></li>
 		<li><a href="${pageContext.request.contextPath}/inquire/inquireList.do">1대1 문의</a></li>
 		<li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do">양도</a></li>
+		<li><a href="${pageContext.request.contextPath}/review/reviewList.do">리뷰</a></li>
 		<li><a href="${pageContext.request.contextPath}/admin/admin.do">관리자</a></li>
 	</ul>

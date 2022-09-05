@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.admin.model.service.AdminService;
+import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.CampingEzUtils;
@@ -228,16 +229,42 @@ public class AdminController {
 	
 	@GetMapping("/updateCampZone.do")
 	public void updateCampZone(@RequestParam String zoneCode, Model model) {
-		log.debug("zoneCode = {}", zoneCode);
 		CampZone campZone = adminService.findCampZoneByZoneCode(zoneCode);
+		log.debug("campZone = {}", campZone);
 		model.addAttribute("campZone", campZone);
 	}
 	
 	@PostMapping("/updateCampZone.do")
-	public String updateCampZone(CampZone campZone, RedirectAttributes redirectAttr) {
-		int result = adminService.updateCampZone(campZone);
+	public String updateCampZone(CampZone campZone, @RequestParam(name = "delFile", required = false) int[] zonePhotoNo, @RequestParam(name = "upFile") List<MultipartFile> upFileList, RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
+		String saveDirectory = application.getRealPath("/resources/upload/campPhoto");
+		int result = 0;
+		
+		if(zonePhotoNo != null) {
+			for(int photoNo : zonePhotoNo) {
+				CampPhoto campPhoto = adminService.findCampPhotoByPhotoNo(photoNo);	
+				File delFile = new File(saveDirectory, campPhoto.getRenamedFilename());
+				boolean deleted = delFile.delete();
+				if(deleted) {
+					result = adminService.deleteCampPhotoByPhotoNo(photoNo);
+				}
+			}
+		}
+		
+		for(MultipartFile upFile : upFileList) {
+			if(upFile != null && !upFile.isEmpty()) {
+				String renamedFilename = CampingEzUtils.getRenamedFilename(upFile.getOriginalFilename());
+				File destFile = new File(saveDirectory, renamedFilename);
+				upFile.transferTo(destFile);
+				
+				CampPhoto campPhoto = new CampPhoto(upFile.getOriginalFilename(), renamedFilename);
+				campPhoto.setZoneCode(campZone.getZoneCode());
+				campZone.campPhotoAdd(campPhoto);
+			}
+		}
+		
+		result = adminService.updateCampZone(campZone);
 		redirectAttr.addFlashAttribute("msg", "구역 정보가 성공적으로 수정되었습니다.");
-		return "redirect:/admin/updateCampZone.do?zoneCode=" + campZone.getZoneCode();
+		return "redirect:/admin/campZoneList.do";
 	}
 	
 	@GetMapping("/insertCampZone.do")
@@ -280,6 +307,13 @@ public class AdminController {
 		int result = adminService.deleteCampZone(campZone.getZoneCode());
 		
 		return "redirect:/admin/campZoneList.do";
+	}
+	
+	@GetMapping("/campList.do")
+	public void campList(Model model) {
+		List<Camp> campList = adminService.findAllCampList();
+		log.debug("campList = {}", campList);
+		model.addAttribute("campList", campList);
 	}
 	
 	private Date addMonth(Date date, int months) {

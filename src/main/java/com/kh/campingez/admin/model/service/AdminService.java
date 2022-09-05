@@ -3,6 +3,7 @@ package com.kh.campingez.admin.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
@@ -56,5 +57,11 @@ public interface AdminService {
 	int deleteCampZone(String zoneCode);
 
 	List<CampPhoto> selectCampPhotoByZoneCode(CampZone campZone);
+
+	CampPhoto findCampPhotoByPhotoNo(int photoNo);
+
+	int deleteCampPhotoByPhotoNo(int photoNo);
+
+	List<Camp> findAllCampList();
 
 }
