@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.campingez.admin.model.dao.AdminDao;
+import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.notice.model.dto.Coupon;
 import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.user.model.dto.User;
 
@@ -124,7 +126,16 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Override
 	public int updateCampZone(CampZone campZone) {
-		return adminDao.updateCampZone(campZone);
+		int result = adminDao.updateCampZone(campZone);
+		
+		List<CampPhoto> campPhotos = campZone.getCampPhotos();
+		if(!campPhotos.isEmpty()) {
+			for(CampPhoto photo : campPhotos) {
+				result = adminDao.insertCampPhoto(photo);
+			}
+		}
+		
+		return result;
 	}
 	
 	@Override
@@ -135,7 +146,7 @@ public class AdminServiceImpl implements AdminService {
 		if(campPhotos != null && !campPhotos.isEmpty()) {
 			for(CampPhoto photo : campPhotos) {
 				photo.setZoneCode(campZone.getZoneCode());
-				adminDao.insertCampPhoto(photo);
+				result = adminDao.insertCampPhoto(photo);
 			}
 		}
 		return result;
@@ -151,6 +162,21 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectCampPhotoByZoneCode(campZone);
 	}
 	
+	@Override
+	public CampPhoto findCampPhotoByPhotoNo(int photoNo) {
+		return adminDao.findCampPhotoByPhotoNo(photoNo);
+	}
+	
+	@Override
+	public int deleteCampPhotoByPhotoNo(int photoNo) {
+		return adminDao.deleteCampPhotoByPhotoNo(photoNo);
+	}
+	
+	@Override
+	public List<Camp> findAllCampList() {
+		return adminDao.findAllCampList();
+	}
+
 	private RowBounds getRowBounds(Map<String, Object> param) {
 		int limit = (int)param.get("limit");
 		int offset = ((int)param.get("cPage") - 1) * limit;

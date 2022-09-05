@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CampPhoto {
-	private int campPhotoNo;
+	private int zonePhotoNo;
 	private String zoneCode;
 	private String originalFilename;
 	private String renamedFilename;
