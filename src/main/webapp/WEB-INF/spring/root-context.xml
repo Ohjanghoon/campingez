@@ -8,36 +8,54 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-	
-	<context:property-placeholder location="classpath:datasource.properties"/>
+
+	<context:property-placeholder
+		location="classpath:datasource.properties" />
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	
+
 	<!-- #6.1 datasource빈 등록 -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="${datasource.driverClassName}"/>
-		<property name="url" value="${datasource.url}"/>
-		<property name="username" value="${datasource.username}"/>
-		<property name="password" value="${datasource.password}"/>
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName"
+			value="${datasource.driverClassName}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
 	</bean>
 	<!-- #6.2 mybatis SqlSessionFactoryBean, SqlSessionTemplate 빈 등록 -->
-	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
-		<property name="mapperLocations" value="classpath*:mapper/**/*-mapper.xml"/>
-		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	<bean id="sqlSessionFactoryBean"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations"
+			value="classpath*:mapper/**/*-mapper.xml" />
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml" />
 	</bean>
-	
+
 	<!-- SqlSession 인터페이스 구현체. Dao 구현클래스에 DI되어 실행됨 -->
-	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+	<bean id="sqlSessionTemplate"
+		class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactoryBean" index="0" />
 	</bean>
-	
+
 	<!-- #6.3 @Mapper 인터페이스 등록 : Dao 구현객체를 동적으로 생성 -->
-	<mybatis-spring:scan base-package="com.kh.**.dao"/>
-	
+	<mybatis-spring:scan base-package="com.kh.**.dao" />
+
 	<!-- #11.1 트랜잭션 매니저 빈 등록 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
-	</bean>		
+	</bean>
 	<!-- @Transactional 어노테이션에 Transaction Advice 적용 -->
-	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<tx:annotation-driven
+		transaction-manager="transactionManager" />
+
+	<!-- #승원 3. multipath Resolver -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="104857600" />
+		<property name="maxInMemorySize" value="102400" />
+		<property name="defaultEncoding" value="utf-8" />
+	</bean>
+
 </beans>

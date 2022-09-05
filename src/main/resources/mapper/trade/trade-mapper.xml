@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.campingez.trade.model.dao.TradeDao">
+<!-- <select id="selectTradeList" resultType="tradeListMap">
+select
+		*
+from
+		trade
+<choose>
+	<when test="col = null">
+	order by 
+			${tradeNo}
+	</when>
+	
+	<when test="col = recent">
+	order by #{tradeNo}
+	</when>
+	
+	<when test="col = low-trade-price">
+	order by #{tradePrice} desc
+	</when>
+	
+	<otherwise>
+	order by #{tradePrice} asc
+	</otherwise>
+	
+	</choose>
+</select> -->
+</mapper>

@@ -12,8 +12,9 @@
 
 <section id="trade-container" class="container">
 
-<form name="tradeEnrollFrm" action="${pageContext.request.contextPath}/trade/tradeEnroll.do" method="post" enctype="multipart/form-data">
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+<form name="tradeEnrollFrm" action="${pageContext.request.contextPath}/trade/tradeEnroll.do?${_csrf.parameterName}=${_csrf.token}" method="post" 
+enctype="multipart/form-data" >
+
 
 <p>글제목: </p><input type="text" name="tradeTitle"><br>
 
@@ -31,7 +32,7 @@
 <input type="radio" name="tradeQuality" value="A">상태 양호 (A급)
 <input type="radio" name="tradeQuality" value="B">아쉬운 상태 (B급)
 
-<p>가격</p><input type="text" name="price" id="price"/>
+<p>가격</p><input type="text" name="tradePrice" id="tradePrice"/>
 
 <p>글내용: </p><textarea rows="5" cols="30" name="tradeContent"></textarea>
 
@@ -40,12 +41,13 @@
 		    <span class="input-group-text">첨부파일1</span>
 		  </div>
 		  <div class="custom-file">
-		    <input type="file" class="custom-file-input" name="upFile" id="upFile1" multiple>
+		    <input type="file" class="custom-file-input" name="upFile" id="upFile1" accept="image/*" multiple>
 		    <label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
 		  </div>
 <br><br>
 <input type="submit" value="저장">
 </form>
+
 
 
 
