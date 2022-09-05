@@ -46,7 +46,7 @@
 		
 		// 쿠폰 등록
 		document.querySelector("#coupon").addEventListener('click', (e) => {
-			location.href = "${pageContext.request.contextPath}/notice/coupon.do";
+			location.href = "${pageContext.request.contextPath}/coupon/insertCoupon.do";
 		});
 	
 		const insertHandler = (e) => {
