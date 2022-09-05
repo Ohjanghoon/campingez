@@ -26,4 +26,5 @@ public class Reservation {
 	private String resRequest; // 예약요청사항
 	private String resState; // 예약상태
 	private String resPayment; // 결제 수단
+	private String review; // 김승환 예약테이블 리뷰작성용 컬럼
 }

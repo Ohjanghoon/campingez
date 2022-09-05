@@ -28,9 +28,12 @@
   
    <select id="selectReservationList" resultMap="reservationMap">
   	select
-		*
+		res.*,
+       CASE WHEN res_checkout  <![CDATA[<]]> sysdate THEN 'OK'
+                 ELSE 'NO'
+                 END AS review 
 	from
-		reservation
+		reservation res
 	where
 		user_id = #{userId}
 	order by
@@ -52,6 +55,7 @@
   	<result column="res_request" property="resRequest"/>
   	<result column="res_state" property="resState"/>
   	<result column="res_payment" property="resPayment"/>
+  	<result column="review" property="review"/>
   </resultMap>
   
   <select id="selectInquireCnt" resultType="MyPage">
@@ -83,4 +87,6 @@
 		order by
 			res_date desc
   </select>
+  
+  
 </mapper>

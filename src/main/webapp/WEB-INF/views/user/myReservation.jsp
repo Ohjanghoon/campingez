@@ -31,8 +31,10 @@
 			<th>예약요청사항</th>
 			<th>예약상태</th>
 			<th>결제수단</th>
+			<th>리뷰작성</th>
 		</thead>
 		<tbody>
+			
 			<c:forEach items="${reservationList}" var="res" varStatus="vs">
 				<tr data-no="${res.resNo}">
 					<td>${vs.count}</td>
@@ -59,11 +61,31 @@
 					<td>${res.resRequest}</td>
 					<td>${res.resState}</td>
 					<td>${res.resPayment}</td>
+					<c:if test="${res.review == 'OK'}">
+						<td><button  onclick="reservationReview()"/>리뷰작성</td> 
+					</c:if> 
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table>
-	
+	</table>	
 </form:form>
 </body>
+<script type="text/javascript">
+const reservationReview = (e) => {
+	const userId = e.target.id;
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/admin/warning`,
+		headers,
+		data : {userId},
+		method : "POST",
+		success(response) {
+			updateUser(e.target);
+		},
+		error : console.log
+	});
+};
+</script>
 </html>
