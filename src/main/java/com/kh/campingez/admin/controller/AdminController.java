@@ -33,7 +33,6 @@ import com.kh.campingez.common.CampingEzUtils;
 import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
-import com.kh.campingez.notice.model.dto.Coupon;
 import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.user.model.dto.User;
 
