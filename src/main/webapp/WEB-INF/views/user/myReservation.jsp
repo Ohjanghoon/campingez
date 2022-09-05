@@ -6,6 +6,7 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form:form>
 	<table>
 		<thead>
 			<th>NO</th>
@@ -62,30 +62,30 @@
 					<td>${res.resState}</td>
 					<td>${res.resPayment}</td>
 					<c:if test="${res.review == 'OK'}">
-						<td><button  onclick="reservationReview()"/>리뷰작성</td> 
+						<td><button  onclick="location.href='${pageContext.request.contextPath}/review/reviewForm.do?resNo=${res.resNo}'" >리뷰작성</button></td> 
 					</c:if> 
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>	
-</form:form>
+
 </body>
-<script type="text/javascript">
-const reservationReview = (e) => {
-	const userId = e.target.id;
+<!-- <script type="text/javascript">
+const reservationReview = (resNo) => {
 	const headers = {};
 	headers['${_csrf.headerName}'] = '${_csrf.token}';
 	
 	$.ajax({
-		url : `${pageContext.request.contextPath}/admin/warning`,
+		url : `${pageContext.request.contextPath}/review/reviewForm.do`,
 		headers,
-		data : {userId},
+		data : {resNo},
 		method : "POST",
 		success(response) {
-			updateUser(e.target);
+			console.log(response);
+			let url = `/`
 		},
 		error : console.log
 	});
 };
-</script>
+</script> -->
 </html>
