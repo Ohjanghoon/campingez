@@ -8,5 +8,7 @@ public interface UserService {
 
 	int insertAuthority(String userId);
 
+	int checkId(String userId);
+
 
 }
