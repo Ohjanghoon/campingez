@@ -16,4 +16,6 @@ public interface AssignmentService {
 
 	int insertAssignment(AssignmentEntity assignment);
 
+	Assignment assignmentDetail(String assignNo);
+
 }
