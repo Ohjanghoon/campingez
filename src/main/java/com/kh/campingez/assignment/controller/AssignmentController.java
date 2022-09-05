@@ -65,4 +65,14 @@ public class AssignmentController {
 		redirectAttr.addFlashAttribute("msg", "양도 등록되었습니다.");
 		return "redirect:/assignment/assignmentList.do";
 	}
+	
+	@GetMapping("/assignmentDetail.do")
+	public void assignmentDetail(@RequestParam String assignNo, Model model) {
+		log.debug("assignNo = {}", assignNo);
+		
+		Assignment assign = assignmentService.assignmentDetail(assignNo);
+		log.debug("assign", assign);
+		
+		model.addAttribute("assign", assign);
+	}
 }
