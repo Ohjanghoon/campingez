@@ -1,7 +1,4 @@
-/**
- * 
- */
- var map;
+var map;
         var markerInfo;
         //경로그림정보
         var drawInfoArr = [];
@@ -17,7 +14,7 @@
             // 1. 지도 띄우기
             map = new Tmapv2.Map("map_div", {
                 center: new Tmapv2.LatLng(37.56520450, 126.98702028),
-                width: "100%",
+                width: "500px",
                 height: "400px",
                 zoom: 17,
                 zoomControl: true,
@@ -643,5 +640,8 @@
         }
 
         function research() {
-            location.reload();
+            document.querySelector('#map_div').innerHTML = '';
+            document.querySelector('#xyCode').style.display = 'inline';
+            document.querySelector('#research').style.display = 'none';
+            initTmap();
         };
