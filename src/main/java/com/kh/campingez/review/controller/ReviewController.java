@@ -17,6 +17,9 @@ import com.kh.campingez.common.CampingEzUtils;
 import com.kh.campingez.review.model.dto.Review;
 import com.kh.campingez.review.model.service.ReviewService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/review")
 public class ReviewController {
@@ -32,6 +35,7 @@ public class ReviewController {
 		
 		List<Review> reviewList = reviewService.findAllReviewList(param);
 		model.addAttribute("reviewList", reviewList);
+		log.debug("reviewList = {}", reviewList);
 		
 		int totalContent = reviewService.getTotalContentByAllReviewList();
 		String uri = request.getRequestURI();
