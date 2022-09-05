@@ -11,5 +11,5 @@
   <insert id="insertAuthority">
   	insert into authority values(#{userId}, default)
   </insert>
-  	
+  
 </mapper>
