@@ -11,7 +11,7 @@ import com.kh.campingez.review.model.dto.Review;
 @Mapper
 public interface ReviewDao {
 
-	@Select("select * from review order by rev_enroll_date desc")
+	//@Select("select * from review order by rev_enroll_date desc")
 	List<Review> findAllReviewList(RowBounds rowBounds);
 	
 	@Select("select count(*) from review")

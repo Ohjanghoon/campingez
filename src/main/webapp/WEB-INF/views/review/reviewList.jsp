@@ -17,14 +17,22 @@
 			<c:forEach items="${reviewList}" var="review">
 				<li>
 					<div id="review-photo-box">
-						사진
+						<c:if test="${not empty review.reviewPhotos}">
+							<c:forEach items="${review.reviewPhotos}"></c:forEach>
+						</c:if>
 					</div>
 					<div id="review-content-box">
 						<div id="review-score">
-							${review.revScore}
+							
 						</div>
 						<div id="review-content">${review.revContent}</div>
-						<div id="review-enroll-date">${review.revEnrollDate}</div>
+						<div id="review-member-name">
+							${review.reservation.resUsername}
+						</div>
+						<div id="review-enroll-date">
+							<fmt:parseDate value="${review.revEnrollDate}" var="revEnrollDate" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+							<fmt:formatDate value="${revEnrollDate}" pattern="yyyy/MM/dd" />
+						</div>
 					</div>
 				</li>				
 			</c:forEach>
