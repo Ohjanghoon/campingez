@@ -27,15 +27,20 @@
 <script>
 document.querySelector("#updateConfirm").addEventListener('click', () =>  {
 	$.ajax({
-		url : "${pageContext.request.contextPath}/userInfo/userInfo.do",
+		url : "${pageContext.request.contextPath}/userInfo/authentication.do",
 		method : "GET",
 		data : {
 			userId : document.querySelector("#userId").value,
 			password : document.querySelector("#password").value
 		},
 		success(response){
-			console.log(response);
-			console.log(JSON.stringify(response));
+			console.log(response.msg);
+			if(response.msg == "success"){
+				  window.opener.location.href= "${pageContext.request.contextPath}/userInfo/userInfo.do";
+				  window.close();
+			}else{
+				alert("회원 인증 실패!")
+			}
 			/* window.close(); */
 		},
 		error : console.log

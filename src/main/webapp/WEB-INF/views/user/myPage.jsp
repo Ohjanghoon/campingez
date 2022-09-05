@@ -21,7 +21,7 @@
 </style>
  <script>
         function popup(){
-            var url = "${pageContext.request.contextPath}/userInfo/authentication.do";
+            var url = "${pageContext.request.contextPath}/userInfo/popupAuthentication.do";
             var name = "info authentication";
             var option = "width = 500, height = 500, top = 100, left = 200, location = no"
             window.open(url, name, option);
