@@ -11,7 +11,15 @@ public interface ReviewService {
 
 	List<Review> findAllReviewList(Map<String, Object> param);
 
-	int getTotalContentByAllReviewList();
+	int getTotalContentByAllReviewList(Map<String, Object> param);
+
+	List<Review> findReviewListBySearchType(Map<String, Object> param);
+
+	List<Review> findReviewListContainsPhoto(Map<String, Object> param);
+
+	int getTotalContentAllReviewListContainsPhoto(Map<String, Object> param);
+
+	Review findOneReviewById(int revId);
 
 	int insertReview(Review review);
 

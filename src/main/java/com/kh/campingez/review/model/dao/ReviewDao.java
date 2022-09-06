@@ -1,6 +1,7 @@
 package com.kh.campingez.review.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -15,11 +16,17 @@ import com.kh.campingez.review.model.dto.ReviewPhoto;
 @Mapper
 public interface ReviewDao {
 
-	//@Select("select * from review order by rev_enroll_date desc")
 	List<Review> findAllReviewList(RowBounds rowBounds);
 	
-	@Select("select count(*) from review")
-	int getTotalContentByAllReviewList();
+	int getTotalContentByAllReviewList(Map<String, Object> param);
+	
+	List<Review> findReviewListBySearchType(Map<String, Object> param, RowBounds rowBounds);
+	
+	List<Review> findReviewListContainsPhoto(Map<String, Object> param, RowBounds rowBounds);
+	
+	int getTotalContentAllReviewListContainsPhoto(Map<String, Object> param);
+
+	Review findOneReviewById(int revId);
 
 	@Insert("insert into review values(seq_review_rev_id.nextval, #{resNo}, #{revContent}, #{revScore}, sysdate)")
 	@SelectKey(statement = "select seq_review_rev_id.currval from dual", before = false, keyProperty = "revId", resultType = int.class)

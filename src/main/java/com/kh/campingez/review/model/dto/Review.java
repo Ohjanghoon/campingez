@@ -18,11 +18,13 @@ import lombok.AllArgsConstructor;
 public class Review extends ReviewEntity {
 	private Reservation reservation;
 	private List<ReviewPhoto> reviewPhotos = new ArrayList<>();
+	private String zoneCode;
 	
-	public Review(int revId, String resNo, String revContent, int revScore, LocalDateTime revEnrollDate, Reservation reservation, List<ReviewPhoto> reviewPhotos) {
+	public Review(int revId, String resNo, String revContent, int revScore, LocalDateTime revEnrollDate, Reservation reservation, List<ReviewPhoto> reviewPhotos, String zoneCode) {
 		super(revId, resNo, revContent, revScore, revEnrollDate);
 		this.reservation = reservation;
 		this.reviewPhotos = reviewPhotos;
+		this.zoneCode = zoneCode;
 	}
 	
 	public void addReviewPhoto(ReviewPhoto reviewPhoto) {

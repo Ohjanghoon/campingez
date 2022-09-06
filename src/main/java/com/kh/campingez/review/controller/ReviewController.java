@@ -2,6 +2,7 @@ package com.kh.campingez.review.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.kh.campingez.admin.model.service.AdminService;
+import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.CampingEzUtils;
-import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.review.model.dto.Review;
 import com.kh.campingez.review.model.dto.ReviewEntity;
 import com.kh.campingez.review.model.dto.ReviewPhoto;
 import com.kh.campingez.review.model.service.ReviewService;
-import com.kh.campingez.user.model.dto.MyPage;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -41,6 +41,9 @@ public class ReviewController {
 	@Autowired
 	ResourceLoader resourceLoader;
 	
+	@Autowired
+	private AdminService adminService;
+	
 	@GetMapping("/reviewList.do")
 	public void reviewList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
@@ -52,11 +55,53 @@ public class ReviewController {
 		model.addAttribute("reviewList", reviewList);
 		log.debug("reviewList = {}", reviewList);
 		
-		int totalContent = reviewService.getTotalContentByAllReviewList();
+		int totalContent = reviewService.getTotalContentByAllReviewList(param);
 		String uri = request.getRequestURI();
 		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, uri);
-		
 		model.addAttribute("pagebar", pagebar);
+		
+		List<CampZone> campZoneList = adminService.findAllCampZoneList();
+		model.addAttribute("campZoneList", campZoneList);
+	}
+	
+	@GetMapping("/reviewListBySearchType.do")
+	public String reviewList(@RequestParam(defaultValue = "1") int cPage, @RequestParam String searchType, @RequestParam(required = false) String campZoneType, Model model, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 5;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		param.put("campZoneType", campZoneType);
+		param.put("searchType", searchType);
+		
+		List<Review> reviewList = new ArrayList<>();
+		int totalContent = 0;
+		
+		if(searchType.equals("rev_photo_no")) {
+			reviewList = reviewService.findReviewListContainsPhoto(param);
+			totalContent = reviewService.getTotalContentAllReviewListContainsPhoto(param);
+		} else {
+			reviewList = reviewService.findReviewListBySearchType(param);
+			totalContent = reviewService.getTotalContentByAllReviewList(param);
+		}
+		model.addAttribute("reviewList", reviewList);
+		log.debug("reviewList = {}", reviewList);
+		log.debug("totalContent = {}", totalContent);
+		
+		String uri = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, uri);
+		model.addAttribute("pagebar", pagebar);
+		log.debug("pagebar = {}", pagebar);
+		
+		List<CampZone> campZoneList = adminService.findAllCampZoneList();
+		model.addAttribute("campZoneList", campZoneList);
+		
+		return "review/reviewList";
+	}
+	
+	@GetMapping("/reviewDetail.do")
+	public void reviewDetail(@RequestParam int revId, Model model) {
+		Review review = reviewService.findOneReviewById(revId);
+		model.addAttribute("review", review);
 	}
 	@GetMapping("/reviewForm.do")
 	public ModelAndView reviewForm(Authentication authentication, ModelAndView mav, Model model, @RequestParam String resNo) {

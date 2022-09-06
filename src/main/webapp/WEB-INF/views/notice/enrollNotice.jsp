@@ -20,7 +20,6 @@
 			<label for="categoryId">카테고리</label>
 			<select name="categoryId" id="categoryId">
 				<option value="not1">공지사항</option>
-				<option value="not2">이벤트</option>
 			</select><br /><br />
 			<label for="noticeType">공지 유형</label>
 			<select name="noticeType" id="noticeType">

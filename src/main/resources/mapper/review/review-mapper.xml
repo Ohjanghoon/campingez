@@ -24,12 +24,107 @@
 		r.rev_enroll_date desc
   </select>
   
+  <select id="findReviewListBySearchType" resultMap="reviewMap">
+	select
+	    a.*
+	from (
+	    select
+	        r.rev_id,
+	        r.res_no review_res_no,
+	        r.rev_content,
+	        r.rev_score,
+	        r.rev_enroll_date,
+	        s.*,
+	        p.rev_photo_no,
+	        p.rev_id rev_photo_rev_id,
+	        p.rev_original_filename,
+	        p.rev_renamed_filename,
+	        (select zone_code from camp c where s.camp_id = camp_id) zone_code
+	    from
+	        review r left join reservation s
+	            on r.res_no = s.res_no
+	            left join review_photo p
+	            on r.rev_id = p.rev_id
+	) a
+	<where>
+		<if test="campZoneType != null and campZoneType != ''">
+			a.zone_code = #{campZoneType}
+		</if>
+	</where>
+	order by
+		<if test="searchType != null and searchType == 'rev_enroll_date'">
+			rev_enroll_date desc
+		</if>
+		<if test="searchType != null and searchType == 'rev_score'">
+			rev_score desc, rev_enroll_date desc
+		</if>
+  </select>
+  
+  <select id="findReviewListContainsPhoto" resultMap="reviewMap">
+	select
+	    a.*
+	from (
+	    select
+	        r.rev_id,
+	        r.res_no review_res_no,
+	        r.rev_content,
+	        r.rev_score,
+	        r.rev_enroll_date,
+	        s.*,
+	        p.rev_photo_no,
+	        p.rev_id rev_photo_rev_id,
+	        p.rev_original_filename,
+	        p.rev_renamed_filename,
+	        (select zone_code from camp c where s.camp_id = camp_id) zone_code
+	    from
+	        review r left join reservation s
+	            on r.res_no = s.res_no
+	            left join review_photo p
+	            on r.rev_id = p.rev_id
+	) a
+	where
+		${searchType} is not null
+	    <if test="campZoneType != null and campZoneType != ''">
+	    	and
+	    	a.zone_code = #{campZoneType}
+	    </if>
+	order by  	
+		rev_enroll_date desc
+  </select>
+  
+  <select id="findOneReviewById" resultMap="reviewMap">
+	select
+	    a.*
+	from (
+	    select
+	        r.rev_id,
+	        r.res_no review_res_no,
+	        r.rev_content,
+	        r.rev_score,
+	        r.rev_enroll_date,
+	        s.*,
+	        p.rev_photo_no,
+	        p.rev_id rev_photo_rev_id,
+	        p.rev_original_filename,
+	        p.rev_renamed_filename,
+	        (select zone_code from camp c where s.camp_id = camp_id) zone_code
+	    from
+	        review r left join reservation s
+	            on r.res_no = s.res_no
+	            left join review_photo p
+	            on r.rev_id = p.rev_id
+		) a
+	where
+	    rev_id = #{revId}
+  </select>
+  
   <resultMap type="review" id="reviewMap">
   	<id column="rev_id" property="revId"/>
   	<result column="rev_res_no" property="resNo"/>
   	<result column="rev_content" property="revContent"/>
   	<result column="rev_score" property="revScore"/>
   	<result column="rev_enroll_date" property="revEnrollDate"/>
+  	<result column="zone_code" property="zoneCode"/>
   	<association property="reservation" javaType="reservation">
   		<id column="res_no" property="resNo"/>
   		<result column="camp_id" property="campId"/>
@@ -40,10 +135,55 @@
   	</association>
   	<collection property="reviewPhotos" ofType="reviewPhoto">
   		<id column="rev_photo_no" property="revPhotoNo"/>
-  		<result column="rev_photo_rev_id" property="revPhotoRevId"/>
+  		<result column="rev_photo_rev_id" property="revId"/>
   		<result column="rev_original_filename" property="revOriginalFilename"/>
   		<result column="rev_renamed_filename" property="revRenamedFilename"/>
-  		
   	</collection>
   </resultMap>
+  
+  <select id="getTotalContentByAllReviewList" resultType="_int">
+	select
+	    count(*)
+	from (
+	    select
+	        a.*,
+	        (select zone_code from camp where a.camp_id = camp_id) zone_code
+	    from (
+	        select
+	            r.*,
+	            (select camp_id from reservation where res_no = r.res_no) camp_id
+	        from
+	            review r
+	    ) a
+	) a
+  	<where>
+		<if test="campZoneType != null and campZoneType != ''">
+			a.zone_code = #{campZoneType}  			
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="getTotalContentAllReviewListContainsPhoto" resultType="_int">
+    select
+	    count(distinct a.rev_id)
+	from (
+	    select
+	        a.*,
+	        (select zone_code from camp where a.camp_id = camp_id) zone_code
+	    from (
+	        select
+	            r.*,
+	            (select camp_id from reservation where res_no = r.res_no) camp_id
+	        from
+	            review r
+	    ) a
+	) a left join review_photo p
+	    on a.rev_id = p.rev_id
+	where
+	    rev_photo_no is not null
+	    <if test="campZoneType != null and campZoneType != ''">
+	    	and
+	    	a.zone_code = #{campZoneType}
+	    </if>
+  </select>
 </mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.campingez.trade.model.dao.TradeDao">
+<!-- <select id="selectTradeList" resultMap="tradeListMap">
+select
+		*
+from
+		trade
+		
+<choose>
+	<when test="#{col == null}">
+		order by
+				trade_no
+	</when>
+	<when test="#{col == lowPrice}">
+		order by
+				trade_price asc
+	</when>
+	
+	<when test="#{col == highPrice}">
+		order by
+				trade_price desc 
+	</when>
+</choose>
+
+</select>
+<resultMap type="trade" id="tradeListMap">
+	<id column="trade_no" property="tradeNo"/>
+	<result column="user_id" property="userId"/>
+	<result column="category_id" property="categoryId" />
+	<result column="trade_title" property="tradeTitle" />
+	<result column="trade_content" property="tradeContent" />
+	<result column="trade_date" property="tradeDate" />
+	<result column="trade_read_count" property="readCount" />
+	<result column="trade_price" property="tradePrice" />
+	<result column="trade_success" property="tradeSuccess" />
+	<result column="trade_quality" property="tradeQuality" />
+	<result column="trade_like_count" property="likeCount" />
+	<collection property="photos" ofType="tradePhoto">
+			<id column="trade_photo_no" property="tradePhotoNo" />
+			<result column="trade_no" property="tdNo"/>
+			<result column="original_filename" property="OriginalFilename"/>
+			<result column="renamed_filename" property="RenamedFilename"/>
+	</collection>
+</resultMap> -->
+
+
+</mapper>

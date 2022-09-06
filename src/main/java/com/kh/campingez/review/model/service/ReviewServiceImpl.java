@@ -25,8 +25,30 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	
 	@Override
-	public int getTotalContentByAllReviewList() {
-		return reviewDao.getTotalContentByAllReviewList();
+	public int getTotalContentByAllReviewList(Map<String, Object> param) {
+		return reviewDao.getTotalContentByAllReviewList(param);
+	}
+	
+	@Override
+	public List<Review> findReviewListBySearchType(Map<String, Object> param) {
+		RowBounds rowBounds = getRowBounds(param);
+		return reviewDao.findReviewListBySearchType(param, rowBounds);
+	}
+	
+	@Override
+	public List<Review> findReviewListContainsPhoto(Map<String, Object> param) {
+		RowBounds rowBounds = getRowBounds(param);
+		return reviewDao.findReviewListContainsPhoto(param, rowBounds);
+	}
+	
+	@Override
+	public int getTotalContentAllReviewListContainsPhoto(Map<String, Object> param) {
+		return reviewDao.getTotalContentAllReviewListContainsPhoto(param);
+	}
+	
+	@Override
+	public Review findOneReviewById(int revId) {
+		return reviewDao.findOneReviewById(revId);
 	}
 
 	private RowBounds getRowBounds(Map<String, Object> param) {

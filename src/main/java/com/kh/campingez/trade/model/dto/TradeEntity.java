@@ -25,7 +25,7 @@ public class TradeEntity {
 	private String tradeContent;
 	private LocalDateTime tradeDate;
 	private int readCount;
-	private int price;
+	private long tradePrice;
 	private String tradeSuccess;
 	private TradeQuality tradeQuality;
 	private int likeCount;

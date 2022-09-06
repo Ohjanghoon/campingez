@@ -12,6 +12,7 @@
 <body>
 	<h2>notice</h2>
 	<button id="notice">공지사항 게시글 등록</button>
+	<button id="event">이벤트 등록</button>
 	<button id="coupon">쿠폰 등록</button>
 	<hr />
 	<table class="table">
@@ -42,6 +43,11 @@
 		// 공지사항 등록
 		document.querySelector("#notice").addEventListener('click', (e) => {
 			location.href = "${pageContext.request.contextPath}/notice/enrollNotice.do";
+		});
+		
+		// 이벤트 등록
+		document.querySelector("#event").addEventListener('click', (e) => {
+			location.href = "${pageContext.request.contextPath}/notice/enrollEvent.do";
 		});
 		
 		// 쿠폰 등록

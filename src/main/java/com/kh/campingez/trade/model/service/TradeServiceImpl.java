@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.campingez.trade.model.dao.TradeDao;
 import com.kh.campingez.trade.model.dto.Trade;
+import com.kh.campingez.trade.model.dto.TradeLike;
 import com.kh.campingez.trade.model.dto.TradePhoto;
 
 
@@ -30,6 +31,25 @@ public class TradeServiceImpl implements TradeService {
 	}
 	
 	
+//	@Override
+//	public List<Trade> selectTradeListLowPrice(Map<String, Integer> param) {
+//		int limit = param.get("limit");
+//		int offset = (param.get("cPage") - 1) * limit;
+//		RowBounds rowBounds = new RowBounds(offset, limit);
+//		return tradeDao.selectTradeListLowPrice(rowBounds);
+//		
+//	}
+
+
+//	@Override
+//	public List<Trade> selectTradeListHighPrice(Map<String, Integer> param) {
+//		int limit = param.get("limit");
+//		int offset = (param.get("cPage") - 1) * limit;
+//		RowBounds rowBounds = new RowBounds(offset, limit);
+//		return tradeDao.selectTradeListHighPrice(rowBounds);
+//	}
+
+
 	@Override
 	public int getTotalContent() {
 		return tradeDao.getTotalContent();
@@ -40,7 +60,7 @@ public class TradeServiceImpl implements TradeService {
 	public Trade selectTradeByNo(String no) {
 		
 		Trade trade = tradeDao.selectTradeByNo(no);
-		// List<Attachment> 조회
+		// List<TradePhoto> 조회
 		List<TradePhoto> photos = tradeDao.selectPhotoListBytradeNo(no);
 		trade.setPhotos(photos);
 		
@@ -53,7 +73,7 @@ public class TradeServiceImpl implements TradeService {
 	public int insertTrade(Trade trade) {
 		
 		int result = tradeDao.insertTrade(trade);
-		log.debug("trade#no = {}", trade.getTradeNo());
+		log.debug("trade#tradeNo = {}", trade.getTradeNo());
 		
 		// insert attachment * n
 		List<TradePhoto> photos = trade.getPhotos();
@@ -71,6 +91,42 @@ public class TradeServiceImpl implements TradeService {
 	public int insertPhoto(TradePhoto photo) {
 		return tradeDao.insertPhoto(photo);
 	}
+
+
+	@Override
+	public TradePhoto selectOnePhoto(int photoNo) {
+		return tradeDao.selectOnePhoto(photoNo);
+	}
+
+
+	@Override
+	public int deletePhoto(int photoNo) {
+		return tradeDao.deletePhoto(photoNo);
+	}
+
+
+	@Override
+	public int updateTrade(Trade trade) {
+		int result = tradeDao.updateTrade(trade);
+		
+		List<TradePhoto> photos = trade.getPhotos();
+		if(photos != null && !photos.isEmpty()) {
+			for(TradePhoto photo : photos) {
+				result = insertPhoto(photo);
+			}
+				
+		}
+		
+		return result;
+	}
+
+
+	@Override
+	public int deleteTrade(String no) {
+		return tradeDao.deleteTrade(no);
+	}
+
+	
 	
 }
 
