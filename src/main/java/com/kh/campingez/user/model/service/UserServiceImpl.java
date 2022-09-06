@@ -21,4 +21,9 @@ public class UserServiceImpl implements UserService {
 	public int insertAuthority(String userId) {
 		return userDao.insertAuthority(userId);
 	}
+	
+	@Override
+	public int checkId(String userId) {
+		return userDao.checkId(userId);
+	}
 }
