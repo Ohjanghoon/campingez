@@ -7,19 +7,22 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래게시판" name="title" />
 </jsp:include>
-<script>
 
-function sm() {
-document.frm.submit();
-}
-
-</script>
 <section id="trade-container" class="container">
 	<input type="button" value="글쓰기"
-		onclick="location.href='${pageContext.request.contextPath}/trade/tradeEnroll.do';" />
+		onclick="location.href='${pageContext.request.contextPath}/trade/tradeEnroll.do?'" />
 		<c:if test="${empty list}">
 			<p>등록된게시글이 없습니다.</p>
 		</c:if>
+		
+	
+		<select onchange="if(this.value) location.href=(this.value);">
+			<option value="" selected disabled>정렬기준</option>
+			<option value="${pageContext.request.contextPath}/trade/tradeList.do">최신글 (기본)</option>
+			<option value="${pageContext.request.contextPath}/trade/tradeListLowPrice.do">낮은 금액순</option>
+			<option value="highPrice">높은 금액순</option>
+		</select>
+
 
 
 	<table id="tbl-trade">

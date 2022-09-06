@@ -31,6 +31,25 @@ public class TradeServiceImpl implements TradeService {
 	}
 	
 	
+//	@Override
+//	public List<Trade> selectTradeListLowPrice(Map<String, Integer> param) {
+//		int limit = param.get("limit");
+//		int offset = (param.get("cPage") - 1) * limit;
+//		RowBounds rowBounds = new RowBounds(offset, limit);
+//		return tradeDao.selectTradeListLowPrice(rowBounds);
+//		
+//	}
+
+
+//	@Override
+//	public List<Trade> selectTradeListHighPrice(Map<String, Integer> param) {
+//		int limit = param.get("limit");
+//		int offset = (param.get("cPage") - 1) * limit;
+//		RowBounds rowBounds = new RowBounds(offset, limit);
+//		return tradeDao.selectTradeListHighPrice(rowBounds);
+//	}
+
+
 	@Override
 	public int getTotalContent() {
 		return tradeDao.getTotalContent();

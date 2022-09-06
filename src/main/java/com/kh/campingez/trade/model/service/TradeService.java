@@ -26,6 +26,10 @@ public interface TradeService {
 	int updateTrade(Trade trade);
 
 	int deleteTrade(String no);
+
+//	List<Trade> selectTradeListLowPrice(Map<String, Integer> param);
+//
+//	List<Trade> selectTradeListHighPrice(Map<String, Integer> param);
 	
 
 }

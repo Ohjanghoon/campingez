@@ -21,6 +21,12 @@ public interface TradeDao {
 	@Select("select * from trade order by trade_no desc")
 	List<Trade> selectTradeList(RowBounds rowBounds);
 	
+//	@Select("select * from trade order by trade_price asc")
+//	List<Trade> selectTradeListLowPrice(RowBounds rowBounds);
+//	
+//	@Select("select * from trade order by trade_price desc")
+//	List<Trade> selectTradeListHighPrice(RowBounds rowBounds);
+	
 	@Select("select count(*) from trade")
 	int getTotalContent();
 	
@@ -49,6 +55,7 @@ public interface TradeDao {
 	
 	@Delete("delete from trade where trade_no = #{trade_no}")
 	int deleteTrade(String no);
+
 
 	
 }

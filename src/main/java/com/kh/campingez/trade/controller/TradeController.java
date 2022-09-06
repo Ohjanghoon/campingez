@@ -48,10 +48,27 @@ public class TradeController {
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 
-		list = tradeService.selectTradeList(param);
-//		log.debug("list = {}", list);
+		String col = request.getParameter("col");
+		log.debug("col = {}", col);
+		
+		list = tradeService.selectTradeList(param);			
 		model.addAttribute("list", list);
-
+		
+//		if(col == "recent") {
+//		list = tradeService.selectTradeList(param);
+//		}
+//		else if (col == "lowPrice") {
+//			list = tradeService.selectTradeListHighPrice(param);			
+//		}
+//		else if (col == "highPrice") {
+//			list = tradeService.selectTradeListLowPrice(param);			
+//		}
+//		else {
+//			log.debug("col = 문제 발생 해결 요함 *****" );
+//		}
+		
+		
+		
 		
 		// 2. pagebar영역
 		int totalContent = tradeService.getTotalContent();
@@ -62,6 +79,7 @@ public class TradeController {
 
 		
 	}
+
 	
 	@GetMapping("/tradeView.do")
 	public void tradeView(@RequestParam String no, Model model) {
