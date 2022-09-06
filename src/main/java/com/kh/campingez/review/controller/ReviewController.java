@@ -20,10 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.campingez.common.CampingEzUtils;
+import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.review.model.dto.Review;
+import com.kh.campingez.review.model.dto.ReviewEntity;
 import com.kh.campingez.review.model.dto.ReviewPhoto;
 import com.kh.campingez.review.model.service.ReviewService;
-
+import com.kh.campingez.user.model.dto.MyPage;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,6 +50,7 @@ public class ReviewController {
 		
 		List<Review> reviewList = reviewService.findAllReviewList(param);
 		model.addAttribute("reviewList", reviewList);
+		log.debug("reviewList = {}", reviewList);
 		
 		int totalContent = reviewService.getTotalContentByAllReviewList();
 		String uri = request.getRequestURI();
@@ -57,8 +60,11 @@ public class ReviewController {
 	}
 	@GetMapping("/reviewForm.do")
 	public ModelAndView reviewForm(Authentication authentication, ModelAndView mav, Model model, @RequestParam String resNo) {
+		List<ReviewEntity> review = reviewService.selectReview(resNo);
+		List<ReviewPhoto> reviewPhoto = reviewService.selectReviewPhoto(review.get(0).getRevId());
+		model.addAttribute("review",review);
+		model.addAttribute("reviewPhoto",reviewPhoto);		
 		model.addAttribute("resNo",resNo);
-		System.out.println(resNo);
 		mav.setViewName("review/reviewForm");
 		
 		return mav;
@@ -75,14 +81,15 @@ public class ReviewController {
 
 			if(!upFile.isEmpty()) {				
 				// a. 서버컴퓨터에 저장
-				String saveDirectory = application.getRealPath("/resources/upload/board");
+				String saveDirectory = application.getRealPath("/resources/upload/review");
+				System.out.println(saveDirectory);
 				String renamedFilename = CampingEzUtils.getRenamedFilename(upFile.getOriginalFilename()); // 20220816_193012345_123.txt
 				File destFile = new File(saveDirectory, renamedFilename);
 				upFile.transferTo(destFile); // 해당경로에 파일을 저장
 				
 				// b. DB저장을 위해 Attachment객체 생성
 				ReviewPhoto photo = new ReviewPhoto(upFile.getOriginalFilename(), renamedFilename);
-				review.add(photo);
+				review.addReviewPhoto(photo);
 			}
 		}
 		

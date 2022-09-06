@@ -6,6 +6,7 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
@@ -37,13 +38,14 @@
 <main>
 	<form:form action="${pageContext.request.contextPath}/review/insertReview.do" method="post" enctype="multipart/form-data">
 		<table>
+		<c:forEach items="${review}" var="review">
 		<tr>
 			<th>예약번호</th>
 			<td><input value="${resNo}" name="resNo" readonly/></td>
 		</tr>
 		<tr>
 			<th>내용</th>
-			<td><textarea rows="15" cols="70" name="revContent"></textarea></td>
+			<td><textarea rows="15" cols="70" name="revContent">${review.revContent}</textarea></td>
 		</tr>
 		<tr>
 			<th>별점</th>
@@ -51,27 +53,31 @@
 				<span class="star">
 				  ★★★★★
 				  <span>★★★★★</span>
-				  <input type="range" name = "revScore" oninput="drawStar(this)" value="1" step="1" min="0" max="5">
+				  <input type="range" name="revScore"  oninput="drawStar(this)" value="1" step="1" min="0" max="5">
+				  <input type="hidden" id="hiddenScore" value="${review.revScore}"/>
 				</span>
 			</td>
 		</tr>
+		</c:forEach>
+		<c:forEach items="${reviewPhoto}" var="reviewPhoto">
 		<tr>
 			<th>첨부파일</th>
 			<td> 
 				<div>
 				  <div class="custom-file">
-				    <input type="file" name="upFile" id="upFile1" multiple>
-				    <label for="upFile1">파일을 선택하세요</label>
+					    <input type="file" name="upFile" id="upFile1" value="${reviewPhoto.revOriginalFilename}"  onchange="readURL(this);"  multiple>
+					    <label for="upFile1">파일 선택</label><br>
+						<img id="preview" src ="${pageContext.request.contextPath}/resources/upload/review/${reviewPhoto.revRenamedFilename}" class="upload" width="400px">
 				  </div>
 				</div>
 			</td>
 		</tr>
+		</c:forEach>
+		
 		<tr>
-			<c:if test="${not empty notice.photos}">
-				<c:forEach items="${notice.photos}" var="photo">	
-					<td><img src ="${pageContext.request.contextPath}/resources/upload/notice/${photo.noticeRenamedFilename}" class="upload" width="100px"></td>
-				</c:forEach>
-			</c:if>
+			<%-- <c:if test="${not empty notice.photos}">
+				
+			</c:if> --%>
 		</tr>
 		</table>
 		<button type="submit">저장</button>
@@ -82,6 +88,23 @@ const drawStar = (target) => {
 	console.log(target.value);
     document.querySelector(`.star span`).style.width = percent;
   }
+  
+function readURL(input) {
+	  if (input.files && input.files[0]) {
+	    var reader = new FileReader();
+	    reader.onload = function(e) {
+	      document.getElementById('preview').src = e.target.result;
+	    };
+	    reader.readAsDataURL(input.files[0]);
+	  } else {
+	    document.getElementById('preview').src = "";
+	  }
+	}
+window.onload = function(){
+	  var a = document.getElementById( 'hiddenScore' );
+	  var percent = a.value*20 + "%";
+	    document.querySelector(`.star span`).style.width = percent;
+	  }
 </script>
 </main>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

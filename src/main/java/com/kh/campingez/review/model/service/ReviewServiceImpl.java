@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.kh.campingez.review.model.dao.ReviewDao;
 import com.kh.campingez.review.model.dto.Review;
+import com.kh.campingez.review.model.dto.ReviewEntity;
 import com.kh.campingez.review.model.dto.ReviewPhoto;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,7 +42,7 @@ public class ReviewServiceImpl implements ReviewService {
 		log.debug("board#no = {}", review.getRevId());
 		
 		// insert attachment * n
-		List<ReviewPhoto> attachments = review.getAttachments();
+		List<ReviewPhoto> attachments = review.getReviewPhotos();
 		if(!attachments.isEmpty()) {
 			for(ReviewPhoto attach : attachments) {
 				attach.setRevId(review.getRevId());
@@ -55,4 +56,14 @@ public class ReviewServiceImpl implements ReviewService {
 	public int insertReviewPhoto(ReviewPhoto attach) {
 		return reviewDao.insertReviewPhoto(attach);
 	}
+	
+	@Override
+	public List<ReviewEntity> selectReview(String resNo) {
+		return reviewDao.selectReview(resNo);
+	}
+	@Override
+	public List<ReviewPhoto> selectReviewPhoto(int revId) {
+		return reviewDao.selectReviewPhoto(revId);
+	}
+
 }

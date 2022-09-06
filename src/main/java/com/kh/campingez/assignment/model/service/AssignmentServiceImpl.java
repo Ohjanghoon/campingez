@@ -35,4 +35,9 @@ public class AssignmentServiceImpl implements AssignmentService {
 	public int insertAssignment(AssignmentEntity assignment) {
 		return assignmentDao.insertAssignment(assignment);
 	}
+	
+	@Override
+	public Assignment assignmentDetail(String assignNo) {
+		return assignmentDao.assignmentDetail(assignNo);
+	}
 }

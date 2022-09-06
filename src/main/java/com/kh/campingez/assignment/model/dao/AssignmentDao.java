@@ -35,5 +35,7 @@ public interface AssignmentDao {
 			+ " #{assignTitle}, #{assignContent}, #{assignPrice}, default, default, default)")
 	int insertAssignment(AssignmentEntity assignment);
 
+	Assignment assignmentDetail(String assignNo);
+
 	
 }

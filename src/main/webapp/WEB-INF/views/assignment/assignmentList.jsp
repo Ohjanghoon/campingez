@@ -34,14 +34,14 @@
 		CampPhoto photo = assign.getCampPhoto();
 		pageContext.setAttribute("photo", photo);
 %>
-	<div name="assignInfo">
+	<div name="assignInfo" data-no="${assign.assignNo}">
 		<div name="userInfo">
 			<span>${assign.userId}</span>	<!-- 양도 작성자 -->
 			<span name="assignDate">${assign.assignDate}</span> <!-- 양도글 등록일자 -->
 
 		</div>
 		<div name="campPhoto">
-			<img src="${pageContext.request.contextPath}/resources/upload/campPhoto/${photo.originalFilename}" alt="구역사진" />
+			<img src="${pageContext.request.contextPath}/resources/upload/campPhoto/${photo.renamedFilename}" width="200px" alt="구역사진" />
 		</div>
 		<div name="assignTitle">
 			<span>${assign.assignTitle}</span>	<!-- 양도글 제목 -->
@@ -64,14 +64,8 @@
 			<span>
 				<c:choose>
 					<c:when test="${fn:startsWith(assign.resNo, 'ZA')}">데크존🌳</c:when>
-				</c:choose>
-				<c:choose>
 					<c:when test="${fn:startsWith(assign.resNo, 'ZB')}">반려견존🐕</c:when>
-				</c:choose>
-				<c:choose>
 					<c:when test="${fn:startsWith(assign.resNo, 'ZC')}">글램핑존🏕️</c:when>
-				</c:choose>
-				<c:choose>
 					<c:when test="${fn:startsWith(assign.resNo, 'ZD')}">카라반존🚙</c:when>
 				</c:choose>
 			</span>
@@ -126,7 +120,18 @@
 		  }
 		  const years = Math.floor(days / 365);
 		  return `\${years}년 전`;
-		}
+	}
+	
+	document.querySelectorAll("[name=assignInfo]").forEach((assignInfo) => {
+		
+		assignInfo.addEventListener('click', (e) => {
+			//console.log(assignInfo.dataset.no);
+			const no = assignInfo.dataset.no;
+			if(no){
+				location.href="${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=" + no;
+			}
+		});
+	});
 	</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

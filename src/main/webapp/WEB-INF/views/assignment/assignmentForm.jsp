@@ -21,7 +21,6 @@
 		<c:if test="${not empty reservationList}">
 			<option value="">예약번호 / 입실일자 ~ 퇴실일자</option>
 			<c:forEach items="${reservationList}" var="res">
-			
 				<option value="${res.resNo}">${res.resNo} / ${res.resCheckin} ~ ${res.resCheckout}</option>
 			</c:forEach>
 		</c:if>
