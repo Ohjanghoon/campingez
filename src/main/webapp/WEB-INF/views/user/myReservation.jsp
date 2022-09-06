@@ -70,22 +70,5 @@
 	</table>	
 
 </body>
-<!-- <script type="text/javascript">
-const reservationReview = (resNo) => {
-	const headers = {};
-	headers['${_csrf.headerName}'] = '${_csrf.token}';
-	
-	$.ajax({
-		url : `${pageContext.request.contextPath}/review/reviewForm.do`,
-		headers,
-		data : {resNo},
-		method : "POST",
-		success(response) {
-			console.log(response);
-			let url = `/`
-		},
-		error : console.log
-	});
-};
-</script> -->
+
 </html>
