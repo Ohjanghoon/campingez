@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.campingez.trade.model.dto.Trade;
+import com.kh.campingez.trade.model.dto.TradeLike;
 import com.kh.campingez.trade.model.dto.TradePhoto;
 
 public interface TradeService {
@@ -18,5 +19,17 @@ public interface TradeService {
 
 	int insertPhoto(TradePhoto photo);
 
+	TradePhoto selectOnePhoto(int photoNo);
+
+	int deletePhoto(int photoNo);
+
+	int updateTrade(Trade trade);
+
+	int deleteTrade(String no);
+
+//	List<Trade> selectTradeListLowPrice(Map<String, Integer> param);
+//
+//	List<Trade> selectTradeListHighPrice(Map<String, Integer> param);
+	
 
 }
