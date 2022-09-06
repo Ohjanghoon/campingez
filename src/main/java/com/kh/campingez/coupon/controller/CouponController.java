@@ -1,18 +1,26 @@
 package com.kh.campingez.coupon.controller;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.coupon.model.dto.Coupon;
+import com.kh.campingez.coupon.model.dto.UserCoupon;
 import com.kh.campingez.coupon.model.service.CouponService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -67,4 +75,40 @@ public class CouponController {
 		}
 		return sb.toString();
 	}
+	
+	@PostMapping("/couponlist")
+	public ResponseEntity<?> findCoupon(){
+		List<Coupon> couponlist = couponService.findCoupon();
+		log.debug("couponlist = {}", couponlist);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(couponlist);
+	}
+	
+	@PostMapping("/couponInfo")
+	public ResponseEntity<?> findCouponByCode(@RequestBody String couponeCode){
+		couponeCode = couponeCode.substring(0, couponeCode.length() -1);
+		log.debug("couponeCode = {}", couponeCode);
+		Coupon coupon = couponService.findCouponByCode(couponeCode);
+		log.debug("coupon = {}", coupon);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(coupon);
+	}
+	
+	@PostMapping("/couponDown")
+	public ResponseEntity<?> couponDownload(@RequestBody String couponeCode, @RequestBody String userId){
+		log.debug("couponeCode = {}", couponeCode);
+		log.debug("userId = {}", userId);
+		Map<Object, String > param = new HashMap<>();
+		param.put("couponeCode", couponeCode);
+		param.put("userId", userId);
+		
+		// 유저 쿠폰 검사
+		UserCoupon userCoupon = couponService.findCouponByUser(param);
+		if(userCoupon != null) {
+			// 메시지 ( 이미 다운로드한 쿠폰입니다. )
+			return ResponseEntity.ok().body(null);
+		}
+		int result = couponService.couponDownload(param);
+		// 메세지 (다운로드 완료 )
+		return ResponseEntity.ok().body(null);
+	}
+	
 }

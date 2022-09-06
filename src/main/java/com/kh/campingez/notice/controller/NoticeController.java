@@ -117,6 +117,9 @@ public class NoticeController {
 		return "redirect:/notice/list";
 	}
 	
+	@GetMapping("/enrollEvent")
+	public void enrollEvent() {}
+
 	@GetMapping("/enrollNotice")
 	public void enrollNotice() {}
 	
