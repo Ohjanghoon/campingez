@@ -93,11 +93,11 @@ public class CouponController {
 	}
 	
 	@PostMapping("/couponDown")
-	public ResponseEntity<?> couponDownload(@RequestBody String couponeCode, @RequestBody String userId){
-		log.debug("couponeCode = {}", couponeCode);
+	public ResponseEntity<?> couponDownload(@RequestParam String couponCode, @RequestParam String userId){
+		log.debug("couponeCode = {}", couponCode);
 		log.debug("userId = {}", userId);
 		Map<Object, String > param = new HashMap<>();
-		param.put("couponeCode", couponeCode);
+		param.put("couponeCode", couponCode);
 		param.put("userId", userId);
 		
 		// 유저 쿠폰 검사

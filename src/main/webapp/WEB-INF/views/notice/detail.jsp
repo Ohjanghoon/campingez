@@ -77,16 +77,16 @@
 					<span name="couponName" >쿠폰명 : \${couponName}</span><br />
 					<sppn name="couponDiscount">할인률 : \${couponDiscount}%</span><br />
 					<sppn name="coupon">기간 : \${couponStartday}~\${couponEndday}</span><br />
-					<button id="btn3">쿠폰 다운로드</button>
+					<button type="button" id="btn3">쿠폰 다운로드</button>
 					</form:form>
 					
 				`;
 				
 				// 쿠폰 받기
-				document.couponDownFrm.addEventListener('submit', (e) => {
-					
+				document.querySelector("#btn3").addEventListener('click', (e) => {
 					e.preventDefault();
-
+					const userId = "<sec:authentication property='principal.username'/>";
+					const couponCode = "${notice.noticeContent}";
 					$.ajax({
 						url : "${pageContext.request.contextPath}/coupon/couponDown.do",
 						headers,
