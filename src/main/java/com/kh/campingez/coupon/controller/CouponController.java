@@ -94,21 +94,26 @@ public class CouponController {
 	
 	@PostMapping("/couponDown")
 	public ResponseEntity<?> couponDownload(@RequestParam String couponCode, @RequestParam String userId){
-		log.debug("couponeCode = {}", couponCode);
-		log.debug("userId = {}", userId);
+		// 파람
 		Map<Object, String > param = new HashMap<>();
-		param.put("couponeCode", couponCode);
+		param.put("couponCode", couponCode);
 		param.put("userId", userId);
+
+		// 메세지
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", "success");
 		
 		// 유저 쿠폰 검사
 		UserCoupon userCoupon = couponService.findCouponByUser(param);
+		
 		if(userCoupon != null) {
-			// 메시지 ( 이미 다운로드한 쿠폰입니다. )
-			return ResponseEntity.ok().body(null);
+			map.put("resultMessage", "이미 발급받은 쿠폰입니다.");
+			return ResponseEntity.ok().body(map);
 		}
+		
 		int result = couponService.couponDownload(param);
-		// 메세지 (다운로드 완료 )
-		return ResponseEntity.ok().body(null);
+		map.put("resultMessage", "쿠폰을 발급받았습니다.");
+		return ResponseEntity.ok().body(map);
 	}
 	
 }

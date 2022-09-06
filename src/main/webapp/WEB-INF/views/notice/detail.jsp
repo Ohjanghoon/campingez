@@ -85,15 +85,16 @@
 				// 쿠폰 받기
 				document.querySelector("#btn3").addEventListener('click', (e) => {
 					e.preventDefault();
-					const userId = "<sec:authentication property='principal.username'/>";
 					const couponCode = "${notice.noticeContent}";
+					const userId = "<sec:authentication property='principal.username'/>";
 					$.ajax({
 						url : "${pageContext.request.contextPath}/coupon/couponDown.do",
 						headers,
 						data : {couponCode, userId},
 						method : "POST",
 						success(response){
-							alert("쿠폰을 받았습니다.");
+							console.log(response);
+							alert(response.resultMessage);
 						},
 						error : console.log
 					});
