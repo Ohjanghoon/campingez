@@ -3,14 +3,13 @@ package com.kh.campingez.review.model.dto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.kh.campingez.reservation.model.dto.Reservation;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.kh.campingez.user.model.dto.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import com.kh.campingez.reservation.model.dto.Reservation;
+import lombok.AllArgsConstructor;
+
 
 @Data
 @NoArgsConstructor
@@ -31,4 +30,5 @@ public class Review extends ReviewEntity {
 	public void addReviewPhoto(ReviewPhoto reviewPhoto) {
 		this.reviewPhotos.add(reviewPhoto);
 	}
+
 }

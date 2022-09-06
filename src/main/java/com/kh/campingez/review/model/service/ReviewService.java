@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.campingez.review.model.dto.Review;
+import com.kh.campingez.review.model.dto.ReviewEntity;
+import com.kh.campingez.review.model.dto.ReviewPhoto;
 
 public interface ReviewService {
 
@@ -19,4 +21,13 @@ public interface ReviewService {
 
 	Review findOneReviewById(int revId);
 
+	int insertReview(Review review);
+
+	int insertReviewPhoto(ReviewPhoto attach);
+
+	List<ReviewEntity> selectReview(String resNo);
+
+	List<ReviewPhoto> selectReviewPhoto(int revId);
+
+	
 }

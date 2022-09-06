@@ -3,9 +3,14 @@ package com.kh.campingez.user.controller;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -59,26 +64,32 @@ public class UserInfoController {
 	 * !!!!!!!!!!!!!!!!회원정보 수정!!!!!!!!!!!!!!!!!!!!!
 	 */
 	//내정보 수정 인증페이지 (비밀번호 재확인으로 만들것임!)
-	@GetMapping("/authentication.do")
-	public ModelAndView authentication(ModelAndView mav) {
+	@GetMapping("/popupAuthentication.do")
+	public ModelAndView popupAuthentication(ModelAndView mav) {
 		mav.setViewName("user/authentication");
 		return mav;
 	}
 	//회원 조회 jsp 호출
 	@GetMapping("/userInfo.do")
-	public ModelAndView userDetail(@ModelAttribute User user ,Authentication authentication, Model model, ModelAndView mav) {
+	public ModelAndView userInfo(ModelAndView mav) {
+		mav.setViewName("user/userInfo");
+		return mav;
+	}
+	//회원 정보 수정전 로그인 다시 인증하기 
+	@GetMapping("/authentication.do")
+	public ResponseEntity<Map<String, Object>> authentication(@ModelAttribute User user ,Authentication authentication) {
 		User principal = (User)authentication.getPrincipal();
 		System.out.println(user.getUserId()+"," +principal.getUserId()+"," +user.getPassword()+"," +principal.getPassword());
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		Map<String , Object> resultMap = new HashMap<>(); 
 		if(user.getUserId().equals(principal.getUserId()) && encoder.matches(user.getPassword(), principal.getPassword())) {
-			model.addAttribute("msg", "success");
+			resultMap.put("msg", "success");
 			
 		}else {
-			model.addAttribute("msg", "fail");
+			resultMap.put("msg", "fail");
 			
 		}
-			mav.setViewName("user/authentication");
-			return mav;
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(resultMap);
 	}
 	//회원 정보 수정
 	@PostMapping("/profileUpdate.do")
@@ -138,4 +149,6 @@ public class UserInfoController {
 		mav.setViewName("user/myReservation");
 		return mav;
 	}
+	
+	
 }

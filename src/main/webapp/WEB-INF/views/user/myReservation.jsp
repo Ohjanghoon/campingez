@@ -6,6 +6,7 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form:form>
 	<table>
 		<thead>
 			<th>NO</th>
@@ -31,8 +31,10 @@
 			<th>예약요청사항</th>
 			<th>예약상태</th>
 			<th>결제수단</th>
+			<th>리뷰작성</th>
 		</thead>
 		<tbody>
+			
 			<c:forEach items="${reservationList}" var="res" varStatus="vs">
 				<tr data-no="${res.resNo}">
 					<td>${vs.count}</td>
@@ -59,11 +61,14 @@
 					<td>${res.resRequest}</td>
 					<td>${res.resState}</td>
 					<td>${res.resPayment}</td>
+					<c:if test="${res.review == 'OK'}">
+						<td><button  onclick="location.href='${pageContext.request.contextPath}/review/reviewForm.do?resNo=${res.resNo}'" >리뷰작성</button></td> 
+					</c:if> 
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table>
-	
-</form:form>
+	</table>	
+
 </body>
+
 </html>
