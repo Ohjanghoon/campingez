@@ -29,5 +29,7 @@ public interface ReviewService {
 
 	List<ReviewPhoto> selectReviewPhoto(int revId);
 
+	Review bestReviewByCampzone(String campZone);
+
 	
 }

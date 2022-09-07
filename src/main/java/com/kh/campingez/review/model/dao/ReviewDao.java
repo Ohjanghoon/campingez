@@ -41,6 +41,8 @@ public interface ReviewDao {
 	@Select("select * from review_photo where rev_id = #{revId}")
 	List<ReviewPhoto> selectReviewPhoto(int revId);
 
+	Review bestReviewByCampzone(String campZone);
+
 	
 
 }

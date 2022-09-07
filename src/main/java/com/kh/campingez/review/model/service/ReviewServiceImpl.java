@@ -87,5 +87,11 @@ public class ReviewServiceImpl implements ReviewService {
 	public List<ReviewPhoto> selectReviewPhoto(int revId) {
 		return reviewDao.selectReviewPhoto(revId);
 	}
-
+	
+	@Override
+	public Review bestReviewByCampzone(String campZone) {
+		return reviewDao.bestReviewByCampzone(campZone);
+	}
+	
+	
 }
