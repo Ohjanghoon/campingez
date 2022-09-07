@@ -34,17 +34,13 @@
 			username-parameter="userId"
 			password-parameter="password"			
 			authentication-success-handler-ref = "customAuthenticationSuccessHandler"
+			authentication-success-forward-url="/user/userLoginSuccess.do"
 		/>
-			<!-- authentication-success-forward-url="/user/userLoginSuccess.do" -->
 			
 		<logout 
 			logout-url="/user/userLogout.do"
 			logout-success-url="/"/>
 		<csrf disabled="false"/>
-		
-		<remember-me 
-			data-source-ref="dataSource"
-			token-validity-seconds="1209600"/>
 			
 	</http>
 	
