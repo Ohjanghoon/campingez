@@ -3,6 +3,7 @@ package com.kh.campingez.user.controller;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,7 +72,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/userLogout.do")
-	public String memberLogout(SessionStatus sessionStatus) {
+	public String userLogout(SessionStatus sessionStatus) {
 		
 		if(!sessionStatus.isComplete()) {
 			sessionStatus.setComplete();
@@ -96,8 +98,23 @@ public class UserController {
 	};
 	
 	@GetMapping("/userLogin.do")
-	public void memberLogin() {
+	public void userLogin() {
 		
+	}
+	
+	@PostMapping("/userLoginSuccess.do")
+	public String userLoginSuccess(HttpSession session) {
+		//로그인 후 처리
+		String location = "/";
+		
+		// security가 관리하는 다음 리다이렉트 url
+		SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+		if(savedRequest != null) {
+			location = savedRequest.getRedirectUrl();
+		}
+		log.debug("location = {}", location);
+		
+		return "redirect:" + location;
 	}
 	
 	@GetMapping("/userFindId.do")
