@@ -39,6 +39,11 @@
 			logout-url="/user/userLogout.do"
 			logout-success-url="/"/>
 		<csrf disabled="false"/>
+		
+		<remember-me 
+			data-source-ref="dataSource"
+			token-validity-seconds="1209600"/>
+		
 	</http>
 	
 	<authentication-manager>

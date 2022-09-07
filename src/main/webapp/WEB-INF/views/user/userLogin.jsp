@@ -75,6 +75,10 @@
 			<button type="submit">로그인</button>
 		</div>
 		<div>
+			<input type="checkbox" name="remember-me" id="remember-me"/>
+			<label for="remember-me">로그인유지</label>
+		</div>
+		<div>
 			<%--<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userFindId.do';">아이디찾기</button> --%>
 			<button type="button" id="btnModal">아이디찾기</button>
 			<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userFindPassword.do';">비밀번호찾기</button>
