@@ -3,6 +3,8 @@ package com.kh.campingez.admin.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -63,5 +65,7 @@ public interface AdminService {
 	int deleteCampPhotoByPhotoNo(int photoNo);
 
 	List<Camp> findAllCampList();
+
+	int insertDailyVisit(String userId);
 
 }

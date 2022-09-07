@@ -36,10 +36,12 @@
 		<div id="content-wrap">
 			${review.revContent}
 		</div>
-		<c:if test="${loginMember.userId eq review.reservation.userId}">
-			<button id="update-btn">수정</button>
-			<button id="delete-btn">삭제</button>
-		</c:if>
+		<sec:authorize access="isAuthenticated()"> 
+			<c:if test="${loginMember.userId eq review.reservation.userId}">
+				<button id="update-btn">수정</button>
+				<button id="delete-btn">삭제</button>
+			</c:if>		
+		</sec:authorize>
 	</section>
 </main>
 

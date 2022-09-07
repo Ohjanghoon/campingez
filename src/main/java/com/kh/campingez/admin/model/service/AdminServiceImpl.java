@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -174,6 +175,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<Camp> findAllCampList() {
 		return adminDao.findAllCampList();
+	}
+	
+	@Override
+	public int insertDailyVisit(String userId) {
+		return adminDao.insertDailyVisit(userId);
 	}
 
 	private RowBounds getRowBounds(Map<String, Object> param) {
