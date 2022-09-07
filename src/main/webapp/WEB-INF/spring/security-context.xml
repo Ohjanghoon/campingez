@@ -33,8 +33,6 @@
 			always-use-default-target="false"
 			username-parameter="userId"
 			password-parameter="password"			
-			authentication-success-handler-ref = "customAuthenticationSuccessHandler"
-			authentication-failure-handler-ref = "customAuthenticationSuccessHandler"
 		/>
 			<!-- authentication-success-forward-url="/user/userLoginSuccess.do" -->
 			
@@ -48,14 +46,7 @@
 			token-validity-seconds="1209600"/>
 		
 	</http>
-	
-	<beans:bean id="adminServiceImpl" class="com.kh.campingez.admin.model.service.AdminServiceImpl"></beans:bean>
 
-	<!-- 로그인 통계를 위한 handler -->
-	<beans:bean id="customAuthenticationSuccessHandler" class="com.kh.campingez.common.security.handler.CustomAuthenticationSuccessHandler">
-		<beans:constructor-arg ref="adminServiceImpl"></beans:constructor-arg>
-	</beans:bean>
-	
 	<authentication-manager>
 		<authentication-provider user-service-ref="userSecurityService">
 			<password-encoder ref="bcryptPasswordEncoder"/>
