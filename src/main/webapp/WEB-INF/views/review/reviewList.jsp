@@ -59,7 +59,9 @@ const renderStart = (score, revId) => {
 				<li data-review-id="${review.revId}">
 					<div id="review-photo-box">
 						<c:if test="${not empty review.reviewPhotos}">
-							<c:forEach items="${review.reviewPhotos}"></c:forEach>
+							<c:forEach items="${review.reviewPhotos}" var="photo">
+								<img src="${pageContext.request.contextPath}/resources/upload/review/${photo.revRenamedFilename}" width="150px"/>
+							</c:forEach>
 						</c:if>
 					</div>
 					<div id="review-score-${review.revId}">
