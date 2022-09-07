@@ -34,13 +34,14 @@
 			username-parameter="userId"
 			password-parameter="password"			
 			authentication-success-handler-ref = "customAuthenticationSuccessHandler"
+			authentication-success-forward-url="/user/userLoginSuccess.do"
 		/>
-			<!-- authentication-success-forward-url="/user/userLoginSuccess.do" -->
 			
 		<logout 
 			logout-url="/user/userLogout.do"
 			logout-success-url="/"/>
 		<csrf disabled="false"/>
+			
 	</http>
 	
 	<beans:bean id="adminServiceImpl" class="com.kh.campingez.admin.model.service.AdminServiceImpl"></beans:bean>
