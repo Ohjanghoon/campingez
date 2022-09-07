@@ -49,9 +49,12 @@
 		
 	</http>
 	
-		<!-- 로그인 통계를 위한 handler -->
-		<beans:bean id="customAuthenticationSuccessHandler" class="com.kh.campingez.common.security.handler.CustomAuthenticationSuccessHandler"></beans:bean>
-	
+	<beans:bean id="adminServiceImpl" class="com.kh.campingez.admin.model.service.AdminServiceImpl"></beans:bean>
+
+	<!-- 로그인 통계를 위한 handler -->
+	<beans:bean id="customAuthenticationSuccessHandler" class="com.kh.campingez.common.security.handler.CustomAuthenticationSuccessHandler">
+		<beans:constructor-arg ref="adminServiceImpl"></beans:constructor-arg>
+	</beans:bean>
 	
 	<authentication-manager>
 		<authentication-provider user-service-ref="userSecurityService">
