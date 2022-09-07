@@ -316,14 +316,13 @@ public class AdminController {
 		model.addAttribute("campList", campList);
 	}
 	
+	@GetMapping("/stats.do")
+	public void stats() {}
+	
 	private Date addMonth(Date date, int months) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.add(Calendar.MONTH, months);
 		return cal.getTime();
-	}
-
-	public void insertDailyVisit(String userId) {
-		int result = adminService.insertDailyVisit(userId);
 	}
 }

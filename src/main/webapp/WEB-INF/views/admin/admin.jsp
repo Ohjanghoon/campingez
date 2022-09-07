@@ -20,6 +20,7 @@
 		<li><a href="${pageContext.request.contextPath}/admin/insertCampZone.do">캠핑구역추가</a></li>
 		<li><a href="${pageContext.request.contextPath}/admin/campList.do">캠핑자리관리</a></li>
 		<li><a href="${pageContext.request.contextPath}/admin/couponList.do">쿠폰</a></li>
+		<li><a href="${pageContext.request.contextPath}/admin/stats.do">통계</a></li>
 	</ul>
 	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
