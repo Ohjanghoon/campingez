@@ -7,10 +7,10 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.campingez.admin.model.dto.StatsVisited;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -111,5 +111,8 @@ public interface AdminDao {
 	
 	@Insert("insert into stats_daily_visit values(#{userId}, default)")
 	int insertDailyVisit(String userId);
+	
+	@Select("select to_char(visit_date, 'MM') visit_date, count(*) visit_date_count from stats_daily_visit group by to_char(visit_date, 'MM')")
+	List<StatsVisited> findStatsVisited();
 
 }

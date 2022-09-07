@@ -10,6 +10,14 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 
-<h2>통계</h2>
+<main>
+	<section>
+		<h2>통계</h2>
+
+		<ul>
+			<li><a href="${pageContext.request.contextPath}/admin/statsVisited.do">일자별 로그인 회원 수 조회</a></li>
+		</ul>
+	</section>
+</main>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.campingez.admin.model.dao.AdminDao;
+import com.kh.campingez.admin.model.dto.StatsVisited;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -179,6 +180,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int insertDailyVisit(String userId) {
 		return adminDao.insertDailyVisit(userId);
+	}
+	
+	@Override
+	public List<StatsVisited> findStatsVisited() {
+		return adminDao.findStatsVisited();
 	}
 
 	private RowBounds getRowBounds(Map<String, Object> param) {

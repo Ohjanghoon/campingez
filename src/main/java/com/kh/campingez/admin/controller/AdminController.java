@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.campingez.admin.model.dto.StatsVisited;
 import com.kh.campingez.admin.model.service.AdminService;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
@@ -318,6 +319,15 @@ public class AdminController {
 	
 	@GetMapping("/stats.do")
 	public void stats() {}
+	
+	@GetMapping("/statsVisited.do")
+	public void statsVisited() {}
+	
+	@GetMapping("/statsVisitedChart.do")
+	public ResponseEntity<?> statsVisitedChart() {
+		List<StatsVisited> visitedList = adminService.findStatsVisited();
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(visitedList);
+	}
 	
 	private Date addMonth(Date date, int months) {
 		Calendar cal = Calendar.getInstance();
