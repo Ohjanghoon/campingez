@@ -175,6 +175,11 @@ public class AdminServiceImpl implements AdminService {
 	public List<Camp> findAllCampList() {
 		return adminDao.findAllCampList();
 	}
+	
+	@Override
+	public int insertDailyVisit(String userId) {
+		return adminDao.insertDailyVisit(userId);
+	}
 
 	private RowBounds getRowBounds(Map<String, Object> param) {
 		int limit = (int)param.get("limit");

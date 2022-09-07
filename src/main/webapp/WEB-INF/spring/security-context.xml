@@ -11,7 +11,7 @@
 	
 	<!-- #7.1 암호화처리 빈 등록 -->
 	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></beans:bean>
-
+	
 	<http security="none" pattern="/resources/**"/>
 
 	<http auto-config="true">
@@ -32,7 +32,9 @@
 			default-target-url="/"
 			always-use-default-target="false"
 			username-parameter="userId"
-			password-parameter="password"/>
+			password-parameter="password"			
+			authentication-success-handler-ref = "customAuthenticationSuccessHandler"
+		/>
 			<!-- authentication-success-forward-url="/user/userLoginSuccess.do" -->
 			
 		<logout 
@@ -46,6 +48,10 @@
 		
 	</http>
 	
+	<!-- 로그인 통계를 위한 handler -->
+	<beans:bean id="customAuthenticationSuccessHandler" class="com.kh.campingez.common.security.handler.CustomAuthenticationSuccessHandler"></beans:bean>
+	
+	
 	<authentication-manager>
 		<authentication-provider user-service-ref="userSecurityService">
 			<password-encoder ref="bcryptPasswordEncoder"/>
@@ -54,7 +60,4 @@
 	
 	<!-- @Service 클래스를 빈으로 등록하기 위해 -->
 	<context:component-scan base-package="com.kh.security" />
-	
-	
-	
 </beans:beans>
