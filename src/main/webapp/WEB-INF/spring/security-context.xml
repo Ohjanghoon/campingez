@@ -25,6 +25,16 @@
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 		<intercept-url pattern="/camp/**" access="permitAll"/>
 		<!-- <intercept-url pattern="/**" access="isAuthenticated()"/> -->
+		
+		<form-login 
+			login-page="/user/userLogin.do"
+			login-processing-url="/user/userLogin.do"
+			default-target-url="/"
+			always-use-default-target="false"
+			username-parameter="userId"
+			password-parameter="password"/>
+			<!-- authentication-success-forward-url="/user/userLoginSuccess.do" -->
+			
 		<logout 
 			logout-url="/user/userLogout.do"
 			logout-success-url="/"/>

@@ -55,7 +55,19 @@
 				<th>이메일</th>
 				<td><input type="email" class="form-control"
 					placeholder="abc@xyz.com" name="email" id="email"
-					value="honggd@gmail.com"></td>
+					value="kei01105@nate.com"></td>
+				<td>
+					<button type="button" class="btn btn-primary" id="mail-Check-Btn">본인인증</button>
+				</td>
+				<td>
+					<input class="form-control mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled">
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+					<span id="mail-check-warn"></span>
+				</td>
 			</tr>
 			<tr>
 				<th>휴대폰</th>
@@ -83,6 +95,25 @@
 	</form:form>
 </div>
 <script>
+$('#mail-Check-Btn').click(function() {
+	const email = $('#email').val(); // 이메일 주소값 얻어오기!
+	console.log('이메일 : ' + email); // 이메일 오는지 확인
+	const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/user/userEamilCheck.do`,
+		data : {
+			email
+		},
+		success(response){
+			console.log(response);
+		},		
+		error : console.log
+	});
+});
+
+
+
 const availableCheck = (input, result, msg) => {
 	if (result === "fail") {
 	  input.style.color = 'red';
