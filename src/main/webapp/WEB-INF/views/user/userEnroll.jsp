@@ -9,6 +9,14 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="회원가입" name="title" />
 </jsp:include>
+<style>
+.correct{
+    color : blue;
+}
+.incorrect{
+    color : red;
+}
+</style>
 <div id="enroll-container" class="mx-auto text-center">
 	<form:form name="userEnrollFrm" action="" method="POST">
 		<table class="mx-auto">
@@ -60,13 +68,14 @@
 					<button type="button" class="btn btn-primary" id="mail-Check-Btn">본인인증</button>
 				</td>
 				<td>
-					<input class="form-control mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled">
+					<input class="mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled">
 				</td>
 				
 			</tr>
 			<tr>
-				<td>
-					<span id="mail-check-warn"></span>
+				<td colspan="3">
+					<span id="mail-check-warn">&nbsp;</span>
+					<input type="hidden" name="mailCheckVal" id="mailCheckVal" value="0"/>
 				</td>
 			</tr>
 			<tr>
@@ -95,6 +104,22 @@
 	</form:form>
 </div>
 <script>
+document.userEnrollFrm.addEventListener('submit', (e) => {
+	const mailCheckVal = document.querySelector('#mailCheckVal').value;
+	e.preventDefault(); // 제출방지
+	if(mailCheckVal == 0){
+		alert('메일 인증이 필요합니다.');
+		return false;
+	}
+	else{
+		document.userEnrollFrm.submit();
+	}
+	
+});
+
+//인증 이메일
+var code = "";
+
 $('#mail-Check-Btn').click(function() {
 	const email = $('#email').val(); // 이메일 주소값 얻어오기!
 	console.log('이메일 : ' + email); // 이메일 오는지 확인
@@ -105,13 +130,35 @@ $('#mail-Check-Btn').click(function() {
 		data : {
 			email
 		},
-		success(response){
-			console.log(response);
+		success(data){
+			console.log(data);
+			checkInput.attr("disabled",false);
+			document.querySelector('.mail-check-input').value = data;
+			code = data;
 		},		
 		error : console.log
 	});
 });
 
+//인증번호 비교
+$(".mail-check-input").blur(function(){
+	const inputCode = document.querySelector('.mail-check-input').value; 
+	const checkResult = document.querySelector('#mail-check-warn'); 
+	const mailCheckVal = document.querySelector('#mailCheckVal').value;
+	
+    if(inputCode == code){
+    	console.log('일치');
+        checkResult.innerHTML = "인증번호가 일치합니다.";
+        checkResult.classList.add("correct");
+        document.querySelector('#mailCheckVal').value = "1";
+        
+    } else {
+    	console.log('불일치');
+        checkResult.innerHTML = "인증번호를 다시 확인해주세요."
+        checkResult.classList.add("incorrect");
+        return false;
+    }    
+});
 
 
 const availableCheck = (input, result, msg) => {
