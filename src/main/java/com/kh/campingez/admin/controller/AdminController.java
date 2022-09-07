@@ -322,4 +322,8 @@ public class AdminController {
 		cal.add(Calendar.MONTH, months);
 		return cal.getTime();
 	}
+
+	public void insertDailyVisit(String userId) {
+		int result = adminService.insertDailyVisit(userId);
+	}
 }

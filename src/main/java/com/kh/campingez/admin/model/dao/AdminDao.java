@@ -108,5 +108,8 @@ public interface AdminDao {
 	
 	@Select("select * from camp order by camp_id")
 	List<Camp> findAllCampList();
+	
+	@Insert("insert into stats_daily_visit values(#{userId}, default)")
+	int insertDailyVisit(String userId);
 
 }
