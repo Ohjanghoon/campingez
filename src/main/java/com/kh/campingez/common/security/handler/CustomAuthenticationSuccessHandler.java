@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
-import com.kh.campingez.admin.controller.AdminController;
+import com.kh.campingez.admin.model.service.AdminService;
 import com.kh.campingez.user.model.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 	@Autowired
-	private AdminController adminController;
+	private AdminService adminService;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -32,7 +33,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 				if("ROLE_ADMIN".equals(grantedAuthority.toString())) {
 					return;
 				} else {
-					adminController.insertDailyVisit(userId);
+					adminService.insertDailyVisit(userId);
 				}
 			}
 		} else {

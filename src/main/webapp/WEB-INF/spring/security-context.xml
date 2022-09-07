@@ -34,6 +34,7 @@
 			username-parameter="userId"
 			password-parameter="password"			
 			authentication-success-handler-ref = "customAuthenticationSuccessHandler"
+			authentication-failure-handler-ref = "customAuthenticationSuccessHandler"
 		/>
 			<!-- authentication-success-forward-url="/user/userLoginSuccess.do" -->
 			
@@ -48,8 +49,8 @@
 		
 	</http>
 	
-	<!-- 로그인 통계를 위한 handler -->
-	<beans:bean id="customAuthenticationSuccessHandler" class="com.kh.campingez.common.security.handler.CustomAuthenticationSuccessHandler"></beans:bean>
+		<!-- 로그인 통계를 위한 handler -->
+		<beans:bean id="customAuthenticationSuccessHandler" class="com.kh.campingez.common.security.handler.CustomAuthenticationSuccessHandler"></beans:bean>
 	
 	
 	<authentication-manager>
