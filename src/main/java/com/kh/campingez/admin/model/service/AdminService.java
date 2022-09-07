@@ -64,4 +64,6 @@ public interface AdminService {
 
 	List<Camp> findAllCampList();
 
+	int insertDailyVisit(String userId);
+
 }
