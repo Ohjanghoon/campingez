@@ -1,13 +1,13 @@
 package com.kh.campingez.user.controller;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +33,9 @@ public class UserController {
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+	@Autowired
+    private JavaMailSender mailSender;
 	
 	@GetMapping("/userEnroll.do")
 	public String userEnroll() {
@@ -90,4 +93,106 @@ public class UserController {
 
 	};
 	
+	@GetMapping("/userLogin.do")
+	public void memberLogin() {
+		
+	}
+	
+	@GetMapping("/userFindId.do")
+	public ResponseEntity<?> userFindId(@RequestParam String name, @RequestParam String phone) {
+		log.debug("email = {}", name);
+		log.debug("phone = {}", phone);
+		
+		User result = userService.findUserId(name, phone);
+		log.debug("result = {}", result);
+		
+		if(result == null) {
+			int fail = 0;
+			log.debug("fail = {}", fail);
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(fail);
+//			return null;
+		}
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(result);
+	};
+	
+	@GetMapping("/userFindPassword.do")
+	public void userFindPassword() {
+			
+	}
+	
+	@PostMapping("/userFindPassword.do")
+	public ResponseEntity<?> userFindPassword(@RequestParam String userId, @RequestParam String phone, @RequestParam String email) {
+		log.debug("email = {}", userId);
+		log.debug("phone = {}", phone);
+		log.debug("phone = {}", email);
+		
+		User result = userService.findUserPassword(userId, phone, email);
+		log.debug("result = {}", result);
+		
+		if(result == null) {
+			int fail = 0;
+			log.debug("fail = {}", fail);
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(fail);
+//			return null;
+		}
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(result);
+	};
+	
+	@GetMapping("/userPasswordUpdate.do")
+	public void userPasswordUpdate(@RequestParam String userId, Model model) {
+		log.debug("userId@get = {}", userId);
+		model.addAttribute("userId", userId);
+	}
+	
+	@PostMapping("/userPasswordUpdate.do")
+	public String userPasswordUpdate(@RequestParam String newPassword, @RequestParam String _userId, RedirectAttributes redirectAttr) {
+		log.debug("newPassword = {}", newPassword);
+		log.debug("userId = {}", _userId.split(","));
+//		log.debug("userId = {}", userId); //honggd,honggd 이렇게나오는데 얘 왜이럼
+		String userId = _userId.split(",")[0];
+		log.debug("userId@array = {}", userId);
+		
+		String encodedPassword = bcryptPasswordEncoder.encode(newPassword);
+		log.debug("encodedPassword = {}", encodedPassword);
+		
+		int result = userService.updatePassword(encodedPassword, userId);
+		
+		redirectAttr.addFlashAttribute("msg", "비밀번호가 변경되었습니다..");
+		return "redirect:/user/userLogin.do";
+	};
+	
+	@GetMapping("/userEamilCheck.do")
+	public ResponseEntity<?> userEamilCheck(@RequestParam String email) {
+		log.debug("email = {}", email);
+		
+		int checkNum = 123456;
+		
+		String setFrom = "kei01105@naver.com";
+        String toMail = email;
+        String title = "회원가입 인증 이메일 입니다.";
+        String content = 
+                "홈페이지를 방문해주셔서 감사합니다." +
+                "<br><br>" + 
+                "인증 번호는 " + checkNum + "입니다." + 
+                "<br>" + 
+                "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+        
+        try {
+            
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+            helper.setFrom(setFrom);
+            helper.setTo(toMail);
+            helper.setSubject(title);
+            helper.setText(content,true);
+            mailSender.send(message);
+            
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+		
+		return null;
+	}
 }

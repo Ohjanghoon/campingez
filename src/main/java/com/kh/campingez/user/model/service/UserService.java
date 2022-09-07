@@ -10,5 +10,10 @@ public interface UserService {
 
 	int checkId(String userId);
 
+	User findUserId(String name, String phone);
+
+	User findUserPassword(String userId, String phone, String email);
+
+	int updatePassword(String encodedPassword, String userId);
 
 }
