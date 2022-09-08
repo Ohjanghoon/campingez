@@ -23,7 +23,7 @@
 </c:if>
 </head>
 <body>
-	<nav class="navbar navbar-light bg-light fixed-top p-1">
+	<nav class="navbar navbar-light bg-light p-1">
         <div class="container">
             <a href="${pageContext.request.contextPath}/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
               <img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo2.png" alt="" width="200">
