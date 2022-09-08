@@ -111,5 +111,10 @@ public class ReviewServiceImpl implements ReviewService {
 	public Review bestReviewByCampzone(String campZone) {
 		return reviewDao.bestReviewByCampzone(campZone);
 	}
-	
+
+	@Override
+	public int deleteReview(String resNo) {
+		return reviewDao.deleteReview(resNo);
+	}
+
 }
