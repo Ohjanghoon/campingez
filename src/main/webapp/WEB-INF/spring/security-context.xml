@@ -25,6 +25,8 @@
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 		<intercept-url pattern="/camp/**" access="permitAll"/>
 		<intercept-url pattern="/inquire/inquireForm.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/trade/tradeList.do" access="permitAll"/>
+		
 		<!-- <intercept-url pattern="/**" access="isAuthenticated()"/> -->
 		
 		<form-login 
@@ -34,9 +36,8 @@
 			always-use-default-target="false"
 			username-parameter="userId"
 			password-parameter="password"			
-			authentication-success-handler-ref = "customAuthenticationSuccessHandler"
-			authentication-success-forward-url="/user/userLoginSuccess.do"/>
-			
+			authentication-success-handler-ref = "customAuthenticationSuccessHandler"/>
+						
 		<logout 
 			logout-url="/user/userLogout.do"
 			logout-success-url="/"/>

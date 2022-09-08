@@ -14,10 +14,10 @@
 
     const requestPay = () => {
     	 var IMP = window.IMP; // 생략가능
-    	    IMP.init('imp50043848');  // 가맹점 식별 코드
+    	    IMP.init('imp63276768');  // 가맹점 식별 코드
 
     	    IMP.request_pay({
-    	       pg : 'kakao', // 결제방식
+    	       pg : 'kakaopay', // 결제방식
     	        pay_method : 'card',    // 결제 수단
     	        merchant_uid : 'merchant_' + new Date().getTime(),
     	       name : '주문명: 결제 테스트',    // order 테이블에 들어갈 주문명 혹은 주문 번호

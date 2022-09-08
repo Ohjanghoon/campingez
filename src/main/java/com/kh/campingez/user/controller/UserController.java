@@ -100,22 +100,22 @@ public class UserController {
 		
 	}
 	
-	@PostMapping("/userLoginSuccess.do")
-	public String userLoginSuccess(HttpSession session) {
-		log.debug("userLoginSuccess 호출!");
-		
-		//로그인 후 처리
-		String location = "/";
-		
-		// security가 관리하는 다음 리다이렉트 url
-		SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-		if(savedRequest != null) {
-			location = savedRequest.getRedirectUrl();
-		}
-		log.debug("location = {}", location);
-		
-		return "redirect:" + location;
-	}
+//	@PostMapping("/userLoginSuccess.do")
+//	public String userLoginSuccess(HttpSession session) {
+//		log.debug("userLoginSuccess 호출!");
+//		
+//		//로그인 후 처리
+//		String location = "/";
+//		
+//		// security가 관리하는 다음 리다이렉트 url
+//		SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+//		if(savedRequest != null) {
+//			location = savedRequest.getRedirectUrl();
+//		}
+//		log.debug("location = {}", location);
+//		
+//		return "redirect:" + location;
+//	}
 	
 	@GetMapping("/userFindId.do")
 	public ResponseEntity<?> userFindId(@RequestParam String name, @RequestParam String phone) {
