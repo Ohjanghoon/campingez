@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -224,5 +225,13 @@ public class ReviewController {
 		}
 		return "redirect:/review/reviewForm.do?resNo=" + resNo;
 	}
+	//리뷰 삭제
+	@RequestMapping("/deleteReview.do")
+	public String deleteReview(@RequestParam (name = "resNo") String resNo, RedirectAttributes redirectAttr) {
+		int result = reviewService.deleteReview(resNo);
+		redirectAttr.addFlashAttribute("msg", "리뷰 삭제 성공!");
+		return "redirect:/userInfo/myReservation.do";
+	}
+	
 	
 }

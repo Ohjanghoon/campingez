@@ -142,7 +142,7 @@
                     <strong><sec:authentication property="principal.username"/><sec:authentication property="authorities" />님, 안녕하세요!</strong>
                   </a>
                   <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/memberDetail.do">My page</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myPage.do">My page</a></li>
                     <li><a class="dropdown-item" href="#">없을 무</a></li>
                     <li><a class="dropdown-item" href="#">없을 무</a></li>
                     <li><hr class="dropdown-divider"></li>
