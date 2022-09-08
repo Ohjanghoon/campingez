@@ -111,8 +111,26 @@ public interface AdminDao {
 	
 	@Insert("insert into stats_daily_visit values(#{userId}, default)")
 	int insertDailyVisit(String userId);
+
+	@Select("select"
+			+ " count(*) visit_date_count,"
+			+ " to_char(visit_date, 'YYYY-MM-DD') visit_date "
+			+ "from"
+			+ " stats_daily_visit "
+			+ "where"
+			+ " extract(year from visit_date) = #{year}"
+			+ " and"
+			+ " extract(month from visit_date) = #{month} "
+			+ "group by"
+			+ " to_char(visit_date, 'YYYY-MM-DD') "
+			+ "order by"
+			+ " visit_date")
+	List<StatsVisited> statsVisitedChartByDate(Map<String, Object> param);
 	
-	@Select("select to_char(visit_date, 'MM') visit_date, count(*) visit_date_count from stats_daily_visit group by to_char(visit_date, 'MM')")
-	List<StatsVisited> findStatsVisited();
+	@Select("select count(*) visit_date_count from stats_daily_visit where extract(year from visit_date) = #{year} and extract(month from visit_date) = #{month}")
+	int statsVisitedTotalCountByDate(Map<String, Object> param);
+	
+	@Select("select count(*) visite_date_count from stats_daily_visit")
+	int statsVisitedTotalCount();
 
 }

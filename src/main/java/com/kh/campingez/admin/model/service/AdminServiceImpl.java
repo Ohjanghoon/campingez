@@ -182,12 +182,22 @@ public class AdminServiceImpl implements AdminService {
 	public int insertDailyVisit(String userId) {
 		return adminDao.insertDailyVisit(userId);
 	}
+
+	@Override
+	public List<StatsVisited> statsVisitedChartByDate(Map<String, Object> param) {
+		return adminDao.statsVisitedChartByDate(param);
+	}
 	
 	@Override
-	public List<StatsVisited> findStatsVisited() {
-		return adminDao.findStatsVisited();
+	public int statsVisitedTotalCountByDate(Map<String, Object> param) {
+		return adminDao.statsVisitedTotalCountByDate(param);
 	}
-
+	
+	@Override
+	public int statsVisitedTotalCount() {
+		return adminDao.statsVisitedTotalCount();
+	}
+	
 	private RowBounds getRowBounds(Map<String, Object> param) {
 		int limit = (int)param.get("limit");
 		int offset = ((int)param.get("cPage") - 1) * limit;

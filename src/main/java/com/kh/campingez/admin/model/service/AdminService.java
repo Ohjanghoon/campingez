@@ -67,6 +67,10 @@ public interface AdminService {
 
 	int insertDailyVisit(String userId);
 
-	List<StatsVisited> findStatsVisited();
+	List<StatsVisited> statsVisitedChartByDate(Map<String, Object> param);
+
+	int statsVisitedTotalCountByDate(Map<String, Object> param);
+
+	int statsVisitedTotalCount();
 
 }

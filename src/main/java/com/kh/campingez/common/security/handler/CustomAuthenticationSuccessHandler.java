@@ -23,10 +23,12 @@ import com.kh.campingez.admin.model.service.AdminService;
 import com.kh.campingez.user.controller.UserController;
 import com.kh.campingez.user.model.dto.User;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 // 로그인 성공 시 거쳐감
 @Slf4j
+@Data
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 	@Autowired
 	private AdminService adminService;
@@ -42,33 +44,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	
 	public CustomAuthenticationSuccessHandler() {
-		targetUrlParameter = "";
 		defaultUrl = "/";
-		useReferer = false;
-	}
-
-	public String getTargetUrlParameter() {
-		return targetUrlParameter;
-	}
-
-	public void setTargetUrlParameter(String targetUrlParameter) {
-		this.targetUrlParameter = targetUrlParameter;
-	}
-
-	public String getDefaultUrl() {
-		return defaultUrl;
-	}
-
-	public void setDefaultUrl(String defaultUrl) {
-		this.defaultUrl = defaultUrl;
-	}
-
-	public boolean isUseReferer() {
-		return useReferer;
-	}
-
-	public void setUseReferer(boolean useReferer) {
-		this.useReferer = useReferer;
+		useReferer = true;
 	}
 	
 	@Override
@@ -148,18 +125,23 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		if(!"".equals(targetUrlParameter)) {
 			String targetUrl = request.getParameter(targetUrlParameter);
 			if(StringUtils.hasText(targetUrl)) {
+				log.debug("{}", 1);
 				result = 1;
 			}
 			else {
 				if(savedRequest != null) {
+					log.debug("{}", 2);
 					result = 2;
 				}
 				else {
-					String refereUrl = request.getHeader("REFERER");
+					String refereUrl = request.getHeader("Referer");
 					if(useReferer && StringUtils.hasText(refereUrl)) {
+						log.debug("{}", 3);
 						result = 3;
 					}
 					else {
+						log.debug("{}", 0);
+						log.debug("Referer = {}", request.getHeader("Referer"));
 						result = 0;
 					}
 				}
