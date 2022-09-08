@@ -2,7 +2,6 @@ package com.kh.campingez.user.controller;
 
 import java.util.Random;
 
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
@@ -104,6 +102,8 @@ public class UserController {
 	
 	@PostMapping("/userLoginSuccess.do")
 	public String userLoginSuccess(HttpSession session) {
+		log.debug("userLoginSuccess 호출!");
+		
 		//로그인 후 처리
 		String location = "/";
 		
