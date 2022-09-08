@@ -186,4 +186,23 @@
 	    	a.zone_code = #{campZoneType}
 	    </if>
   </select>
+  
+  <select id="bestReviewByCampzone" resultMap="reviewMap">
+  	select 
+  		* 
+  	from (
+  		select 
+  			r.rev_id, rev_content, rev_score, rev_enroll_date , rev_photo_no, rev_original_filename, rev_renamed_filename, s.*
+  		from 
+  			review r 
+  		left join 
+  			review_photo p on r.rev_id = p.rev_id 
+  		left join
+  			reservation s on r.res_no = s.res_no
+  		where 
+  			r.res_no like #{campZone} and r.rev_score = 5 order by rev_enroll_date desc
+  		) 
+  	where 
+  		rownum = 1
+  </select>
 </mapper>

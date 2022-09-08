@@ -6,7 +6,7 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxa5222b687369489dad174bcba92f1a00"></script>
 <script src="./resources/js/tmap.js"></script>
-    <script>
+ <script>
 window.onload = () => {
 	weather();
 	initTmap();
@@ -16,9 +16,9 @@ window.onload = () => {
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-<h1>캠핑이지</h1>
-<div id="weather"></div>
+<div class="container">
 
+<div id="weather"></div>
 <script>
 		const clockString = () => {
 	        const f = (n) => {
@@ -166,5 +166,5 @@ window.onload = () => {
 		<input type="hidden" id="save1"> <input type="hidden"
 			id="save2">
 	</div>
-
+</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
