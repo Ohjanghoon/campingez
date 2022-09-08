@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.campingez.admin.model.dao.AdminDao;
+import com.kh.campingez.admin.model.dto.StatsVisited;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -182,6 +183,21 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.insertDailyVisit(userId);
 	}
 
+	@Override
+	public List<StatsVisited> statsVisitedChartByDate(Map<String, Object> param) {
+		return adminDao.statsVisitedChartByDate(param);
+	}
+	
+	@Override
+	public int statsVisitedTotalCountByDate(Map<String, Object> param) {
+		return adminDao.statsVisitedTotalCountByDate(param);
+	}
+	
+	@Override
+	public int statsVisitedTotalCount() {
+		return adminDao.statsVisitedTotalCount();
+	}
+	
 	private RowBounds getRowBounds(Map<String, Object> param) {
 		int limit = (int)param.get("limit");
 		int offset = ((int)param.get("cPage") - 1) * limit;
