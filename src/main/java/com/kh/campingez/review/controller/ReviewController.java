@@ -23,10 +23,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.campingez.admin.model.service.AdminService;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.CampingEzUtils;
+import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.review.model.dto.Review;
 import com.kh.campingez.review.model.dto.ReviewEntity;
 import com.kh.campingez.review.model.dto.ReviewPhoto;
 import com.kh.campingez.review.model.service.ReviewService;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -103,17 +105,23 @@ public class ReviewController {
 		Review review = reviewService.findOneReviewById(revId);
 		model.addAttribute("review", review);
 	}
+	
 	@GetMapping("/reviewForm.do")
 	public ModelAndView reviewForm(Authentication authentication, ModelAndView mav, Model model, @RequestParam String resNo) {
-		List<ReviewEntity> review = reviewService.selectReview(resNo);
-		List<ReviewPhoto> reviewPhoto = reviewService.selectReviewPhoto(review.get(0).getRevId());
-		model.addAttribute("review",review);
-		model.addAttribute("reviewPhoto",reviewPhoto);		
-		model.addAttribute("resNo",resNo);
-		mav.setViewName("review/reviewForm");
 		
-		return mav;
+		ReviewEntity review = reviewService.selectReview(resNo);
+		model.addAttribute("review",review);
+		model.addAttribute("resNo",resNo);
+		if(review == null) {
+			mav.setViewName("review/reviewInsertForm");
+		}else {
+			ReviewPhoto reviewPhoto = reviewService.selectReviewPhoto(review.getRevId());
+			model.addAttribute("reviewPhoto",reviewPhoto);								
+			mav.setViewName("review/reviewForm");
+		}
+		return mav;		
 	}
+	
 	@PostMapping("/insertReview.do")
 	public String boardEnroll(
 			Review review, 
@@ -121,7 +129,7 @@ public class ReviewController {
 			RedirectAttributes redirectAttr) 
 					throws IllegalStateException, IOException {
 		
-		
+		System.out.println("asdasd");
 		for(MultipartFile upFile : upFileList) {			
 
 			if(!upFile.isEmpty()) {				
@@ -147,4 +155,74 @@ public class ReviewController {
 		
 		return "redirect:/userInfo/myReservation.do";
 	}
+	
+	//리뷰수정
+	@PostMapping("/updateReview.do")
+	public String reviewUpdate(
+			Review review, 
+			@RequestParam(name = "upFile") List<MultipartFile> upFileList,
+			RedirectAttributes redirectAttr) 
+				throws IllegalStateException, IOException {
+		String saveDirectory = application.getRealPath("/resources/upload/review");
+		int result = 0;
+	
+						
+						
+		// 2. 업로드파일 등록(서버에 저장, DB insert할 Attachment객체생성)
+		for(MultipartFile upFile : upFileList) {
+			if(!upFile.isEmpty()) {
+				// 1. 첨부파일 삭제 (서버에 저장된 파일삭제, DB의 attachment row삭제)
+				// 서버에 저장된 파일삭제
+				ReviewPhoto reviewPhoto = reviewService.selectReviewPhoto(review.getRevId());
+				if(reviewPhoto == null) {
+					
+				}else {
+					File delFile = new File(saveDirectory, reviewPhoto.getRevRenamedFilename());
+					boolean deleted = delFile.delete();
+					log.debug("{} 파일 삭제 : {}", reviewPhoto.getRevRenamedFilename(), deleted);
+					// DB의 attachment row삭제
+					result = reviewService.deleteAttachment(reviewPhoto);				
+				}
+		
+				// a. 서버컴퓨터에 저장
+				String renamedFilename = CampingEzUtils.getRenamedFilename(upFile.getOriginalFilename()); // 20220816_193012345_123.txt
+				File destFile = new File(saveDirectory, renamedFilename);
+				System.out.println(destFile);
+				System.out.println(renamedFilename);
+				upFile.transferTo(destFile); // 해당경로에 파일을 저장
+				
+				// b. DB저장을 위해 Attachment객체 생성
+				ReviewPhoto attach = new ReviewPhoto(upFile.getOriginalFilename(), renamedFilename);
+				attach.setRevId(review.getRevId()); // fk boardNo 설정
+				review.addReviewPhoto(attach);
+			}
+		}
+						
+		// 3. 게시글 수정
+		result = reviewService.updateReview(review);				
+		
+		// 4. 사용자 메세지 
+		redirectAttr.addFlashAttribute("msg", "리뷰를 성공적으로 수정했습니다.");
+						
+						
+		return "redirect:/review/reviewForm.do?resNo=" + review.getResNo();
+	} 
+	@PostMapping("/deleteReviewPhoto.do")
+	public String deleteAnswer(@RequestParam(name = "revId") int revId,@RequestParam(name = "resNo") String resNo ,RedirectAttributes redirectAttr) {
+		// 1. 첨부파일 삭제 (서버에 저장된 파일삭제, DB의 attachment row삭제)
+		// 서버에 저장된 파일삭제
+		String saveDirectory = application.getRealPath("/resources/upload/review");
+		ReviewPhoto reviewPhoto = reviewService.selectReviewPhoto(revId);
+		if(reviewPhoto == null) {
+			
+		}else {
+			File delFile = new File(saveDirectory, reviewPhoto.getRevRenamedFilename());
+			boolean deleted = delFile.delete();
+			log.debug("{} 파일 삭제 : {}", reviewPhoto.getRevRenamedFilename(), deleted);
+			// DB의 attachment row삭제
+			reviewService.deleteAttachment(reviewPhoto);				
+		}
+		return "redirect:/review/reviewForm.do?resNo=" + resNo;
+	}
+	
 }

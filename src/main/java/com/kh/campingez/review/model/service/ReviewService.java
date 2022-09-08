@@ -25,9 +25,15 @@ public interface ReviewService {
 
 	int insertReviewPhoto(ReviewPhoto attach);
 
-	List<ReviewEntity> selectReview(String resNo);
+	ReviewEntity selectReview(String resNo);
 
-	List<ReviewPhoto> selectReviewPhoto(int revId);
+	ReviewPhoto selectReviewPhoto(int revId);
+
+	int deleteAttachment(ReviewPhoto reviewPhoto);
+
+	int updateReview(Review review);
+
+	Review bestReviewByCampzone(String campZone);
 
 	
 }

@@ -3,10 +3,12 @@ package com.kh.campingez.review.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
 import com.kh.campingez.review.model.dto.Review;
@@ -36,10 +38,18 @@ public interface ReviewDao {
 	int insertReviewPhoto(ReviewPhoto attach);
 
 	@Select("select * from review where res_no = #{resNo}")
-	List<ReviewEntity> selectReview(String resNo);
+	ReviewEntity selectReview(String resNo);
 	
 	@Select("select * from review_photo where rev_id = #{revId}")
-	List<ReviewPhoto> selectReviewPhoto(int revId);
+	ReviewPhoto selectReviewPhoto(int revId);
+
+	@Delete("delete  from review_photo where rev_id = #{revId}")
+	int deleteAttachment(ReviewPhoto reviewPhoto);
+
+	@Update("update review set rev_content = #{revContent}, rev_score= #{revScore} where rev_id = #{revId}")
+	int updateReview(Review review);
+
+	Review bestReviewByCampzone(String campZone);
 
 	
 
