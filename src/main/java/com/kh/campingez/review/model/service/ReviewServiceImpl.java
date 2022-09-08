@@ -10,6 +10,7 @@ import com.kh.campingez.review.model.dao.ReviewDao;
 import com.kh.campingez.review.model.dto.Review;
 import com.kh.campingez.review.model.dto.ReviewEntity;
 import com.kh.campingez.review.model.dto.ReviewPhoto;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -80,18 +81,30 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	
 	@Override
-	public List<ReviewEntity> selectReview(String resNo) {
+	public ReviewEntity selectReview(String resNo) {
 		return reviewDao.selectReview(resNo);
 	}
 	@Override
-	public List<ReviewPhoto> selectReviewPhoto(int revId) {
+	public ReviewPhoto selectReviewPhoto(int revId) {
 		return reviewDao.selectReviewPhoto(revId);
 	}
-	
+
 	@Override
-	public Review bestReviewByCampzone(String campZone) {
-		return reviewDao.bestReviewByCampzone(campZone);
+	public int deleteAttachment(ReviewPhoto reviewPhoto) {
+		return reviewDao.deleteAttachment(reviewPhoto);
 	}
-	
+	@Override
+	public int updateReview(Review review) {
+		int result = reviewDao.updateReview(review);
+		
+		// insert attachment
+		List<ReviewPhoto> reviewPhoto = review.getReviewPhotos();
+		if(reviewPhoto != null && !reviewPhoto.isEmpty()) {
+			for(ReviewPhoto attach : reviewPhoto) {
+				result = insertReviewPhoto(attach);
+			}
+		}
+		return result;
+	}
 	
 }
