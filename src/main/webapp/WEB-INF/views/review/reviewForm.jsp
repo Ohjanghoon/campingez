@@ -82,9 +82,9 @@
 		
 	</form:form>
 	
-	<form:form action="${pageContext.request.contextPath}/review/deleteReview.do" method="post">
+	<form:form action="${pageContext.request.contextPath}/review/deleteReview.do" name ="delFrm" method="post">
 		<input type="hidden" id="resNo" name="resNo" value="${resNo}">
-			<button type="submit">삭제</button>				
+			<button type="submit" id="delReview" name="deleteReview" onclick="deleteReview">삭제</button>				
 	</form:form>
 <script>
 const drawStar = (target) => {

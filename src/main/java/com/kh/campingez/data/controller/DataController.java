@@ -31,8 +31,8 @@ public class DataController {
 	
 	@GetMapping("/weather.do")
 	public ResponseEntity<?> weather(@RequestParam String date, @RequestParam String time){
-		log.debug("date = {}", date);
-		log.debug("time = {}", time);
+//		log.debug("date = {}", date);
+//		log.debug("time = {}", time);
 		//log.debug("test = {}", dataService.getWeather(date, time));
 		//log.debug("test = {}", dataService.getWeather(date, time).getBody().getItems());
 		

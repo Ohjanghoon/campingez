@@ -51,6 +51,10 @@ public interface ReviewDao {
 
 	Review bestReviewByCampzone(String campZone);
 
+	@Delete("delete from review where res_no = #{resNo}")
+	int deleteReview(String resNo);
+	
+
 	
 
 }
