@@ -49,6 +49,8 @@ public interface ReviewDao {
 	@Update("update review set rev_content = #{revContent}, rev_score= #{revScore} where rev_id = #{revId}")
 	int updateReview(Review review);
 
+	Review bestReviewByCampzone(String campZone);
+
 	
 
 }

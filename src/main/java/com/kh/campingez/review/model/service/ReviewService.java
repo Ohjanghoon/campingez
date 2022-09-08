@@ -33,5 +33,7 @@ public interface ReviewService {
 
 	int updateReview(Review review);
 
+	Review bestReviewByCampzone(String campZone);
+
 	
 }

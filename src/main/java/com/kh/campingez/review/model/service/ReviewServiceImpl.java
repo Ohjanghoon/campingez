@@ -107,4 +107,9 @@ public class ReviewServiceImpl implements ReviewService {
 		return result;
 	}
 	
+	@Override
+	public Review bestReviewByCampzone(String campZone) {
+		return reviewDao.bestReviewByCampzone(campZone);
+	}
+	
 }
