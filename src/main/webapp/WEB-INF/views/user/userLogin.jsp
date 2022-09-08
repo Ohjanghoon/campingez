@@ -64,6 +64,9 @@
 	color: black;
 }
 </style>
+<%
+	String loginRedirect = request.getHeader("Referer");
+%>
 <h1>로그인페이지</h1>
 <form:form action="" method="post">
 	<div class="modal-body">
@@ -72,7 +75,7 @@
 	</div>
 	<div>
 		<button type="submit">로그인</button>
-		<input type="hidden" name="loginRedirect" value="${loginRedirect}"/>
+		<input type="hidden" name="loginRedirect" value="<%= loginRedirect%>"/>
 	</div>
 </form:form>
 	<div>
