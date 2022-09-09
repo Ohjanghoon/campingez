@@ -11,7 +11,10 @@ import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.reservation.model.dao.ReservationDao;
 import com.kh.campingez.reservation.model.dto.Reservation;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ReservationServiceImpl implements ReservationService {
 
 	@Autowired
@@ -28,8 +31,12 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 	
 	@Override
-	public int insertReservation(Reservation reservation) {
-		return reservationDao.insertReservation(reservation);
+	public Reservation insertReservation(Reservation reservation) {
+		int result = reservationDao.insertReservation(reservation);
+		String resNo = reservation.getResNo();
+		log.debug("resNo = {}", reservation.getResNo());
+		
+		return reservationDao.selectCurrReservation(resNo);
 	}
 	
 }
