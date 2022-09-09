@@ -71,9 +71,11 @@ public class ReservationController {
 		reservation.setResCheckin(checkin);
 		reservation.setResCheckout(checkout);
 		log.debug("reservation = {}", reservation);
-		int result = reservationService.insertReservation(reservation);
-		redirectAttr.addFlashAttribute("msg", "예약을 완료하였습니다.");
-		return "redirect:/";
+		Reservation result = reservationService.insertReservation(reservation);
+		log.debug("result = {}", result);
+		
+		redirectAttr.addFlashAttribute("payRes", result);
+		return "redirect:/payment/payment.do";
 	}
 	
 	@GetMapping("/intro")

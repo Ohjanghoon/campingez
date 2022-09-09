@@ -22,6 +22,11 @@ public interface ReservationDao {
 	CampZone campZoneInfo(String campId);
 
 	@Insert("insert into reservation values (#{campId}||seq_reservation_res_no.nextval, #{campId}, #{userId}, #{resUsername}, #{resPhone}, #{resPerson}, #{resPrice}, default, #{resCheckin}, #{resCheckout}, #{resCarNo}, #{resRequest}, '결제대기', #{resPayment})")
+	@SelectKey(statement = "select res_no from ( select row_number() over(order by res_date desc) rnum, r.* from reservation r ) where rnum = 1", before = false, keyProperty = "resNo", resultType = String.class)
 	int insertReservation(Reservation reservation);
 
+	@Select("select * from reservation where res_no = #{resNo}")
+	Reservation selectCurrReservation(String resNo);
+
+	
 }
