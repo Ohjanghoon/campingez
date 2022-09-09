@@ -64,6 +64,9 @@
 	color: black;
 }
 </style>
+<%
+	String loginRedirect = request.getHeader("Referer");
+%>
 <h1>로그인페이지</h1>
 <form:form action="" method="post">
 	<div class="modal-body">
@@ -71,16 +74,15 @@
 		<input type="password" name="password" placeholder="비밀번호" required>
 	</div>
 	<div>
-		<div>
-			<button type="submit">로그인</button>
-		</div>
-		<div>
-			<%--<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userFindId.do';">아이디찾기</button> --%>
-			<button type="button" id="btnModal">아이디찾기</button>
-			<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userFindPassword.do';">비밀번호찾기</button>
-		</div>
+		<button type="submit">로그인</button>
+		<input type="hidden" name="loginRedirect" value="<%= loginRedirect%>"/>
 	</div>
 </form:form>
+	<div>
+		<%--<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userFindId.do';">아이디찾기</button> --%>
+		<button type="button" id="btnModal">아이디찾기</button>
+		<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userFindPassword.do';">비밀번호찾기</button>
+	</div>
 <div id="modal" class="modal-overlay">
 	<div class="modal-window">
 		<div class="title">

@@ -7,68 +7,248 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-<div class="container">
-	<h1>캠핑장 소개</h1>
-	<div>
-		<h3>데크존</h3>
-		<img src="${pageContext.request.contextPath}/resources/images/reservation/sample.png" alt="" />
-		<div class="accordion-item">
-    		<h2 class="accordion-header" id="panelsStayOpen-headingOne">
-	      		<button class="accordion-button collapsed" id="deck" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
-	        	데크존 리뷰
-	      		</button>
-    		</h2>
-    		<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
-      			<div class="accordion-body deck"></div>
-    		</div>
-  		</div>
+<main>
+	<div class="container">
+		<h2 class="text-center fw-bold pt-5">구역별 상세 정보</h2>
+		<hr />
+		<!-- 데크존 -->
+		<div class="container col-xxl-8 px-4 py-5">
+		  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+		    <div class="col-10 col-sm-8 col-lg-6">
+		    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+			  <div class="carousel-indicators">
+			    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" class="active" aria-current="true" aria-label="Slide 3"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4" class="active" aria-current="true" aria-label="Slide 4"></button>
+			  </div>
+			  <div class="carousel-inner">
+			    <div class="carousel-item active" data-bs-interval="4000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/deck1.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="3000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/deck2.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="2000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/deck3.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="1000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/deck4.png" class="d-block w-100" alt="...">
+			    </div>
+			  </div>
+			  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Previous</span>
+			  </button>
+			  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Next</span>
+			  </button>
+			</div>
+		   </div>
+		    <div class="col-lg-6">
+		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>&nbsp;데크존</h3>
+		      <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
+		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="deck" data-bs-toggle="modal" data-bs-target="#exampleModal1">리뷰보기</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal1" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-pen"></i> 베스트 리뷰 (데크존)</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-dialog modal-dialog-scrollable deck"></div>
+				</div>
+			</div>
+		</div>
+	<!-- 애견존 -->
+	<div class="row p-1 pb-0 pe-lg-0 pt-lg-1 align-items-center rounded-3 border shadow-lg">
+	<div class="container col-xxl-8 px-4 py-5">
+		  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+		    <div class="col-lg-6">
+		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>&nbsp;애견동반존</h3>
+		      <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
+		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="animal" data-bs-toggle="modal" data-bs-target="#exampleModal2">리뷰보기</button>
+		      </div>
+		    </div>
+		    <div class="col-10 col-sm-8 col-lg-6">
+		    <div id="carouselExampleDark2" class="carousel carousel-dark slide" data-bs-ride="carousel">
+			  <div class="carousel-indicators">
+			    <button type="button" data-bs-target="#carouselExampleDark2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark2" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark2" data-bs-slide-to="2" class="active" aria-current="true" aria-label="Slide 3"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark2" data-bs-slide-to="4" class="active" aria-current="true" aria-label="Slide 4"></button>
+			  </div>
+			  <div class="carousel-inner">
+			    <div class="carousel-item active" data-bs-interval="4000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/animal1.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="3000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/animal2.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="2000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/animal3.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="1000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/animal4.png" class="d-block w-100" alt="...">
+			    </div>
+			  </div>
+			  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark2" data-bs-slide="prev">
+			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Previous</span>
+			  </button>
+			  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark2" data-bs-slide="next">
+			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Next</span>
+			  </button>
+			</div>
+		   </div>
+		  </div>
+		</div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal2" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-pen"></i> 베스트 리뷰 (애견동반존)</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-dialog modal-dialog-scrollable animal"></div>
+				</div>
+			</div>
+		</div>
+	<!-- 글램핑 -->
+	<div class="container col-xxl-8 px-4 py-5">
+		  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+		    <div class="col-10 col-sm-8 col-lg-6">
+		    <div id="carouselExampleDark3" class="carousel carousel-dark slide" data-bs-ride="carousel">
+			  <div class="carousel-indicators">
+			    <button type="button" data-bs-target="#carouselExampleDark3" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark3" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark3" data-bs-slide-to="2" class="active" aria-current="true" aria-label="Slide 3"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark3" data-bs-slide-to="4" class="active" aria-current="true" aria-label="Slide 4"></button>
+			  </div>
+			  <div class="carousel-inner">
+			    <div class="carousel-item active" data-bs-interval="4000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/glamping1.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="3000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/glamping2.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="2000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/glamping3.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="1000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/glamping4.png" class="d-block w-100" alt="...">
+			    </div>
+			  </div>
+			  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark3" data-bs-slide="prev">
+			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Previous</span>
+			  </button>
+			  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark3" data-bs-slide="next">
+			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Next</span>
+			  </button>
+			</div>
+		   </div>
+		    <div class="col-lg-6">
+		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>글램핑존</h3>
+		      <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
+		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="glamping" data-bs-toggle="modal" data-bs-target="#exampleModal3">리뷰보기</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal3" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-pen"></i> 베스트 리뷰 (글램핑존)</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-dialog modal-dialog-scrollable glamping"></div>
+				</div>
+			</div>
+		</div>
+	<!-- 카라반 -->
+	<div class="row p-1 pb-0 pe-lg-0 pt-lg-1 align-items-center rounded-3 border shadow-lg">
+	<div class="container col-xxl-8 px-4 py-5">
+		  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+		    <div class="col-lg-6">
+		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>&nbsp;카라반존</h3>
+		      <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
+		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="caravan" data-bs-toggle="modal" data-bs-target="#exampleModal4">리뷰보기</button>
+		      </div>
+		    </div>
+		     <div class="col-10 col-sm-8 col-lg-6">
+		    <div id="carouselExampleDark4" class="carousel carousel-dark slide" data-bs-ride="carousel">
+			  <div class="carousel-indicators">
+			    <button type="button" data-bs-target="#carouselExampleDark4" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark4" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark4" data-bs-slide-to="2" class="active" aria-current="true" aria-label="Slide 3"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark4" data-bs-slide-to="4" class="active" aria-current="true" aria-label="Slide 4"></button>
+			  </div>
+			  <div class="carousel-inner">
+			    <div class="carousel-item active" data-bs-interval="4000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/caravan1.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="3000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/caravan2.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="2000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/caravan3.png" class="d-block w-100" alt="...">
+			    </div>
+			    <div class="carousel-item" data-bs-interval="1000">
+			      <img src="${pageContext.request.contextPath}/resources/images/reservation/caravan4.png" class="d-block w-100" alt="...">
+			    </div>
+			  </div>
+			  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark4" data-bs-slide="prev">
+			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Previous</span>
+			  </button>
+			  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark4" data-bs-slide="next">
+			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Next</span>
+			  </button>
+			</div>
+		   </div>
+		  </div>
+		</div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal4" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-pen"></i> 베스트 리뷰 (카라반존)</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-dialog modal-dialog-scrollable caravan"></div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div>
-		<h3>반려견존</h3>
-		<img src="${pageContext.request.contextPath}/resources/images/reservation/sample.png" alt="" />
-		<div class="accordion-item">
-    		<h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-	      		<button class="accordion-button collapsed" id="animal" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-	        	반려견존 리뷰
-	      		</button>
-    		</h2>
-    		<div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-      			<div class="accordion-body animal"></div>
-    		</div>
-  		</div>
-	</div>
-	<div>
-		<h3>글램핑존</h3>
-		<img src="${pageContext.request.contextPath}/resources/images/reservation/sample.png" alt="" />
-		<div class="accordion-item">
-    		<h2 class="accordion-header" id="panelsStayOpen-headingThree">
-	      		<button class="accordion-button collapsed" id="glamping" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-	        	글랭핑존리뷰
-	      		</button>
-    		</h2>
-    		<div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
-      			<div class="accordion-body glamping"></div>
-    		</div>
-  		</div>
-	</div>
-	<div>
-		<h3>카라반존</h3>
-		<img src="${pageContext.request.contextPath}/resources/images/reservation/sample.png" alt="" />
-		<div class="accordion-item">
-    		<h2 class="accordion-header" id="panelsStayOpen-headingFour">
-	      		<button class="accordion-button collapsed" id="caravan" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
-	        	카라반존 리뷰
-	      		</button>
-    		</h2>
-    		<div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFour">
-      			<div class="accordion-body caravan"></div>
-    		</div>
-  		</div>
-	</div>
-	<h5>
-		<a href="${pageContext.request.contextPath}/reservation/list.do">예약하기</a>
-	</h5>
-</div>
+</main>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 <script>
 	
