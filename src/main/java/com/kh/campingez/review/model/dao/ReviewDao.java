@@ -32,7 +32,7 @@ public interface ReviewDao {
 
 	@Insert("insert into review values(seq_review_rev_id.nextval, #{resNo}, #{revContent}, #{revScore}, sysdate)")
 	@SelectKey(statement = "select seq_review_rev_id.currval from dual", before = false, keyProperty = "revId", resultType = int.class)
-	int insertBoard(Review review);
+	int insertReview(Review review);
 
 	@Insert("insert into review_photo values(seq_review_photo_no.nextval, #{revId}, #{revOriginalFilename}, #{revRenamedFilename})")
 	int insertReviewPhoto(ReviewPhoto attach);

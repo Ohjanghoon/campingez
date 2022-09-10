@@ -89,4 +89,17 @@
   </select>
   
   
+    <select id="selectCoupon" resultType="coupon">
+		select 
+		    c.coupon_name,
+		    u.coupon_code,
+		    c.coupon_discount,
+		    c.coupon_startday,
+		    c.coupon_endday,
+		    decode(u.coupon_usedate,null,'Y','N') as coupon_usedate
+		from 
+		    user_coupon u left join coupon c on u.coupon_code = c.coupon_code
+		where
+		    user_id = #{userId}
+  	</select>
 </mapper>

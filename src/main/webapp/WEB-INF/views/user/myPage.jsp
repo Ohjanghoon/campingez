@@ -6,15 +6,12 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param name="title" value="캠핑이지" />
+</jsp:include>
 <style type="text/css">
 	.mypageFrm{
-		width : 400px;
+		width : 650px;
 		height : 200px;
 		border : 1px solid black;
 	}
@@ -74,5 +71,33 @@
 			<button type="submit">예약 정보 상세</button><br>		
 		</form>				
 	</div>
+		<div class="mypageFrm">
+			<span>내 쿠폰함</span>
+			<table>
+				<tr>
+					<td>쿠폰이름</td>
+					<td>쿠폰코드</td>
+					<td>할인율 %</td>
+					<td>사용가능기간</td>
+					<td>사용가능여부</td>
+				</tr>	
+					<c:forEach items="${couponList}" var="coupon" varStatus="vs">
+						<tr>
+							<td>${coupon.couponName}</td>
+							<td>${coupon.couponCode}</td>
+							<td>${coupon.couponDiscount}%</td>
+							<td>${coupon.couponStartday} ~ ${coupon.couponEndday}</td>
+							<c:if test="${coupon.couponUsedate == 'Y'}">
+								<td>사용가능</td>
+							</c:if>
+							<c:if test="${coupon.couponUsedate == 'N'}">
+								<td>사용완료</td>
+							</c:if>
+
+						</tr>	
+					</c:forEach>
+			</table>		
+	</div>
 </body>
 </html>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

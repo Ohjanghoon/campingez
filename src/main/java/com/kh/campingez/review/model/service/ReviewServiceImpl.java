@@ -61,7 +61,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int insertReview(Review review) {
 		// insert board
-		int result = reviewDao.insertBoard(review);
+		int result = reviewDao.insertReview(review);
 		log.debug("board#no = {}", review.getRevId());
 		
 		// insert attachment * n
