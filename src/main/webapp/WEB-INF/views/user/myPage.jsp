@@ -6,15 +6,12 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param name="title" value="캠핑이지" />
+</jsp:include>
 <style type="text/css">
 	.mypageFrm{
-		width : 600px;
+		width : 650px;
 		height : 200px;
 		border : 1px solid black;
 	}
@@ -90,10 +87,17 @@
 							<td>${coupon.couponCode}</td>
 							<td>${coupon.couponDiscount}%</td>
 							<td>${coupon.couponStartday} ~ ${coupon.couponEndday}</td>
-					
+							<c:if test="${coupon.couponUsedate == 'Y'}">
+								<td>사용가능</td>
+							</c:if>
+							<c:if test="${coupon.couponUsedate == 'N'}">
+								<td>사용완료</td>
+							</c:if>
+
 						</tr>	
 					</c:forEach>
 			</table>		
 	</div>
 </body>
 </html>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

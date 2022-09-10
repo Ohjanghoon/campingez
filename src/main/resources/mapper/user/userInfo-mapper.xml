@@ -96,7 +96,7 @@
 		    c.coupon_discount,
 		    c.coupon_startday,
 		    c.coupon_endday,
-		    u.coupon_usedate
+		    decode(u.coupon_usedate,null,'Y','N') as coupon_usedate
 		from 
 		    user_coupon u left join coupon c on u.coupon_code = c.coupon_code
 		where
