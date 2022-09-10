@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.user.model.dao.UserInfoDao;
@@ -41,5 +42,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public List<Reservation> selectReservation(User user) {
 		return userInfoDao.selectReservation(user);
+	}
+	@Override
+	public List<Coupon> selectCoupon(User user) {
+		return userInfoDao.selectCoupon(user);
 	}
 }

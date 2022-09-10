@@ -14,7 +14,7 @@
 </head>
 <style type="text/css">
 	.mypageFrm{
-		width : 400px;
+		width : 600px;
 		height : 200px;
 		border : 1px solid black;
 	}
@@ -73,6 +73,27 @@
 			</table>
 			<button type="submit">예약 정보 상세</button><br>		
 		</form>				
+	</div>
+		<div class="mypageFrm">
+			<span>내 쿠폰함</span>
+			<table>
+				<tr>
+					<td>쿠폰이름</td>
+					<td>쿠폰코드</td>
+					<td>할인율 %</td>
+					<td>사용가능기간</td>
+					<td>사용가능여부</td>
+				</tr>	
+					<c:forEach items="${couponList}" var="coupon" varStatus="vs">
+						<tr>
+							<td>${coupon.couponName}</td>
+							<td>${coupon.couponCode}</td>
+							<td>${coupon.couponDiscount}%</td>
+							<td>${coupon.couponStartday} ~ ${coupon.couponEndday}</td>
+					
+						</tr>	
+					</c:forEach>
+			</table>		
 	</div>
 </body>
 </html>

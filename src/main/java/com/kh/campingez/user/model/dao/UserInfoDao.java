@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.user.model.dto.MyPage;
@@ -34,5 +35,8 @@ public interface UserInfoDao {
 
 
 	List<Reservation> selectReservation(User user);
+
+	
+	List<Coupon> selectCoupon(User user);
 
 }

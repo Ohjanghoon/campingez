@@ -2,6 +2,7 @@ package com.kh.campingez.user.model.service;
 
 import java.util.List;
 
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.user.model.dto.MyPage;
@@ -20,4 +21,6 @@ public interface UserInfoService {
 	List<MyPage> selectInquireCnt(User user);
 
 	List<Reservation> selectReservation(User user);
+
+	List<Coupon> selectCoupon(User user);
 }

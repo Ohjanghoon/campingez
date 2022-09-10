@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.user.model.dto.MyPage;
@@ -51,12 +52,20 @@ public class UserInfoController {
 	@GetMapping("/myPage.do")
 	public ModelAndView myPage(Authentication authentication, ModelAndView mav, Model model) {
 		User principal = (User)authentication.getPrincipal();
-		List<MyPage> inquireCnt = userInfoService.selectInquireCnt(principal);
-		List<Reservation> reservationList= userInfoService.selectReservation(principal);
-		model.addAttribute("inquireCnt",inquireCnt);
-		model.addAttribute("reservationList",reservationList);
-		mav.setViewName("user/myPage");
 		
+		//로그인된 회원의 1:1 문의 답변 확인
+		List<MyPage> inquireCnt = userInfoService.selectInquireCnt(principal);
+		model.addAttribute("inquireCnt",inquireCnt);
+		
+		//로그인된 회원의 입실 예정 객실조회
+		List<Reservation> reservationList= userInfoService.selectReservation(principal);
+		model.addAttribute("reservationList",reservationList);
+		
+		//로그인된 회원이 다운받은 쿠폰 조회해오기
+		List<Coupon> couponList = userInfoService.selectCoupon(principal); 
+		model.addAttribute("couponList",couponList);
+		
+		mav.setViewName("user/myPage");
 		return mav;
 	}
 	
