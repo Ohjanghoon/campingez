@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+	#mypage{
+	 display: flex;
+	 flex-direction: column;
+	 align-items: center;
+	}
+	.outter-div {
+	  width : 800px;
+	}
+	.inner-div {
+		  margin-top: 20px;
+		  border : 1px solid #7985b5;
+	}
+	#userinfo{
+		width :65%;
+		height : 170px;
+		float: left;
+	}
+	#answer{
+		width: 30%;
+		float: right;
+		height : 170px;
+	}
+	
+
+	
