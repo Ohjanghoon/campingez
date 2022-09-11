@@ -8,22 +8,37 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/mypage/popup.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<form>
+    <div id="con">
+    <div id="login">
+    <div id="login_form"><!--로그인 폼-->
+    <form>
+     <h3 class="login" style="letter-spacing:-1px;">아이디 비밀번호 확인</h3>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	 <hr>
 		<div>
-			<span>개인정보 수정을 위하여 아이디 비밀번호 재인증!</span><br>
-			<span>아이디  :   <input type="text" id="userId" name="userId"/></span><br>
-			<span>비밀 번호  :   <input type="text" id="password" name="password"/></span><br>
-			<button id="updateConfirm" type="button">확인</button>
+			 <p style="text-align: left; font-size:12px; color:#666">Username</p>
+			<input type="text" id="userId" name="userId" class="size"/>
+			  <p style="text-align: left; font-size:12px; color:#666">Password</p>
+			<input type="text" id="password" name="password" class="size"/><br>
+			<br>
+			<hr>
+			<br>
+			<button id="updateConfirm" type="button" class="btn">Sign in</button>
 		</div>
 	</form>
+ </div>
+    </div>
+  </div>
 </body>
+
 <script>
 document.querySelector("#updateConfirm").addEventListener('click', () =>  {
 	$.ajax({
