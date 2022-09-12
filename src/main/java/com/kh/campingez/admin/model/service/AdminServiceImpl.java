@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.campingez.admin.model.dao.AdminDao;
-import com.kh.campingez.admin.model.dto.StatsVisited;
+import com.kh.campingez.admin.model.dto.Stats;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -184,7 +184,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<StatsVisited> statsVisitedChartByDate(Map<String, Object> param) {
+	public List<Stats> statsVisitedChartByDate(Map<String, Object> param) {
 		return adminDao.statsVisitedChartByDate(param);
 	}
 	
@@ -196,6 +196,21 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int statsVisitedTotalCount() {
 		return adminDao.statsVisitedTotalCount();
+	}
+	
+	@Override
+	public List<Stats> getLoginMemberListByDate(String searchDate) {
+		return adminDao.getLoginMemberListByDate(searchDate);
+	}
+	
+	@Override
+	public List<Stats> getMonthlySalesListByYear(int year) {
+		return adminDao.getMonthlySalesListByYear(year);
+	}
+	
+	@Override
+	public List<Stats> getSaleListByMonth(Map<String, Object> param) {
+		return adminDao.getSaleListByMonth(param);
 	}
 	
 	private RowBounds getRowBounds(Map<String, Object> param) {
