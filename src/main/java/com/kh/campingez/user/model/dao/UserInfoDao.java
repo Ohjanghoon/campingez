@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
@@ -38,5 +40,8 @@ public interface UserInfoDao {
 
 	
 	List<Coupon> selectCoupon(User user);
+
+	@Select("select * from assignment where user_id = #{userId}")
+	List<AssignmentEntity> selectAssignList(User user);
 
 }
