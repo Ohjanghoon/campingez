@@ -182,7 +182,7 @@ public class UserController {
 		return "redirect:/user/userLogin.do";
 	};
 	
-	@GetMapping("/userEamilCheck.do")
+	@GetMapping("/userEmailCheck.do")
 	public ResponseEntity<?> userEamilCheck(@RequestParam String email) {
 		log.debug("email = {}", email);
 		
