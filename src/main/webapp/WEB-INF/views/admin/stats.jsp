@@ -16,6 +16,7 @@
 
 		<ul>
 			<li><a href="${pageContext.request.contextPath}/admin/statsVisited.do">일자별 로그인 회원 수 조회</a></li>
+			<li><a href="${pageContext.request.contextPath}/admin/monthlySales.do">월별 매출 조회</a></li>
 		</ul>
 	</section>
 </main>
