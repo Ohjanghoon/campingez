@@ -1,11 +1,8 @@
 package com.kh.campingez.user.model.dto;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
-
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +17,9 @@ public class UserEntity {
 	protected String userName;
 	@NonNull
 	protected String password;
+	//비밀번호 변경용 현재 비밀번호와 바꿀비밀번호 컬럼
+	protected String cPassword;
+	protected String rPassword;
 	@NonNull
 	protected String email;
 	@NonNull

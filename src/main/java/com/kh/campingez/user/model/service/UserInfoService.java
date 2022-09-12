@@ -2,6 +2,7 @@ package com.kh.campingez.user.model.service;
 
 import java.util.List;
 
+import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
@@ -23,4 +24,7 @@ public interface UserInfoService {
 	List<Reservation> selectReservation(User user);
 
 	List<Coupon> selectCoupon(User user);
+
+	List<AssignmentEntity> selectAssignList(User user);
+
 }

@@ -1,3 +1,6 @@
+<%@page import="com.kh.campingez.assignment.model.dto.Assignment"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -10,6 +13,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
+
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/mypage/mypage.css" />
 <script>
@@ -30,7 +34,7 @@
 						<span>아이디 : ${result.userId}</span><br> 
 						<span>이름 : ${result.userName}</span><br> 
 						<span>경고횟수 : ${result.yellowCard}</span><br> 
-						<span>잔여 포인트 : ${result.point}</span><br>
+						<span>잔여 포인트 : <fmt:formatNumber value="${result.point}" pattern="#,###"/>point</span><br>
 						<button onclick="popup()" class="btn btn-outline-dark">내정보 수정</button><br>
 					</form>
 				</div>
@@ -43,11 +47,11 @@
 
 						<c:forEach items="${inquireCnt}" var="cnt" varStatus="vs">
 							<c:if test="${cnt.answerStatus == 0}">
-								<span>답변대기 -> ${cnt.statusCnt} 건</span>
+								<span>답변대기 -------> ${cnt.statusCnt} 건</span>
 								<br>
 							</c:if>
 							<c:if test="${cnt.answerStatus == 1}">
-								<span>답변완료 -> ${cnt.statusCnt} 건</span>
+								<span>답변완료 -------> ${cnt.statusCnt} 건</span>
 								<br>
 							</c:if>
 						</c:forEach>
@@ -87,6 +91,8 @@
 					</form>
 				</div>
 			</div>
+		</div>
+		<div class="outter-div">
 			<div class="inner-div card" id="coupon">
 				<div class="card-body">
 					<span>내 쿠폰함</span>
@@ -114,6 +120,40 @@
 							</tr>
 						</c:forEach>
 					</table>
+				</div>
+			</div>
+		</div>
+		<div class="outter-div">
+			<div class="inner-div card" id="assign">
+				<div class="card-body">
+					<form
+						action="${pageContext.request.contextPath}/userInfo/assignment.do"
+						method="GET">
+						<span>등록한 양도글 확인</span>
+						<table class="table">
+							<tr>
+								<th scope="col">예약번호</th>
+								<th scope="col">제목</th>
+								<th scope="col">양도 가격</th>
+								<th scope="col">양도마감 일자</th>
+								<th scope="col">상태</th>
+							</tr>
+							<c:forEach items="${assignList}" var="assign" varStatus="vs">
+								<tr>
+									<td>${assign.resNo}</td>
+									<td>${assign.assignTitle}</td>
+									<td><fmt:formatNumber value="${assign.assignPrice}" pattern="#,###"/>원</td>
+									<td>
+										<fmt:parseDate value="${assign.assignDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="assignDate"/>
+										<fmt:formatDate value="${assignDate}" pattern="yyyy-MM-dd"/>
+									</td>	
+									<td>${assign.assignState}</td>
+								</tr>
+							</c:forEach>
+						</table>
+						<button type="submit" class="btn btn-outline-dark">양도글 상세 보기</button>
+						<br>
+					</form>
 				</div>
 			</div>
 		</div>

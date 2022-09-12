@@ -1,19 +1,17 @@
 package com.kh.campingez.user.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
-import java.util.Collection;
+
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,12 +21,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.review.model.dto.ReviewEntity;
+import com.kh.campingez.review.model.dto.ReviewPhoto;
 import com.kh.campingez.user.model.dto.MyPage;
 import com.kh.campingez.user.model.dto.User;
 import com.kh.campingez.user.model.service.UserInfoService;
@@ -44,6 +46,9 @@ public class UserInfoController {
 
 	@Autowired
 	private UserInfoService userInfoService;
+
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	@Autowired
 	private UserSecurityService userSecurityService;
@@ -65,6 +70,10 @@ public class UserInfoController {
 		List<Coupon> couponList = userInfoService.selectCoupon(principal); 
 		model.addAttribute("couponList",couponList);
 		
+		//로그인된 회원이 등록한 양도글 조회.
+		List<AssignmentEntity> assignList = userInfoService.selectAssignList(principal); 
+		model.addAttribute("assignList",assignList);
+	
 		mav.setViewName("user/myPage");
 		return mav;
 	}
@@ -102,21 +111,41 @@ public class UserInfoController {
 	}
 	//회원 정보 수정
 	@PostMapping("/profileUpdate.do")
-	public String profileUpdate(@ModelAttribute User user, RedirectAttributes redirectAttr, Model model) {
-		log.debug("user = {}", user);
-		// 1. db row 수정
-		int result = userInfoService.profileUpdate(user);
-		if(result > 0) {
-			UserDetails updatedMember = userSecurityService.loadUserByUsername(user.getUserId());
-			// 2. authentication 수정
-			Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
-					updatedMember,
-					updatedMember.getPassword(),
-					updatedMember.getAuthorities()
-					);
-			SecurityContextHolder.getContext().setAuthentication(newAuthentication);
-			redirectAttr.addFlashAttribute("msg", "회원정보를 성공적으로 수정했습니다.");			
+	public String profileUpdate(@ModelAttribute User user, RedirectAttributes redirectAttr, Model model, Authentication authentication) {
+		User principal = (User)authentication.getPrincipal();
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		if(encoder.matches(user.getCPassword(), principal.getPassword())){
+			String rawPassword = "";
+			if(!user.getRPassword().isEmpty()) {
+				rawPassword = user.getRPassword();
+			}else {
+				rawPassword = user.getCPassword();
+			}
+			log.debug("rawPassword = {}", rawPassword);
+			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
+			log.debug("encodedPassword = {}", encodedPassword);
+			user.setPassword(encodedPassword);		
+			
+			// 1. db row 수정
+			int result = userInfoService.profileUpdate(user);
+			if(result > 0) {
+				UserDetails updatedMember = userSecurityService.loadUserByUsername(user.getUserId());
+				// 2. authentication 수정
+				Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
+						updatedMember,
+						updatedMember.getPassword(),
+						updatedMember.getAuthorities()
+						);
+				SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+				redirectAttr.addFlashAttribute("msg", "회원정보를 성공적으로 수정했습니다.");			
+			}
+		}else {
+			redirectAttr.addFlashAttribute("msg", "Current Password 가 일치 하지 않습니다.");
 		}
+		log.debug("user = {}", user);
+		
+
 		return "redirect:/userInfo/userInfo.do";
 	}
 	//회원 탈퇴
@@ -159,5 +188,17 @@ public class UserInfoController {
 		return mav;
 	}
 	
+	/**
+	 * !!!!!!!!!!!!!!!!양도 글 확인!!!!!!!!!!!!!!!!!!!!! 
+	 */
+	@GetMapping("/assignment.do")
+	public ModelAndView assignList(Authentication authentication, ModelAndView mav, Model model) {
+		User principal = (User)authentication.getPrincipal();
+		List<AssignmentEntity> list = userInfoService.selectAssignList(principal);
+		log.debug("list = {}", list);
+		model.addAttribute("assignList", list);
+		mav.setViewName("user/myAssignment");
+		return mav;
+	}
 	
 }

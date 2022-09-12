@@ -23,15 +23,18 @@
 			action="${pageContext.request.contextPath}/userInfo/profileUpdate.do"
 			method="POST" class="row g-3">
 
-			<div class="col-md-6">
+			<div class="col-12">
 				<label class="form-label">Userid</label> <input type="text"
 					class="form-control" name="userId" id="userId"
 					value="${result.userId}" readonly required />
 			</div>
-			<div class="col-md-6">
-				<label class="form-label">Password</label> <input type="text"
-					class="form-control" name="password" id="password"
-					value="${result.password}" required />
+			<div class="col-12">
+				<label class="form-label">Current Password</label> <input type="text"
+					class="form-control" name="cPassword" id="cPassword" placeholder="현재 비밀번호를 입력하세요" required />
+			</div>
+			<div class="col-12">
+				<label class="form-label">Password to be replaced</label> <input type="text"
+					class="form-control" name= "rPassword" id="rPassword" placeholder="변경할 비밀번호를 입력하세요"/>
 			</div>
 			<div class="col-12">
 				<label class="form-label">Username</label> <input type="text"
@@ -50,9 +53,12 @@
 					value="${result.phone}" required />
 			</div>
 			<div class="col-12">
-				<label class="form-label">Gender</label> <input type="text"
-					class="form-control" name="gender" id="gender"
-					value="${result.gender}" />
+				<label class="form-label">Gender</label>
+				<select class="form-control" name="gender" id="gender">
+					<option value="M" ${result.gender == "M" ? 'selected' : ""}>M</option>
+					<option value="F" ${result.gender == "F" ? 'selected' : ""}>F</option>
+				</select>
+				<%--  <input type="text"class="form-control" name="gender" id="gender" value="${result.gender}" /> --%>
 			</div>
 			<div class="col-12">
 				<label class="form-label">Notice</label> <input type="text"
