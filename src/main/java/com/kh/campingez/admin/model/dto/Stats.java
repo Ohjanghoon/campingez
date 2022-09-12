@@ -1,17 +1,19 @@
 package com.kh.campingez.admin.model.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StatsVisited {
-	private String visitDate;
+@ToString(callSuper = true)
+public class Stats extends StatsEntity{
 	private int visitDateCount;
+	private String month;
+	private String totalPrice;
+	private LocalDate resDate;
 }

@@ -78,13 +78,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 			useDefaultUrl(request, response);
 		}
 		
-		
 		if(userId != null) {
 			for(GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
 				if("ROLE_ADMIN".equals(grantedAuthority.toString())) {
 					return;
 				} else {
-					log.debug("어드민서비스로감");
 					adminService.insertDailyVisit(userId);
 				}
 			}

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.campingez.admin.model.dto.StatsVisited;
+import com.kh.campingez.admin.model.dto.Stats;
 import com.kh.campingez.admin.model.service.AdminService;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
@@ -329,13 +329,47 @@ public class AdminController {
 		Map<String, Object> param = new HashMap<>();
 		param.put("year", year);
 		param.put("month", month);
+		log.debug("year = {}, month = {}", year, month);
 		
-		List<StatsVisited> visitedList = adminService.statsVisitedChartByDate(param);
+		List<Stats> visitedList = adminService.statsVisitedChartByDate(param);
+		log.debug("visitedList = {}", visitedList);
+		
 		int totalCount = adminService.statsVisitedTotalCount();
 		int totalCountByDate = adminService.statsVisitedTotalCountByDate(param);
 		param.put("visitedList", visitedList);
 		param.put("totalCount", totalCount);
 		param.put("totalCountByDate", totalCountByDate);
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(param);
+	}
+	
+	@GetMapping("/loginMemberListByDate.do")
+	public ResponseEntity<?> loginMemberListByDate(@RequestParam String searchDate) {
+		List<Stats> visitedList = adminService.getLoginMemberListByDate(searchDate);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(visitedList);
+	}
+	
+	@GetMapping("/monthlySales.do")
+	public void monthlySales() {}
+	
+	@GetMapping("/monthlySalesList.do")
+	public ResponseEntity<?> monthlySalesList(@RequestParam int year) {
+		List<Stats> saleList = adminService.getMonthlySalesListByYear(year);
+		log.debug("saleList = {}", saleList);
+		Map<String, Object> param = new HashMap<>();
+		param.put("year", year);
+		param.put("saleList", saleList);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(param);
+	}
+	
+	@GetMapping("/saleListByMonth.do")
+	public ResponseEntity<?> saleListByMonth(@RequestParam int year, @RequestParam(name = "searchMon") String month) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("year", year);
+		param.put("month", month);
+		
+		List<Stats> saleList = adminService.getSaleListByMonth(param);
+		param.put("saleList", saleList);
 		
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(param);
 	}
