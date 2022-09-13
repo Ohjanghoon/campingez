@@ -79,4 +79,8 @@ public interface AdminService {
 
 	List<Stats> getSaleListByMonth(Map<String, Object> param);
 
+	int getTotalSalesPrice();
+
+	int getYearTotalSalesPrice(Map<String, Object> param);
+
 }

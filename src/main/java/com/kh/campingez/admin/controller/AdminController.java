@@ -355,10 +355,14 @@ public class AdminController {
 	@GetMapping("/monthlySalesList.do")
 	public ResponseEntity<?> monthlySalesList(@RequestParam int year) {
 		List<Stats> saleList = adminService.getMonthlySalesListByYear(year);
-		log.debug("saleList = {}", saleList);
+		int totalPrice = adminService.getTotalSalesPrice();
 		Map<String, Object> param = new HashMap<>();
 		param.put("year", year);
 		param.put("saleList", saleList);
+		param.put("totalPrice", totalPrice);
+		int yearTotalPrice = adminService.getYearTotalSalesPrice(param);
+		param.put("yearTotalPrice", yearTotalPrice);
+		
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(param);
 	}
 	

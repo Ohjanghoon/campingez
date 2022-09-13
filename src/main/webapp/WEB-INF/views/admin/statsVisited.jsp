@@ -12,6 +12,8 @@
 </jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
 <main>
 	<section>
 		<h2>날짜별 로그인 회원 통계</h2>
@@ -106,6 +108,7 @@ const graphRender = (response) => {
 	const ctx = document.getElementById('myChart').getContext('2d');
 	var myLineChart = new Chart(ctx, {
 	    type: 'line',
+	    plugins:[ChartDataLabels],
 	    data: {
 	    	labels: allDate,
 	    	  datasets: [
@@ -136,7 +139,20 @@ const graphRender = (response) => {
     	      title: {
     	        display: true,
     	        text: '로그인 통계'
-    	      }
+    	      },
+    	      tooltip: {
+    	    	  enabled: false
+    	      }, 
+    	      datalabels: {
+        	        formatter: function(value, context) {
+        	        	return value != 0 ? value : '';
+        	        },
+        	        padding: 1,
+                    color: 'black',
+                    anchor: 'end',
+                    clamp: true,
+                    align: 'top'
+    	      	}
 			},
 			onClick(point, event) {
 				const {chart} = point;
@@ -164,7 +180,6 @@ const graphRender = (response) => {
 							`;
 							if(response.length) {
 								response.forEach((data) => {
-									console.log(data);
 									const {userId, visitDateCount} = data;
 									tbl += `
 									<tr>
@@ -172,7 +187,6 @@ const graphRender = (response) => {
 										<td>\${visitDateCount}번 방문</td>
 									</tr>
 									`;
-
 								});	
 							} else {
 								tbl += `

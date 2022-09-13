@@ -213,6 +213,16 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.getSaleListByMonth(param);
 	}
 	
+	@Override
+	public int getTotalSalesPrice() {
+		return adminDao.getTotalSalesPrice();
+	}
+	
+	@Override
+	public int getYearTotalSalesPrice(Map<String, Object> param) {
+		return adminDao.getYearTotalSalesPrice(param);
+	}
+	
 	private RowBounds getRowBounds(Map<String, Object> param) {
 		int limit = (int)param.get("limit");
 		int offset = ((int)param.get("cPage") - 1) * limit;
