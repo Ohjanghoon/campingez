@@ -10,11 +10,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-
-<!-- 
-	* 해당 년도 매출 총액 보여주기
-	* 모든 년도 매출 총액 보여주기
- -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <main>
 	<section>
 		<h2>월별 매출 통계</h2>
@@ -25,6 +21,12 @@
 				<option value="2024">2024</option>
 				<option value="2025">2025</option>
 			</select>
+		</div>
+		<div>
+			총 매출 총액 : <span id="totalPrice"></span>
+		</div>
+		<div>
+			<span id="selectYear"></span>년도 매출 총액 : <span id="yearTotalPrice"></span>
 		</div>
 		<canvas id="myChart" width="1024" height="500"></canvas>
 		<div id="sale-chart-wrap"></div>
@@ -59,8 +61,11 @@ const monthlyGraph = (year) => {
 		data : {year},
 		content : "application/json",
 		success(response) {
-			console.log(response);
-			const {year, saleList} = response;
+			const {year, saleList, totalPrice, yearTotalPrice} = response;
+			document.querySelector("#selectYear").innerHTML = year;
+			document.querySelector("#totalPrice").innerHTML = totalPrice.toLocaleString() + '원';
+			document.querySelector("#yearTotalPrice").innerHTML = yearTotalPrice.toLocaleString() + '원';
+			
 			const monthList = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
 			
 			// selected 처리
@@ -92,6 +97,7 @@ const monthlyGraph = (year) => {
 			const ctx = document.getElementById('myChart').getContext('2d');
 			var myLineChart = new Chart(ctx, {
 			    type: 'bar',
+			    plugins:[ChartDataLabels],
 			    data: {
 			    	labels: monthList,
 			    	  datasets: [
@@ -117,8 +123,22 @@ const monthlyGraph = (year) => {
 		    	      },
 		    	      title: {
 		    	        display: true,
-		    	        text: '월별 매출 통계'
-		    	      }
+		    	        text: '월별 매출 통계',
+		    	        fontSize: 20
+		    	      },
+		    	      tooltip: {
+		    	    	  enabled: false
+		    	      }, 
+		    	      datalabels: {
+		        	        formatter: function(value, context) {
+		        	        	return value != 0 ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원" : '';
+		        	        },
+		        	        padding: 1,
+		                    color: 'black',
+		                    anchor: 'end',
+		                    clamp: true,
+		                    align: 'top'
+		    	      	}
 		    	    },
 		    	    onClick(point, event) {
 		    	    	const {chart} = point;
@@ -199,6 +219,7 @@ const dailyGraph = (response) => {
 	const ctx = document.getElementById('dailyChart').getContext('2d');
 	var myLineChart = new Chart(ctx, {
 	    type: 'line',
+	    plugins:[ChartDataLabels],
 	    data: {
 	    	labels: allDate,
 	    	  datasets: [
@@ -229,7 +250,20 @@ const dailyGraph = (response) => {
     	      title: {
     	        display: true,
     	        text: '일일 매출 통계'
-    	      }
+    	      },
+    	      tooltip: {
+    	    	  enabled: false
+    	      }, 
+    	      datalabels: {
+        	        formatter: function(value, context) {
+        	        	return value != 0 ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원" : '';
+        	        },
+        	        padding: 1,
+                    color: 'black',
+                    anchor: 'end',
+                    clamp: true,
+                    align: 'top'
+    	      	}
     	    }
 		}
 	});

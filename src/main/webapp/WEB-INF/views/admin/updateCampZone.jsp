@@ -55,7 +55,7 @@
 		</c:if>
 		<br />
 		<label for="upFile1">파일업로드</label>
-		<input type="file" name="upFile" id="upFile1" />
+		<input type="file" name="upFile" id="upFile1" multiple/>
 		<br />
 		<button>수정</button>
 	</form:form>
