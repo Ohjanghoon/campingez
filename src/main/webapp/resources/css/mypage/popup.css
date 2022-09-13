@@ -98,5 +98,7 @@
         .find a:hover{
             color:#707070;
         }
-
+		#updateConfirm{
+			width : 100%;
+		}
 
