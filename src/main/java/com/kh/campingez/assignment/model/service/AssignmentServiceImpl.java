@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.campingez.assignment.model.dao.AssignmentDao;
 import com.kh.campingez.assignment.model.dto.Assignment;
@@ -11,6 +12,7 @@ import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.reservation.model.dto.Reservation;
 
 @Service
+@Transactional
 public class AssignmentServiceImpl implements AssignmentService {
 
 	@Autowired

@@ -9,8 +9,8 @@
 	    *
 	from 
 	    assignment a
-	    left join camp_photo cp on substr(a.res_no, 0, 2) = cp.zone_code
 	    join reservation r using(res_no, user_id)
+	    left join camp_photo cp on substr(res_no, 0, 2) = cp.zone_code
 	where
 		res_checkin - 1 > current_date
 	order by
@@ -27,17 +27,18 @@
   	<result column="assign_date" property="assignDate"/>
   	<result column="assign_like_count" property="assignLikeCount"/>
   	<result column="assign_state" property="assignState"/>
-  	<association property="campPhoto" javaType="campPhoto">
-  		<result column="zone_code" property="zoneCode"/>
-  		<result column="original_filename" property="originalFilename"/>
-  		<result column="renamed_filename" property="renamedFilename"/>
-  	</association>
   	<association property="reservation" javaType="reservation">
   		<result column="camp_id" property="campId"/>
   		<result column="res_price" property="resPrice"/>
   		<result column="res_checkin" property="resCheckin"/>
   		<result column="res_checkout" property="resCheckout"/>
   	</association>
+  	<collection property="campPhotos" ofType="campPhoto">
+  		<id column="" property="" />
+  		<result column="zone_code" property="zoneCode"/>
+  		<result column="original_filename" property="originalFilename"/>
+  		<result column="renamed_filename" property="renamedFilename"/>
+  	</collection>
   </resultMap>
   
   <select id="assignmentDetail" resultMap="assignmentListMap">
