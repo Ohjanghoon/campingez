@@ -1,5 +1,6 @@
 package com.kh.campingez.trade.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,6 @@ import com.kh.campingez.trade.model.dao.TradeDao;
 import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.dto.TradeLike;
 import com.kh.campingez.trade.model.dto.TradePhoto;
-
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,25 +29,6 @@ public class TradeServiceImpl implements TradeService {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return tradeDao.selectTradeList(rowBounds);
 	}
-	
-	
-//	@Override
-//	public List<Trade> selectTradeListLowPrice(Map<String, Integer> param) {
-//		int limit = param.get("limit");
-//		int offset = (param.get("cPage") - 1) * limit;
-//		RowBounds rowBounds = new RowBounds(offset, limit);
-//		return tradeDao.selectTradeListLowPrice(rowBounds);
-//		
-//	}
-
-
-//	@Override
-//	public List<Trade> selectTradeListHighPrice(Map<String, Integer> param) {
-//		int limit = param.get("limit");
-//		int offset = (param.get("cPage") - 1) * limit;
-//		RowBounds rowBounds = new RowBounds(offset, limit);
-//		return tradeDao.selectTradeListHighPrice(rowBounds);
-//	}
 
 
 	@Override
@@ -61,8 +42,9 @@ public class TradeServiceImpl implements TradeService {
 		
 		Trade trade = tradeDao.selectTradeByNo(no);
 		// List<TradePhoto> 조회
-		List<TradePhoto> photos = tradeDao.selectPhotoListBytradeNo(no);
+		List<TradePhoto> photos = tradeDao.selectPhotoListByTradeNo(no);
 		trade.setPhotos(photos);
+		
 		
 		return trade;
 		
@@ -126,6 +108,38 @@ public class TradeServiceImpl implements TradeService {
 		return tradeDao.deleteTrade(no);
 	}
 
+
+	@Override
+	public int updateReadCount(String no) {
+		
+		Trade trade = tradeDao.selectTradeByNo(no);
+		
+		return tradeDao.updateReadCount(trade);
+	}
+
+
+	@Override
+	public int getTradeLike(TradeLike tl) {
+		return tradeDao.getTradeLike(tl);
+	}
+
+
+	@Override
+	public void deleteTradeLike(TradeLike tl) {
+		tradeDao.deleteTradeLike(tl);
+		tradeDao.updateTradeLike(tl.getLikeTradeNo());
+	}
+
+
+	@Override
+	public void insertTradeLike(TradeLike tl) {
+		tradeDao.insertTradeLike(tl);
+		tradeDao.updateTradeLike(tl.getLikeTradeNo());
+	}
+	
+	
+	
+	
 	
 	
 }

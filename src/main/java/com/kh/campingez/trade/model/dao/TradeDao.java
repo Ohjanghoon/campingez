@@ -18,23 +18,17 @@ import com.kh.campingez.trade.model.dto.TradePhoto;
 @Mapper
 public interface TradeDao {
 	
-	@Select("select * from trade order by trade_no desc")
+//	@Select("select * from trade order by trade_no desc")
 	List<Trade> selectTradeList(RowBounds rowBounds);
-	
-//	@Select("select * from trade order by trade_price asc")
-//	List<Trade> selectTradeListLowPrice(RowBounds rowBounds);
-//	
-//	@Select("select * from trade order by trade_price desc")
-//	List<Trade> selectTradeListHighPrice(RowBounds rowBounds);
 	
 	@Select("select count(*) from trade")
 	int getTotalContent();
 	
-	@Select("select * from trade where trade_no = #{tradeNo}")
+//	@Select("select * from trade where trade_no = #{tradeNo}")
 	Trade selectTradeByNo(String TradeNo);
 	
-	@Select("select * from trade_photo where trade_no = #{tdNo}")
-	List<TradePhoto> selectPhotoListBytradeNo(String no);
+//	@Select("select * from trade_photo where trade_no = #{tdNo}")
+	List<TradePhoto> selectPhotoListByTradeNo(String no);
 	
 	@Insert("insert into trade values('T' || seq_trade_trade_no.nextval, #{userId}, #{categoryId}, #{tradeTitle}, " 
 			+ "#{tradeContent}, default, default, #{tradePrice}, default, #{tradeQuality}, default)")
@@ -53,9 +47,28 @@ public interface TradeDao {
 	@Update("update trade set category_id = #{categoryId}, trade_title = #{tradeTitle}, trade_content = #{tradeContent}, trade_price = #{tradePrice}, trade_quality = #{tradeQuality} where trade_no = #{tradeNo}")
 	int updateTrade(Trade trade);
 	
-	@Delete("delete from trade where trade_no = #{trade_no}")
+	@Delete("delete from trade where trade_no = #{tradeNo}")
 	int deleteTrade(String no);
+	
+	@Update("update trade set trade_read_count = ${readCount} + 1 where trade_no = #{tradeNo}")
+	int updateReadCount(Trade trade);
 
-
+	@Select("select count(like_check) from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId}")
+	int getTradeLike(TradeLike tl);
+	
+	@Delete("delete from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId}")
+	void deleteTradeLike(TradeLike tl);
+	
+	@Update("update trade set trade_like_count = (select count(*) from trade_like where trade_no = #{likeTradeNo}) where trade_no = #{tradeNo} ")
+	void updateTradeLike(String likeTradeNo);
+	
+	@Insert("insert into trade_like (trade_no, user_id) values (#{likeTradeNo}, #{likeUserId})")
+	void insertTradeLike(TradeLike tl);
+	
+	@Select("select * from trade_photo where trade_no = #{tdNo}")
+	List<TradePhoto> selectPhotoList(String no);
+	
+	
+	
 	
 }
