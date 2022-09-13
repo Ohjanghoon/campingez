@@ -1,6 +1,8 @@
 package com.kh.campingez.assignment.model.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.reservation.model.dto.Reservation;
@@ -16,12 +18,14 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Assignment extends AssignmentEntity {
 
-	private CampPhoto campPhoto;
+	private List<CampPhoto> campPhotos = new ArrayList<>();
 	private Reservation reservation;
 	public Assignment(String assignNo, String userId, String resNo, String assignTitle, String assignContent,
 			int assignPrice, LocalDateTime assignDate, int assignLikeCount, AssignState assignState) {
 		super(assignNo, userId, resNo, assignTitle, assignContent, assignPrice, assignDate, assignLikeCount, assignState);
 	}
 	
-	
+	public void add(CampPhoto campPhoto) {
+		this.campPhotos.add(campPhoto);
+	}
 }

@@ -59,7 +59,7 @@ public class AssignmentController {
 	
 	@PostMapping("/assignmentEnroll.do")
 	public String insertAssignment(AssignmentEntity assignment, RedirectAttributes redirectAttr) {
-		log.debug("assignment = {}", assignment);
+//		log.debug("assignment = {}", assignment);
 		
 		int result = assignmentService.insertAssignment(assignment);
 		redirectAttr.addFlashAttribute("msg", "양도 등록되었습니다.");
@@ -68,10 +68,20 @@ public class AssignmentController {
 	
 	@GetMapping("/assignmentDetail.do")
 	public void assignmentDetail(@RequestParam String assignNo, Model model) {
-		log.debug("assignNo = {}", assignNo);
+//		log.debug("assignNo = {}", assignNo);
 		
 		Assignment assign = assignmentService.assignmentDetail(assignNo);
-		log.debug("assign", assign);
+//		log.debug("assign", assign);
+		
+		model.addAttribute("assign", assign);
+	}
+	
+	@PostMapping("/assignmentApply.do")
+	public void assignmentApply(@RequestParam String assignNo, Model model) {
+//		log.debug("assignNo = {}", assignNo);
+		
+		Assignment assign = assignmentService.assignmentDetail(assignNo);
+//		log.debug("assign = {}", assign);
 		
 		model.addAttribute("assign", assign);
 	}
