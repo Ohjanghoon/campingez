@@ -10,6 +10,8 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
+<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css" />
 <style>
 #modal.modal-overlay {
 	width: 100%;
@@ -67,22 +69,40 @@
 <%
 	String loginRedirect = request.getHeader("Referer");
 %>
-<h1>로그인페이지</h1>
-<form:form action="" method="post">
-	<div class="modal-body">
-		<input type="text" name="userId" placeholder="아이디" required id="userId"> <br />
-		<input type="password" name="password" placeholder="비밀번호" required>
-	</div>
-	<div>
-		<button type="submit">로그인</button>
-		<input type="hidden" name="loginRedirect" value="<%= loginRedirect%>"/>
-	</div>
-</form:form>
-	<div>
-		<%--<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userFindId.do';">아이디찾기</button> --%>
-		<button type="button" id="btnModal">아이디찾기</button>
-		<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userFindPassword.do';">비밀번호찾기</button>
-	</div>
+<div class="login-container" style="height: 700px;">
+    <div class="img">
+      <img src="${pageContext.request.contextPath}/resources/images/loginCamping.png" style="border-radius: 10%;"/>
+    </div>
+    <div class="login-content">
+      <form:form action="" method="post">
+        <h2 class="title">Welcome</h2>
+        <div class="input-div one">
+          <div class="i">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="div">
+            <h5>Id</h5>
+            <input type="text" name="userId" required id="userId" class="input"> 
+          </div>
+        </div>
+        <div class="input-div pass">
+          <div class="i">
+            <i class="fas fa-lock"></i>
+          </div>
+          <div class="div">
+            <h5>Password</h5>
+            <input type="password" name="password" required class="input">
+          </div>
+        </div>
+        <a href="#" class="button" id="btnModal">Forgot Id?</a>
+        <a href="${pageContext.request.contextPath}/user/userFindPassword.do">Forgot Password?</a>
+		<div>
+			<button type="submit" class="login-btn">Login</button>
+			<input type="hidden" name="loginRedirect" value="<%= loginRedirect%>"/>
+		</div>
+      </form:form>
+    </div>
+  </div>
 <div id="modal" class="modal-overlay">
 	<div class="modal-window">
 		<div class="title">
@@ -96,21 +116,50 @@
 					<td><input type="text" class="form-control" name="findUserName"
 						id="findUserName" value="신사임당" required></td>
 				</tr>
+				<tr><th>&nbsp;</th></tr>
 				<tr>
 					<th>휴대폰</th>
 					<td><input type="tel" class="form-control"
 						placeholder="(-없이)01012345678" name="findPhone" id="findPhone"
 						maxlength="11" value="01098989898" required></td>
+				</tr><tr><th>&nbsp;</th></tr>
+				<tr>
+					<th>&nbsp;</th>
+					<td style="text-align: right;">
+						<input type="button" value="찾기" onclick="findId()">
+					</td>
+				</tr>
+				<tr>
+					<th>&nbsp;</th>
+					<td><span id="findIdResult"></span></td>
 				</tr>
 			</table>
-			<input type="button" value="찾기" onclick="findId()">
-		</div>
-		<div>
-			<span id="findIdResult"></span>
 		</div>
 	</div>
 </div>
 <script>
+const inputs = document.querySelectorAll(".input");
+
+
+function addcl() {
+  let parent = this.parentNode.parentNode;
+  parent.classList.add("focus");
+}
+
+function remcl() {
+  let parent = this.parentNode.parentNode;
+  if (this.value == "") {
+    parent.classList.remove("focus");
+  }
+}
+
+
+inputs.forEach(input => {
+  input.addEventListener("focus", addcl);
+  input.addEventListener("blur", remcl);
+});
+
+
 	function findId(){
 		document.querySelector('#findIdResult').innerHTML = '';
 		const name = document.querySelector('#findUserName').value;
@@ -137,11 +186,9 @@
 					return false;
 				}
 				else{
-					document.querySelector('.content').innerHTML = '';
-					document.querySelector('.content').innerHTML += user.userId;
-					document.querySelector('.content').innerHTML += `<input type="button" value="확인" onclick="modalOff()">`;
 					document.querySelector('#findIdResult').innerHTML = '';
-					findId = user.userId;
+					document.querySelector('#findIdResult').innerHTML += user.userId;
+					document.querySelector('#findIdResult').innerHTML += `&nbsp;<input type="button" value="확인" onclick="modalOff()">`;
 				}
 				
 			},
