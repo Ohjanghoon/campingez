@@ -6,11 +6,10 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/admin/admin.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 
-<main>
 	<section>
 		<h2>캠핑 자리 리스트</h2>
 		

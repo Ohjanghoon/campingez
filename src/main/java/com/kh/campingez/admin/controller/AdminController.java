@@ -318,8 +318,8 @@ public class AdminController {
 		model.addAttribute("campList", campList);
 	}
 	
-	@GetMapping("/stats.do")
-	public void stats() {}
+//	@GetMapping("/stats.do")
+//	public void stats() {}
 	
 	@GetMapping("/statsVisited.do")
 	public void statsVisited() {}

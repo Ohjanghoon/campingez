@@ -6,62 +6,62 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/admin/admin.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-
-<main>
-	<section>
-		<div id="select-bar">
-			<select name="inquireType" id="inquireType">
-				<option value="" selected disabled>문의유형</option>
-				<option value="">전체</option>
-				<c:if test="${not empty categoryList}">
-					<c:forEach items="${categoryList}" var="category">
-						<option value="${category.categoryId}">${category.categoryName}</option>
-					</c:forEach>
-				</c:if>
-			</select>
-		</div>
-		<table id="tbl-inquire-list">
-			<thead>
-				<tr>
-					<th>문의번호</th>
-					<th>카테고리명</th>
-					<th>작성자</th>
-					<th>제목</th>
-					<th>답변여부</th>
-					<th>문의날짜</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:if test="${not empty inquireList}">
-					<c:forEach items="${inquireList}" var="inquire">
-						<tr data-inq-no="${inquire.inqNo}">
-							<td>${inquire.inqNo}</td>
-							<td>${inquire.categoryName}</td>
-							<td>${inquire.inqWriter}</td>
-							<td>${inquire.inqTitle}</td>
-							<td>
-								${inquire.answerStatus == 0 ? '답변대기' : '답변완료'}
-							</td>
-							<td>
-								<fmt:parseDate value="${inquire.inqDate}" var="inqDate" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
-								<fmt:formatDate value="${inqDate}" pattern="yyyy/MM/dd HH:mm"/>
-							</td>
+			<div class="content-wrap">
+				<div id="select-bar">
+					<select name="inquireType" id="inquireType">
+						<option value="" selected disabled>문의유형</option>
+						<option value="">전체</option>
+						<c:if test="${not empty categoryList}">
+							<c:forEach items="${categoryList}" var="category">
+								<option value="${category.categoryId}">${category.categoryName}</option>
+							</c:forEach>
+						</c:if>
+					</select>
+				</div>
+				<table id="tbl-inquire-list">
+					<thead>
+						<tr>
+							<th>문의번호</th>
+							<th>카테고리명</th>
+							<th>작성자</th>
+							<th>제목</th>
+							<th>답변여부</th>
+							<th>문의날짜</th>
 						</tr>
-					</c:forEach>
-				</c:if>
-				<c:if test="${empty inquireList}">
-					<tr>
-						<td colspan="6">조회된 문의가 없습니다.</td>
-					</tr>
-				</c:if>
-			</tbody>
-		</table>
-		<nav>
-			${pagebar}
-		</nav>
+					</thead>
+					<tbody>
+						<c:if test="${not empty inquireList}">
+							<c:forEach items="${inquireList}" var="inquire">
+								<tr data-inq-no="${inquire.inqNo}">
+									<td>${inquire.inqNo}</td>
+									<td>${inquire.categoryName}</td>
+									<td>${inquire.inqWriter}</td>
+									<td>${inquire.inqTitle}</td>
+									<td>
+										${inquire.answerStatus == 0 ? '답변대기' : '답변완료'}
+									</td>
+									<td>
+										<fmt:parseDate value="${inquire.inqDate}" var="inqDate" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+										<fmt:formatDate value="${inqDate}" pattern="yyyy/MM/dd HH:mm"/>
+									</td>
+								</tr>
+							</c:forEach>
+						</c:if>
+						<c:if test="${empty inquireList}">
+							<tr>
+								<td colspan="6">조회된 문의가 없습니다.</td>
+							</tr>
+						</c:if>
+					</tbody>
+				</table>
+				<nav>
+					${pagebar}
+				</nav>
+			</div>
+		</div>
 	</section>
 </main>
 <script>

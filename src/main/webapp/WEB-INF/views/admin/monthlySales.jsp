@@ -6,30 +6,31 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/admin/admin.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-<main>
-	<section>
-		<h2>월별 매출 통계</h2>
-		<div id="search-bar">
-			<select name="year" id="year">
-				<option value="2022">2022</option>
-				<option value="2023">2023</option>
-				<option value="2024">2024</option>
-				<option value="2025">2025</option>
-			</select>
+			<div class="content-wrap">
+				<h2>월별 매출 통계</h2>
+				<div id="search-bar">
+					<select name="year" id="year">
+						<option value="2022">2022</option>
+						<option value="2023">2023</option>
+						<option value="2024">2024</option>
+						<option value="2025">2025</option>
+					</select>
+				</div>
+				<div>
+					총 매출 총액 : <span id="totalPrice"></span>
+				</div>
+				<div>
+					<span id="selectYear"></span>년도 매출 총액 : <span id="yearTotalPrice"></span>
+				</div>
+				<canvas id="myChart" width="1024" height="500"></canvas>
+				<div id="sale-chart-wrap"></div>
+			</div>
 		</div>
-		<div>
-			총 매출 총액 : <span id="totalPrice"></span>
-		</div>
-		<div>
-			<span id="selectYear"></span>년도 매출 총액 : <span id="yearTotalPrice"></span>
-		</div>
-		<canvas id="myChart" width="1024" height="500"></canvas>
-		<div id="sale-chart-wrap"></div>
 	</section>
 </main>
 <script>

@@ -6,72 +6,76 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/admin/admin.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-
-	<h2>회원관리</h2>
-	<select id="selectType">
-		<option value="" selected disabled>검색어</option>
-		<option value="user_id">회원아이디</option>
-		<option value="user_name">회원이름</option>
-	</select>
-	<input type="text" id="selectKeyword" />
-	<button type="button" id="searchBtn">검색</button>
-	<table id="user-list-tbl">
-		<thead>
-			<tr>
-				<th>No.</th>
-				<th>회원아이디</th>
-				<th>회원이름</th>
-				<th>이메일</th>
-				<th>핸드폰번호</th>
-				<th>성별</th>
-				<th>경고횟수</th>
-				<th>보유포인트</th>
-				<th>권한</th>
-				<th>회원가입타입</th>
-				<th>가입일</th>
-				<th>관리</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:if test="${not empty userList}">
-				<c:forEach items="${userList}" var="user" varStatus="vs">
-					<tr>
-						<td>${vs.count}</td>
-						<td>${user.userId}</td>
-						<td>${user.userName}</td>
-						<td>${user.email}</td>
-						<td>${user.phone}</td>
-						<td>${user.gender}</td>
-						<td id="yellowCardCount">${user.yellowCard}</td>
-						<td>${user.point}</td>
-						<td>
-							권한					
-						</td>
-						<td>${user.enrollType}</td>
-						<td>
-							<fmt:parseDate value="${user.enrollDate}" var="enrollDate" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
-							<fmt:formatDate value="${enrollDate}" pattern="yyyy/MM/dd"/>
-						</td>
-						<td>
-							<button type="button" name="updateBtn" id="${user.userId}">수정</button>
-							<button type="button" name="yellowCardBtn" id="${user.userId}" onclick="warningToUser(event)">경고</button>
-						</td>
-					</tr>
-				</c:forEach>
-			</c:if>
-			<c:if test="${empty userList}">
-				<tr>
-					<td colspan="11">조회된 회원이 없습니다.</td>
-				</tr>
-			</c:if>
-		</tbody>
-	</table>
-	<nav>
-		${pagebar}
-	</nav>
+			<div class="content-wrap">
+				<h2>회원관리</h2>
+				<select id="selectType">
+					<option value="" selected disabled>검색어</option>
+					<option value="user_id">회원아이디</option>
+					<option value="user_name">회원이름</option>
+				</select>
+				<input type="text" id="selectKeyword" />
+				<button type="button" id="searchBtn">검색</button>
+				<table id="user-list-tbl">
+					<thead>
+						<tr>
+							<th>No.</th>
+							<th>회원아이디</th>
+							<th>회원이름</th>
+							<th>이메일</th>
+							<th>핸드폰번호</th>
+							<th>성별</th>
+							<th>경고횟수</th>
+							<th>보유포인트</th>
+							<th>권한</th>
+							<th>회원가입타입</th>
+							<th>가입일</th>
+							<th>관리</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${not empty userList}">
+							<c:forEach items="${userList}" var="user" varStatus="vs">
+								<tr>
+									<td>${vs.count}</td>
+									<td>${user.userId}</td>
+									<td>${user.userName}</td>
+									<td>${user.email}</td>
+									<td>${user.phone}</td>
+									<td>${user.gender}</td>
+									<td id="yellowCardCount">${user.yellowCard}</td>
+									<td>${user.point}</td>
+									<td>
+										권한					
+									</td>
+									<td>${user.enrollType}</td>
+									<td>
+										<fmt:parseDate value="${user.enrollDate}" var="enrollDate" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+										<fmt:formatDate value="${enrollDate}" pattern="yyyy/MM/dd"/>
+									</td>
+									<td>
+										<button type="button" name="updateBtn" id="${user.userId}">수정</button>
+										<button type="button" name="yellowCardBtn" id="${user.userId}" onclick="warningToUser(event)">경고</button>
+									</td>
+								</tr>
+							</c:forEach>
+						</c:if>
+						<c:if test="${empty userList}">
+							<tr>
+								<td colspan="11">조회된 회원이 없습니다.</td>
+							</tr>
+						</c:if>
+					</tbody>
+				</table>
+				<nav>
+					${pagebar}
+				</nav>
+			</div>
+		</div>
+	</section>
+</main>
 <script>
 console.log(123);
 console.log("${userList}");
