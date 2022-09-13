@@ -11,6 +11,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css" />
 <style>
 #modal.modal-overlay {
@@ -27,7 +28,7 @@
 	background: rgba(255, 255, 255);
 	border-radius: 4px;
 	width: 400px;
-	height: 266px;
+	height: 300px;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -75,6 +76,12 @@
     </div>
     <div class="login-content">
       <form:form action="" method="post">
+	    <c:if test="${param.error != null}">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert" style="font-size: 12px;">
+			  <strong style="font-size: 13px;">아이디 또는 비밀번호가</strong> 일치하지 않습니다.
+			  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</c:if>
         <h2 class="title">Welcome</h2>
         <div class="input-div one">
           <div class="i">
@@ -94,8 +101,10 @@
             <input type="password" name="password" required class="input">
           </div>
         </div>
-        <a href="#" class="button" id="btnModal">Forgot Id?</a>
-        <a href="${pageContext.request.contextPath}/user/userFindPassword.do">Forgot Password?</a>
+        <div style="text-align: right;">
+	        <a href="#" class="button" id="btnModal" style="display: inline;">Forgot Id?</a><br />
+	        <a href="${pageContext.request.contextPath}/user/userFindPassword.do" style="display: inline;">Forgot Password?</a>
+        </div>
 		<div>
 			<button type="submit" class="login-btn">Login</button>
 			<input type="hidden" name="loginRedirect" value="<%= loginRedirect%>"/>
@@ -112,13 +121,13 @@
 		<div class="content">
 			<table class="mx-auto">
 				<tr>
-					<th>이름</th>
+					<th style="text-align: left;">이름>&nbsp;</th>
 					<td><input type="text" class="form-control" name="findUserName"
 						id="findUserName" value="신사임당" required></td>
 				</tr>
 				<tr><th>&nbsp;</th></tr>
 				<tr>
-					<th>휴대폰</th>
+					<th>휴대폰>&nbsp;&nbsp;</th>
 					<td><input type="tel" class="form-control"
 						placeholder="(-없이)01012345678" name="findPhone" id="findPhone"
 						maxlength="11" value="01098989898" required></td>
@@ -126,12 +135,13 @@
 				<tr>
 					<th>&nbsp;</th>
 					<td style="text-align: right;">
-						<input type="button" value="찾기" onclick="findId()">
+						<input class="btn btn-outline-primary" type="button" value="찾기" onclick="findId()">
 					</td>
 				</tr>
 				<tr>
-					<th>&nbsp;</th>
-					<td><span id="findIdResult"></span></td>
+					<th style="text-align: center;" colspan="3">
+						<span id="findIdResult"></span>
+					</th>
 				</tr>
 			</table>
 		</div>
@@ -188,7 +198,7 @@ inputs.forEach(input => {
 				else{
 					document.querySelector('#findIdResult').innerHTML = '';
 					document.querySelector('#findIdResult').innerHTML += user.userId;
-					document.querySelector('#findIdResult').innerHTML += `&nbsp;<input type="button" value="확인" onclick="modalOff()">`;
+					document.querySelector('#findIdResult').innerHTML += `&nbsp;&nbsp;&nbsp;<input class="btn btn-outline-secondary" type="button" value="확인" onclick="modalOff()">`;
 				}
 				
 			},
