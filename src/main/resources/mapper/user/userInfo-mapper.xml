@@ -26,6 +26,8 @@
   	<result column="answer_status" property="answerStatus"/>
   </resultMap>
   
+  
+  
    <select id="selectReservationList" resultMap="reservationMap">
   	select
 		res.*,
@@ -70,6 +72,23 @@
 				inquire i
 	    	where
 	        	inq_writer = #{userId}
+		)
+		group by 
+	    	answer_status
+  </select>
+  
+<select id="selectTradeCnt" resultType="MyPage">
+	  	select
+	    	answer_status,
+	    	count(*) status_cnt
+		from(
+	    	select
+		    	t.*,
+		    	trade_success answer_status
+			from
+				trade t
+	    	where
+	        	user_id =#{userId}
 		)
 		group by 
 	    	answer_status

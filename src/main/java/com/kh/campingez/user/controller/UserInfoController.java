@@ -31,6 +31,7 @@ import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.review.model.dto.ReviewEntity;
 import com.kh.campingez.review.model.dto.ReviewPhoto;
+import com.kh.campingez.trade.model.dto.TradeEntity;
 import com.kh.campingez.user.model.dto.MyPage;
 import com.kh.campingez.user.model.dto.User;
 import com.kh.campingez.user.model.service.UserInfoService;
@@ -61,6 +62,10 @@ public class UserInfoController {
 		//로그인된 회원의 1:1 문의 답변 확인
 		List<MyPage> inquireCnt = userInfoService.selectInquireCnt(principal);
 		model.addAttribute("inquireCnt",inquireCnt);
+		
+		//로그인된 회원의 중고 거래 게시판 상황.
+		List<MyPage> tradeCnt = userInfoService.selectTradeCnt(principal);
+		model.addAttribute("tradeCnt",tradeCnt);
 		
 		//로그인된 회원의 입실 예정 객실조회
 		List<Reservation> reservationList= userInfoService.selectReservation(principal);
@@ -198,6 +203,18 @@ public class UserInfoController {
 		log.debug("list = {}", list);
 		model.addAttribute("assignList", list);
 		mav.setViewName("user/myAssignment");
+		return mav;
+	}
+	/**
+	 * !!!!!!!!!!!!!!!!중고거래 게시판 글!!!!!!!!!!!!!!!!!!!!! 
+	 */
+	@GetMapping("/myTradeList.do")
+	public ModelAndView myTradeList(Authentication authentication, ModelAndView mav, Model model) {
+		User principal = (User)authentication.getPrincipal();
+		List<TradeEntity> result = userInfoService.selectTradeList(principal);
+		log.debug("list = {}", result);
+		model.addAttribute("result", result);
+		mav.setViewName("user/myTradeList");
 		return mav;
 	}
 	

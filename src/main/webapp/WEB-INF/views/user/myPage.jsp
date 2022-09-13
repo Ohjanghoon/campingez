@@ -41,6 +41,7 @@
 			</div>
 			<div class="inner-div card" id="answer">
 				<div class="card-body">
+				<h6>1:1 문의</h6>
 					<form
 						action="${pageContext.request.contextPath}/userInfo/inquireList.do"
 						method="GET">
@@ -55,8 +56,20 @@
 								<br>
 							</c:if>
 						</c:forEach>
-						<button type="submit" class="btn btn-outline-dark">내가 쓴
-							게시글</button>
+						<button type="submit" class="btn btn-outline-dark">내가 쓴 게시글</button>
+						<br>
+					</form>
+				</div>
+			</div>
+			<div class="inner-div card" id="trade">
+				<div class="card-body">
+				<h6>중고물품 거래</h6>
+					<form
+						action="${pageContext.request.contextPath}/userInfo/myTradeList.do" method="GET">
+						<c:forEach items="${tradeCnt}" var="trade" varStatus="vs">
+								<span>${trade.answerStatus} -------> ${trade.statusCnt} 건</span><br>
+						</c:forEach>
+						<button type="submit" class="btn btn-outline-dark">내가 쓴 게시글</button>
 						<br>
 					</form>
 				</div>

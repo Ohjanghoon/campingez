@@ -13,15 +13,44 @@
 		  border : 1px solid #7985b5;
 	}
 	#userinfo{
-		width :65%;
+		width :30%;
 		height : 170px;
 		float: left;
+		align-items : center;
 	}
 	#answer{
 		width: 30%;
 		float: right;
 		height : 170px;
+		align-items : center;
 	}
-	
+	#trade{
+		width: 30%;
+    	float: right;
+    	height: 170px;
+    	left: -5%;
+    	align-items : center;
+	}
+	.tradeContent{
+		width: 100px;
+	    white-space: nowrap;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	}
+	#myTradeList{
+		margin-top : 50px;
+		margin-bottom : 50px;
+		
+	}
+	#myReservationList{
+		margin-top : 50px;
+		margin-bottom : 50px;
+		
+	}
+	#myAssignmentList{
+		margin-top : 50px;
+		margin-bottom : 50px;
+		
+	}
 
 	
