@@ -19,6 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampZone;
+import com.kh.campingez.coupon.model.dto.Coupon;
+import com.kh.campingez.coupon.model.dto.UserCoupon;
+import com.kh.campingez.coupon.model.service.CouponService;
 import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.reservation.model.service.ReservationService;
 import com.kh.campingez.review.model.dto.Review;
@@ -37,21 +40,30 @@ public class ReservationController {
 	@Autowired
 	ReviewService reviewService;
 	
+	@Autowired
+	CouponService couponService;
+	
 	@GetMapping("/list")
 	public void campList() {}
 	
 	@PostMapping("/list")
 	public ResponseEntity<?> campList(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkin, 
-			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkout) {
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkout, @RequestParam String userId) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("checkin", checkin);
 		param.put("checkout", checkout);
 		log.debug("check = {}, {}", checkin, checkout);
 		List<Camp> camp = reservationService.campList(param);
 		
-		log.debug("camp = {}", camp);
+		List<UserCoupon> userCoupons = couponService.findCouponbyUserId(userId);
 		
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(camp);
+		log.debug("userCoupon = {}", userCoupons);
+		log.debug("camp = {}", camp);
+		Map<String, Object> map = new HashMap<>();
+		map.put("camp", camp);
+		map.put("userCoupon", userCoupons);
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(map);
 	}
 	
 	@PostMapping("/campZoneInfo")
@@ -89,4 +101,13 @@ public class ReservationController {
 		log.debug("review = {}", review);
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(review);
 	}
+	
+//	@GetMapping("/campZoneDayCount")
+//	public ResponseEntity<?> CampZoneDayCount(){
+//		Map<String, Object> param = new HashMap<>();
+//		
+//		List<CampZoneCount> countCampZone = reviewService.campZoneDayCount();
+//		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(countCampZone);
+//	}
+	
 }

@@ -46,4 +46,9 @@ public class CouponServiceImpl implements CouponService {
 	public UserCoupon findCouponByUser(Map<Object, String> param) {
 		return couponDao.findCouponByUser(param);
 	}
+	
+	@Override
+	public List<UserCoupon> findCouponbyUserId(String userId) {
+		return couponDao.findCouponbyUserId(userId);
+	}
 }
