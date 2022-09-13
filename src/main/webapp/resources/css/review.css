@@ -1,0 +1,38 @@
+@charset "UTF-8";
+* {
+	text-decoration: none;
+	list-style: none;
+}
+main {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+.review-list {
+	display: flex;
+	flex-wrap: wrap;
+}
+#campZoneType, #searchType {
+	width:10%
+}
+.review {
+	display: flex;
+    flex-direction: column;
+}
+.content-wrap {
+	padding: 10px;
+}
+.card {
+	width:300px;
+	margin:10px;
+}
+.user-info-wrap {
+    display: flex;
+    justify-content: space-between;
+}
+#review-content {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;  
+  padding: 10px 0;
+}

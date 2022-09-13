@@ -141,5 +141,11 @@ public interface AdminDao {
 	
 	@Select("select sum(res_price) total_price, to_date(res_date, 'YY/MM/DD') res_date from reservation where extract(year from res_date) = #{year} and extract(month from res_date) = #{month} and res_state = '예약완료' group by to_date(res_date, 'YY/MM/DD') order by res_date")
 	List<Stats> getSaleListByMonth(Map<String, Object> param);
+	
+	@Select("select nvl(sum(res_price), 0) total_price from reservation where res_state = '예약완료'")
+	int getTotalSalesPrice();
+	
+	@Select("select nvl(sum(res_price), 0) total_price from reservation where res_state = '예약완료' and extract(year from res_date) = #{year}")
+	int getYearTotalSalesPrice(Map<String, Object> param);
 
 }
