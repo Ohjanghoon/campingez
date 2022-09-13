@@ -6,6 +6,7 @@ import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.TradeEntity;
 import com.kh.campingez.user.model.dto.MyPage;
 import com.kh.campingez.user.model.dto.User;
 
@@ -26,5 +27,9 @@ public interface UserInfoService {
 	List<Coupon> selectCoupon(User user);
 
 	List<AssignmentEntity> selectAssignList(User user);
+
+	List<MyPage> selectTradeCnt(User user);
+
+	List<TradeEntity> selectTradeList(User user);
 
 }

@@ -9,6 +9,7 @@ import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.TradeEntity;
 import com.kh.campingez.user.model.dao.UserInfoDao;
 import com.kh.campingez.user.model.dto.MyPage;
 import com.kh.campingez.user.model.dto.User;
@@ -51,5 +52,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public List<AssignmentEntity> selectAssignList(User user) {
 		return userInfoDao.selectAssignList(user);
+	}
+	@Override
+	public List<MyPage> selectTradeCnt(User user) {
+		return userInfoDao.selectTradeCnt(user);
+	}
+	@Override
+	public List<TradeEntity> selectTradeList(User user) {
+		return userInfoDao.selectTradeList(user);
 	}
 }
