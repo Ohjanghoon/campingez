@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.time.Duration"%>
@@ -14,19 +15,23 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="캠핑이지" name="title"/>
 </jsp:include>
+
 <%
 	Assignment assign = (Assignment) request.getAttribute("assign");
 	Reservation res = assign.getReservation();
-	CampPhoto photo = assign.getCampPhoto();
+	List<CampPhoto> photos = assign.getCampPhotos();
 	
 	pageContext.setAttribute("res", res);
-	pageContext.setAttribute("photo", photo);
+	pageContext.setAttribute("photos", photos);
 	
 	int betDay = (int) Duration.between(res.getResCheckin().atStartOfDay(), res.getResCheckout().atStartOfDay()).toDays();
 	String schedule = betDay + "박" + (betDay+1) + "일";
 	
 	LocalDateTime lastDate = (res.getResCheckin().atStartOfDay()).minusDays(1);
 %>
+<div class="container">
+
+
 	<h1>양도 상세 조회</h1>
 	<h2>양도 글</h2>
 		<span>제목</span>
@@ -63,13 +68,31 @@
 		<span>양도금액</span>
 		<span><fmt:formatNumber value="${assign.assignPrice}" pattern="#,###"/>원</span>
 	</div>
-	<button type="button" id="btn-assign-form">양도 신청서 작성</button>
-	<table >
-	</table>
+	<div>
+		<h3>양도거래 시 유의사항</h3>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<form:form
+		action="${pageContext.request.contextPath}/assignment/assignmentApply.do"
+		method="post"
+		name="assignApplyForm">
+		<input type="hidden" name="assignNo" value="${assign.assignNo}" />
+		<button type="submit" id="btn-assign-form">해당 예약 양도받기</button>
+	</form:form>
+</div>
 	
 	<script>
-	document.querySelector("#btn-assign-form").addEventListener('click', (e) => {
+	document.assignApplyForm.addEventListener('submit', (e) => {
+		const str = "양도받기는 20분이내에 결제하셔야 합니다.\n" + "양도받기를 진행하시겠습니까?"; 
 		
+		if(!confirm(str)){
+			e.preventDefault();
+			return false;
+		}
 	});
 	</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
