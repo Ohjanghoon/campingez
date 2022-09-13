@@ -7,47 +7,46 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/admin/admin.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-
-<main>
-	<section>
-		<h2>날짜별 로그인 회원 통계</h2>
-		<div id="search-bar-wrap">
-			<select name="year" id="year">
-				<option value="2022">2022</option>
-				<option value="2023">2023</option>
-				<option value="2024">2024</option>
-				<option value="2025">2025</option>
-			</select>
-			<select name="month" id="month">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-				<option value="11">11</option>
-				<option value="12">12</option>
-			</select>
+			<div class="content-wrap">
+				<h2>날짜별 로그인 회원 통계</h2>
+				<div id="search-bar-wrap">
+					<select name="year" id="year">
+						<option value="2022">2022</option>
+						<option value="2023">2023</option>
+						<option value="2024">2024</option>
+						<option value="2025">2025</option>
+					</select>
+					<select name="month" id="month">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+				</div>
+				<div id="totalCount-wrap">
+					총 로그인 수 : <span id="totalCount"></span>
+				</div>
+				<div id="totalCountByDate-wrap">
+					조회한 달 로그인 수 : <span id="totalCountByDate"></span>
+				</div>
+				<canvas id="myChart" width="1000" height="500"></canvas>
+				<div id="tbl-wrap"></div>
+			</div>
 		</div>
-		<div id="totalCount-wrap">
-			총 로그인 수 : <span id="totalCount"></span>
-		</div>
-		<div id="totalCountByDate-wrap">
-			조회한 달 로그인 수 : <span id="totalCountByDate"></span>
-		</div>
-		<canvas id="myChart" width="1000" height="500"></canvas>
-		<div id="tbl-wrap"></div>
-		
 	</section>
 </main>
 
