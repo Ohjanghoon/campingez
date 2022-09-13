@@ -253,15 +253,25 @@ function passwordCK () {
 };
 
 passwordCheck.addEventListener('input', (e) => {
-	if (password.value !== passwordCheck.value) {
-		availableCheck(msgPassword, "fail", "실패");
-		//availableCheck(msgPasswordCheck, "fail", "다시입력하세요");
-		//passwordCheck.focus();
-		//passwordCheck.value ="";
+	var reg =  /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
+	
+	if (!reg.test(passwordCheck.value)) {
+		if (password.value !== passwordCheck.value) {
+			availableCheck(msgPassword, "fail", "실패");
+			//availableCheck(msgPasswordCheck, "fail", "다시입력하세요");
+			//passwordCheck.focus();
+			//passwordCheck.value ="";
+		}
+		else{
+			availableCheck(msgPassword, "clear", "사용 가능");
+			document.querySelector('#msgPasswordCheck').innerHTML = '';
+		}
 	}
 	else{
-		availableCheck(msgPassword, "clear", "사용 가능");
-		document.querySelector('#msgPasswordCheck').innerHTML = '';
+		availableCheck(msgPassword, "fail", "실패");
+	}
+	if(passwordCheck.value == ''){
+		document.querySelector('#msgPassword').innerHTML = '';
 	}
 });
 </script>
