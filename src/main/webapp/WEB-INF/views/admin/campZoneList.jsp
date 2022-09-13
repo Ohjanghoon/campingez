@@ -6,52 +6,58 @@
 <fmt:requestEncoding value="utf-8"/>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/admin/admin.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-	<h2>캠핑 구역 리스트</h2>
-	
-	<c:forEach items="${campZoneList}" var="zone">
-		<h3>${zone.zoneCode} - ${zone.zoneName}</h3>
-			<table>
-					<tr>
-						<th>구역코드</th>
-						<td>${zone.zoneCode}</td>
-					</tr>
-					<tr>
-						<th>구역이름</th>
-						<td>${zone.zoneName}</td>
-					</tr>
-					<tr>
-						<th>구역정보</th>
-						<td>
-							<c:forEach items="${zone.zoneInfo}" var="info" varStatus="vs">
-								${info}${not vs.last ? ", " : ""}
-							</c:forEach>
-						</td>
-					</tr>
-					<tr>
-						<th>허용인원</th>
-						<td>${zone.zoneMaximum}명</td>
-					</tr>
-					<tr>
-						<th>구역가격</th>
-						<td>
-							<fmt:formatNumber value="${zone.zonePrice}" type="currency"/>
-						</td>
-					</tr>
-					<tr>
-						<th>관리</th>
-						<td>
-							<button type="button" id="update-btn" value="${zone.zoneCode}">수정</button>
-							<button type="button" id="delete-btn" value="${zone.zoneCode}">삭제</button>
-						</td>
-					</tr>
-			</table>
-	</c:forEach>
-	<form:form name="updateOrDeleteFrm">
-		<input type="hidden" name="zoneCode"/>
-	</form:form>
+<section>
+			<div class="content-wrap">
+				<h2>캠핑 구역 리스트</h2>
+				
+				<c:forEach items="${campZoneList}" var="zone">
+					<h3>${zone.zoneCode} - ${zone.zoneName}</h3>
+						<table>
+								<tr>
+									<th>구역코드</th>
+									<td>${zone.zoneCode}</td>
+								</tr>
+								<tr>
+									<th>구역이름</th>
+									<td>${zone.zoneName}</td>
+								</tr>
+								<tr>
+									<th>구역정보</th>
+									<td>
+										<c:forEach items="${zone.zoneInfo}" var="info" varStatus="vs">
+											${info}${not vs.last ? ", " : ""}
+										</c:forEach>
+									</td>
+								</tr>
+								<tr>
+									<th>허용인원</th>
+									<td>${zone.zoneMaximum}명</td>
+								</tr>
+								<tr>
+									<th>구역가격</th>
+									<td>
+										<fmt:formatNumber value="${zone.zonePrice}" type="currency"/>
+									</td>
+								</tr>
+								<tr>
+									<th>관리</th>
+									<td>
+										<button type="button" id="update-btn" value="${zone.zoneCode}">수정</button>
+										<button type="button" id="delete-btn" value="${zone.zoneCode}">삭제</button>
+									</td>
+								</tr>
+						</table>
+				</c:forEach>
+				<form:form name="updateOrDeleteFrm">
+					<input type="hidden" name="zoneCode"/>
+				</form:form>
+			</div>
+		</div>
+	</section>
+</main>
 <script>
 document.querySelectorAll("#update-btn").forEach((btn) => {
 	btn.addEventListener('click', (e) => {
