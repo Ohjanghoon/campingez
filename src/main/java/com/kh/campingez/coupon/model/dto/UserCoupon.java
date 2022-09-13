@@ -1,20 +1,26 @@
 package com.kh.campingez.coupon.model.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserCoupon {
+@AllArgsConstructor
+@ToString(callSuper = true)
+public class UserCoupon extends UserCouponEntity{
+	
+	private int couponCount;
+	private List<Coupon> coupons = new ArrayList<>();
 
-	private String userId;
-	private String couponCode;
-	private LocalDate couponUsedate;
-	private LocalDate couponDowndate;
+	public UserCoupon(String userId, String couponCode, LocalDate couponUsedate, LocalDate couponDowndate) {
+		super(userId, couponCode, couponUsedate, couponDowndate);
+		// TODO Auto-generated constructor stub
+	}
+	
 }

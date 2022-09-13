@@ -17,4 +17,6 @@ public interface CouponService {
 	int couponDownload(Map<Object, String> param);
 
 	UserCoupon findCouponByUser(Map<Object, String> param);
+
+	List<UserCoupon> findCouponbyUserId(String userId);
 }

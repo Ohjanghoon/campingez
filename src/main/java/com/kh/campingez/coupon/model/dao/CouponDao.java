@@ -31,4 +31,6 @@ public interface CouponDao {
 
 	@Update("update coupon set coupon_down_count = coupon_down_count+1 where coupon_code = #{couponCode}")
 	int updateDownCount(Map<Object, String> param);
+
+	List<UserCoupon> findCouponbyUserId(String userId);
 }
