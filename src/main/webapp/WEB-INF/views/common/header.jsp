@@ -188,7 +188,7 @@ window.addEventListener('load', (e) => {
       </nav>
       <div class="title">
     <div>
-      <div id="chatbot" class="main-card collapsed">
+      <div id="chatbot" class="main-card ch-collapsed">
         <button id="chatbot_toggle">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
             <path d="M0 0h24v24H0V0z" fill="none" />
@@ -234,16 +234,15 @@ window.addEventListener('load', (e) => {
       </div>
     </div>
     <script>
-
       document.getElementById("chatbot_toggle").onclick = function () {
-        if (document.getElementById("chatbot").classList.contains("collapsed")) {
-          document.getElementById("chatbot").classList.remove("collapsed")
+        if (document.getElementById("chatbot").classList.contains("ch-collapsed")) {
+          document.getElementById("chatbot").classList.remove("ch-collapsed")
           document.getElementById("chatbot_toggle").children[0].style.display = "none"
           document.getElementById("chatbot_toggle").children[1].style.display = ""
           setTimeout(addResponseMsg, 1000, "Hi")
         }
         else {
-          document.getElementById("chatbot").classList.add("collapsed")
+          document.getElementById("chatbot").classList.add("ch-collapsed")
           document.getElementById("chatbot_toggle").children[0].style.display = ""
           document.getElementById("chatbot_toggle").children[1].style.display = "none"
         }
