@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.campingez.coupon.model.dao.CouponDao">
+  <select id="findCouponbyUserId" resultMap="userCouponMap">
+  	select 
+  		u.user_id, u.coupon_code, u.coupon_usedate, u.coupon_downdate ,c.* 
+  	from 
+  		user_coupon u left join coupon c on u.coupon_code = c.coupon_code 
+  	where 
+  		u.user_id = #{userId} and coupon_usedate is null and coupon_endday > current_date
+  </select>
+  <resultMap type="userCoupon" id="userCouponMap">
+  	<id column="user_id" property="userId"/>
+  	<result column="coupon_code" property="couponCode" />
+  	<result column="coupon_usedate" property="couponUsedate" />
+  	<result column="coupon_downdate" property="couponDowndate" />
+	<collection property="coupons" ofType="coupon">
+		<id column="coupon_code" property="couponCode"/>
+		<result column="coupon_name" property="couponName" />
+		<result column="coupon_discount" property="couponDiscount" />
+		<result column="coupon_startday" property="couponStartday" />
+		<result column="coupon_endday" property="couponEndday" />
+		<result column="coupon_down_count" property="couponDownCount" />
+	</collection>  	
+  </resultMap>
+</mapper>
