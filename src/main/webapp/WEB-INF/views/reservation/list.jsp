@@ -19,7 +19,7 @@
 		<div id="map" style="width:100%;height:350px;"></div>
 		<br />
 		<div id="list"></div>
-		<div class="camp reservation"></div>
+		<div class="reservation"></div>
 	</div>
 </main>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
@@ -94,14 +94,18 @@
             				            <h6 class="my-0">포인트 할인</h6>
             				            <small>적립금</small>
             				          </div>
-            				          <span class="text-danger" id="point">0</span><span class="text-danger">p</span>
+            				          <div>
+            				          <span class="text-danger" id="usepoint">0</span><span class="text-danger">P</span>
+            				          </div>
             				        </li>
             				        <li class="list-group-item d-flex justify-content-between bg-light">
             				          <div class="text-danger">
-            				            <h6 class="my-0">할인</h6>
+            				            <h6 class="my-0">쿠폰 할인</h6>
             				            <small>쿠폰</small>
             				          </div>
+            				          <div>
             				          <span class="text-danger" id="coupon">0</span><span class="text-danger">%</span>
+            				          </div>
             				        </li>
             				        <li class="list-group-item d-flex justify-content-between">
             				          <span>총 결제금액</span>
@@ -197,14 +201,16 @@
             				      </form:form>
             				`;
             				
-            				response.userCoupon.forEach((userCoupon) => {
-								const {couponCode, couponName, couponDiscount} = userCoupon;
-								const couponList = document.querySelector("#couponList");
-								const option = `<option value="\${couponCode}">\${couponName}<option/>`;
-								couponList.innerHTML += option;
-				             });
+            				response.userCoupon.forEach((coupon) => {
+                                const {coupons} = coupon;
+                                const [{couponName, couponCode, couponDiscount}] = coupons;
+                                const couponList = document.querySelector("#couponList");
+                                const option = `<option value="\${couponDiscount}">[\${couponDiscount}%]\${couponName}<option/>`;
+                                couponList.innerHTML += option;
+                             });
+            				    				
             				
-            				document.querySelector("#list").addEventListener('click', (e) => {
+            				document.querySelector("#list").addEventListener('input', (e) => {
             					const campId = e.target.value;
             					$.ajax({
             						url : '${pageContext.request.contextPath}/reservation/campZoneInfo.do',
@@ -214,26 +220,40 @@
             						success(response){
             							console.log(response);
             							const zonePrice = response.zonePrice;
-            							const resPrice = (document.querySelector("#zonePrice").value/document.querySelector("#point").value)-document.querySelector("#point").value;
-            							document.querySelector("#zonePrice").innerHTML = `₩\${zonePrice}`;
-            							document.querySelector("#zone").innerHTML = `\${campId}`;
-										document.querySelector("#resPrice").innerHTML = resPrice;            							
-            							document.reservationFrm.innerHTML += `
-            								<input type="hidden" name="campId" value="\${campId}"/>
-            								<input type="hidden" name="resPrice" value="\${zonePrice}"/>
-            							`;
+            							document.querySelector("#zonePrice").innerHTML = `\${zonePrice}`;
+            							document.querySelector("#zone").innerHTML = `\${campId}`;            						
+
+            							const minuspoint = document.querySelector("#point").value;
+            							const minuscoupon = couponList.value;
+            							
+
+            							document.querySelector("#point").addEventListener("blur", (e) => {
+                        					document.querySelector("#usepoint").innerHTML = e.target.value; 
+                        				});
+                        				
+                        				couponList.addEventListener("blur", (e) => {
+                        					document.querySelector("#coupon").innerHTML = e.target.value;
+                        				});
+            							
+                        				const price = Number(document.querySelector("#zonePrice").innerHTML);
+                        				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
+            							
+                        				document.querySelector("#resPrice").innerHTML = resPrice;	
             						},
             						error : console.log
             					})
             				});
+       
+							
             			},
             			error : console.log
             		})
             	};
-             	}
+             }
         });
         calendar.render();
 	});
+	
 	
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
@@ -247,5 +267,11 @@
 	map.setDraggable(false);		
 	// 마우스 휠과 모바일 터치를 이용한 지도 확대, 축소를 막는다
 	map.setZoomable(false);   
-
+	
+	//  frm 실행전 추가해서 넘기기..
+	/* document.reservationFrm.innerHTML += `
+            								<input type="hidden" name="campId" value="\${campId}"/>
+            								<input type="hidden" name="resPrice" value="resPrice"/>
+            							`; */
+	
 </script>
