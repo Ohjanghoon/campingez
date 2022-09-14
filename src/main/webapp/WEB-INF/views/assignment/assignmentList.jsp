@@ -30,7 +30,7 @@
 	<div class="text-center">
 		<form:form action="${pageContext.request.contextPath}/assignment/assignmentForm.do" method="POST">
 			<input type="hidden" name="userId" value='<sec:authentication property="principal.username"/>' />
-			<button type="submit" class="w-50 mb-3 btn btn-block" id="btn-assignment-enroll">양도 등록</button>
+			<button type="submit" class="w-50 mb-3 fs-5 btn btn-block" id="btn-assignment-enroll">양도 등록</button>
 		</form:form>
 	</div>
 	</sec:authorize>
