@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+.img-wrapper {
+	display: none;
+}
+
+#btn-assignment-apply {
+	font-weight : bold;
+	background-color : #A8A4CE;
+	color : white;
+}
+
+#btn-assignment-apply:hover {
+	color : #495C83;
+}
+
+#check {
+	width : 1.1rem;
+	height : 1.1rem;
+	vertical-align : middle;
+	accent-color : #A8A4CE;
+}
