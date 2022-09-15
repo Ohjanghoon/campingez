@@ -7,7 +7,8 @@
   <select id="selectInquireList" resultMap="inquireListMap">
   	select
 	    i.*,
-	    (select count(*) from inquire_answer a where a.inq_no = i.inq_no) answer_status
+	    (select count(*) from inquire_answer a where a.inq_no = i.inq_no) answer_status,
+	    (select category_name from category_list c where c.category_id = i.category_id) category_name
 	from
 		inquire i
 	order by
@@ -22,16 +23,22 @@
   	<result column="inq_content" property="inqContent"/>
   	<result column="inq_date" property="inqDate"/>
   	<result column="answer_status" property="answerStatus"/>
+  	<result column="category_name" property="categoryName"/>
   </resultMap>
   
   <select id="selectInquire" resultMap="inquireMap">
   	select
-  		*
-  	from
-  		inquire i left join inquire_answer ia
-  		on i.inq_no = ia.inq_no
+	    i.*,
+	    (select category_name from category_list c where c.category_id = i.category_id) category_name
+	from
+		(select
+	        *
+	    from
+	        inquire i left join inquire_answer ia
+	        using(inq_no)
+	    ) i
   	where
-  		i.inq_no  = #{no}
+  		i.inq_no  = #{inqNo}
   </select>
   
   <resultMap type="inquire" id="inquireMap">
@@ -41,6 +48,9 @@
   	<result column="inq_title" property="inqTitle"/>
   	<result column="inq_content" property="inqContent"/>
   	<result column="inq_date" property="inqDate"/>
+  	<result column="inq_date" property="inqDate"/>
+  	<result column="inq_updated_date" property="inqUpdatedDate"/>
+  	<result column="category_name" property="categoryName"/>
   	<association property="answer" javaType="answer">
   		<id column="answer_no" property="answerNo"/>
   		<result column="answer_content" property="answerContent"/>

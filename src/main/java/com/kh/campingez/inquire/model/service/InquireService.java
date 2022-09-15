@@ -9,8 +9,14 @@ public interface InquireService {
 
 	List<Inquire> selectInquireList();
 
-	Inquire selectInquire(String no);
+	Inquire selectInquire(String inqNo);
 
 	int insertInquire(InquireEntity inquire);
+
+	int updateInquire(Inquire inquire);
+
+	int deleteInquire(String inqNo);
+
+	int getTotalContent();
 
 }
