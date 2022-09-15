@@ -27,11 +27,12 @@
   border-radius: 0px;
   flex-direction: column;
   overflow: hidden;
-  right: 0;
-  bottom: 0;
-  position: absolute;
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
   transition: all 0.5s;
   box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index:999;
 }
 
 #chatbot_toggle {
@@ -40,24 +41,24 @@
   border: none;
   height: 48px;
   width: 48px;
-  background: rebeccapurple;
+  background: #A8A4CE;
   padding: 14px;
   color: white;
 }
 
 #chatbot_toggle:hover {
-  background: #7d56a5;
+  background: #C8B6E2;
 }
 
 .line {
   height: 1px;
-  background-color: rebeccapurple;
+  background-color: #A8A4CE;
   width: 100%;
   opacity: 0.2;
 }
 
 .main-title {
-  background-color: rebeccapurple;
+  background-color: #A8A4CE;
   font-size: large;
   font-weight: bold;
   display: flex;
@@ -182,4 +183,27 @@
 
 .que.on .arrow-top {
   display: block;
+}
+
+.input-send {
+  background: transparent;
+  width: 48px;
+  height: 48px;
+  right: 0%;
+  border: none;
+  cursor: pointer;
+}
+
+.input-send {
+  background: transparent;
+  width: 48px;
+  height: 48px;
+  right: 0%;
+  border: none;
+  cursor: pointer;
+}
+
+.input-send svg {
+  fill: rgb(255, 255, 255);
+  margin: 11px 8px;
 }
