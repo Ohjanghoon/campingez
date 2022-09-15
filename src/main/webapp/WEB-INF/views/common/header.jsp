@@ -211,13 +211,15 @@ window.addEventListener('load', (e) => {
             </svg>
           </div>
           <span>자주묻는 질문</span>
+
         </div>
         <div id="Accordion_wrap">
           <div class="que">
             <span>This is first question.</span>
           </div>
           <div class="anw">
-            <span>This is first answer.</span>
+            <span>This is first answer.This is first answer.This is first answer.This is first answer.This is first answer.This is first answer.</span><br />
+            <img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo2.png" alt="">
           </div>
           <div class="que">
             <span>This is second question.</span>
@@ -227,6 +229,7 @@ window.addEventListener('load', (e) => {
           </div>
           <div class="que">
             <span>This is third question.</span>
+            
           </div>
           <div class="anw">
             <span>This is third answer.</span>
