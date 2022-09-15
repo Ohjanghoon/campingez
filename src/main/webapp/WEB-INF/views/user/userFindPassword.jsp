@@ -7,37 +7,61 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <fmt:requestEncoding value="utf-8" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/userPwdUpdate.css" />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-
-<h1>비밀번호 찾기</h1>
+<br /><br />
+<h1>개인정보조회</h1><br /><br />
 <div class="pwFind">
          <form name="pwFindFrm">
              <table class="mx-auto">
 				<tr>
-					<th>아이디</th>
+					<th>&nbsp;</th>
 					<td>
-						<input type="text" name="userId" id="userId" placeholder="아이디를 입력하세요" required value="sinsa"/>
+					<div class="group">      
+			          <input type="text" required name="userId" id="userId">
+			          <span class="highlight"></span>
+			          <span class="bar"></span>
+			          <label>Id</label>
+			        </div>
+						<!-- <input type="text" name="userId" id="userId" placeholder="아이디를 입력하세요" required value="sinsa"/> -->
 					</td>
 				</tr>
 				<tr>
-					<th>휴대폰</th>
+					<th>&nbsp;</th>
 					<td>
-						<input type="text" name="phone" id="phone" placeholder="휴대폰번호 (- 제외)" required maxlength="13" value="01098989898"/>
+						<div class="group">      
+				          <input type="text" required name="phone" id="phone">
+				          <span class="highlight"></span>
+				          <span class="bar"></span>
+				          <label>Phone</label>
+				        </div>
+						<!-- <input type="text" name="phone" id="phone" placeholder="휴대폰번호 (- 제외)" required maxlength="13" value="01098989898"/> -->
 					</td>
 				</tr>
 				<tr>
-					<th>이메일</th>
+					<th>&nbsp;</th>
 					<td>
-						<input type="email" placeholder="abc@xyz.com" name="email" id="email" value="honggd@gmail.com">
+						<div class="group">      
+				          <input type="text" required name="email" id="email">
+				          <span class="highlight"></span>
+				          <span class="bar"></span>
+				          <label>Email</label>
+				        </div>
+						<!-- <input type="email" placeholder="abc@xyz.com" name="email" id="email" value="honggd@gmail.com"> -->
+					</td>
+				</tr>
+				<tr>
+					<th>&nbsp;</th>
+					<td>
+						<input class="btn btn-outline-secondary" type="button" value="비밀번호변경하기" onclick="findPassword()">
 					</td>
 				</tr>
 			</table>
-			<input type="button" value="비밀번호변경하기" onclick="findPassword()">
 			<div>
-			<span id="findIdResult"></span>
-		</div>
+				<span id="findIdResult"></span>
+			</div>
          </form>
 		<form id="passwordUpdateFrm" 
 		action="${pageContext.request.contextPath}/user/userPasswordUpdate.do"
@@ -66,7 +90,8 @@ function findPassword(){
 		success(user){
 			//console.log(user);
 			if(user == 0){
-				document.querySelector('#findIdResult').innerHTML = '잘못된 회원정보입니다.';
+				//document.querySelector('#findIdResult').innerHTML = '잘못된 회원정보입니다.';
+				alert('잘못된 회원정보입니다.');
 				return false;
 			}
 			else{
