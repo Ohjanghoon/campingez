@@ -1,11 +1,13 @@
 package com.kh.campingez.user.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.session.RowBounds;
 
 import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.coupon.model.dto.Coupon;
@@ -31,7 +33,7 @@ public interface UserInfoDao {
 	List<Inquire> selectInquireList(User user);
 
 	
-	List<Reservation> selectReservationList(User user);
+	List<Reservation> selectReservationList(RowBounds rowBounds, User user);
 
 	
 	List<MyPage> selectInquireCnt(User user);
@@ -42,13 +44,22 @@ public interface UserInfoDao {
 	
 	List<Coupon> selectCoupon(User user);
 
-	@Select("select * from assignment where user_id = #{userId}")
-	List<AssignmentEntity> selectAssignList(User user);
+	@Select("select * from assignment where user_id = #{userId} order by assign_date desc")
+	List<AssignmentEntity> selectAssignList(RowBounds rowBounds, User user);
 
 	
 	List<MyPage> selectTradeCnt(User user);
 
-	@Select("select * from trade where user_id = #{userId}")
-	List<TradeEntity> selectTradeList(User user);
+	@Select("select t.*, trade_read_count read_count,trade_like_count like_count from trade t where user_id = #{userId}")
+	List<TradeEntity> selectTradeList(RowBounds rowBounds, User user);
+
+	@Select("select count(*) from assignment where user_id = #{userId}")
+	int getTotalAssignment(User user);
+
+	@Select("select count(*) from trade where user_id = #{userId}")
+	int getTotalTrade(User user);
+
+	@Select("select count(*) from reservation where user_id = #{userId}")
+	int getTotalReservation(User user);
 
 }

@@ -75,7 +75,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="outter-div">
+<%-- 		<div class="outter-div">
 			<div class="inner-div card" id="reserv">
 				<div class="card-body">
 					<form
@@ -104,7 +104,7 @@
 					</form>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 		<div class="outter-div">
 			<div class="inner-div card" id="coupon">
 				<div class="card-body">
@@ -151,7 +151,7 @@
 								<th scope="col">양도마감 일자</th>
 								<th scope="col">상태</th>
 							</tr>
-							<c:forEach items="${assignList}" var="assign" varStatus="vs">
+							<c:forEach items="${assignList}" var="assign" varStatus="vs" begin="0" end="2">
 								<tr>
 									<td>${assign.resNo}</td>
 									<td>${assign.assignTitle}</td>

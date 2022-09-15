@@ -52,5 +52,11 @@
 		margin-bottom : 50px;
 		
 	}
-
-	
+	#titleLeft{
+		float: left;
+		margin-bottom : 30px;
+	}
+	#titleRight{
+		float: right;
+		margin-bottom : 30px;
+	}
