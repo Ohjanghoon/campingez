@@ -1,8 +1,9 @@
 package com.kh.campingez.user.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -10,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.campingez.alarm.model.dto.Alarm;
+import com.kh.campingez.alarm.model.service.AlarmService;
 import com.kh.campingez.user.model.dto.User;
 import com.kh.campingez.user.model.service.UserService;
 
@@ -38,6 +40,9 @@ public class UserController {
 	
 	@Autowired
     private JavaMailSender mailSender;
+	
+	@Autowired
+	private AlarmService alarmService;
 	
 	@GetMapping("/userEnroll.do")
 	public String userEnroll() {
@@ -217,5 +222,22 @@ public class UserController {
         String num = Integer.toString(checkNum);
         
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(num);
+	}
+	
+	@GetMapping("/alarmList.do")
+	public ResponseEntity<?> alarmList(@RequestParam String userId) {
+		List<Alarm> alarmList = alarmService.getAlarmListByUser(userId);
+		int notReadCount = alarmService.getNotReadCount(userId);
+		Map<String, Object> param = new HashMap<>();
+		param.put("alarmList", alarmList);
+		param.put("notReadCount", notReadCount);
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(param);
+	}
+	
+	@PostMapping("/updateAlarm.do")
+	public ResponseEntity<?> updateAlarm(@RequestParam int alrId) {
+		int result = alarmService.updateAlarm(alrId);
+		return ResponseEntity.ok().body(result);
 	}
 }

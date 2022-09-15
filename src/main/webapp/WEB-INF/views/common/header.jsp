@@ -11,6 +11,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <title>안녕하세요. 캠핑이지입니다.</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -25,31 +27,100 @@
 		alert("${msg}");
 	</script>
 </c:if>
-<sec:authorize access="isAuthenticated()">
-	<script>
-	const userId = "<sec:authentication property='principal.username'/>";
-	</script>
-	<script src="${pageContext.request.contextPath}/resources/js/ws.js"></script>
-</sec:authorize>
 <style>
 .header-layer {
 	display: none;
 }
 </style>
+<sec:authorize access="isAuthenticated()">
+	<script>
+	const userId = "<sec:authentication property='principal.username'/>";
+	</script>
+	<script src="${pageContext.request.contextPath}/resources/js/ws.js"></script>
+	
 <script>
+// 알림
 window.addEventListener('load', (e) => {
+	const notReadCount = ${notReadCount};
+	
+	if(notReadCount > 0) {
+		const newAlarm = document.querySelector("#new-alarm");
+		newAlarm.classList.remove('visually-hidden');
+	}
+	
 	document.querySelector("#bell").addEventListener('click', (e) => {
 		const div = document.querySelector(".header-layer");
 		
-		if(div.style.display == 'none') {
+		$.ajax({
+			url : "${pageContext.request.contextPath}/user/alarmList.do",
+			data : {userId},
+			content : "application/json",
+			success(response) {
+				const {notReadCount, alarmList} = response;
+				console.log('notReadCount : ', notReadCount);
+				div.innerHTML = '';
+				
+				let html = `
+				<div id="notReadCount">새소식 : \${notReadCount}</div>
+				<ul id="alarm-list">
+				`;
+				let targetUrl;
+				if(alarmList.length < 1) {
+					html += `
+						<li id="alarm">알림이 없습니다.</li>
+					`;
+				} else {
+					alarmList.forEach((alarm) => {
+						const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
+						targetUrl = alrUrl;
+						const [yy, MM, dd, HH, mm] = alrDatetime;
+						console.log(alrMessage, alrType, alrUrl, alrDatetime);
+						html += `
+						<li data-alr-id=\${alrId} id="alarm">
+							<span>\${alrMessage}</span>
+							<span>\${yy}/\${MM}/\${dd}</span>
+						</li>
+						`;
+					});
+				}
+				html += `
+				</ul>
+				`;
+				div.insertAdjacentHTML('beforeend', html);
+				
+				document.querySelectorAll("#alarm").forEach((li) => {
+					li.addEventListener('click', (e) => {
+						const alrId = e.target.parentElement.dataset.alrId;
+						if(alrId == undefined) return;
+						
+						const headers = {};
+						headers['${_csrf.headerName}'] = '${_csrf.token}';
+						
+						$.ajax({
+							url : "${pageContext.request.contextPath}/user/updateAlarm.do",
+							headers,
+							data : {alrId},
+							method : "POST",
+							success(response) {
+								location.href= "${pageContext.request.contextPath}" + targetUrl;
+							},
+							error : console.log
+						});
+					});
+				});
+			},
+			error : console.log
+		});
+		
+		if(div.style.display == 'none' || !div.style.display) {
 			div.style.display = 'block';
 		} else {
 			div.style.display = 'none';
-		}
-		
+		}	
 	});
-})
+});
 </script>
+</sec:authorize>
 </head>
 <body>
 	<nav class="navbar navbar-light bg-light p-1">
@@ -70,10 +141,16 @@ window.addEventListener('load', (e) => {
                 <button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userEnroll.do';" class="btn btn-primary">Sign-up</button>
               </sec:authorize>
               <sec:authorize access="isAuthenticated()">
-              	<span id="bell">알림</span>
-       			<div class="header-layer">
-					<p>하이</p>	
-				</div>
+					<button type="button"
+						class="btn btn-light position-relative" id="bell">
+						<i class="fa-regular fa-bell fa-lg"></i>
+							<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger visually-hidden" id="new-alarm">N 
+							<span class="visually-hidden">New alerts</span>
+						</span>
+					</button>
+					<div class="header-layer">
+						 <p>하이</p>	
+					</div>
                 <form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
                   <button type="submit">로그아웃</button>
                 </form:form>
