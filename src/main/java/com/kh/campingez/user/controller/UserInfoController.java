@@ -6,6 +6,9 @@ package com.kh.campingez.user.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -26,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.assignment.model.dto.AssignmentEntity;
+import com.kh.campingez.common.CampingEzUtils;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
@@ -56,8 +60,12 @@ public class UserInfoController {
 	
 	//회원 마이페이지 jsp 호추루루룰
 	@GetMapping("/myPage.do")
-	public ModelAndView myPage(Authentication authentication, ModelAndView mav, Model model) {
+	public ModelAndView myPage(@RequestParam(defaultValue = "1") int cPage, Authentication authentication, ModelAndView mav, Model model) {
 		User principal = (User)authentication.getPrincipal();
+		Map<String, Object> param = new HashMap<>();
+		int limit = 3;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
 		
 		//로그인된 회원의 1:1 문의 답변 확인
 		List<MyPage> inquireCnt = userInfoService.selectInquireCnt(principal);
@@ -76,7 +84,8 @@ public class UserInfoController {
 		model.addAttribute("couponList",couponList);
 		
 		//로그인된 회원이 등록한 양도글 조회.
-		List<AssignmentEntity> assignList = userInfoService.selectAssignList(principal); 
+		
+		List<AssignmentEntity> assignList = userInfoService.selectAssignList(param, principal); 
 		model.addAttribute("assignList",assignList);
 	
 		mav.setViewName("user/myPage");
@@ -197,14 +206,54 @@ public class UserInfoController {
 	 * !!!!!!!!!!!!!!!!양도 글 확인!!!!!!!!!!!!!!!!!!!!! 
 	 */
 	@GetMapping("/assignment.do")
-	public ModelAndView assignList(Authentication authentication, ModelAndView mav, Model model) {
+	public ModelAndView assignList(@RequestParam(defaultValue = "1") int cPage,Authentication authentication,
+									ModelAndView mav, Model model,HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 1;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
 		User principal = (User)authentication.getPrincipal();
-		List<AssignmentEntity> list = userInfoService.selectAssignList(principal);
+		List<AssignmentEntity> list = userInfoService.selectAssignList(param, principal);
 		log.debug("list = {}", list);
+		System.out.println(list);
+		int totalContent =  userInfoService.getTotalAssignment(principal);
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		System.out.println(cPage);
+		model.addAttribute("pagebar", pagebar);
+		
 		model.addAttribute("assignList", list);
 		mav.setViewName("user/myAssignment");
 		return mav;
 	}
+	/**
+	 * !!!!!!!!!!!!!!!!양도 글 ajax 용!!!!!!!!!!!!!!!!!!!!! 
+	 */
+	@PostMapping("/assignment.do")
+	public ResponseEntity<Map<String, Object>> assignAjax(@RequestParam(defaultValue = "1") int cPage,Authentication authentication,
+									ModelAndView mav, Model model,HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 1;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		User principal = (User)authentication.getPrincipal();
+		List<AssignmentEntity> list = userInfoService.selectAssignList(param, principal);
+		log.debug("list = {}", list);
+		System.out.println(list);
+		int totalContent =  userInfoService.getTotalAssignment(principal);
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		Map<String , Object> resultMap = new HashMap<>(); 
+			resultMap.put("pagebar", pagebar);
+			resultMap.put("assignList", list);
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(resultMap);
+	}
+	
 	/**
 	 * !!!!!!!!!!!!!!!!중고거래 게시판 글!!!!!!!!!!!!!!!!!!!!! 
 	 */

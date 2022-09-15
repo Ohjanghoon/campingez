@@ -1,7 +1,9 @@
 package com.kh.campingez.user.model.service;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,8 +52,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return userInfoDao.selectCoupon(user);
 	}
 	@Override
-	public List<AssignmentEntity> selectAssignList(User user) {
-		return userInfoDao.selectAssignList(user);
+	public List<AssignmentEntity> selectAssignList(Map<String, Object> param, User user) {
+		return userInfoDao.selectAssignList(getRowBounds(param), user);
 	}
 	@Override
 	public List<MyPage> selectTradeCnt(User user) {
@@ -60,5 +62,16 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public List<TradeEntity> selectTradeList(User user) {
 		return userInfoDao.selectTradeList(user);
+	}
+	@Override
+	public int getTotalAssignment(User user) {
+		return userInfoDao.getTotalAssignment(user);
+	}
+	
+	private RowBounds getRowBounds(Map<String, Object> param) {
+		int limit = (int)param.get("limit");
+		int offset = ((int)param.get("cPage") - 1) * limit;
+		
+		return new RowBounds(offset, limit);
 	}
 }

@@ -1,6 +1,7 @@
 package com.kh.campingez.user.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.coupon.model.dto.Coupon;
@@ -26,10 +27,12 @@ public interface UserInfoService {
 
 	List<Coupon> selectCoupon(User user);
 
-	List<AssignmentEntity> selectAssignList(User user);
+	List<AssignmentEntity> selectAssignList(Map<String, Object> param, User user);
 
 	List<MyPage> selectTradeCnt(User user);
 
 	List<TradeEntity> selectTradeList(User user);
+
+	int getTotalAssignment(User user);
 
 }

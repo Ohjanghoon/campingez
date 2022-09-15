@@ -19,7 +19,10 @@
 </head>
 <body>
 <div class="container" id="myTradeList">
-	<h3>중고물품 거래목록</h3>
+	<div>
+	<h3 id="titleLeft">중고물품 거래목록</h3>
+	<button id="titleRight" type="button" onclick="location.href='${pageContext.request.contextPath}/trade/tradeList.do';" class="btn btn-outline-dark">게시판 바로가기</button>
+	</div>
 	<table class="table">
 		<thead>
 			<th scope="col">No</th>
@@ -61,6 +64,7 @@
 			</c:forEach>
 		</tbody>
 	</table>	
+	
 </div>
 </body>
 </html>

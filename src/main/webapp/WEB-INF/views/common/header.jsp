@@ -175,11 +175,11 @@ window.addEventListener('load', (e) => {
                     <strong><sec:authentication property="principal.username"/><sec:authentication property="authorities" />님, 안녕하세요!</strong>
                   </a>
                   <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myPage.do">My page</a></li>
-                    <li><a class="dropdown-item" href="#">없을 무</a></li>
-                    <li><a class="dropdown-item" href="#">없을 무</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myPage.do">내정보</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myReservation.do">예약 & 리뷰</a></li>
+                    <li><a class="dropdown-item" href="#">찜 목록</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userEnroll.do">Sign out</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userEnroll.do">로그아웃</a></li>
                   </ul>
                 </div>
               </sec:authorize>
