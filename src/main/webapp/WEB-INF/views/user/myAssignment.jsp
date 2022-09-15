@@ -31,11 +31,11 @@
 			<th scope="col">양도가격</th>
 			<th scope="col">마감일자</th>
 			<th scope="col">좋아요</th>
-			<th scope="col">양도상태</th>
+			<th scope="col">양도상태</th> 
 		</thead>
-		<tbody>
-			<c:forEach items="${assignList}" var="assign" varStatus="vs">
-				<tr data-no="${res.resNo}">
+		<tbody id="assignTbody">
+			<c:forEach items="${assignList}" var="assign" varStatus="vs" >
+				<tr data-no="${assign.assignNo}">
 					<td>${assign.assignNo}</td>
 					<td>${assign.userId}</td>
 					<td>${assign.resNo}</td>
@@ -51,8 +51,63 @@
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table>	
+	</table>
+	<nav>
+		${pagebar}
+	</nav>	
 </div>
 </body>
+<script>
+
+function clickPaging() {
+	var id = this.id;
+	var page = id.substring(4);
+	if(page == 0){
+		page = -1;
+	}
+	assignmentPaingAjax(page);
+}
+
+const pagings = document.querySelectorAll(".paging");
+
+pagings.forEach(paging => {
+	paging.addEventListener("click", clickPaging);
+});
+
+function assignmentPaingAjax(cPage){
+	$("#assignTbody").empty();
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	$.ajax({
+		headers,
+		url:"<%=request.getContextPath()%>/userInfo/assignment.do?cPage="+cPage,
+		method : "POST",
+		success(response){
+            var results = response.assignList;
+            var str = "";
+            for(var i = 0; i < results.length; i++){
+            	var months = results[i].assignDate[1] < 10 ? '0' + results[i].assignDate[1] : results[i].assignDate[1];
+            	var days = results[i].assignDate[2] < 10 ? '0' + results[i].assignDate[2] : results[i].assignDate[2];
+            	str += 	'<tr data-no="'+results[i].assignNo+'">'+
+								'<td>'+results[i].assignNo+'</td>'+
+								'<td>'+results[i].userId+'</td>'+
+								'<td>'+results[i].resNo+'</td>'+
+								'<td>'+results[i].assignTitle+'</td>'+
+								'<td>'+results[i].assignContent+'</td>'+
+								'<td>'+results[i].assignPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원</td>'+
+								'<td>'+
+									results[i].assignDate[0]+'-' + months + '-' + days +
+								'</td>'+
+								'<td>'+results[i].assignLikeCount+'</td>'+
+								'<td>'+results[i].assignState+'</td>'+
+						'</tr>';            	
+            }
+			$("#assignTbody").append(str); 
+		},
+		error:console.log
+	});
+}
+
+</script>
 </html>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
