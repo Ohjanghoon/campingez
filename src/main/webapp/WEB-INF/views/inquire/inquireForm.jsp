@@ -30,8 +30,8 @@
 				<th>문의유형</th>
 				<td>
 					<select name="categoryId" id="inqType">
-						<option value="inq1">환불</option>
-						<option value="inq2">캠핑장</option>
+						<option value="inq1">환불문의</option>
+						<option value="inq2">예약문의</option>
 						<option value="inq3">기타</option>
 					</select>
 				</td>

@@ -19,4 +19,5 @@ public class InquireEntity {
 	private String inqTitle;
 	private String inqContent;
 	private LocalDateTime inqDate;
+	private LocalDateTime inqUpdatedDate;
 }

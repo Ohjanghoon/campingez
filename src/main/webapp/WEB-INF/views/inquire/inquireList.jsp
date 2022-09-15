@@ -9,56 +9,79 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
+	<div class="container">
 	
-	
-	<table>
+		<c:if test="${empty prePageName}">
+			<sec:authorize access="isAuthenticated()">
+				<div class="my-3 d-flex justify-content-end">
+					<button
+						type="button"
+						class="btn btn-outline-dark"
+						onclick="location.href='${pageContext.request.contextPath}/inquire/inquireForm.do'">문의하기
+					</button>
+				</div>
+			</sec:authorize>
+		</c:if>
+	<table class="table table-striped table-hover">
 		<thead>
-			<tr>
-				<th>No</th>
-				<th>문의유형</th>
+			<tr class="table-active text-center">
+				<th style="width: 5%">No</th>
+				<th style="width: 9%">문의유형</th>
 				<th>작성자</th>
 				<th>문의제목</th>
 				<th>작성일</th>
-				<th>답변상태</th>
+				<th style="width: 12%">답변상태</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${inquireList}" var="inq" varStatus="vs">
-				<tr data-no="${inq.inqNo}">
-					<td>${vs.count}</td>
-					<td>${inq.categoryId}</td>
-					<td>${inq.inqWriter}</td>
-					<td>${inq.inqTitle}</td>
-					<td>
+				<sec:authorize access="isAnonymous()" var="anonymous" />
+				<sec:authorize access="isAuthenticated()">
+					<sec:authentication property="principal.username" var="userId"/>
+					<sec:authorize access="!hasRole('ROLE_ADMIN') and !${userId eq inq.inqWriter}" var="notAllow" />
+				</sec:authorize>
+				<tr data-no="${inq.inqNo}" data-allow="${anonymous or notAllow}" style="cursor:pointer">
+					<td class="text-center">${vs.count}</td>
+					<td class="text-center">${inq.categoryName}</td>
+					<td class="text-center">${inq.inqWriter}</td>
+					<td class="text-left">
+						<c:if test="${anonymous or notAllow}">
+							&nbsp;<i class="fa-sharp fa-solid fa-lock"></i>&nbsp;
+						</c:if>
+						${inq.inqTitle}
+					</td>
+					<td class="text-center">
 						<fmt:parseDate value="${inq.inqDate}" pattern="yyyy-MM-dd'T'HH:mm" var="inqDate" />
 						<fmt:formatDate value="${inqDate}" pattern="yyyy/MM/dd" />
 					</td>
-					<td>${inq.answerStatus == 0 ? "답변대기" :"답변완료" }</td>
+					<td class="text-center">${inq.answerStatus == 0 ? "답변대기" :"답변완료" }</td>
 				</tr>
 			</c:forEach>
-			<tr>
-				<td>
-					<c:if test="${empty prePageName}">
-						<button
-							type="button"
-							onclick="location.href='${pageContext.request.contextPath}/inquire/inquireForm.do'">문의하기
-						</button>
-					</c:if>
-						
-				</td>
-			</tr>
 		</tbody>
 	</table>
-	
+	<div class="d-flex justify-content-center">
+		<nav aria-label="Page navigation example">
+			${pagebar}
+		</nav>
+	</div>
+	</div>
 	<script>
 	document.querySelectorAll("tr[data-no]").forEach((tr) => {
 		
 		tr.addEventListener('click', (e) => {
-			console.log(e.target);
-			const tr = e.target.parentElement;
-			const no = tr.dataset.no;
-			if(no){
-				location.href=`${pageContext.request.contextPath}/inquire/inquireDetail.do?no=` + no;
+			const td = e.target;
+			const tr = td.parentElement;
+			
+			const inqNo = tr.dataset.no;
+			const allow = tr.dataset.allow;
+			//console.log(inqNo, allow, typeof allow);
+			
+			if(allow === 'true') {
+				alert("해당 작성자와 관리자만 열람 가능합니다.");
+				return;
+			}
+			if(inqNo){
+				location.href="${pageContext.request.contextPath}/inquire/inquireDetail.do?no=" + inqNo;
 			}
 		});
 	});
