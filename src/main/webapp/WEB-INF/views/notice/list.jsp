@@ -14,7 +14,7 @@
 			<button class="btn btn-outline-dark" type="button" id="coupon">쿠폰 생성 <i class="fa-solid fa-barcode"></i></button>
 		</div>
 	<hr/>
-	<table class="table table-sm">
+	<table class="table table-lg">
 		<thead>
 			<tr>
 				<th></th>
