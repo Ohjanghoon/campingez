@@ -5,57 +5,51 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-</head>
-<body>
-	<h3>공지사항은 뭘까요?</h3>
-	<button id="update">수정</button>
-	<button id="delete">삭제</button>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param name="title" value="캠핑이지" />
+</jsp:include>
+<main>
+	<div class="container">
+		<div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5">
+			<button class="btn btn-outline-dark" type="button" id="update">수정 <i class="fa-solid fa-wrench"></i></button>
+			<button class="btn btn-outline-dark" type="button" id="delete">삭제 <i class="fa-solid fa-xmark"></i></button>
+			<button class="btn btn-outline-dark" type="button" onclick="location.href='${pageContext.request.contextPath}/notice/list';">목록으로 <i class="fa-solid fa-list"></i></button>
+		</div>
 	<hr />
-	<c:if test="${notice.categoryId == 'not1'}">
 	<!-- 공지사항용 jsp -->
-		<table class="table">
-		<tr>
-			<th>제목</th>
-			<td>[${notice.categoryId == 'not1' ? '공지사항' : '이벤트'}] ${notice.noticeTitle}</td>
-			<th>내용</th>
-			<td>${notice.noticeContent}</td>
-			<th>작성일</th>
-			<td>${notice.noticeDate}</td>
-		</tr>
-		<tr>
-			<c:if test="${not empty notice.photos}">
-				<c:forEach items="${notice.photos}" var="photo">	
-					<td><img src ="${pageContext.request.contextPath}/resources/upload/notice/${photo.noticeRenamedFilename}" class="upload" width="100px"></td>
-				</c:forEach>
-			</c:if>
-		</tr>
-		</table>
+	<c:if test="${notice.categoryId == 'not1'}">
+		<div class="px-4 pt-2 my-5 text-center border-bottom">
+		    <h5 class="display-10 fw-bold">${notice.noticeTitle} [${notice.noticeType}]</h5>
+		    <h6>${notice.noticeDate}</h6>
+		    <div class="col-lg-6 mx-auto">
+		      <p class="lead mb-5">${notice.noticeContent}</p>
+		    </div>
+			<div class="container px-5">
+				<c:if test="${not empty notice.photos}">
+					<c:forEach items="${notice.photos}" var="photo">	
+						<img src ="${pageContext.request.contextPath}/resources/upload/notice/${photo.noticeRenamedFilename}" class="img-fluid border rounded-3 shadow-lg mb-4" width="700" height="500">
+					</c:forEach>
+				</c:if>
+			</div>
+		  </div>
 	</c:if>
-	<c:if test="${notice.categoryId == 'not2'}">
 	<!-- 이벤트용 -->
-	<table class="table">
-		<tr>
-			<th>제목</th>
-			<td>[${notice.categoryId == 'not1' ? '공지사항' : '이벤트'}] ${notice.noticeTitle}</td>
-			<th>작성일</th>
-			<td>${notice.noticeDate}</td>
-		</tr>
-		<tr>
-			<c:if test="${not empty notice.photos}">
-				<c:forEach items="${notice.photos}" var="photo">	
-					<td colspan="3"><img src ="${pageContext.request.contextPath}/resources/upload/notice/${photo.noticeRenamedFilename}" class="upload" width="350px"></td>
-				</c:forEach>
-			</c:if>
-		</tr>
-	</table>
-	<div class="coupon"></div>
+	<c:if test="${notice.categoryId == 'not2'}">
+		<div class="px-4 pt-2 my-5 text-center border-bottom">
+		    <h5 class="display-10 fw-bold">${notice.noticeTitle} [${notice.noticeType}]</h5>
+		    <h6>${notice.noticeDate}</h6>
+			<div class="coupon p-5 d-flex justify-content-center"></div>
+			<div class="container px-5">
+				<c:if test="${not empty notice.photos}">
+					<c:forEach items="${notice.photos}" var="photo">	
+						<img src ="${pageContext.request.contextPath}/resources/upload/notice/${photo.noticeRenamedFilename}" class="img-fluid border rounded-3 shadow-lg mb-4" width="700" height="500">
+					</c:forEach>
+				</c:if>
+			</div>
+		</div>
 	</c:if>
+	</div>
+</main>
 	<script>
 		const headers = {};
         headers['${_csrf.headerName}'] = '${_csrf.token}';
@@ -73,13 +67,15 @@
 					<form:form name="couponDownFrm" action="" method="POST">
 					<input type="hidden" name="userId" value="<sec:authentication property='principal.username'/>"/>
 					<input type="hidden" name="couponCode" value="${notice.noticeContent}"/>
-					<h3>쿠폰</h3>
-					<span name="couponName" >쿠폰명 : \${couponName}</span><br />
-					<sppn name="couponDiscount">할인률 : \${couponDiscount}%</span><br />
-					<sppn name="coupon">기간 : \${couponStartday}~\${couponEndday}</span><br />
-					<button type="button" id="btn3">쿠폰 다운로드</button>
+					<div class="card text-center" style="width: 18rem;">
+					  <h4 class="card-header">\${couponName}</h4>
+					  <div class="card-body">
+					    <p class="card-text">할인률 : \${couponDiscount}%</p>
+					    <p class="card-text">사용기간 : \${couponStartday}~\${couponEndday}</p>
+					    <button type="button" class="btn btn-md btn-outline-danger mt-3 w-100" id="btn3"><i class="fa-solid fa-download"></i></button>
+					  </div>
+					</div>
 					</form:form>
-					
 				`;
 				
 				// 쿠폰 받기
@@ -116,5 +112,4 @@
 			}
 		});
 	</script>
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

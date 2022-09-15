@@ -67,7 +67,7 @@ public class ReservationController {
 	}
 	
 	@PostMapping("/campZoneInfo")
-	public ResponseEntity<?> campZoneInfo(@RequestParam String campId) {
+	public ResponseEntity<?> campZoneInfo(@RequestParam(required=false) String campId) {
 		CampZone campZone = reservationService.campZoneInfo(campId);
 		
 		log.debug("campZone = {}", campZone);

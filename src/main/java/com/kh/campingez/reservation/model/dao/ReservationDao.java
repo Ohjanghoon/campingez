@@ -18,7 +18,7 @@ public interface ReservationDao {
 	@Select("select * from camp where camp_id not in (select camp_id from reservation where res_checkin between #{checkin} and #{checkout} or res_checkout between #{checkin} and #{checkout})")
 	List<Camp> campList(Map<String, Object> param);
 
-	@Select("select * from camp_zone join (select * from camp where camp_id = #{campId}) camp on camp_zone.zone_code = camp.zone_code")
+	@Select("select * from camp_zone z join camp c on z.zone_code = c.zone_code where camp_id = #{campId}")
 	CampZone campZoneInfo(String campId);
 
 	@Insert("insert into reservation values (#{campId}||seq_reservation_res_no.nextval, #{campId}, #{userId}, #{resUsername}, #{resPhone}, #{resPerson}, #{resPrice}, default, #{resCheckin}, #{resCheckout}, #{resCarNo}, #{resRequest}, '결제대기', #{resPayment})")
