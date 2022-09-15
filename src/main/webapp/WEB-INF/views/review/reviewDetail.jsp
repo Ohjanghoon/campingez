@@ -1,3 +1,7 @@
+<%@page import="java.util.Collection"%>
+<%@page import="java.util.Arrays"%>
+<%@page import="com.kh.campingez.user.model.dto.Authority"%>
+<%@page import="java.util.List"%>
 <%@page import="com.kh.campingez.review.model.dto.Review"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -12,6 +16,7 @@
 </jsp:include>
 <main>
 	<sec:authentication property="principal" var="loginMember" scope="page" />
+	<sec:authentication property="authorities" var="auth" scope="page" />
 	<section>
 		<h2>리뷰상세보기</h2>
 		<div id="userinfo-wrap">
@@ -41,6 +46,10 @@
 				<button id="update-btn">수정</button>
 				<button id="delete-btn">삭제</button>
 			</c:if>		
+		</sec:authorize>
+		<sec:authorize access="hasRole('ROLE_ADMIN')">		
+			<button id="update-btn">수정</button>
+			<button id="delete-btn">삭제</button>
 		</sec:authorize>
 	</section>
 </main>
