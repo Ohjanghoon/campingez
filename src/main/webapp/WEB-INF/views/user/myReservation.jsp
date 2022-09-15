@@ -38,8 +38,7 @@
 			<th scope="col">결제수단</th>
 			<th scope="col">리뷰작성</th>
 		</thead>
-		<tbody>
-			
+		<tbody id="reservationTbody">
 			<c:forEach items="${reservationList}" var="res" varStatus="vs">
 				<tr  style ="height : 55.7px" data-no="${res.resNo}">
 					<td>${vs.count}</td>
@@ -73,8 +72,81 @@
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table>	
+	</table>
+	<nav>
+		${pagebar}
+	</nav>		
 </div>
 </body>
+<script>
+
+function clickPaging() {
+	var id = this.id;
+	var page = id.substring(4);
+	if(page == 0){
+		page = -1;
+	}
+	reservationPaingAjax(page);
+	console.log(page);
+}
+
+const pagings = document.querySelectorAll(".paging");
+
+pagings.forEach(paging => {
+	paging.addEventListener("click", clickPaging);
+});
+
+function reservationPaingAjax(cPage){
+	$("#reservationTbody").empty();
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	$.ajax({
+		headers,
+		url:"<%=request.getContextPath()%>/userInfo/myReservation.do?cPage="+cPage,
+		method : "POST",
+		success(response){
+            var results = response.reservationList;
+            var str = "";
+            for(var i = 0; i < results.length; i++){
+            	var months1 = results[i].resDate[1] < 10 ? '0' + results[i].resDate[1] : results[i].resDate[1];
+            	var months2 = results[i].resCheckin[1] < 10 ? '0' + results[i].resCheckin[1] : results[i].resCheckin[1];
+            	var months3 = results[i].resCheckout[1] < 10 ? '0' + results[i].resCheckout[1] : results[i].resCheckout[1];
+            	var days1 = results[i].resDate[2] < 10 ? '0' + results[i].resDate[2] : results[i].resDate[2];
+            	var days2 = results[i].resCheckin[2] < 10 ? '0' + results[i].resCheckin[2] : results[i].resCheckin[2];
+            	var days3 = results[i].resCheckout[2] < 10 ? '0' + results[i].resCheckout[2] : results[i].resCheckout[2];
+            	str += 	'<tr style ="height : 55.7px" data-no="'+results[i].resNo+'">'+
+								'<td>'+ (i+1) +'</td>'+
+								'<td>'+results[i].resNo+'</td>'+
+								'<td>'+(results[i].campId == null ? "" : results[i].campId)+'</td>'+
+								'<td>'+(results[i].resUsername == null ? "" : results[i].resUsername)+'</td>'+
+								'<td>'+(results[i].resPhone == null ? "" : results[i].resPhone)+'</td>'+
+								'<td>'+(results[i].resPerson == null ? "" : results[i].resPerson)+'</td>'+
+								'<td>'+results[i].resPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원</td>'+
+								'<td>'+
+									results[i].resDate[0]+'-' + months1 + '-' + days1 +
+								'</td>'+
+								'<td>'+
+									results[i].resCheckin[0]+'-' + months2 + '-' + days2 +
+								'</td>'+
+								'<td>'+
+									results[i].resCheckout[0]+'-' + months3 + '-' + days3 +
+								'</td>'+
+								'<td>'+(results[i].resCarNo == null ? "" : results[i].resCarNo)+'</td>'+
+								'<td>'+(results[i].resState == null ? "" : results[i].resState)+'</td>'+
+								'<td>'+(results[i].resPayment == null ? "" : results[i].resPayment)+'</td>';
+					if(results[i].review =='OK'){
+						str += '<td><button  class="btn btn-outline-dark" onclick="location.href=" ${pageContext.request.contextPath}/review/reviewForm.do?resNo=results[i].resNo"">리뷰작성</button></td>';
+					}else{
+						str +='<td></td>' ;
+					}
+						str +='</tr>';            	
+            }
+			$("#reservationTbody").append(str); 
+		},
+		error:console.log
+	});
+}
+
+</script>
 </html>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

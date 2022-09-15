@@ -193,14 +193,54 @@ public class UserInfoController {
 	 * !!!!!!!!!!!!!!!!본인 예약글 확인!!!!!!!!!!!!!!!!!!!!! 
 	 */
 	@GetMapping("/myReservation.do")
-	public ModelAndView reservationCheck(Authentication authentication ,Model model, ModelAndView mav) {
+	public ModelAndView reservationCheck(@RequestParam(defaultValue = "1") int cPage, Authentication authentication ,
+											Model model, ModelAndView mav, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 6;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
 		User principal = (User)authentication.getPrincipal();
-		List<Reservation> list = userInfoService.selectReservationList(principal);
+		List<Reservation> list = userInfoService.selectReservationList(param, principal);
 		log.debug("list = {}", list);
+		
+		int totalReservation =  userInfoService.getTotalReservation(principal);
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalReservation, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("reservationList", list);
 		mav.setViewName("user/myReservation");
 		return mav;
 	}
+	
+	/**
+	 * !!!!!!!!!!!!!!!!예약글 ajax!!!!!!!!!!!!!!!!!!!!! 
+	 */
+	@PostMapping("/myReservation.do")
+	public ResponseEntity<Map<String, Object>> reservationAjax(@RequestParam(defaultValue = "1") int cPage, Authentication authentication ,
+											Model model, ModelAndView mav, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 6;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		User principal = (User)authentication.getPrincipal();
+		List<Reservation> list = userInfoService.selectReservationList(param, principal);
+		log.debug("list = {}", list);
+		
+		int totalReservation =  userInfoService.getTotalReservation(principal);
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalReservation, url);
+		log.debug("pagebar = {}", pagebar);
+		
+
+		Map<String , Object> resultMap = new HashMap<>(); 
+		resultMap.put("pagebar", pagebar);
+		resultMap.put("reservationList", list);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(resultMap);
+	}
+	
 	
 	/**
 	 * !!!!!!!!!!!!!!!!양도 글 확인!!!!!!!!!!!!!!!!!!!!! 
@@ -235,7 +275,7 @@ public class UserInfoController {
 	public ResponseEntity<Map<String, Object>> assignAjax(@RequestParam(defaultValue = "1") int cPage,Authentication authentication,
 									ModelAndView mav, Model model,HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
-		int limit = 1;
+		int limit = 6;
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		
@@ -253,18 +293,57 @@ public class UserInfoController {
 			resultMap.put("assignList", list);
 			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(resultMap);
 	}
-	
+	 
 	/**
 	 * !!!!!!!!!!!!!!!!중고거래 게시판 글!!!!!!!!!!!!!!!!!!!!! 
 	 */
 	@GetMapping("/myTradeList.do")
-	public ModelAndView myTradeList(Authentication authentication, ModelAndView mav, Model model) {
+	public ModelAndView myTradeList(@RequestParam(defaultValue = "1") int cPage ,Authentication authentication, 
+										ModelAndView mav, Model model, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 6;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
 		User principal = (User)authentication.getPrincipal();
-		List<TradeEntity> result = userInfoService.selectTradeList(principal);
+		List<TradeEntity> result = userInfoService.selectTradeList(param, principal);
 		log.debug("list = {}", result);
+		
+		int totalTrade =  userInfoService.getTotalTrade(principal);
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalTrade, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("result", result);
 		mav.setViewName("user/myTradeList");
 		return mav;
+	}
+	
+	/**
+	 * !!!!!!!!!!!!!!!!중고거래 ajax !!!!!!!!!!!!!!!!!!!!! 
+	 */
+	@PostMapping("/myTradeList.do")
+	public ResponseEntity<Map<String, Object>> tradeAjax(@RequestParam(defaultValue = "1") int cPage ,Authentication authentication, 
+										ModelAndView mav, Model model, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 6;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		User principal = (User)authentication.getPrincipal();
+		List<TradeEntity> result = userInfoService.selectTradeList(param, principal);
+		log.debug("list = {}", result);
+		
+		int totalTrade =  userInfoService.getTotalTrade(principal);
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalTrade, url);
+		log.debug("pagebar = {}", pagebar);
+		System.out.println(cPage + "아래것");
+		System.out.println(result);
+		Map<String , Object> resultMap = new HashMap<>(); 
+		resultMap.put("pagebar", pagebar);
+		resultMap.put("result", result);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(resultMap);
 	}
 	
 }

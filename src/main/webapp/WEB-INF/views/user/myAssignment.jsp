@@ -7,7 +7,6 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<c:out value="${assignList}"></c:out>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
@@ -62,8 +61,6 @@
 
 function clickPaging() {
 	var id = this.id;
-	console.log("그아아아아악");
-	console.log(id);
 	var page = id.substring(4);
 	if(page == 0){
 		page = -1;
@@ -87,30 +84,25 @@ function assignmentPaingAjax(cPage){
 		method : "POST",
 		success(response){
             var results = response.assignList;
-            console.log(results);
             var str = "";
             for(var i = 0; i < results.length; i++){
+            	var months = results[i].assignDate[1] < 10 ? '0' + results[i].assignDate[1] : results[i].assignDate[1];
+            	var days = results[i].assignDate[2] < 10 ? '0' + results[i].assignDate[2] : results[i].assignDate[2];
             	str += 	'<tr data-no="'+results[i].assignNo+'">'+
 								'<td>'+results[i].assignNo+'</td>'+
 								'<td>'+results[i].userId+'</td>'+
 								'<td>'+results[i].resNo+'</td>'+
 								'<td>'+results[i].assignTitle+'</td>'+
 								'<td>'+results[i].assignContent+'</td>'+
-								'<td>'+results[i].assignPrice+'</td>'+
+								'<td>'+results[i].assignPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원</td>'+
 								'<td>'+
-									results[i].assignDate+
+									results[i].assignDate[0]+'-' + months + '-' + days +
 								'</td>'+
 								'<td>'+results[i].assignLikeCount+'</td>'+
 								'<td>'+results[i].assignState+'</td>'+
 						'</tr>';            	
             }
 			$("#assignTbody").append(str); 
-            /* var str = '<TR>';
-            $.each(results , function(i){
-                str += '<TD>' + results[i].bdTitl + '</TD><TD>' + results[i].bdWriter + '</TD><TD>' + results[i].bdRgDt + '</TD>';
-                str += '</TR>';
-           });
-           $("#boardList").append(str);  */
 		},
 		error:console.log
 	});

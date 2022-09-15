@@ -38,7 +38,7 @@
 			<th scope="col">작성일</th>
 			<th scope="col">조회수</th>
 		</thead>
-		<tbody>
+		<tbody id="tradeTbody">
 			<c:forEach items="${result}" var="trade" varStatus="vs">
 				<tr  data-no="${trade.tradeNo}">
 					<td>${vs.count}</td>
@@ -64,8 +64,70 @@
 			</c:forEach>
 		</tbody>
 	</table>	
-	
+	<nav>
+		${pagebar}
+	</nav>
 </div>
 </body>
+<script>
+
+function clickPaging() {
+	var id = this.id;
+	var page = id.substring(4);
+	if(page == 0){
+		page = -1;
+	}
+	tradePaingAjax(page);
+	console.log(page);
+}
+
+const pagings = document.querySelectorAll(".paging");
+
+pagings.forEach(paging => {
+	paging.addEventListener("click", clickPaging);
+});
+
+function tradePaingAjax(cPage){
+	$("#tradeTbody").empty();
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	$.ajax({
+		headers,
+		url:"<%=request.getContextPath()%>/userInfo/myTradeList.do?cPage="+cPage,
+		method : "POST",
+		success(response){
+            var results = response.result;
+            var str = "";
+            for(var i = 0; i < results.length; i++){
+            	var months = results[i].tradeDate[1] < 10 ? '0' + results[i].tradeDate[1] : results[i].tradeDate[1];
+            	var days = results[i].tradeDate[2] < 10 ? '0' + results[i].tradeDate[2] : results[i].tradeDate[2];
+            	str += 	'<tr data-no="'+results[i].tradeNo+'">'+
+								'<td>'+ (i+1) +'</td>'+
+								'<td>'+results[i].tradeNo+'</td>'+
+								'<td>'+results[i].userId+'</td>'+
+								'<td>'+results[i].categoryId+'</td>'+
+								'<td>'+results[i].tradeTitle+'</td>'+
+								'<td>'+
+								'<div class="tradeContent">'+
+									results[i].tradeContent +
+								'</div>'+
+								'</td>' +
+								'<td>'+results[i].tradePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원</td>'+
+								'<td>'+results[i].tradeSuccess+'</td>'+
+								'<td>'+results[i].tradeQuality+'</td>'+
+								'<td>'+results[i].likeCount+'</td>'+
+								'<td>'+
+									results[i].tradeDate[0]+'-' + months + '-' + days +
+								'</td>'+
+								'<td>'+results[i].readCount+'</td>' + 
+						'</tr>';            	
+            }
+			$("#tradeTbody").append(str); 
+		},
+		error:console.log
+	});
+}
+
+</script>
 </html>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

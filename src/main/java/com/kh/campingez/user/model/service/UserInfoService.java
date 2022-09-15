@@ -19,7 +19,7 @@ public interface UserInfoService {
 
 	List<Inquire> selectInquireList(User user);
 
-	List<Reservation> selectReservationList(User user);
+	List<Reservation> selectReservationList(Map<String, Object> param,User user);
 
 	List<MyPage> selectInquireCnt(User user);
 
@@ -31,8 +31,12 @@ public interface UserInfoService {
 
 	List<MyPage> selectTradeCnt(User user);
 
-	List<TradeEntity> selectTradeList(User user);
+	List<TradeEntity> selectTradeList(Map<String, Object> param, User user);
 
 	int getTotalAssignment(User user);
+
+	int getTotalTrade(User user);
+
+	int getTotalReservation(User user);
 
 }

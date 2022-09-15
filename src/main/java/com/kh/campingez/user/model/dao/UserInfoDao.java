@@ -33,7 +33,7 @@ public interface UserInfoDao {
 	List<Inquire> selectInquireList(User user);
 
 	
-	List<Reservation> selectReservationList(User user);
+	List<Reservation> selectReservationList(RowBounds rowBounds, User user);
 
 	
 	List<MyPage> selectInquireCnt(User user);
@@ -51,9 +51,15 @@ public interface UserInfoDao {
 	List<MyPage> selectTradeCnt(User user);
 
 	@Select("select t.*, trade_read_count read_count,trade_like_count like_count from trade t where user_id = #{userId}")
-	List<TradeEntity> selectTradeList(User user);
+	List<TradeEntity> selectTradeList(RowBounds rowBounds, User user);
 
 	@Select("select count(*) from assignment where user_id = #{userId}")
 	int getTotalAssignment(User user);
+
+	@Select("select count(*) from trade where user_id = #{userId}")
+	int getTotalTrade(User user);
+
+	@Select("select count(*) from reservation where user_id = #{userId}")
+	int getTotalReservation(User user);
 
 }
