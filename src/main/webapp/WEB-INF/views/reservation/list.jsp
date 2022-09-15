@@ -115,7 +115,7 @@
             				    </div>
             				    <div class="col-md-7 col-lg-8">
             				      <h4 class="mb-3">예약 정보 입력</h4>
-            				      <form:form class="needs-validation" name="reservationFrm" action="${pageContext.request.contextPath}/reservation/insertReservation.do" method="POST">
+            				      <form:form class="needs-validation" name="reservationFrm" action="${pageContext.request.contextPath}/reservation/insertReservatio.do" method="POST">
             				        <input type="hidden" name="userId" value="<sec:authentication property='principal.username' />"/>
             				        <input type="hidden" name="checkin" value="\${checkin}"/>
             				        <input type="hidden" name="checkout" value="\${checkout}"/>
@@ -124,7 +124,7 @@
             				            <label for="resUsername" class="form-label">예약자 성함</label>
             				            <div class="input-group has-validation">
             				              <span class="input-group-text"><i class="fa-regular fa-face-smile"></i></span>
-            				              <input type="text" class="form-control" id="resUsername" name="resUsername" placeholder="예약자 성함" required>
+            				              <input type="text" class="form-control" name="resUsername" value="" placeholder="예약자 성함" required>
             				            <div class="invalid-feedback">
             				                예약자 이름을 작성해주세요.
             				              </div>
@@ -133,7 +133,7 @@
 
             				          <div class="col-12">
             				            <label for="resPhone" class="form-label">예약자 전화번호</label>
-            				            <input type="text" class="form-control" id="resPhone" name="resPhone" placeholder="ex) 01012345678" required>
+            				            <input type="text" class="form-control" name="resPhone" value="" placeholder="ex) 01012345678" required>
             				            <div class="invalid-feedback">
             				              휴대폰번호를 입력해주세요.
             				            </div>
@@ -141,7 +141,7 @@
 
             				          <div class="col-12">
             				            <label for="resCarNo" class="form-label">차량번호</label>
-            				            <input type="text" class="form-control" id="resCarNo" name="resCarNo" placeholder="ex) 11가1111">
+            				            <input type="text" class="form-control" name="resCarNo" value="" placeholder="ex) 11가1111">
             				            <div class="invalid-feedback">
             				              차량번호를 입력해주세요.
             				            </div>
@@ -149,7 +149,7 @@
 
             				          <div class="col-12">
             				            <label for="resRequest" class="form-label">요청사항</label>
-            				            <input type="text" class="form-control" id="resRequest" name="resRequest" placeholder="요청사항을 입력하세요.">
+            				            <input type="text" class="form-control" name="resRequest" value="" placeholder="요청사항을 입력하세요.">
             				          </div>
 
             				          <div class="col-md-5">
@@ -170,7 +170,7 @@
             				          <div class="col-md-7">
             				            <label for="couponList" class="form-label">쿠폰</label>
             				            <select class="form-select" id="couponList" required>
-            				              <option value="">선택안함</option>
+            				              <option value="0">선택안함</option>
             				            </select>
             				            <div class="invalid-feedback">
             				              쿠폰 선택
@@ -178,7 +178,7 @@
             				          </div>
             				          <div class="col-md-7">
             				            <label for="point" class="form-label">포인트</label>&nbsp;(잔여 포인트 : <sec:authentication property='principal.point' />P)
-            				            <input type="number" class="form-control" id="point" value="0" step="100" max="<sec:authentication property='principal.point' />" required>
+            				            <input type="number" class="form-control" id="point" value="0" min="0" max="<sec:authentication property='principal.point' />" step="100">
             				            <div class="invalid-feedback">
             				              포인트 입력
             				            </div>
@@ -197,7 +197,7 @@
             				          </div>
             				        </div>
             				        <hr class="my-4">
-            				        <button class="w-100 btn btn-primary btn-lg" type="submit">결제하기</button>
+            				        <button class="w-100 btn btn-primary btn-lg" type="button" id="doPay">결제하기</button>
             				      </form:form>
             				`;
             				
@@ -209,7 +209,28 @@
                                 couponList.innerHTML += option;
                              });
             				    				
+       						
+            				document.querySelector("#point").addEventListener("blur", (e) => {
+            					document.querySelector("#usepoint").innerHTML = e.target.value; 
+            					let minuspoint = document.querySelector("#point").value;
+    							let minuscoupon = couponList.value;
+    						
+    							let price = Number(document.querySelector("#zonePrice").innerHTML);
+                				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
+                				document.querySelector("#resPrice").innerHTML = resPrice;	
+            				});
             				
+            				couponList.addEventListener("blur", (e) => {
+            					document.querySelector("#coupon").innerHTML = e.target.value;
+            					let minuspoint = document.querySelector("#point").value;
+    							let minuscoupon = couponList.value;
+    						
+    							let price = Number(document.querySelector("#zonePrice").innerHTML);
+                				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
+                				document.querySelector("#resPrice").innerHTML = resPrice;	
+            				});
+            				
+            			
             				document.querySelector("#list").addEventListener('input', (e) => {
             					const campId = e.target.value;
             					$.ajax({
@@ -223,28 +244,27 @@
             							document.querySelector("#zonePrice").innerHTML = `\${zonePrice}`;
             							document.querySelector("#zone").innerHTML = `\${campId}`;            						
 
-            							const minuspoint = document.querySelector("#point").value;
-            							const minuscoupon = couponList.value;
-            							
-
-            							document.querySelector("#point").addEventListener("blur", (e) => {
-                        					document.querySelector("#usepoint").innerHTML = e.target.value; 
-                        				});
-                        				
-                        				couponList.addEventListener("blur", (e) => {
-                        					document.querySelector("#coupon").innerHTML = e.target.value;
-                        				});
-            							
-                        				const price = Number(document.querySelector("#zonePrice").innerHTML);
+            							let minuspoint = document.querySelector("#point").value;
+            							let minuscoupon = couponList.value;
+            						
+            							let price = Number(document.querySelector("#zonePrice").innerHTML);
                         				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
             							
-                        				document.querySelector("#resPrice").innerHTML = resPrice;	
+                        				document.querySelector("#resPrice").innerHTML = resPrice;
+                        				
+                        				document.querySelector("#doPay").addEventListener('click', (e) => {
+                        					document.reservationFrm.innerHTML += `
+                        						<input type="hidden" name="campId" value="\${campId}"/>
+                        						<input type="hidden" name="resPrice" value="resPrice"/>
+                        						<input type="hidden" name="point" value="\${minuspoint}"/>
+                        					`;
+                        					reservationFrm.submit();
+                        				});
+                        				
             						},
             						error : console.log
             					})
             				});
-       
-							
             			},
             			error : console.log
             		})
@@ -253,7 +273,6 @@
         });
         calendar.render();
 	});
-	
 	
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
@@ -267,11 +286,6 @@
 	map.setDraggable(false);		
 	// 마우스 휠과 모바일 터치를 이용한 지도 확대, 축소를 막는다
 	map.setZoomable(false);   
-	
-	//  frm 실행전 추가해서 넘기기..
-	/* document.reservationFrm.innerHTML += `
-            								<input type="hidden" name="campId" value="\${campId}"/>
-            								<input type="hidden" name="resPrice" value="resPrice"/>
-            							`; */
+
 	
 </script>

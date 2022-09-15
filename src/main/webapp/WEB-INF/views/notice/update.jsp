@@ -4,13 +4,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param name="title" value="캠핑이지" />
+</jsp:include>
+<main>
+	<div class="container">
 	<h1>notice update</h1>
 		<form name="noticeUpdateFrm" action="${pageContext.request.contextPath}/notice/update.do"
 			method="post" enctype="multipart/form-data">
@@ -45,6 +43,8 @@
 			<input type="file" name="upFile" id="upFile2" multiple><br /><br />
 			<button>저장</button>
 		</form>
+		</div>
+</main>
 	<script>
 		document.querySelectorAll("[name=upFile]").forEach((input) => {
 			input.addEventListener("change", (e) => {
@@ -59,5 +59,4 @@
 			});
 		});
 	</script>
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
