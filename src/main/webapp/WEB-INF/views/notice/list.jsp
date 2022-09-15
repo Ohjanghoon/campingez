@@ -3,42 +3,41 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<h2>notice</h2>
-	<button id="notice">공지사항 게시글 등록</button>
-	<button id="event">이벤트 등록</button>
-	<button id="coupon">쿠폰 등록</button>
-	<hr />
-	<table class="table">
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param name="title" value="캠핑이지" />
+</jsp:include>
+<main>
+	<div class="container">
+		<div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5">
+			<button class="btn btn-outline-dark" type="button" id="notice">공지사항 등록 <i class="fa-regular fa-pen-to-square"></i></button>
+			<button class="btn btn-outline-dark" type="button" id="event">이벤트 등록 <i class="fa-regular fa-calendar"></i></button>
+			<button class="btn btn-outline-dark" type="button" id="coupon">쿠폰 생성 <i class="fa-solid fa-barcode"></i></button>
+		</div>
+	<hr/>
+	<table class="table table-sm">
 		<thead>
 			<tr>
-				<th scope="col">공지사항 번호</th>
-				<th scope="col">카테고리</th>
-				<th scope="col">공지사항 유형</th>
-				<th scope="col">제목</th>
-				<th scope="col">작성일</th>
+				<th></th>
+				<th>Category</th>
+				<th>Title</th>
+				<th>Date</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:if test="${not empty list}">
-				<c:forEach items="${list}" var="list" varStatus="vs">
+				<c:forEach items="${list}" var="list" >
 					<tr data-notice-no="${list.noticeNo}">
-						<th scope="row">${vs.count}</th>
+						<td><i class="fa-regular fa-clipboard"></i></td>
 						<td>${list.categoryId == 'not1' ? '공지사항' : '이벤트'}</td>
-						<td>${list.noticeType}</td>
-						<td>${list.noticeTitle}</td>
+						<td>${list.noticeTitle} [${list.noticeType}]</td>
 						<td>${list.noticeDate}</td>
 					</tr>
 				</c:forEach>
 			</c:if>			
 		</tbody>
 	</table>
+	</div>
+</main>
 	<script>
 		// 공지사항 등록
 		document.querySelector("#notice").addEventListener('click', (e) => {
@@ -67,5 +66,4 @@
 			tr.addEventListener('click', insertHandler);
 		});
 	</script>
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
