@@ -3,7 +3,6 @@ package com.kh.campingez.admin.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.admin.model.dto.Stats;
 import com.kh.campingez.admin.model.service.AdminService;
+import com.kh.campingez.alarm.model.service.AlarmService;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -49,6 +49,9 @@ public class AdminController {
 	
 	@Autowired
 	ServletContext application;
+	
+	@Autowired
+	AlarmService alarmService;
 	
 	@RequestMapping("/admin.do")
 	public void admin() {}
@@ -130,10 +133,16 @@ public class AdminController {
 	
 	@PostMapping("/inquireAnswer.do")
 	public String enrollAnswer(Answer answer, RedirectAttributes redirectAttr) {
+		String location = "/inquire/inquireDetail.do?no=" + answer.getInqNo();
 		int result = adminService.enrollAnswer(answer);
 		redirectAttr.addFlashAttribute("msg", "답변이 등록되었습니다.");
 		
-		return "redirect:/inquire/inquireDetail.do?no=" + answer.getInqNo();
+		Map<String, Object> param = new HashMap<>();
+		param.put("answer", answer);
+		param.put("location", location);
+		result = alarmService.inquireAnswerAlarm(param);
+		
+		return "redirect:" + location;
 	}
 	
 	@PostMapping("/deleteAnswer.do")
