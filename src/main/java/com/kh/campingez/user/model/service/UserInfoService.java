@@ -39,4 +39,8 @@ public interface UserInfoService {
 
 	int getTotalReservation(User user);
 
+	List<TradeEntity> selectLikeList(Map<String, Object> param, User user);
+
+	int getTotalLike(User user);
+
 }

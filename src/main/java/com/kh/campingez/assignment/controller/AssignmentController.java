@@ -1,8 +1,10 @@
 package com.kh.campingez.assignment.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -76,7 +78,7 @@ public class AssignmentController {
 		model.addAttribute("assign", assign);
 	}
 	
-	@PostMapping("/assignmentApply.do")
+	@PostMapping("/assignmentApplyForm.do")
 	public void assignmentApply(@RequestParam String assignNo, Model model) {
 //		log.debug("assignNo = {}", assignNo);
 		
@@ -84,5 +86,18 @@ public class AssignmentController {
 //		log.debug("assign = {}", assign);
 		
 		model.addAttribute("assign", assign);
+	}
+	
+	@PostMapping("/assignmentApply.do")
+	public String assignmentApply(
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate resCheckin,
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate resCheckout,
+			Reservation reservation) {
+		
+		reservation.setResCheckin(resCheckin);
+		reservation.setResCheckin(resCheckout);
+		log.debug("reservation = {}", reservation);
+		
+		return null;
 	}
 }

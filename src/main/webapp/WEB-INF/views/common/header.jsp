@@ -391,7 +391,7 @@ window.addEventListener('load', (e) => {
                   <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myPage.do">내정보</a></li>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myReservation.do">예약 & 리뷰</a></li>
-                    <li><a class="dropdown-item" href="#">찜 목록</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myLikeList.do">찜 목록</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userEnroll.do">로그아웃</a></li>
                   </ul>
@@ -425,21 +425,27 @@ window.addEventListener('load', (e) => {
       </svg>
     </div>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-    <button class="input-send" style="width: 40px;">
+    <button class="input-send" style="width: 40px;" type="button" onclick="location.href='${pageContext.request.contextPath}/inquire/inquireList.do';">
       <svg style="width:24px;height:24px">
         <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
       </svg>
     </button>
     <div style="width: 80px; align-items: center;">
-      <a href="#" style="text-decoration: none; color: white;">문의하기</a>
+      <a href="${pageContext.request.contextPath}/inquire/inquireList.do" style="text-decoration: none; color: white;">문의하기</a>
     </div>
     </div>
     <div id="Accordion_wrap">
       <div class="que">
-        <span>This is first question.</span>
+        <span>자동차 출입이 가능한가요??</span>
       </div>
       <div class="anw">
-        <span>This is first answer.This is first answer.This is first answer.This is first answer.This is first answer.This is first answer.</span><br />
+        <span>
+        <ul>
+        	<li>21시부터 08시 사이에는 오토캠핑장 자동차 출입을 삼가시기 바랍니다.</li>
+        	<li>오토캠핑장 내 차량은 5km 이내로 서행하여야 하며, 잔디밭 출입이나 세차행위는 금합니다.</li>
+        	<li><img src="${pageContext.request.contextPath}/resources/images/chatbot/NoCar.png" alt="" /></li>
+        </ul>
+        </span><br />
       </div>
       <div class="que">
         <span>This is second question.</span>

@@ -119,12 +119,13 @@
 	</div>
 	<div class="text-center">
 	<form:form
-		action="${pageContext.request.contextPath}/assignment/assignmentApply.do"
+		action="${pageContext.request.contextPath}/assignment/assignmentApplyForm.do"
 		method="post"
 		name="assignApplyForm">
 		<input type="hidden" name="assignNo" value="${assign.assignNo}" />
-		<sec:authorize access="isAuthenticated()">
-			<input type="hidden" name="userId" value='<sec:authentication property="principal.username"/>' />
+		<sec:authentication property="principal.username" var="loginUser"/>
+		<sec:authorize access="isAuthenticated() and ${assign.userId ne loginUser}">
+			<input type="hidden" name="userId" value="${loginUser }" />
 			<button type="submit" class="w-50 mb-3 fs-5 btn btn-block" id="btn-assignment-apply">해당 예약 양도받기</button>
 		</sec:authorize>
 	</form:form>
@@ -165,14 +166,6 @@
 		    }
 			$(".img-wrapper").toggle();
 		});
-	});
-	document.assignApplyForm.addEventListener('submit', (e) => {
-		const str = "양도받기는 20분이내에 결제하셔야 합니다.\n" + "양도받기를 진행하시겠습니까?"; 
-		
-		if(!confirm(str)){
-			e.preventDefault();
-			return false;
-		}
 	});
 	</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

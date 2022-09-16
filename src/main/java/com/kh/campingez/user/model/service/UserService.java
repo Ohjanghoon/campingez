@@ -1,5 +1,7 @@
 package com.kh.campingez.user.model.service;
 
+import java.util.Map;
+
 import com.kh.campingez.user.model.dto.User;
 
 public interface UserService {
@@ -15,5 +17,9 @@ public interface UserService {
 	User findUserPassword(String userId, String phone, String email);
 
 	int updatePassword(String encodedPassword, String userId);
+
+	int userUseCoupon(Map<Object, Object> map);
+
+	int userUsePoint(Map<Object, Object> map);
 
 }

@@ -218,12 +218,12 @@ function checkId(){
 		method : "GET",
 		success(response){
 			//console.log(response);
-			if(response != 0){	
+			if(response != 0 || userId.length < 4){	
 				$("#msguserId").html('사용할 수 없는 아이디입니다');
 				$("#msguserId").css("color", 'red');
 				document.querySelector('#idCheckVal').value = "0";
 			}	
-			else if(userId == ''){
+			else if(userId == '' || userId.length == 0){
 				document.querySelector('#msguserId').innerHTML = '';
 			}
 			else if(response == 0) {
@@ -242,7 +242,7 @@ function passwordCK () {
 	var reg =  /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
 	
 	if (!reg.test(password.value)) {
-		availableCheck(msgPassword, "fail", "실패");
+		availableCheck(msgPassword, "fail", "사용 불가능");
 		if(password.value == ''){
 			document.querySelector('#msgPassword').innerHTML = '';
 		}
@@ -255,21 +255,17 @@ function passwordCK () {
 passwordCheck.addEventListener('input', (e) => {
 	var reg =  /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
 	
-	if (!reg.test(passwordCheck.value)) {
-		if (password.value !== passwordCheck.value) {
-			availableCheck(msgPassword, "fail", "실패");
-			//availableCheck(msgPasswordCheck, "fail", "다시입력하세요");
-			//passwordCheck.focus();
-			//passwordCheck.value ="";
-		}
-		else{
-			availableCheck(msgPassword, "clear", "사용 가능");
-			document.querySelector('#msgPasswordCheck').innerHTML = '';
-		}
+	if (password.value !== passwordCheck.value) {
+		availableCheck(msgPassword, "fail", "실패");
+		//availableCheck(msgPasswordCheck, "fail", "다시입력하세요");
+		//passwordCheck.focus();
+		//passwordCheck.value ="";
 	}
 	else{
-		availableCheck(msgPassword, "fail", "실패");
+		availableCheck(msgPassword, "clear", "사용 가능");
+		document.querySelector('#msgPasswordCheck').innerHTML = '';
 	}
+
 	if(passwordCheck.value == ''){
 		document.querySelector('#msgPassword').innerHTML = '';
 	}
