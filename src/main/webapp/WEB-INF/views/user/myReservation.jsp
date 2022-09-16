@@ -135,7 +135,7 @@ function reservationPaingAjax(cPage){
 								'<td>'+(results[i].resState == null ? "" : results[i].resState)+'</td>'+
 								'<td>'+(results[i].resPayment == null ? "" : results[i].resPayment)+'</td>';
 					if(results[i].review =='OK'){
-						str += '<td><button  class="btn btn-outline-dark" onclick="location.href=" ${pageContext.request.contextPath}/review/reviewForm.do?resNo=results[i].resNo"">리뷰작성</button></td>';
+						str += `<td><button  class="btn btn-outline-dark" onclick="location.href=' ${pageContext.request.contextPath}/review/reviewForm.do?resNo=`+results[i].resNo+`'">리뷰작성</button></td>`;
 					}else{
 						str +='<td></td>' ;
 					}

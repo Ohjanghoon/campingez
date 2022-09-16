@@ -62,4 +62,10 @@ public interface UserInfoDao {
 	@Select("select count(*) from reservation where user_id = #{userId}")
 	int getTotalReservation(User user);
 
+	@Select("select t.*,trade_read_count read_count,trade_like_count like_count from trade t inner join trade_like tr on t.trade_no = tr.trade_no where tr.user_id = #{userId}")
+	List<TradeEntity> selectLikeList(RowBounds rowBounds, User user);
+
+	@Select("select count(*) from trade t inner join trade_like tr on t.trade_no = tr.trade_no where tr.user_id = #{userId}")
+	int getTotalLike(User user);
+
 }
