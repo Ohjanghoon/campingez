@@ -63,6 +63,9 @@
 	<!-- #13.1 jackson message converter 빈 등록 -->
 	<beans:bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 	
+	<!-- naver -->
+	<beans:bean id="naverLoginBO" class="com.kh.campingez.naver.NaverLoginBO" />
+	
 	<websocket:message-broker application-destination-prefix="/app"> <!-- 이곳에 해당되면 MessageHandler를 타게됨 -->
 		<websocket:stomp-endpoint path="/stomp">
 			<websocket:sockjs />
