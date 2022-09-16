@@ -7,6 +7,16 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
+<style>
+.btn-outline-dark{
+	border-color: #A8A4CE !important;
+	color: #A8A4CE !important;
+}
+.btn-outline-dark:hover{
+	background-color: #A8A4CE !important;
+	color: white !important;
+}
+</style>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <main>
 	<div class="container">

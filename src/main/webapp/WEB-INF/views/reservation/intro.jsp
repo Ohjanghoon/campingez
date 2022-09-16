@@ -7,6 +7,20 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
+<style>
+.btn-primary{
+ 	background-color:  #A8A4CE !important;
+ 	border-color:  #A8A4CE !important;
+}
+.btn-outline-secondary{
+	border-color: #A8A4CE !important;
+	color: #A8A4CE !important;
+}
+.btn-outline-secondary:hover{
+	background-color:  #A8A4CE !important;
+	color: white !important;
+}
+</style>
 <main>
 	<div class="container">
 		<h2 class="text-center fw-bold pt-5">구역별 상세 정보</h2>
@@ -48,7 +62,7 @@
 		   </div>
 		    <div class="col-lg-6">
 		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>&nbsp;데크존</h3>
-		      <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+		      <p class="lead">데크존입니다.</p>
 		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
 		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
 		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="deck" data-bs-toggle="modal" data-bs-target="#exampleModal1">리뷰보기</button>
@@ -66,6 +80,9 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-dialog modal-dialog-scrollable deck"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="moveToAllReview">리뷰 전체보기</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -75,7 +92,7 @@
 		  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
 		    <div class="col-lg-6">
 		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>&nbsp;애견동반존</h3>
-		      <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+		      <p class="lead">애견동반존입니다.</p>
 		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
 		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
 		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="animal" data-bs-toggle="modal" data-bs-target="#exampleModal2">리뷰보기</button>
@@ -126,6 +143,9 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-dialog modal-dialog-scrollable animal"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="moveToAllReview">리뷰 전체보기</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -166,7 +186,7 @@
 		   </div>
 		    <div class="col-lg-6">
 		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>글램핑존</h3>
-		      <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+		      <p class="lead">글램핑존입니다.</p>
 		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
 		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
 		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="glamping" data-bs-toggle="modal" data-bs-target="#exampleModal3">리뷰보기</button>
@@ -184,6 +204,9 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-dialog modal-dialog-scrollable glamping"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="moveToAllReview">리뷰 전체보기</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -193,7 +216,7 @@
 		  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
 		    <div class="col-lg-6">
 		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>&nbsp;카라반존</h3>
-		      <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+		      <p class="lead">카라반존입니다.</p>
 		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
 		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
 		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="caravan" data-bs-toggle="modal" data-bs-target="#exampleModal4">리뷰보기</button>
@@ -244,6 +267,9 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-dialog modal-dialog-scrollable caravan"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="moveToAllReview">리뷰 전체보기</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -279,9 +305,7 @@
 					<div class="card-body">
 					    <h5 class="card-title">\${review.reservation.userId}</h5>
 					    <p class="card-text">\${review.revContent}</p>
-					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small>
-						</p>
-						<button type="button" id="moveToAllReview">리뷰 더보기</button>
+					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small></p>
 					</div>
 				`;
 				document.querySelector("#moveToAllReview").addEventListener('click', (e) => {
@@ -317,9 +341,7 @@
 					<div class="card-body">
 					    <h5 class="card-title">\${review.reservation.userId}</h5>
 					    <p class="card-text">\${review.revContent}</p>
-					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small>
-						</p>
-						<button type="button" id="moveToAllReview">리뷰 더보기</button>
+					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small></p>
 					</div>
 				`;
 				document.querySelector("#moveToAllReview").addEventListener('click', (e) => {
@@ -355,9 +377,7 @@
 					<div class="card-body">
 					    <h5 class="card-title">\${review.reservation.userId}</h5>
 					    <p class="card-text">\${review.revContent}</p>
-					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small>
-						</p>
-						<button type="button" id="moveToAllReview">리뷰 더보기</button>
+					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small></p>
 					</div>
 				`;
 				document.querySelector("#moveToAllReview").addEventListener('click', (e) => {
@@ -393,9 +413,7 @@
 					<div class="card-body">
 					    <h5 class="card-title">\${review.reservation.userId}</h5>
 					    <p class="card-text">\${review.revContent}</p>
-					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small>
-						</p>
-						<button type="button" id="moveToAllReview">리뷰 더보기</button>
+					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small></p>
 					</div>
 				`;
 				document.querySelector("#moveToAllReview").addEventListener('click', (e) => {
