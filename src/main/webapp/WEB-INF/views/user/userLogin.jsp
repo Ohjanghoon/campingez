@@ -69,6 +69,10 @@
 </style>
 <%
 	String loginRedirect = request.getHeader("Referer");
+	System.out.println(loginRedirect);
+	if(loginRedirect.contains("http://localhost:9090/campingez/user/userPasswordUpdate.do?userId=")){
+		loginRedirect = "/";
+	}
 %>
 <div class="login-container" style="height: 700px;">
     <div class="img">
