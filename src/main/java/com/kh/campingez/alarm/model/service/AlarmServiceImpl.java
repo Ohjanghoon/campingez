@@ -1,5 +1,6 @@
 package com.kh.campingez.alarm.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,8 +45,13 @@ public class AlarmServiceImpl implements AlarmService {
 						.alrUrl((String)param.get("location")).build();
 		int result = alarmDao.inquireAnswerAlarm(alarm);
 		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
+		int notReadCount = alarmDao.getNotReadCount(inq.getInqWriter());
 		
-		simpMessagingTemplate.convertAndSend("/app/notice/" + alarm.getTargetUserId(), alarm);
+		Map<String, Object> map = new HashMap<>();
+		map.put("alarm", alarm);
+		map.put("notReadCount", notReadCount);
+		
+		simpMessagingTemplate.convertAndSend("/app/notice/" + alarm.getTargetUserId(), map);
 		return result;
 	}
 	

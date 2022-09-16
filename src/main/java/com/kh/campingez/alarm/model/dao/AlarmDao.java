@@ -21,7 +21,7 @@ public interface AlarmDao {
 	@Select("select * from alarm where alr_id = #{alrId}")
 	Alarm selectAlarmByAlrId(@NonNull int alrId);
 	
-	@Select("select * from alarm where target_user_id = #{userId}")
+	@Select("select * from alarm where target_user_id = #{userId} order by (case when alr_read_datetime is null then 1 end), alr_datetime desc")
 	List<Alarm> getAlarmListByUser(String userId);
 	
 	@Update("update alarm set alr_read_datetime = sysdate where alr_id = #{alrId}")
