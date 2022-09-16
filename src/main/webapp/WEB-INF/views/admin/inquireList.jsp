@@ -10,10 +10,10 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 			<div class="content-wrap">
+				<h2>1:1 문의 리스트</h2>
 				<div id="select-bar">
-					<select name="inquireType" id="inquireType">
-						<option value="" selected disabled>문의유형</option>
-						<option value="">전체</option>
+					<select name="inquireType" id="inquireType" class="form-select">
+						<option value="" selected>전체</option>
 						<c:if test="${not empty categoryList}">
 							<c:forEach items="${categoryList}" var="category">
 								<option value="${category.categoryId}">${category.categoryName}</option>
@@ -21,29 +21,29 @@
 						</c:if>
 					</select>
 				</div>
-				<table id="tbl-inquire-list">
+				<table id="tbl-inquire-list" class="table text-center table-hover">
 					<thead>
 						<tr>
-							<th>문의번호</th>
-							<th>카테고리명</th>
-							<th>작성자</th>
-							<th>제목</th>
-							<th>답변여부</th>
-							<th>문의날짜</th>
+							<th scope="col">문의번호</th>
+							<th scope="col">카테고리명</th>
+							<th scope="col">작성자</th>
+							<th scope="col">제목</th>
+							<th scope="col">답변여부</th>
+							<th scope="col">문의날짜</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:if test="${not empty inquireList}">
 							<c:forEach items="${inquireList}" var="inquire">
 								<tr data-inq-no="${inquire.inqNo}">
-									<td>${inquire.inqNo}</td>
-									<td>${inquire.categoryName}</td>
-									<td>${inquire.inqWriter}</td>
-									<td>${inquire.inqTitle}</td>
-									<td>
+									<td scope="row">${inquire.inqNo}</td>
+									<td scope="row">${inquire.categoryName}</td>
+									<td scope="row">${inquire.inqWriter}</td>
+									<td scope="row">${inquire.inqTitle}</td>
+									<td scope="row" ${inquire.answerStatus == 0 ? 'class="power"' : ''}>
 										${inquire.answerStatus == 0 ? '답변대기' : '답변완료'}
 									</td>
-									<td>
+									<td scope="row" ${inquire.answerStatus == 0 ? 'class="strong"' : ''}>
 										<fmt:parseDate value="${inquire.inqDate}" var="inqDate" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
 										<fmt:formatDate value="${inqDate}" pattern="yyyy/MM/dd HH:mm"/>
 									</td>
@@ -52,12 +52,12 @@
 						</c:if>
 						<c:if test="${empty inquireList}">
 							<tr>
-								<td colspan="6">조회된 문의가 없습니다.</td>
+								<td colspan="6" scope="row">조회된 문의가 없습니다.</td>
 							</tr>
 						</c:if>
 					</tbody>
 				</table>
-				<nav>
+				<nav id="inqPagebar">
 					${pagebar}
 				</nav>
 			</div>
@@ -88,9 +88,7 @@ const inquireListByCategoryIdRender = (categoryId, pageNo) => {
 		success(response) {
 			const {inquireList, pagebar} = response;
 			const tbody = document.querySelector("#tbl-inquire-list tbody");
-			const oldPagebar = document.querySelector("nav");
-			
-			console.log(pagebar);
+			const oldPagebar = document.querySelector("#inqPagebar");
 			
 			tbody.innerHTML = '';
 			oldPagebar.innerHTML = '';
@@ -110,14 +108,14 @@ const inquireListByCategoryIdRender = (categoryId, pageNo) => {
 				
 				const tr = `
 				<tr data-inq-no="\${inquire.inqNo}">
-					<td>\${inquire.inqNo}</td>
-					<td>\${inquire.categoryName}</td>
-					<td>\${inquire.inqWriter}</td>
-					<td>\${inquire.inqTitle}</td>
-					<td>
+					<td scope="row">\${inquire.inqNo}</td>
+					<td scope="row">\${inquire.categoryName}</td>
+					<td scope="row">\${inquire.inqWriter}</td>
+					<td scope="row">\${inquire.inqTitle}</td>
+					<td scope="row" \${inquire.answerStatus == 0 ? 'class="power"' : ''}>
 						\${inquire.answerStatus == 0 ? '답변대기' : '답변완료'}
 					</td>
-					<td>
+					<td scope="row" \${inquire.answerStatus == 0 ? 'class="strong"' : ''}>
 						\${yyyy}/\${MM}/\${dd} \${HH}:\${mm}
 					</td>
 				</tr>

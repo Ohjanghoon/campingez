@@ -14,14 +14,14 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class AlarmEntity {
 	@NonNull
-	private int alrId; 
-	private String userId; // 발신자
+	protected int alrId; 
+	protected String userId; // 발신자
 	@NonNull
-	private String targetUserId; // 수신자
-	private String alrContentId;
-	private AlarmType alrType;
-	private String alrMessage;
-	private String alrUrl;
-	private LocalDateTime alrDatetime; // 알림 발생일시
-	private LocalDateTime alrReadDatetime; // 알림 확인일시
+	protected String targetUserId; // 수신자
+	protected String alrContentId;
+	protected AlarmType alrType;
+	protected String alrMessage;
+	protected String alrUrl;
+	protected LocalDateTime alrDatetime; // 알림 발생일시
+	protected LocalDateTime alrReadDatetime; // 알림 확인일시
 }

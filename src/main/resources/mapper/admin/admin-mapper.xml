@@ -13,9 +13,36 @@
        		on u.user_id = a.user_id
   </select>
   
+  <select id="findAllBlackList" resultMap="userMap">
+  	select
+  		u.*,
+  		a.user_id auth_user_id,
+  		a.auth
+  	from
+  		ez_user u join authority a
+  			on u.user_id = a.user_id
+  	where
+  		u.yellowcard >= 3
+  </select>
+  
+  <select id="findAllNotBlackList" resultMap="userMap">
+  	select
+  		u.*,
+  		a.user_id auth_user_id,
+  		a.auth
+  	from
+  		ez_user u join authority a
+  			on u.user_id = a.user_id
+  	where
+  		<![CDATA[
+  			u.yellowcard < 3
+  		]]>
+  </select>
+  
   <resultMap type="user" id="userMap">
   	<id column="user_id" property="userId"/>
   	<result column="user_name" property="userName"/>
+  	<result column="phone" property="phone"/>
   	<result column="password" property="password"/>
   	<result column="email" property="email"/>
   	<result column="gender" property="gender"/>

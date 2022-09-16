@@ -1,16 +1,21 @@
 package com.kh.campingez.admin.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.campingez.admin.model.dao.AdminDao;
 import com.kh.campingez.admin.model.dto.Stats;
+import com.kh.campingez.alarm.model.dao.AlarmDao;
+import com.kh.campingez.alarm.model.dto.Alarm;
+import com.kh.campingez.alarm.model.dto.AlarmType;
+import com.kh.campingez.alarm.model.service.AlarmService;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -29,9 +34,32 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	AdminDao adminDao;
 	
+	@Autowired
+	AlarmDao alarmDao;
+	
 	@Override
 	public List<User> findAllUserList(Map<String, Object> param) {
 		return adminDao.findAllUserList(getRowBounds(param));
+	}
+	
+	@Override
+	public List<User> findAllBlackList(Map<String, Object> param) {
+		return adminDao.findAllBlackList(getRowBounds(param));
+	}
+	
+	@Override
+	public List<User> findAllNotBlackList(Map<String, Object> param) {
+		return adminDao.findAllNotBlackList(getRowBounds(param));
+	}
+	
+	@Override
+	public int getBlackListTotalContent() {
+		return adminDao.getBlackListTotalContent();
+	}
+	
+	@Override
+	public int getNotBlackListTotalContent() {
+		return adminDao.getNotBlackListTotalContent();
 	}
 	
 	@Override
@@ -40,8 +68,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public int updateWarningToUser(String userId) {
-		log.debug("userId@service = {}", userId);
+	public int updateWarningToUser(Map<String, Object> param) {
+		String userId = (String)param.get("userId");		
 		return adminDao.updateWarningToUser(userId);
 	}
 	
@@ -51,10 +79,21 @@ public class AdminServiceImpl implements AdminService {
 		
 		return adminDao.selectUserByKeyword(rowBounds, param);
 	}
-
+	
+	@Override
+	public List<User> selectNotBlackListByKeyword(Map<String, Object> param) {
+		RowBounds rowBounds = getRowBounds(param);
+		return adminDao.selectNotBlackListByKeyworkd(rowBounds, param);
+	}
+	
 	@Override
 	public int getTotalContentByKeyword(Map<String, Object> param) {
 		return adminDao.getTotalContentByKeyword(param);
+	}
+	
+	@Override
+	public int getTotalContentNotBlackListByKeyword(Map<String, Object> param) {
+		return adminDao.getTotalContentNotBlackListByKeyword(param);
 	}
 	
 	@Override

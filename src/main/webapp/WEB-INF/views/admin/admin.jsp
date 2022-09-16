@@ -15,16 +15,79 @@ a {
 	color: black;
 }
 .accordion {
-	width:250px;
+	width:220px;
+	margin-right: 15px;
 }
-.wrapper {
+#adminNav {
 	display:flex;
+	justify-content: space-evenly;
 }
-
+.accordion-body {
+	font-size:14px;
+}
+tr > th {
+	font-size:16px;
+	vertical-align: middle;
+}
+tr > td {
+	font-size:15px;
+	vertical-align: middle;
+	height: 70px;
+}
+#selectType, #searchType, #inquireType {
+    width: 150px;
+    margin-right: 5px;
+}
+#selectKeywordGroup {
+	width:300px;
+}
+.searchBtn {
+	background-color: #c8b6e269;
+    border: 1px solid lightgray;
+}
+.searchBtn:hover {
+	background-color: #A8A4CE;
+    color: white;
+}
+#updateBtn, [name=updateBtn], [name=yellowCardBtn]{
+	height: 35px;
+    width: 50px;
+   	background-color: #A8A4CE;
+    color: white;
+    border:none;
+}
+#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover {
+	background-color: #c8b6e269;
+    border: 1px solid lightgray;
+    color:black;
+}
+#user-list-tbl, #reservation-tbl {
+	margin-top: 30px;
+}
+.input-date {
+	width: 370px
+}
+.input-date > * {
+	vertical-align: middle;
+}
+.content-wrap {
+    width: 100%;
+    margin: 0 20px;
+}
+.black-list-wrap {
+	margin-top: 50px;
+}
+.power {
+    font-weight: bold;
+    color: red;
+}
+.strong{
+	font-weight: bold;
+}
 </style>
 <main>
 	<section>
-		<div class="wrapper">
+		<div class="container" id="adminNav">
 			<div class="nav-wrap">
 				<nav>
 					<div class="accordion" id="accordionExample">
@@ -50,11 +113,14 @@ a {
 					      <div class="accordion-body">
 					      	<a href="${pageContext.request.contextPath}/admin/userList.do">회원관리</a>
 					      </div>
+					      <div class="accordion-body">
+					      	<a href="${pageContext.request.contextPath}/admin/blackList.do">블랙리스트관리</a>
+					      </div>
 					    </div>
 					  </div>
 					  <div class="accordion-item">
 					    <h2 class="accordion-header" id="headingThree">
-					      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+					      <button class="accordion-button collapsed fs-6" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
 					        커뮤니티관리
 					      </button>
 					    </h2>
