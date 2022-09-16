@@ -28,7 +28,7 @@ public interface UserDao {
 	@Update("update ez_user set password = #{encodedPassword} where user_id = #{userId}")
 	int updatePassword(@Param("encodedPassword")String encodedPassword, @Param("userId") String userId);
 
-	@Update("update ez_user set point = #{point} where user_id = #{userId}")
+	@Update("update ez_user set point = point - #{point} where user_id = #{userId}")
 	int userUseCoupon(Map<Object, Object> map);
 
 	@Update("update user_coupon set coupon_usedate = current_date where user_id = #{userId} and coupon_code = #{couponCode}")
