@@ -35,6 +35,21 @@ public class TradeServiceImpl implements TradeService {
 	public int getTotalContent() {
 		return tradeDao.getTotalContent();
 	}
+	
+	
+	@Override
+	public List<Trade> selectTradeListKind(Map<String, Integer> param, String categoryId) {
+		int limit = param.get("limit");
+		int offset = (param.get("cPage") - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return tradeDao.selectTradeListKind(rowBounds, categoryId);
+	}
+	
+	@Override
+	public int getTotalContentKind(String categoryId) {
+
+		return tradeDao.getTotalContentKind();
+	}
 
 
 	@Override
@@ -135,6 +150,12 @@ public class TradeServiceImpl implements TradeService {
 	public void insertTradeLike(TradeLike tl) {
 		tradeDao.insertTradeLike(tl);
 		tradeDao.updateTradeLike(tl.getLikeTradeNo());
+	}
+
+
+	@Override
+	public int updateSuccess(String no) {
+		return tradeDao.updateSuccess(no);
 	}
 	
 	

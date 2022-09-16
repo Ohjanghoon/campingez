@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -52,25 +53,7 @@ public class TradeController {
 	@GetMapping("/tradeList")
 	public void tradeList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
 		
-		List<Trade> list = new ArrayList<>();
-		
-//		List<TradePhoto> photoList = new ArrayList<>();
-//		// 1. content영역
-		Map<String, Integer> param = new HashMap<>();
-		int limit = 12;
-		param.put("cPage", cPage);
-		param.put("limit", limit);
-	
-		list = tradeService.selectTradeList(param);
-		model.addAttribute("list", list);
-		log.debug("list = {} ", list);
-		
-		// 2. pagebar영역
-		int totalContent = tradeService.getTotalContent();
-		log.debug("totalContent = {}", totalContent);
-		String url = request.getRequestURI(); // /spring/board/boardList.do
-		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
-		model.addAttribute("pagebar", pagebar);
+
 		
 	}
 
@@ -316,27 +299,62 @@ public class TradeController {
 		return heart;
 	}
 	
-//	@GetMapping("/align")
-//	public void tradeAlign(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
-//		
-//		List<Trade> list = new ArrayList<>();
-////		// 1. content영역
-//		Map<String, Integer> param = new HashMap<>();
-//		int limit = 10;
-//		param.put("cPage", cPage);
-//		param.put("limit", limit);
-//	
-//		list = tradeService.selectTradeList(param);			
-//		model.addAttribute("list", list);
-//				
-//		// 2. pagebar영역
-//		int totalContent = tradeService.getTotalContent();
-//		log.debug("totalContent = {}", totalContent);
-//		String url = request.getRequestURI(); // /spring/board/boardList.do
-//		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
-//		model.addAttribute("pagebar", pagebar);
-//	}
 	
 	
+	@ResponseBody
+	@GetMapping("/align")
+	public ModelAndView tradeAlign(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request
+							, @RequestParam String categoryId) {
+		
+		log.debug("categoryId = {} ", categoryId);
+		
+		
+		ModelAndView mav = new ModelAndView("jsonView");
+		
+		List<Trade> list = new ArrayList<>();
+//		// 1. content영역
+		Map<String, Integer> param = new HashMap<>();
+		int limit = 12;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		int totalContent = 0;
+		
+		Map<String, Object> map = new HashMap<>();
+		if("all".equals(categoryId)) {
+			list = tradeService.selectTradeList(param);	
+			totalContent = tradeService.getTotalContent();
+		} 
+		else {
+			list = tradeService.selectTradeListKind(param, categoryId);
+			totalContent = tradeService.getTotalContentKind(categoryId);
+		}
+		
+		mav.addObject("list", list);
+		log.debug("list = {} ", list);
+				
+		// 2. pagebar영역
+		log.debug("totalContent = {}", totalContent);
+		String url = request.getRequestURI(); //
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
+		mav.addObject("pagebar", pagebar);
+		return mav;
+	}
+	
+	@GetMapping("/tradeSuccess")
+	public void tradeSuccess(@RequestParam String no) {
+		int result = tradeService.updateSuccess(no);
+		
+	}
+
+	
+	@PostMapping("/tradeSuccess")
+	public String tradeSuccess(RedirectAttributes redirectAttr, @RequestParam String no) {
+
+		
+		redirectAttr.addFlashAttribute("msg", "수정 완료");
+		
+		return "redirect:/trade/tradeView.do?no=" + no;
+	}
 	
 }

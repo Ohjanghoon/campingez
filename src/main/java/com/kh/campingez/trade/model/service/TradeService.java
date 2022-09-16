@@ -35,4 +35,10 @@ public interface TradeService {
 
 	void insertTradeLike(TradeLike tl);
 
+	List<Trade> selectTradeListKind(Map<String, Integer> param, String categoryId);
+
+	int getTotalContentKind(String categoryId);
+
+	int updateSuccess(String no);
+
 }
