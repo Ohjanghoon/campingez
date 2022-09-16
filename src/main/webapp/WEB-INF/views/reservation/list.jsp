@@ -12,6 +12,12 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
+<style>
+.btn-primary{
+ 	background-color: #A8A4CE !important;
+ 	border-color: #A8A4CE !important;
+}
+</style>
 <main>
 	<div class="container">
 		<div class="container px-4 py-5" id="hanging-icons">

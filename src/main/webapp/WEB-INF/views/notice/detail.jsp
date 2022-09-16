@@ -8,6 +8,16 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
+<style>
+.btn-outline-dark{
+	border-color: #A8A4CE !important;
+	color: #A8A4CE !important;
+}
+.btn-outline-dark:hover{
+	background-color: #A8A4CE !important;
+	color: white !important;
+}
+</style>
 <main>
 	<div class="container">
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5">
@@ -72,7 +82,7 @@
 					  <div class="card-body">
 					    <p class="card-text">할인률 : \${couponDiscount}%</p>
 					    <p class="card-text">사용기간 : \${couponStartday}~\${couponEndday}</p>
-					    <button type="button" class="btn btn-md btn-outline-danger mt-3 w-100" id="btn3"><i class="fa-solid fa-download"></i></button>
+					    <button type="button" class="btn btn-md btn-outline-dark mt-3 w-100" id="btn3"><i class="fa-solid fa-download"></i></button>
 					  </div>
 					</div>
 					</form:form>
