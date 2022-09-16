@@ -240,4 +240,10 @@ public class UserController {
 		int result = alarmService.updateAlarm(alrId);
 		return ResponseEntity.ok().body(result);
 	}
+	
+	@GetMapping("/getNotReadAlarm.do")
+	public ResponseEntity<?> getNotReadAlarm(@RequestParam String userId) {
+		int notReadCount = alarmService.getNotReadCount(userId);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(notReadCount);
+	}
 }

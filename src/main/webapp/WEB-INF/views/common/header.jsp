@@ -28,90 +28,207 @@
 	</script>
 </c:if>
 <style>
+* {
+	list-style: none;
+	padding:0;
+	margin:0;
+}
 .header-layer {
 	display: none;
+	border: 1px solid black;
+	width: 400px;
+    overflow: auto;
+    position: absolute;
+    background-color: white;
+    text-align: left;
+    font-size: 13;
+    max-height: 300px;
+}
+#alarm-list {
+	padding: 0;
+}
+#alarm {
+	padding: 5px 5px;
+    height: 50px;
+}
+#alarm-content-wrap {
+	width:92%;
+	display:flex;
+}
+#alr-msg {
+	width:83%;
+  	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	padding-right: 5px;  
+}
+#badge-wrap {
+	width:8%;
+	display: flex;
+	justify-content: center;
+}
+#alarm-date-wrap {
+	width: 17%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 2px;
+}
+#alarm-date {
+	font-size:12px;
+}
+#notReadCount-wrap {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
 }
 </style>
 <sec:authorize access="isAuthenticated()">
 	<script>
 	const userId = "<sec:authentication property='principal.username'/>";
+	const beforeTime = (alarmDate) => {
+		  const millis = new Date().getTime() - new Date(alarmDate).getTime();
+		  const seconds = Math.floor(millis / 1000);
+		  
+		  if (seconds < 60) {
+			  return "방금 전";
+		  }
+		  const minutes = Math.floor(seconds / 60);
+		  if (minutes < 60) {
+			  return `\${minutes}분 전`;
+		  }
+		  const hours = Math.floor(minutes / 60);
+		  if (hours < 24) {
+			  return `\${hours}시간 전`;
+		  }
+		  const days = Math.floor(hours / 24);
+		  if (days < 7) {
+			  return `\${days}일 전`;
+		  }
+		  const weeks = Math.floor(days / 7);
+		  if (weeks < 5) {
+			  return `\${weeks}주 전`;
+		  }
+		  const months = Math.floor(days / 30);
+		  if (months < 12) {
+			  return `\${month}개월 전`;
+		  }
+		  const years = Math.floor(days / 365);
+		  return `\${years}년 전`;
+	}
 	</script>
 	<script src="${pageContext.request.contextPath}/resources/js/ws.js"></script>
 	
 <script>
 // 알림
 window.addEventListener('load', (e) => {
-	const notReadCount = ${notReadCount};
+	$.ajax({
+		url : "${pageContext.request.contextPath}/user/getNotReadAlarm.do",
+		data : {userId},
+		POST : "GET",
+		success(notReadCount) {
+			if(notReadCount > 0) {
+				const newAlarm = document.querySelector("#new-alarm");
+				newAlarm.classList.remove("visually-hidden");
+			}
+		},
+		error : console.log
+	});
 	
-	if(notReadCount > 0) {
-		const newAlarm = document.querySelector("#new-alarm");
-		newAlarm.classList.remove('visually-hidden');
-	}
+	const div = document.querySelector(".header-layer");
 	
-	document.querySelector("#bell").addEventListener('click', (e) => {
-		const div = document.querySelector(".header-layer");
-		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/user/alarmList.do",
-			data : {userId},
-			content : "application/json",
-			success(response) {
-				const {notReadCount, alarmList} = response;
-				console.log('notReadCount : ', notReadCount);
-				div.innerHTML = '';
-				
-				let html = `
-				<div id="notReadCount">새소식 : \${notReadCount}</div>
-				<ul id="alarm-list">
-				`;
-				let targetUrl;
-				if(alarmList.length < 1) {
-					html += `
-						<li id="alarm">알림이 없습니다.</li>
-					`;
-				} else {
-					alarmList.forEach((alarm) => {
-						const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
-						targetUrl = alrUrl;
-						const [yy, MM, dd, HH, mm] = alrDatetime;
-						console.log(alrMessage, alrType, alrUrl, alrDatetime);
-						html += `
-						<li data-alr-id=\${alrId} id="alarm">
-							<span>\${alrMessage}</span>
-							<span>\${yy}/\${MM}/\${dd}</span>
-						</li>
-						`;
-					});
-				}
+	$.ajax({
+		url : "${pageContext.request.contextPath}/user/alarmList.do",
+		data : {userId},
+		content : "application/json",
+		success(response) {
+			const {notReadCount, alarmList} = response;
+			
+			div.innerHTML = '';
+			
+			let html = `
+			<span id="notReadCount-wrap">
+				새소식 &nbsp;<div id="notReadCount">\${notReadCount}</div>
+			</span>
+			<ul id="alarm-list" class="list-group">
+			`;
+			
+			let targetUrl;
+			if(alarmList.length < 1) {
 				html += `
-				</ul>
+					<li id="alarm" class="list-group-item d-flex justify-content-between align-items-center">알림이 없습니다.</li>
 				`;
-				div.insertAdjacentHTML('beforeend', html);
-				
-				document.querySelectorAll("#alarm").forEach((li) => {
-					li.addEventListener('click', (e) => {
-						const alrId = e.target.parentElement.dataset.alrId;
-						if(alrId == undefined) return;
-						
-						const headers = {};
-						headers['${_csrf.headerName}'] = '${_csrf.token}';
-						
-						$.ajax({
-							url : "${pageContext.request.contextPath}/user/updateAlarm.do",
-							headers,
-							data : {alrId},
-							method : "POST",
-							success(response) {
-								location.href= "${pageContext.request.contextPath}" + targetUrl;
-							},
-							error : console.log
-						});
+			} else {
+				alarmList.forEach((alarm) => {
+					const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
+					targetUrl = alrUrl;
+					const [yy, MM, dd, HH, mm, ss] = alrDatetime;
+					
+					if(!alrReadDatetime) {
+						html += `
+						<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+							<span id="badge-wrap">
+								<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
+							</span>
+							<div id="alarm-content-wrap">
+								<div id="alr-msg">\${alrMessage}</div>
+								<span id="alarm-date-wrap">
+									<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+								</span>
+							</div>
+						</li>
+						`;							
+					} else {
+						html += `
+						<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
+							<span id="badge-wrap"></span>
+							<div id="alarm-content-wrap">
+								<div id="alr-msg">\${alrMessage}</div>
+								<span id="alarm-date-wrap">
+									<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+								</span>
+							</div>
+						</li>
+						`;														
+					}
+				});
+			};
+			html += `
+			</ul>
+			`;
+			div.insertAdjacentHTML('beforeend', html);
+			
+			document.querySelectorAll("#alarm-date").forEach((span) => {
+				const alarmDate = span.innerHTML;
+				span.innerHTML = beforeTime(alarmDate);
+			});
+			
+			document.querySelectorAll("#alarm").forEach((li) => {
+				li.addEventListener('click', (e) => {
+					const alrId = e.target.offsetParent.dataset.alrId;
+					if(alrId == undefined) return;
+					
+					const headers = {};
+					headers['${_csrf.headerName}'] = '${_csrf.token}';
+					
+					$.ajax({
+						url : "${pageContext.request.contextPath}/user/updateAlarm.do",
+						headers,
+						data : {alrId},
+						method : "POST",
+						success(response) {
+							location.href= "${pageContext.request.contextPath}" + targetUrl;
+						},
+						error : console.log
 					});
 				});
-			},
-			error : console.log
-		});
-		
+			});
+		},
+		error : console.log
+	});
+	
+	document.querySelector("#bell").addEventListener('click', (e) => {
 		if(div.style.display == 'none' || !div.style.display) {
 			div.style.display = 'block';
 		} else {
@@ -148,8 +265,8 @@ window.addEventListener('load', (e) => {
 							<span class="visually-hidden">New alerts</span>
 						</span>
 					</button>
-					<div class="header-layer">
-						 <p>하이</p>	
+					<div class="header-layer shadow mb-5 bg-body rounded">
+						 
 					</div>
                 <form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
                   <button type="submit">로그아웃</button>
