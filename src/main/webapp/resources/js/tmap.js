@@ -48,7 +48,7 @@ var map;
                     success: function (response) {
 
                         var resultInfo = response.coordinateInfo; // .coordinate[0];
-                        console.log(resultInfo);
+                        //console.log(resultInfo);
 
                         // 기존 마커 삭제
                         marker1.setMap(null);
@@ -267,8 +267,8 @@ var map;
 
                     },
                     error: function (request, status, error) {
-                        console.log(request);
-                        console.log("code:" + request.status + "\n message:" + request.responseText + "\n error:" + error);
+                        //console.log(request);
+                        //console.log("code:" + request.status + "\n message:" + request.responseText + "\n error:" + error);
                         // 에러가 발생하면 맵을 초기화함
                         // markerStartLayer.clearMarkers();
                         // 마커초기화
@@ -285,6 +285,7 @@ var map;
         function lineSearch() {
             marker1.setMap(null);
 
+			document.querySelector('#btn_select2').style.display = 'none';
             document.querySelector('#xyCode').style.display = 'none';
             document.querySelector('#research').style.display = 'inline';
 
@@ -464,8 +465,8 @@ var map;
                         + request.responseText
                         + "\n" + "error:" + error);
                 }
-            });
             //JSON TYPE EDIT [E]
+            });
         };
 
         //함수
@@ -639,9 +640,3 @@ var map;
 
         }
 
-        function research() {
-            document.querySelector('#map_div').innerHTML = '';
-            document.querySelector('#xyCode').style.display = 'inline';
-            document.querySelector('#research').style.display = 'none';
-            initTmap();
-        };
