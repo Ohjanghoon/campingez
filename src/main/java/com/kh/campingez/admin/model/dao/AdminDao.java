@@ -7,10 +7,12 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
 import com.kh.campingez.admin.model.dto.Stats;
+import com.kh.campingez.alarm.model.dto.Alarm;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -24,9 +26,19 @@ import com.kh.campingez.user.model.dto.User;
 public interface AdminDao {
 	
 	List<User> findAllUserList(RowBounds rowBounds);
+
+	List<User> findAllBlackList(RowBounds rowBounds);
+
+	List<User> findAllNotBlackList(RowBounds rowBounds);
 	
 	@Select("select count(*) from ez_user")
 	int getTotalContent();
+	
+	@Select("select count(*) from ez_user where yellowcard >= 3")
+	int getBlackListTotalContent();
+	
+	@Select("select count(*) from ez_user where yellowcard < 3")
+	int getNotBlackListTotalContent();
 	
 	@Update("update ez_user set yellowcard = yellowcard + 1 where user_id = #{userId}")
 	int updateWarningToUser(String userId);
@@ -34,8 +46,14 @@ public interface AdminDao {
 	@Select("select * from ez_user where ${selectType} like '%' || #{selectKeyword} || '%' order by enroll_date desc")
 	List<User> selectUserByKeyword(RowBounds rowBounds, Map<String, Object> param);
 	
+	@Select("select * from ez_user where ${selectType} like '%' || #{selectKeyword} || '%' and yellowcard < 3 order by enroll_date desc")
+	List<User> selectNotBlackListByKeyworkd(RowBounds rowBounds, Map<String, Object> param);	
+	
 	@Select("select count(*) from ez_user where ${selectType} like '%' || #{selectKeyword} || '%'")
 	int getTotalContentByKeyword(Map<String, Object> param);
+	
+	@Select("select count(*) from ez_user where ${selectType} like '%' || #{selectKeyword} || '%' and yellowcard < 3")
+	int getTotalContentNotBlackListByKeyword(Map<String, Object> param);
 	
 	@Select("select * from ez_user where user_id = #{userId}")
 	User findUserByUserId(String userId);
@@ -66,7 +84,7 @@ public interface AdminDao {
 			+ "order by "
 				+ "answer_status, inq_date")
 	List<Inquire> findInquireListByCategoryId(RowBounds rowBounds, Map<String, Object> param);
-
+	
 	@Select("select count(*) from inquire where category_id = #{categoryId}")
 	int getInquireListTotalContentByCategoryId(String categoryId);
 	

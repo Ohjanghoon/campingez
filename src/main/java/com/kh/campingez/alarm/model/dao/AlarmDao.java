@@ -29,5 +29,9 @@ public interface AlarmDao {
 	
 	@Select("select count(*) from alarm where target_user_id = #{userId} and alr_read_datetime is null")
 	int getNotReadCount(String userId);
+	
+	@Insert("insert into alarm values(seq_alarm_alr_id.nextval, null, #{targetUserId}, null, #{alrType}, #{alrMessage}, #{alrUrl}, default, null)")
+	@SelectKey(statement = "select seq_alarm_alr_id.currval from dual", before = false, resultType = Integer.class, keyProperty = "alrId")
+	int warnToUserAlarm(AlarmEntity alarm);
 
 }

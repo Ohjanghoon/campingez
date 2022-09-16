@@ -53,10 +53,10 @@ public class AdminController {
 	@Autowired
 	AlarmService alarmService;
 	
-	@RequestMapping("/admin.do")
+	@GetMapping("/admin.do")
 	public void admin() {}
 	
-	@RequestMapping("/userList.do")
+	@GetMapping("/userList.do")
 	public void userList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
 		int limit = 10;
@@ -72,11 +72,40 @@ public class AdminController {
 		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
 	}
+	
+	@GetMapping("/blackList.do")
+	public void blackList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 10;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		List<User> blackList = adminService.findAllBlackList(param);
+		List<User> userList = adminService.findAllNotBlackList(param);
+		model.addAttribute("blackList", blackList);
+		model.addAttribute("userList", userList);
+		
+		int BlacktotalContent = adminService.getBlackListTotalContent();
+		int NotBlacktotalContent = adminService.getNotBlackListTotalContent();
+		
+		String url = request.getRequestURI();
+		String blackPagebar = CampingEzUtils.getPagebar(cPage, limit, BlacktotalContent, url);
+		String notBlackPagebar = CampingEzUtils.getPagebar(cPage, limit, NotBlacktotalContent, url);
+		
+		model.addAttribute("blackPagebar", blackPagebar);
+		model.addAttribute("notBlackPagebar", notBlackPagebar);
+	}
 
 	@PostMapping("/warning")
-	public ResponseEntity<?> warning(@RequestParam String userId) {
-		log.debug("userId = {}", userId);
-		int result = adminService.updateWarningToUser(userId);
+	public ResponseEntity<?> warning(@RequestParam String userId, @RequestParam String reason) {
+		String location = "/notice/detail.do?noticeNo=N17";
+		Map<String, Object> param = new HashMap<>();
+		param.put("userId", userId);
+		param.put("reason", reason);
+		param.put("location", location);
+		
+		int result = adminService.updateWarningToUser(param);
+		result = alarmService.warningToUserAlarm(param);
 		
 		return ResponseEntity.ok().build();
 	}
@@ -103,6 +132,30 @@ public class AdminController {
 		
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(map);
 	}
+	
+	@GetMapping("/selectUserNotBlackList.do")
+	public ResponseEntity<?> selectUserNotBlackList(@RequestParam(defaultValue = "1") int cPage, @RequestParam String selectType, @RequestParam(required = false) String selectKeyword, Model model, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 10;
+		param.put("selectType", selectType);
+		param.put("selectKeyword", selectKeyword);
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		List<User> userList = adminService.selectNotBlackListByKeyword(param);
+		log.debug("userList = {}", userList);		
+		
+		int totalContent = adminService.getTotalContentNotBlackListByKeyword(param);
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userList", userList);
+		map.put("pagebar", pagebar);
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(map);
+	}
+	
 	
 	@GetMapping("/updateUserList")
 	public ResponseEntity<?> updateUserList(@RequestParam String userId) {
