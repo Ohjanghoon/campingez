@@ -249,7 +249,7 @@ public class UserInfoController {
 	public ModelAndView assignList(@RequestParam(defaultValue = "1") int cPage,Authentication authentication,
 									ModelAndView mav, Model model,HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
-		int limit = 1;
+		int limit = 6;
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		
@@ -346,4 +346,53 @@ public class UserInfoController {
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(resultMap);
 	}
 	
+	/**
+	 * !!!!!!!!!!!!!!!!찜목록리스트!!!!!!!!!!!!!!!!!!!!! 
+	 */
+	@GetMapping("/myLikeList.do")
+	public ModelAndView myLikeList(@RequestParam(defaultValue = "1") int cPage ,Authentication authentication, 
+										ModelAndView mav, Model model, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 6;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		User principal = (User)authentication.getPrincipal();
+		List<TradeEntity> result = userInfoService.selectLikeList(param, principal);
+		log.debug("list = {}", result);
+		
+		int totalLikeCount =  userInfoService.getTotalLike(principal);
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalLikeCount, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
+		model.addAttribute("result", result);
+		mav.setViewName("user/myLikeList");
+		return mav;
+	}
+
+	/**
+	 * !!!!!!!!!!!!!!!!찜목록리스트 ajax !!!!!!!!!!!!!!!!!!!!! 
+	 */
+	@PostMapping("/myLikeList.do")
+	public ResponseEntity<Map<String, Object>> likeListAjax(@RequestParam(defaultValue = "1") int cPage ,Authentication authentication, 
+										ModelAndView mav, Model model, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 6;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		User principal = (User)authentication.getPrincipal();
+		List<TradeEntity> result = userInfoService.selectLikeList(param, principal);
+		log.debug("list = {}", result);
+		
+		int totalLikeCount =  userInfoService.getTotalLike(principal);
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalLikeCount, url);
+		log.debug("pagebar = {}", pagebar);
+		Map<String , Object> resultMap = new HashMap<>(); 
+		resultMap.put("pagebar", pagebar);
+		resultMap.put("result", result);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(resultMap);
+	}
 }

@@ -7,7 +7,8 @@
   <select id="selectInquireList" resultMap="inquireListMap">
   	select
 	    i.*,
-	    (select count(*) from inquire_answer a where a.inq_no = i.inq_no) answer_status
+	    (select count(*) from inquire_answer a where a.inq_no = i.inq_no) answer_status,
+	    (select category_name from category_list c where c.category_id = i.category_id) category_name
 	from
 		inquire i
 	where
@@ -18,7 +19,7 @@
   
   <resultMap type="inquire" id="inquireListMap">
   	<id column="inq_no" property="inqNo"/>
-  	<result column="category_id" property="categoryId"/>
+  	<result column="category_name" property="categoryName"/>
   	<result column="inq_writer" property="inqWriter"/>
   	<result column="inq_title" property="inqTitle"/>
   	<result column="inq_content" property="inqContent"/>
