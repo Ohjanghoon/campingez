@@ -1,5 +1,7 @@
 package com.kh.campingez.user.model.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +42,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int updatePassword(String encodedPassword, String userId) {
 		return userDao.updatePassword(encodedPassword, userId);
+	}
+	
+	@Override
+	public int userUseCoupon(Map<Object, Object> map) {
+		return userDao.userUseCoupon(map);
+	}
+	
+	@Override
+	public int userUsePoint(Map<Object, Object> map) {
+		return userDao.userUsePoint(map);
 	}
 }

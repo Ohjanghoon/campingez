@@ -19,13 +19,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampZone;
-import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.coupon.model.dto.UserCoupon;
 import com.kh.campingez.coupon.model.service.CouponService;
 import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.reservation.model.service.ReservationService;
 import com.kh.campingez.review.model.dto.Review;
 import com.kh.campingez.review.model.service.ReviewService;
+import com.kh.campingez.user.model.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,6 +42,9 @@ public class ReservationController {
 	
 	@Autowired
 	CouponService couponService;
+	
+	@Autowired
+	UserService userService;
 	
 	@GetMapping("/list")
 	public void campList() {}
@@ -78,15 +81,44 @@ public class ReservationController {
 	@PostMapping("/insertReservation")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public String insertReservation(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkin, 
-			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkout, 
-			Reservation reservation, RedirectAttributes redirectAttr) {
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate checkout, @RequestParam int point, 
+			@RequestParam String couponCode, Reservation reservation, RedirectAttributes redirectAttr) {
+		
 		reservation.setResCheckin(checkin);
 		reservation.setResCheckout(checkout);
-		log.debug("reservation = {}", reservation);
-		Reservation result = reservationService.insertReservation(reservation);
-		log.debug("result = {}", result);
 		
-		redirectAttr.addFlashAttribute("payRes", result);
+		// 할인 결제시
+		if(couponCode != null || point != 0) {
+			
+			Map<Object, Object> map = new HashMap<>();
+			map.put("userId", reservation.getUserId());
+			map.put("point", point);
+			
+			int effect = 0;
+			
+			if(couponCode != null) {
+				int dc = couponCode.indexOf('@');
+				int resultPrice = reservation.getResPrice() - (reservation.getResPrice() / (Integer.parseInt(couponCode.substring(0, dc)))) - point;
+				reservation.setResPrice(resultPrice);
+				couponCode = couponCode.substring(dc+1, couponCode.length());
+				map.put("couponCode", couponCode);
+				effect = userService.userUseCoupon(map);
+			}
+			if(point != 0) {
+				effect = userService.userUsePoint(map);
+			}
+			// 예약 
+			Reservation result = reservationService.insertReservation(reservation);
+			redirectAttr.addFlashAttribute("payRes", result);
+		}
+		
+		// 그냥 일반 결제시
+		else{
+			Reservation result = reservationService.insertReservation(reservation);
+			redirectAttr.addFlashAttribute("payRes", result);
+		}
+		
+		log.debug("reservation = {}", reservation);
 		return "redirect:/payment/payment.do";
 	}
 	

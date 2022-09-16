@@ -1,5 +1,7 @@
 package com.kh.campingez.user.model.dao;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -25,5 +27,11 @@ public interface UserDao {
 
 	@Update("update ez_user set password = #{encodedPassword} where user_id = #{userId}")
 	int updatePassword(@Param("encodedPassword")String encodedPassword, @Param("userId") String userId);
+
+	@Update("update ez_user set point = #{point} where user_id = #{userId}")
+	int userUseCoupon(Map<Object, Object> map);
+
+	@Update("update user_coupon set coupon_usedate = current_date where user_id = #{userId} and coupon_code = #{couponCode}")
+	int userUsePoint(Map<Object, Object> map);
 
 }

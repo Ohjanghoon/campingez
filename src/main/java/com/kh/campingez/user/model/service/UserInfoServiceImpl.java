@@ -84,4 +84,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public int getTotalReservation(User user) {
 		return userInfoDao.getTotalReservation(user);
 	}
+	@Override
+	public List<TradeEntity> selectLikeList(Map<String, Object> param, User user) {
+		return userInfoDao.selectLikeList(getRowBounds(param),user);
+	}
+	
+	@Override
+	public int getTotalLike(User user) {
+		return userInfoDao.getTotalLike(user);
+	}
 }
