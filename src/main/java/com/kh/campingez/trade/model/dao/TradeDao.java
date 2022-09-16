@@ -68,6 +68,15 @@ public interface TradeDao {
 	@Select("select * from trade_photo where trade_no = #{tdNo}")
 	List<TradePhoto> selectPhotoList(String no);
 	
+//	@Select("select * from trade where category_id = #{categoryId}")
+	List<Trade> selectTradeListKind(RowBounds rowBounds, String categoryId);
+	
+	@Select("select count(*) from trade where category_id = #{categoryId}")
+	int getTotalContentKind();
+	
+	@Update("update trade set trade_success = '거래 완료' where trade_no = #{tradeNo}")
+	int updateSuccess(String no);
+	
 	
 	
 	

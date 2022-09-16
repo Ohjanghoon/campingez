@@ -91,6 +91,17 @@ where
 
 </update> -->
 
+<select id="selectTradeListKind" resultMap="tradeListMap">
+select
+		*
+from
+		trade t join trade_photo p 
+		on t.trade_no = p.trade_no
+where
+		category_id = #{categoryId}
+
+
+</select>
 
 
 

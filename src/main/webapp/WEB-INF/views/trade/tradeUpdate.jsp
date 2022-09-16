@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<sec:authentication property="principal" var="loginMember" scope="page" />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래게시판" name="title" />
 </jsp:include>
@@ -19,8 +19,8 @@ enctype="multipart/form-data" >
 
 <p>글제목: </p><input type="text" name="tradeTitle" value="${trade.tradeTitle}"><br>
 
-<!--  <p>작성자: </p><input type="text" name="userId" value="${trade.userId}" readonly><br> -->
-<p>작성자: </p><input type="text" name="userId"><br>
+<p>작성자: </p><input type="text" name="userId" value="${loginMember.userId}" readonly><br> 
+
 
 <p>중고물품 구분</p>
 <input type="radio" name="categoryId" value="tra1" checked>텐트/타프
