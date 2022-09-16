@@ -17,6 +17,8 @@
 	Inquire inquire = (Inquire) request.getAttribute("inquire");
 	Answer answer = inquire.getAnswer();
 	pageContext.setAttribute("answer", answer);
+	
+	pageContext.setAttribute("newLine", "\n");
 %>
 
 	<%------------------------------------------------------ 
@@ -54,7 +56,7 @@
 		</table>
 		<!-- 문의 내용 -->
 		<div class="my-3 py-5 px-3 card align-top">
-			<p>${inquire.inqContent}</p>
+			<p>${fn:replace(inquire.inqContent, newLine, "<br />")}</p>
 		</div>
 	</div>
 	<sec:authentication property="principal.username" var="userId"/>
@@ -90,7 +92,7 @@
 				</div>
 				<!-- 답변 내용 -->
 				<div class="my-3 py-5 px-3 card align-top">
-					<span id="answerContent">${answer.answerContent}</span>
+					<span id="answerContent">${fn:replace(answer.answerContent, newLine, "<br />")}</span>
 				</div>
 			</div>
 		</c:if>
