@@ -44,13 +44,6 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 
-		String userId = authentication != null ? ((User)authentication.getPrincipal()).getUserId() : null;
-		int notReadCount = 0;
-		if(userId != null) {
-			notReadCount = alarmService.getNotReadCount(userId);			
-		}
-		
-		model.addAttribute("notReadCount", notReadCount);
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "forward:/index.jsp";
