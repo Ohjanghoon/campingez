@@ -38,7 +38,7 @@
 .btn-outline-dark{
 	border-color: #A8A4CE !important;
 	color: #A8A4CE !important;
-	width : 400px;
+	width : 350px;
   }
 .btn-outline-dark:hover{
 	background-color: #A8A4CE !important;
@@ -82,13 +82,13 @@
 					  </div>
 					</div>
 				
-<div class="d-grid gap-2 col-6 mx-auto p-3">			
+<div style="text-align: center;">			
 			<button class="btn btn-outline-dark" type="submit">수정</button>
 </div>
 	</form:form>
 	<form:form action="${pageContext.request.contextPath}/review/deleteReview.do" name ="delFrm" method="post">
 		<input type="hidden" id="resNo" name="resNo" value="${resNo}">
-			<div class="d-grid gap-2 col-6 mx-auto p-3">	
+			<div style="text-align: center;">	
 				<button class="btn btn-outline-dark" type="submit" id="delReview" name="deleteReview" onclick="deleteReview">삭제</button>				
 			</div>
 	</form:form>

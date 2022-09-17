@@ -34,44 +34,52 @@
     overflow: hidden;
     pointer-events: none;
   }
+  .btn-outline-dark{
+	border-color: #A8A4CE !important;
+	color: #A8A4CE !important;
+	width : 350px;
+  }
+  .btn-outline-dark:hover{
+	background-color: #A8A4CE !important;
+	color: white !important;
+  }
 </style>
 <main>
+<div class="container">
 	<form:form action="${pageContext.request.contextPath}/review/insertReview.do" id="reviewFrm" name="reviewFrm" method="post" enctype="multipart/form-data">
-		<table>
-		<tr>
-			<th>예약번호</th>
-			<td><input value="${resNo}" name="resNo" readonly/></td>
-		</tr>
-		<tr>
-			<th>내용</th>
-			<td><textarea rows="15" cols="70" name="revContent"></textarea></td>
-		</tr>
-		<tr>
-			<th>별점</th>
-			<td>
-				<span class="star">
+		<div class="form-floating m-3">
+			<input class="form-control" value="${resNo}" name="resNo" readonly/>
+			<label>예약번호</label>
+		</div>
+		<div class="form-floating m-3">
+			<textarea style="height: 120px;" class="form-control" rows="15" cols="70" name="revContent"></textarea>
+			<label>내용</label>
+		</div>
+		<div class="form-floating m-3">
+			<label>별점</label>
+				<span class="star" style="margin-left : 70px;">
 				  ★★★★★
 				  <span>★★★★★</span>
 				  <input type="range" name="revScore"  oninput="drawStar(this)" value="1" step="1" min="0" max="5">
 				  <input type="hidden" id="hiddenScore" />
 				</span>
-			</td>
-		</tr>
-			<tr>
-				<th>첨부파일</th>
-				<td> 
+		</div>
+			<div class="form-floating m-3">
+				 <div class="custom-file" style="text-align: center;">
 					<div>
 					  <div class="custom-file">
-						    <input type="file" name="upFile" id="upFile1"   onchange="readURL(this);"  multiple>
-						    <label for="upFile1">파일 선택</label><br>
+						    <input class="form-control" type="file" name="upFile" id="upFile1"   onchange="readURL(this);"  multiple>
+						    <label for="upFile1"></label><br>
 							<img id="preview" class="upload" width="400px">
 					  </div>
 					</div>
-				</td>
-			</tr>
-		</table>
-			<button type="submit" >저장</button>
+				  </div>
+			</div>
+		<div style="text-align: center;">	
+			<button class="btn btn-outline-dark" type="submit" >저장</button>
+		</div>
 	</form:form>
+</div>
 <script>
 const drawStar = (target) => {
 	var percent = target.value*20 + "%";

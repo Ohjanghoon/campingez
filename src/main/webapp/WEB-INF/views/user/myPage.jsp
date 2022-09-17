@@ -23,150 +23,167 @@
 		var option = "width = 700, height = 700, top = 150, left = 600, location = no"
 		window.open(url, name, option);
 	}
+	function inquire() {
+		document.getElementById('inquire').submit();
+	}
+	function trade() {
+		document.getElementById('trade').submit();
+	}
 </script>
 <body>
-	<div id="mypage">
-		<div class="outter-div">
-			<div class="inner-div card" id="userinfo">
-				<div class="card-body">
+	<div class="container">
+		<h3 style="margin: 40px;">마이페이지</h3>
+		<hr style="color: #c6b5e1;">
+		<div id="mypage">
+			<div class="parent">
+				<div id="first">
 					<form>
-						<sec:authentication property="principal" var="result" scope="page" />
-						<span>아이디 : ${result.userId}</span><br> 
-						<span>이름 : ${result.userName}</span><br> 
-						<span>경고횟수 : ${result.yellowCard}</span><br> 
-						<span>잔여 포인트 : <fmt:formatNumber value="${result.point}" pattern="#,###"/>point</span><br>
-						<button onclick="popup()" class="btn btn-outline-dark">내정보 수정</button><br>
+						<div id="first-2">
+							<sec:authentication property="principal" var="result"
+								scope="page" />
+							<c:if test="${result.gender == 'M'}">
+								<img style="padding-bottom: 50px;" id="preview"
+									src="${pageContext.request.contextPath}/resources/images/mypage/man.png"
+									width="250px">
+							</c:if>
+							<c:if test="${result.gender == 'F'}">
+								<img style="padding-bottom: 50px;" id="preview"
+									src="${pageContext.request.contextPath}/resources/images/mypage/girl.png"
+									width="250px">
+							</c:if>
+							<div style="margin-top: 20px;">
+								<span style="font-size: 22pt;">${result.userName} 님</span><br>
+								<br> <span>아이디 : ${result.userId}</span><br> <span>경고횟수
+									: ${result.yellowCard}</span><br> <span>잔여 포인트 : <fmt:formatNumber
+										value="${result.point}" pattern="#,###" />point
+								</span><br>
+							</div>
+						</div>
 					</form>
 				</div>
-			</div>
-			<div class="inner-div card" id="answer">
-				<div class="card-body">
-				<h6>1:1 문의</h6>
-					<form
+				<div id="second">
+					<span style="font-size: 22pt;">1:1 문의</span>
+					<form id="inquire"
 						action="${pageContext.request.contextPath}/userInfo/inquireList.do"
 						method="GET">
-
+						<br>
 						<c:forEach items="${inquireCnt}" var="cnt" varStatus="vs">
 							<c:if test="${cnt.answerStatus == 0}">
-								<span>답변대기 -------> ${cnt.statusCnt} 건</span>
+								<span>답변대기 <img
+									src="${pageContext.request.contextPath}/resources/images/mypage/arrow.png"
+									width="30px"> ${cnt.statusCnt} 건
+								</span>
+								<br>
 								<br>
 							</c:if>
 							<c:if test="${cnt.answerStatus == 1}">
-								<span>답변완료 -------> ${cnt.statusCnt} 건</span>
+								<span>답변완료 <img
+									src="${pageContext.request.contextPath}/resources/images/mypage/arrow.png"
+									width="30px"> ${cnt.statusCnt} 건
+								</span>
+								<br>
 								<br>
 							</c:if>
 						</c:forEach>
-						<button type="submit" class="btn btn-outline-dark">내가 쓴 게시글</button>
 						<br>
 					</form>
 				</div>
-			</div>
-			<div class="inner-div card" id="trade">
-				<div class="card-body">
-				<h6>중고물품 거래</h6>
-					<form
-						action="${pageContext.request.contextPath}/userInfo/myTradeList.do" method="GET">
+				<div id="third">
+					<span style="font-size: 22pt;">중고물품 거래</span>
+					<form id="trade"
+						action="${pageContext.request.contextPath}/userInfo/myTradeList.do"
+						method="GET">
+						<br>
 						<c:forEach items="${tradeCnt}" var="trade" varStatus="vs">
-								<span>${trade.answerStatus} -------> ${trade.statusCnt} 건</span><br>
+							<span>${trade.answerStatus} <img
+								src="${pageContext.request.contextPath}/resources/images/mypage/arrow.png"
+								width="30px"> ${trade.statusCnt} 건
+							</span>
+							<br>
+							<br>
 						</c:forEach>
-						<button type="submit" class="btn btn-outline-dark">내가 쓴 게시글</button>
 						<br>
 					</form>
 				</div>
+				<div class="button-parent">
+					<button onclick="popup()" class="btn btn-outline-dark">정보변경</button>
+					<button onclick="inquire()" class="btn btn-outline-dark">1:1문의</button>
+					<button onclick="trade()" class="btn btn-outline-dark">중고거래</button>
+				</div>
 			</div>
-		</div>
-<%-- 		<div class="outter-div">
-			<div class="inner-div card" id="reserv">
-				<div class="card-body">
-					<form
-						action="${pageContext.request.contextPath}/userInfo/myReservation.do"
-						method="GET">
-						<span>입실예정객실</span>
+			<div style="margin-top : 30px;" class="parent">
+				<div style="margin : 35px; width: 80%;" id="coupon">
+					<div>
+						<span style="font-size: 22pt; margin-left :10px;"> <img style="margin-right:20px; margin-bottom:20px;"
+							src="${pageContext.request.contextPath}/resources/images/mypage/coupon.png"
+							width="50px">내 쿠폰함
+						</span>
 						<table class="table">
 							<tr>
-								<th scope="col">예약번호</th>
-								<th scope="col">예약자 성명</th>
-								<th scope="col">입실일자</th>
-								<th scope="col">예약 상태</th>
+								<th scope="col">쿠폰이름</th>
+								<th scope="col">쿠폰코드</th>
+								<th scope="col">할인율 %</th>
+								<th scope="col">사용가능기간</th>
+								<th scope="col">사용가능여부</th>
 							</tr>
-							<c:forEach items="${reservationList}" var="res" varStatus="vs">
+							<c:forEach items="${couponList}" var="coupon" varStatus="vs">
 								<tr>
-									<td>${res.resNo}</td>
-									<td>${res.resUsername}</td>
-									<td>${res.resCheckin}</td>
-									<td>${res.resState}</td>
-								</tr>
-							</c:forEach>
-						</table>
-						<button type="submit" class="btn btn-outline-dark">예약 정보
-							상세</button>
-						<br>
-					</form>
-				</div>
-			</div>
-		</div> --%>
-		<div class="outter-div">
-			<div class="inner-div card" id="coupon">
-				<div class="card-body">
-					<span>내 쿠폰함</span>
-					<table class="table">
-						<tr>
-							<th scope="col">쿠폰이름</th>
-							<th scope="col">쿠폰코드</th>
-							<th scope="col">할인율 %</th>
-							<th scope="col">사용가능기간</th>
-							<th scope="col">사용가능여부</th>
-						</tr>
-						<c:forEach items="${couponList}" var="coupon" varStatus="vs">
-							<tr>
-								<td>${coupon.couponName}</td>
-								<td>${coupon.couponCode}</td>
-								<td>${coupon.couponDiscount}%</td>
-								<td>${coupon.couponStartday}~${coupon.couponEndday}</td>
-								<c:if test="${coupon.couponUsedate == 'Y'}">
-									<td>사용가능</td>
-								</c:if>
-								<c:if test="${coupon.couponUsedate == 'N'}">
-									<td>사용완료</td>
-								</c:if>
+									<td>${coupon.couponName}</td>
+									<td>${coupon.couponCode}</td>
+									<td>${coupon.couponDiscount}%</td>
+									<td>${coupon.couponStartday}~${coupon.couponEndday}</td>
+									<c:if test="${coupon.couponUsedate == 'Y'}">
+										<td>사용가능</td>
+									</c:if>
+									<c:if test="${coupon.couponUsedate == 'N'}">
+										<td>사용완료</td>
+									</c:if>
 
-							</tr>
-						</c:forEach>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div class="outter-div">
-			<div class="inner-div card" id="assign">
-				<div class="card-body">
-					<form
-						action="${pageContext.request.contextPath}/userInfo/assignment.do"
-						method="GET">
-						<span>등록한 양도글 확인</span>
-						<table class="table">
-							<tr>
-								<th scope="col">예약번호</th>
-								<th scope="col">제목</th>
-								<th scope="col">양도 가격</th>
-								<th scope="col">양도마감 일자</th>
-								<th scope="col">상태</th>
-							</tr>
-							<c:forEach items="${assignList}" var="assign" varStatus="vs" begin="0" end="2">
-								<tr>
-									<td>${assign.resNo}</td>
-									<td>${assign.assignTitle}</td>
-									<td><fmt:formatNumber value="${assign.assignPrice}" pattern="#,###"/>원</td>
-									<td>
-										<fmt:parseDate value="${assign.assignDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="assignDate"/>
-										<fmt:formatDate value="${assignDate}" pattern="yyyy-MM-dd"/>
-									</td>	
-									<td>${assign.assignState}</td>
 								</tr>
 							</c:forEach>
 						</table>
-						<button type="submit" class="btn btn-outline-dark">양도글 상세 보기</button>
-						<br>
-					</form>
+					</div>
+				</div>
+
+			</div>
+			<div style="margin-top : 30px;" class="parent">
+				<div  style="margin : 35px; width: 80%;" id="assign">
+					<div>
+						<form
+							action="${pageContext.request.contextPath}/userInfo/assignment.do"
+							method="GET">
+							<span style="font-size: 22pt; margin-left :10px; ">
+							<img style="margin-right:20px; margin-bottom:20px;"
+							src="${pageContext.request.contextPath}/resources/images/mypage/reservation.png"
+							width="50px">
+							등록한 양도글 확인
+							</span>
+							<button style="margin-left: 480px; margin-bottom: 20px;" type="submit" class="btn btn-outline-dark">상세 보기</button>
+							<table class="table">
+								<tr>
+									<th scope="col">예약번호</th>
+									<th scope="col">제목</th>
+									<th scope="col">양도 가격</th>
+									<th scope="col">양도마감 일자</th>
+									<th scope="col">상태</th>
+								</tr>
+								<c:forEach items="${assignList}" var="assign" varStatus="vs"
+									begin="0" end="2">
+									<tr>
+										<td>${assign.resNo}</td>
+										<td>${assign.assignTitle}</td>
+										<td><fmt:formatNumber value="${assign.assignPrice}"
+												pattern="#,###" />원</td>
+										<td><fmt:parseDate value="${assign.assignDate}"
+												pattern="yyyy-MM-dd'T'HH:mm:ss" var="assignDate" /> <fmt:formatDate
+												value="${assignDate}" pattern="yyyy-MM-dd" /></td>
+										<td>${assign.assignState}</td>
+									</tr>
+								</c:forEach>
+							</table>
+							<br>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

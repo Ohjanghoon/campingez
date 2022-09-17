@@ -40,14 +40,14 @@
 		</thead>
 		<tbody id="tradeTbody">
 			<c:forEach items="${result}" var="trade" varStatus="vs">
-				<tr  data-no="${trade.tradeNo}">
+				<tr onclick="location.href='${pageContext.request.contextPath}/trade/tradeView.do?no=${trade.tradeNo}'" data-no="${trade.tradeNo}">
 					<td>${vs.count}</td>
 					<td>${trade.tradeNo}</td>
 					<td>${trade.userId}</td>
 					<td>${trade.categoryId}</td>
 					<td>${trade.tradeTitle}</td>
 					<td>
-						<div class="tradeContent">
+						<div class="content">
 						${trade.tradeContent}
 						</div>
 					</td>
@@ -101,14 +101,14 @@ function tradePaingAjax(cPage){
             for(var i = 0; i < results.length; i++){
             	var months = results[i].tradeDate[1] < 10 ? '0' + results[i].tradeDate[1] : results[i].tradeDate[1];
             	var days = results[i].tradeDate[2] < 10 ? '0' + results[i].tradeDate[2] : results[i].tradeDate[2];
-            	str += 	'<tr data-no="'+results[i].tradeNo+'">'+
+            	str += 	`<tr onclick="location.href='${pageContext.request.contextPath}/trade/tradeView.do?no=`+results[i].tradeNo+`'" data-no="'+results[i].tradeNo+'">`+
 								'<td>'+ (i+1) +'</td>'+
 								'<td>'+results[i].tradeNo+'</td>'+
 								'<td>'+results[i].userId+'</td>'+
 								'<td>'+results[i].categoryId+'</td>'+
 								'<td>'+results[i].tradeTitle+'</td>'+
 								'<td>'+
-								'<div class="tradeContent">'+
+								'<div class="content">'+
 									results[i].tradeContent +
 								'</div>'+
 								'</td>' +

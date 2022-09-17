@@ -46,7 +46,7 @@
 					<td>${trade.categoryId}</td>
 					<td>${trade.tradeTitle}</td>
 					<td>
-						<div class="tradeContent">
+						<div class="content">
 						${trade.tradeContent}
 						</div>
 					</td>
@@ -107,7 +107,7 @@ function tradePaingAjax(cPage){
 								'<td>'+results[i].categoryId+'</td>'+
 								'<td>'+results[i].tradeTitle+'</td>'+
 								'<td>'+
-								'<div class="tradeContent">'+
+								'<div class="content">'+
 									results[i].tradeContent +
 								'</div>'+
 								'</td>' +
