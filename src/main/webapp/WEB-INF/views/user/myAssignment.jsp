@@ -35,12 +35,20 @@
 		</thead>
 		<tbody id="assignTbody">
 			<c:forEach items="${assignList}" var="assign" varStatus="vs" >
-				<tr data-no="${assign.assignNo}">
+				<tr onclick="location.href='${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=${assign.assignNo}'" data-no="${assign.assignNo}">
 					<td>${assign.assignNo}</td>
 					<td>${assign.userId}</td>
 					<td>${assign.resNo}</td>
-					<td>${assign.assignTitle}</td>
-					<td>${assign.assignContent}</td>
+					<td>
+						<div class="content">
+							${assign.assignTitle}
+						</div>
+					</td>
+					<td>
+						<div class="content">
+							${assign.assignContent}
+						</div>
+					</td>
 					<td><fmt:formatNumber value="${assign.assignPrice}" pattern="#,###"/>원</td>
 					<td>
 						<fmt:parseDate value="${assign.assignDate}" pattern="yyyy-MM-dd" var="assignDate" />
@@ -88,12 +96,20 @@ function assignmentPaingAjax(cPage){
             for(var i = 0; i < results.length; i++){
             	var months = results[i].assignDate[1] < 10 ? '0' + results[i].assignDate[1] : results[i].assignDate[1];
             	var days = results[i].assignDate[2] < 10 ? '0' + results[i].assignDate[2] : results[i].assignDate[2];
-            	str += 	'<tr data-no="'+results[i].assignNo+'">'+
+            	str += 	`<tr onclick="location.href='${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=`+results[i].assignNo+`'" data-no="'+results[i].assignNo+'">`+
 								'<td>'+results[i].assignNo+'</td>'+
 								'<td>'+results[i].userId+'</td>'+
 								'<td>'+results[i].resNo+'</td>'+
-								'<td>'+results[i].assignTitle+'</td>'+
-								'<td>'+results[i].assignContent+'</td>'+
+								'<td>'+
+									'<div class="content">'+
+										results[i].assignTitle + 
+									'</div>' +
+								'</td>'+
+								'<td>'+
+									'<div class="content">'+
+										results[i].assignContent+
+									'</div>'+
+								'</td>'+
 								'<td>'+results[i].assignPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원</td>'+
 								'<td>'+
 									results[i].assignDate[0]+'-' + months + '-' + days +
