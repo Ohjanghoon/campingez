@@ -16,38 +16,50 @@ stompClient.connect({}, (frame) => {
 		const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
 		const [yy, MM, dd, HH, mm, ss] = alrDatetime;
 	
+	
 		let html;
 		const notReadCountSpan = document.querySelector("#notReadCount");
 		notReadCountSpan.innerHTML = notReadCount;
 		
 		const date = `${yy}/${MM}/${dd} ${HH}:${mm}:${ss}`;
+		console.log(date);
 		const alrDate = beforeTime(date);
+		
+		document.querySelectorAll("#alarm").forEach((li) => {
+			if(li.className.includes('no-alarm')) {
+				ul.innerHTML = '';
+			}
+		});
 		
 		if(!alrReadDatetime) {
 			html = `
-			<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
-				<span id="badge-wrap">
-					<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
-				</span>
-				<div id="alarm-content-wrap">
-					<div id="alr-msg">${alrMessage}</div>
-					<span id="alarm-date-wrap">
-						<span id="alarm-date">${alrDate}</span>
+			<a href="http://${location.host}/campingez${alrUrl}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
+				<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+					<span id="badge-wrap">
+						<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 					</span>
-				</div>
-			</li>
+					<div id="alarm-content-wrap">
+						<div id="alr-msg">${alrMessage}</div>
+						<span id="alarm-date-wrap">
+							<span id="alarm-date">${alrDate}</span>
+						</span>
+					</div>
+				</li>
+			</a>
 			`;							
 		} else {
 			html = `
-			<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
-				<span id="badge-wrap"></span>
-				<div id="alarm-content-wrap">
-					<div id="alr-msg">${alrMessage}</div>
-					<span id="alarm-date-wrap">
-						<span id="alarm-date">${alrDate}</span>
-					</span>
-				</div>
-			</li>
+			<a href="http://${location.host}/campingez${alrUrl}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
+				<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
+					<span id="badge-wrap"></span>
+					<div id="alarm-content-wrap">
+						<div id="alr-msg">${alrMessage}</div>
+						<span id="alarm-date-wrap">
+							<span id="alarm-date">${alrDate}</span>
+						</span>
+					</div>
+				</li>
+			</a>
 			`;														
 		}
 		ul.insertAdjacentHTML('afterbegin', html);
@@ -70,7 +82,7 @@ stompClient.connect({}, (frame) => {
 					data : {alrId:alrId},
 					method : "POST",
 					success(response) {
-						location.href= `http://${location.host}/campingez` + alrUrl;
+						
 					},
 					error : console.log
 				});

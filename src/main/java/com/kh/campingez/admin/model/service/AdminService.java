@@ -19,7 +19,7 @@ public interface AdminService {
 
 	int getTotalContent();
 
-	int updateWarningToUser(String userId);
+	int updateWarningToUser(Map<String, Object> param);
 
 	List<User> selectUserByKeyword(Map<String, Object> param);
 
@@ -82,5 +82,17 @@ public interface AdminService {
 	int getTotalSalesPrice();
 
 	int getYearTotalSalesPrice(Map<String, Object> param);
+
+	List<User> findAllBlackList(Map<String, Object> param);
+
+	int getBlackListTotalContent();
+
+	List<User> findAllNotBlackList(Map<String, Object> param);
+
+	int getNotBlackListTotalContent();
+
+	List<User> selectNotBlackListByKeyword(Map<String, Object> param);
+
+	int getTotalContentNotBlackListByKeyword(Map<String, Object> param);
 
 }

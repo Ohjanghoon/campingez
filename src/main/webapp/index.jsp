@@ -154,7 +154,7 @@ window.onload = () => {
 		<button id="btn_select1">적용하기</button>
 	</div>
 
-	<button id="btn_select2" onclick="lineSearch()">경로보기</button>
+	<button id="btn_select2" onclick="lineDisplay()">경로보기</button>
 
 	<div id="map_wrap" class="map_wrap" style="width: 700px;">
 		<div id="map_div"></div>
@@ -167,4 +167,19 @@ window.onload = () => {
 			id="save2">
 	</div>
 </div>
-	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+<script>
+function lineDisplay(){
+	document.querySelector('#btn_select2').style.display = 'none';
+	lineSearch();
+};
+
+function research() {
+    document.querySelector('#map_div').innerHTML = '';
+    document.querySelector('#xyCode').style.display = 'inline';
+    document.querySelector('#research').style.display = 'none';
+    document.querySelector('#result').innerHTML = '';
+	document.querySelector('#btn_select2').style.display = 'inline';
+    initTmap();
+};
+</script>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

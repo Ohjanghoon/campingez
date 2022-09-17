@@ -33,16 +33,23 @@
 	padding:0;
 	margin:0;
 }
+a {
+	text-decoration: none;
+	color: black;
+}
 .header-layer {
 	display: none;
 	border: 1px solid black;
 	width: 400px;
     overflow: auto;
     position: absolute;
-    background-color: white;
     text-align: left;
-    font-size: 13;
+    font-size: 13px;
     max-height: 300px;
+    z-index:999;
+}
+.header-layer > * {
+	background-color: white;
 }
 #alarm-list {
 	padding: 0;
@@ -82,6 +89,11 @@
     display: flex;
     align-items: center;
     padding: 10px;
+}
+.tooltip-inner {
+	font-size:13px;
+	max-width:400px;
+	height:30px;
 }
 </style>
 <sec:authorize access="isAuthenticated()">
@@ -123,6 +135,7 @@
 <script>
 // 알림
 window.addEventListener('load', (e) => {
+	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/user/getNotReadAlarm.do",
 		data : {userId},
@@ -157,39 +170,43 @@ window.addEventListener('load', (e) => {
 			let targetUrl;
 			if(alarmList.length < 1) {
 				html += `
-					<li id="alarm" class="list-group-item d-flex justify-content-between align-items-center">알림이 없습니다.</li>
+					<li id="alarm" class="list-group-item d-flex justify-content-between align-items-center no-alarm">알림이 없습니다.</li>
 				`;
 			} else {
 				alarmList.forEach((alarm) => {
 					const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
 					targetUrl = alrUrl;
 					const [yy, MM, dd, HH, mm, ss] = alrDatetime;
-					
+
 					if(!alrReadDatetime) {
 						html += `
-						<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
-							<span id="badge-wrap">
-								<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
-							</span>
-							<div id="alarm-content-wrap">
-								<div id="alr-msg">\${alrMessage}</div>
-								<span id="alarm-date-wrap">
-									<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+						<a href="${pageContext.request.contextPath}\${targetUrl}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+							<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+								<span id="badge-wrap">
+									<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 								</span>
-							</div>
-						</li>
+								<div id="alarm-content-wrap">
+									<div id="alr-msg">\${alrMessage}</div>
+									<span id="alarm-date-wrap">
+										<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+									</span>
+								</div>
+							</li>
+						</a>
 						`;							
 					} else {
 						html += `
-						<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
-							<span id="badge-wrap"></span>
-							<div id="alarm-content-wrap">
-								<div id="alr-msg">\${alrMessage}</div>
-								<span id="alarm-date-wrap">
-									<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
-								</span>
-							</div>
-						</li>
+						<a href="${pageContext.request.contextPath}\${targetUrl}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}" >
+							<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
+								<span id="badge-wrap"></span>
+								<div id="alarm-content-wrap">
+									<div id="alr-msg">\${alrMessage}</div>
+									<span id="alarm-date-wrap">
+										<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+									</span>
+								</div>
+							</li>
+						</a>
 						`;														
 					}
 				});
@@ -218,7 +235,7 @@ window.addEventListener('load', (e) => {
 						data : {alrId},
 						method : "POST",
 						success(response) {
-							location.href= "${pageContext.request.contextPath}" + targetUrl;
+							
 						},
 						error : console.log
 					});
@@ -229,6 +246,9 @@ window.addEventListener('load', (e) => {
 	});
 	
 	document.querySelector("#bell").addEventListener('click', (e) => {
+		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+		
 		if(div.style.display == 'none' || !div.style.display) {
 			div.style.display = 'block';
 		} else {
@@ -354,7 +374,7 @@ window.addEventListener('load', (e) => {
                 </button>
                 <div class="collapse" id="account-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="${pageContext.request.contextPath}/admin/admin.do" class="link-dark rounded p-2">관리자페이지</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-2">관리자페이지</a></li>
                   </ul>
                 </div>
                 </li>
@@ -405,21 +425,27 @@ window.addEventListener('load', (e) => {
       </svg>
     </div>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-    <button class="input-send" style="width: 40px;">
+    <button class="input-send" style="width: 40px;" type="button" onclick="location.href='${pageContext.request.contextPath}/inquire/inquireList.do';">
       <svg style="width:24px;height:24px">
         <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
       </svg>
     </button>
     <div style="width: 80px; align-items: center;">
-      <a href="#" style="text-decoration: none; color: white;">문의하기</a>
+      <a href="${pageContext.request.contextPath}/inquire/inquireList.do" style="text-decoration: none; color: white;">문의하기</a>
     </div>
     </div>
     <div id="Accordion_wrap">
       <div class="que">
-        <span>This is first question.</span>
+        <span>자동차 출입이 가능한가요??</span>
       </div>
       <div class="anw">
-        <span>This is first answer.This is first answer.This is first answer.This is first answer.This is first answer.This is first answer.</span><br />
+        <span>
+        <ul>
+        	<li>21시부터 08시 사이에는 오토캠핑장 자동차 출입을 삼가시기 바랍니다.</li>
+        	<li>오토캠핑장 내 차량은 5km 이내로 서행하여야 하며, 잔디밭 출입이나 세차행위는 금합니다.</li>
+        	<li><img src="${pageContext.request.contextPath}/resources/images/chatbot/NoCar.png" alt="" /></li>
+        </ul>
+        </span><br />
       </div>
       <div class="que">
         <span>This is second question.</span>

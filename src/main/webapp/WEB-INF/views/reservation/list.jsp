@@ -244,6 +244,8 @@
 		<div class="reservation"></div>
 	</div>
 </main>
+ <form:form class="needs-validation" name="reservationFrm" action="${pageContext.request.contextPath}/reservation/insertReservation.do" method="POST">
+ </form:form>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 <script>
 	// 달력
@@ -322,28 +324,24 @@
             				            <small>쿠폰</small>
             				          </div>
             				          <div>
-            				          <span class="text-danger" id="coupon">0</span><span class="text-danger">%</span>
+            				          <span class="text-danger" id="Rcoupon">0</span><span class="text-danger">%</span>
             				          </div>
             				        </li>
             				        <li class="list-group-item d-flex justify-content-between">
             				          <span>총 결제금액</span>
-            				          <strong id="resPrice"></strong>
+            				          <strong id="Rprice"></strong>
             				        </li>
             				      </ul>
             				    </div>
             				    <div class="col-md-7 col-lg-8">
             				    <h3 class="pb-2 border-bottom"><i class="fa-solid fa-campground"></i> 예약자 정보입력</h3>
             				   	<code> * 예약자와 입실자가 동일해아만합니다.<br /> * 이름은 예약자 이름으로 정확히 입력해주세요</code><br /><br />
-            				      <form:form class="needs-validation" name="reservationFrm" action="${pageContext.request.contextPath}/reservation/insertReservatio.do" method="POST">
-            				        <input type="hidden" name="userId" value="<sec:authentication property='principal.username' />"/>
-            				        <input type="hidden" name="checkin" value="\${checkin}"/>
-            				        <input type="hidden" name="checkout" value="\${checkout}"/>
             				        <div class="row g-3">
             				          <div class="col-12">
             				            <label for="resUsername" class="form-label">예약자 성함</label>
             				            <div class="input-group has-validation">
             				              <span class="input-group-text"><i class="fa-regular fa-face-smile"></i></span>
-            				              <input type="text" class="form-control" name="resUsername" value="" placeholder="예약자 성함" required>
+            				              <input type="text" class="form-control" name="Rname" id="Rname" placeholder="예약자 성함" required>
             				            <div class="invalid-feedback">
             				                예약자 이름을 작성해주세요.
             				              </div>
@@ -351,29 +349,29 @@
             				          </div>
 
             				          <div class="col-12">
-            				            <label for="resPhone" class="form-label">예약자 전화번호</label>
-            				            <input type="text" class="form-control" name="resPhone" value="" placeholder="ex) 01012345678" required>
+            				            <label for="Rphone" class="form-label">예약자 전화번호</label>
+            				            <input type="text" class="form-control" name="Rphone" id="Rphone" placeholder="ex) 01012345678" required>
             				            <div class="invalid-feedback">
             				              휴대폰번호를 입력해주세요.
             				            </div>
             				          </div>
 
             				          <div class="col-12">
-            				            <label for="resCarNo" class="form-label">차량번호</label>
-            				            <input type="text" class="form-control" name="resCarNo" value="" placeholder="ex) 11가1111">
+            				            <label for="Rcar" class="form-label">차량번호</label>
+            				            <input type="text" class="form-control" name="Rcar" id="Rcar" placeholder="ex) 11가1111">
             				            <div class="invalid-feedback">
             				              차량번호를 입력해주세요.
             				            </div>
             				          </div>
 
             				          <div class="col-12">
-            				            <label for="resRequest" class="form-label">요청사항</label>
-            				            <input type="text" class="form-control" name="resRequest" value="" placeholder="요청사항을 입력하세요.">
+            				            <label for="Rrequest" class="form-label">요청사항</label>
+            				            <input type="text" class="form-control" name="Rrequest" id="Rrequest" placeholder="요청사항을 입력하세요.">
             				          </div>
 
             				          <div class="col-md-5">
-            				            <label for="resPerson" class="form-label">예약인원</label>
-            				            <select class="form-select" id="resPerson" name="resPerson" required>
+            				            <label for="Rperson" class="form-label">예약인원</label>
+            				            <select class="form-select" id="Rperson" name="Rperson" required>
             				              <option value="1">1명</option>
             				              <option value="2">2명</option>
             				              <option value="3">3명</option>
@@ -388,8 +386,8 @@
             				          <hr class="my-4">
             				          <div class="col-md-5">
             				            <label for="couponList" class="form-label">쿠폰</label>
-            				            <select class="form-select" id="couponList" required>
-            				              <option value="0">선택안함</option>
+            				            <select class="form-select" id="couponList" name="couponList" required>
+            				              <option value="">선택안함</option>
             				            </select>
             				            <div class="invalid-feedback">
             				              쿠폰 선택
@@ -397,7 +395,7 @@
             				          </div>
             				          <div class="col-md-5">
             				            <label for="point" class="form-label">포인트</label>&nbsp;(잔여 포인트 : <sec:authentication property='principal.point' />P)
-            				            <input type="number" class="form-control" id="point" value="0" min="0" max="<sec:authentication property='principal.point' />" step="100">
+            				            <input type="number" class="form-control" id="Rpoint" name="Rpoint" value="0" min="0" max="<sec:authentication property='principal.point' />" step="100">
             				            <div class="invalid-feedback">
             				              포인트 입력
             				            </div>
@@ -485,46 +483,47 @@
             				        <h4 class="mb-3">결제수단</h4>
             				        <div class="my-3">
             				          <div class="form-check">
-            				            <input id="credit" name="resPayment" type="radio" class="form-check-input" value="credit" checked required>
-            				            <label class="form-check-label" for="credit">신용카드</label>
+            				            <input name="Rpayment" id="Rpayment" type="radio" class="form-check-input" value="카드" checked required>
+            				            <label class="form-check-label" for="Rpayment">신용카드</label>
             				          </div>
             				          <div class="form-check">
-            				            <input id="pay" name="resPayment" type="radio" class="form-check-input" value="pay" required>
-            				            <label class="form-check-label" for="pay">무통장입금</label>
+            				            <input name="Rpayment" type="radio" class="form-check-input" value="무통장" required>
+            				            <label class="form-check-label" for="Rpayment">무통장입금</label>
             				          </div>
             				        </div>
             				        <hr class="my-4">
             				        <button class="w-100 btn btn-primary btn-lg" type="button" id="doPay">결제하기</button>
-            				      </form:form>
             				`;
             				
             				response.userCoupon.forEach((coupon) => {
                                 const {coupons} = coupon;
                                 const [{couponName, couponCode, couponDiscount}] = coupons;
                                 const couponList = document.querySelector("#couponList");
-                                const option = `<option value="\${couponDiscount}">[\${couponDiscount}%]\${couponName}<option/>`;
+                                const option = `
+                                	<option value="\${couponDiscount}@\${couponCode}">[\${couponDiscount}%]\${couponName}<option/>
+                                `;
                                 couponList.innerHTML += option;
                              });
             				    				
        						
-            				document.querySelector("#point").addEventListener("blur", (e) => {
+            				document.querySelector("#Rpoint").addEventListener("blur", (e) => {
             					document.querySelector("#usepoint").innerHTML = e.target.value; 
-            					let minuspoint = document.querySelector("#point").value;
-    							let minuscoupon = couponList.value;
+            					let minuspoint = document.querySelector("#Rpoint").value;
+            					let minuscoupon = (couponList.value.split('@'))[0];
     						
     							let price = Number(document.querySelector("#zonePrice").innerHTML);
                 				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
-                				document.querySelector("#resPrice").innerHTML = resPrice;	
+                				document.querySelector("#Rprice").innerHTML = resPrice;	
             				});
             				
             				couponList.addEventListener("blur", (e) => {
-            					document.querySelector("#coupon").innerHTML = e.target.value;
-            					let minuspoint = document.querySelector("#point").value;
-    							let minuscoupon = couponList.value;
+            					document.querySelector("#Rcoupon").innerHTML = (e.target.value.split('@'))[0];
+            					let minuspoint = document.querySelector("#Rpoint").value;
+            					let minuscoupon = (couponList.value.split('@'))[0];
     						
     							let price = Number(document.querySelector("#zonePrice").innerHTML);
                 				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
-                				document.querySelector("#resPrice").innerHTML = resPrice;	
+                				document.querySelector("#Rprice").innerHTML = resPrice;	
             				});
             				
             			
@@ -541,24 +540,39 @@
             							document.querySelector("#zonePrice").innerHTML = `\${zonePrice}`;
             							document.querySelector("#zone").innerHTML = `\${campId}`;            						
 
-            							let minuspoint = document.querySelector("#point").value;
-            							let minuscoupon = couponList.value;
+            							let minuspoint = document.querySelector("#Rpoint").value;
+            							let minuscoupon = (couponList.value.split('@'))[0];
             						
             							let price = Number(document.querySelector("#zonePrice").innerHTML);
                         				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
             							
-                        				document.querySelector("#resPrice").innerHTML = resPrice;
+                        				document.querySelector("#Rprice").innerHTML = resPrice;
                         				
                         				document.querySelector("#doPay").addEventListener('click', (e) => {
-                        					if(document.querySelector("#flexCheckDefault").value != true){
-                        						return;
-                        						alert("약관 동의에 체크해주세요.");
-                        					} 
+                        					const couponCode = couponList.value;
+                        					const point = document.querySelector("#Rpoint").value;
+                        					const resUsername = document.querySelector("#Rname").value;
+                        					const resPhone = document.querySelector("#Rphone").value;
+                        					const resCarNo = document.querySelector("#Rcar").value;
+                        					const resRequest = document.querySelector("#Rrequest").value;
+                        					const resPrice = document.querySelector("#Rprice").value;
+                        					const resPerson = document.querySelector("#Rperson").value;
+                        					const resPayment = document.querySelector("#Rpayment").value;
                         					
                         					document.reservationFrm.innerHTML += `
+                        						<input type="hidden" name="userId" value="<sec:authentication property='principal.username' />"/>
+                        				        <input type="hidden" name="checkin" value="\${checkin}"/>
+                        				        <input type="hidden" name="checkout" value="\${checkout}"/>
                         						<input type="hidden" name="campId" value="\${campId}"/>
-                        						<input type="hidden" name="resPrice" value="resPrice"/>
-                        						<input type="hidden" name="point" value="\${minuspoint}"/>
+                        						<input type="hidden" name="resUsername" value="\${resUsername}"/>
+                        						<input type="hidden" name="resPhone" value="\${resPhone}"/>
+                        						<input type="hidden" name="resCarNo" value="\${resCarNo}"/>
+                        						<input type="hidden" name="resRequest" value="\${resRequest}"/>
+                        						<input type="hidden" name="resPerson" value="\${resPerson}"/>
+                        						<input type="hidden" name="resPrice" value="\${zonePrice}"/>
+                        						<input type="hidden" name="resPayment" value="\${resPayment}"/>
+                        						<input type="hidden" name="couponCode" value="\${couponCode}"/>
+                        						<input type="hidden" name="point" value="\${point}"/>
                         					`;
                         					reservationFrm.submit();
                         				});
@@ -589,5 +603,4 @@
 	// 마우스 휠과 모바일 터치를 이용한 지도 확대, 축소를 막는다
 	map.setZoomable(false);   
 	 */
-	
 </script>

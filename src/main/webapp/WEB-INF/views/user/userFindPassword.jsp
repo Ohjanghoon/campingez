@@ -20,7 +20,7 @@
 					<th>&nbsp;</th>
 					<td>
 					<div class="group">      
-			          <input type="text" required name="userId" id="userId">
+			          <input type="text" required name="userId" id="userId" value="sinsa">
 			          <span class="highlight"></span>
 			          <span class="bar"></span>
 			          <label>Id</label>
@@ -32,7 +32,7 @@
 					<th>&nbsp;</th>
 					<td>
 						<div class="group">      
-				          <input type="text" required name="phone" id="phone">
+				          <input type="text" required name="phone" id="phone" value="01098989898">
 				          <span class="highlight"></span>
 				          <span class="bar"></span>
 				          <label>Phone</label>
@@ -44,7 +44,7 @@
 					<th>&nbsp;</th>
 					<td>
 						<div class="group">      
-				          <input type="text" required name="email" id="email">
+				          <input type="text" required name="email" id="email" value="honggd@gmail.com">
 				          <span class="highlight"></span>
 				          <span class="bar"></span>
 				          <label>Email</label>

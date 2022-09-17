@@ -13,44 +13,46 @@
 			<div class="content-wrap">
 				<h2>캠핑 구역 리스트</h2>
 				
-				<c:forEach items="${campZoneList}" var="zone">
-					<h3>${zone.zoneCode} - ${zone.zoneName}</h3>
-						<table>
-								<tr>
-									<th>구역코드</th>
-									<td>${zone.zoneCode}</td>
-								</tr>
-								<tr>
-									<th>구역이름</th>
-									<td>${zone.zoneName}</td>
-								</tr>
-								<tr>
-									<th>구역정보</th>
-									<td>
-										<c:forEach items="${zone.zoneInfo}" var="info" varStatus="vs">
-											${info}${not vs.last ? ", " : ""}
-										</c:forEach>
-									</td>
-								</tr>
-								<tr>
-									<th>허용인원</th>
-									<td>${zone.zoneMaximum}명</td>
-								</tr>
-								<tr>
-									<th>구역가격</th>
-									<td>
-										<fmt:formatNumber value="${zone.zonePrice}" type="currency"/>
-									</td>
-								</tr>
-								<tr>
-									<th>관리</th>
-									<td>
-										<button type="button" id="update-btn" value="${zone.zoneCode}">수정</button>
-										<button type="button" id="delete-btn" value="${zone.zoneCode}">삭제</button>
-									</td>
-								</tr>
-						</table>
-				</c:forEach>
+				<div class="table-wrap">
+					<c:forEach items="${campZoneList}" var="zone">
+						<h3>${zone.zoneCode} - ${zone.zoneName}</h3>
+							<table class="table text-center table-hover">
+									<tr>
+										<th>구역코드</th>
+										<td>${zone.zoneCode}</td>
+									</tr>
+									<tr>
+										<th>구역이름</th>
+										<td>${zone.zoneName}</td>
+									</tr>
+									<tr>
+										<th>구역정보</th>
+										<td>
+											<c:forEach items="${zone.zoneInfo}" var="info" varStatus="vs">
+												${info}${not vs.last ? ", " : ""} ${vs.count % 2 == 0 ? '<br/>' : ""}
+											</c:forEach>
+										</td>
+									</tr>
+									<tr>
+										<th>허용인원</th>
+										<td>${zone.zoneMaximum}명</td>
+									</tr>
+									<tr>
+										<th>구역가격</th>
+										<td>
+											<fmt:formatNumber value="${zone.zonePrice}" type="currency"/>
+										</td>
+									</tr>
+									<tr>
+										<th>관리</th>
+										<td>
+											<button type="button" id="update-btn" value="${zone.zoneCode}">수정</button>
+											<button type="button" id="delete-btn" value="${zone.zoneCode}">삭제</button>
+										</td>
+									</tr>
+							</table>
+					</c:forEach>
+				</div>
 				<form:form name="updateOrDeleteFrm">
 					<input type="hidden" name="zoneCode"/>
 				</form:form>

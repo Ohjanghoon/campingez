@@ -16,4 +16,6 @@ public interface AlarmService {
 
 	int getNotReadCount(String userId);
 
+	int warningToUserAlarm(Map<String, Object> param);
+
 }
