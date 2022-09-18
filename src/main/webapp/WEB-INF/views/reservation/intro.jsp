@@ -62,7 +62,7 @@
 		   </div>
 		    <div class="col-lg-6">
 		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>&nbsp;데크존</h3>
-		      <p class="lead">데크존입니다.</p>
+		      <p class="lead"><i class="fa-solid fa-quote-left"></i> 타캠핑장에 비해 사이트 간격이 넓으며, 구역별로 사이트들이 나누어져 있기 때문에, 주위 캠퍼분들에게 <strong>방해</strong>받지 않고 가족들과의 즐거운 캠핑을 누릴 수 있습니다. <i class="fa-solid fa-quote-right"></i></p>
 		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
 		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
 		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="deck" data-bs-toggle="modal" data-bs-target="#exampleModal1">리뷰보기</button>
@@ -92,7 +92,7 @@
 		  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
 		    <div class="col-lg-6">
 		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>&nbsp;애견동반존</h3>
-		      <p class="lead">애견동반존입니다.</p>
+		      <p class="lead"><i class="fa-solid fa-quote-left"></i> 애견동반 캠핑장입니다. 목줄없이 반려견과 함께 할 수 있는 캠핑 공간이며, 부담없이 자연 속에서 가족과 반려견이 <strong>힐링</strong>할 수 있는 놀이터입니다. <i class="fa-solid fa-quote-right"></i></p>
 		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
 		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
 		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="animal" data-bs-toggle="modal" data-bs-target="#exampleModal2">리뷰보기</button>
@@ -186,7 +186,7 @@
 		   </div>
 		    <div class="col-lg-6">
 		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>글램핑존</h3>
-		      <p class="lead">글램핑존입니다.</p>
+		      <p class="lead"><i class="fa-solid fa-quote-left"></i> 편리하고 편안하며 바쁜 일상에서 완벽한 휴식을 제공하는 글램핑은 엄청난 <strong>매력</strong>을 선사합니다. 진정한 위치에 몰입할 수 있는 기회를 제공하고 사용자 주변으로 직접 발걸음을 내디뎠습니다. <i class="fa-solid fa-quote-right"></i></p>
 		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
 		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
 		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="glamping" data-bs-toggle="modal" data-bs-target="#exampleModal3">리뷰보기</button>
@@ -216,7 +216,7 @@
 		  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
 		    <div class="col-lg-6">
 		      <h3 class="display-5 fw-bold lh-1 mb-3"><i class="fa-solid fa-tents"></i>&nbsp;카라반존</h3>
-		      <p class="lead">카라반존입니다.</p>
+		      <p class="lead"><i class="fa-solid fa-quote-left"></i> 카라반은 캠핑의 낭만과 펜션의 편리함을 동시에 지닌 시설입니다. 그동안 캠핑은 조금 불편했고, 펜션은 뭔가 <strong>갬성</strong>이 부족했다면 이번 캠핑에는 카라반이 어떨까요? 캠핑이지에서 경험할 수 있는 특별한 감성을 소개합니다. <i class="fa-solid fa-quote-right"></i></p>
 		      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
 		        <button type="button" class="btn btn-primary btn-sm px-4 me-md-2" onclick="location.href='${pageContext.request.contextPath}/reservation/list.do';">예약하기</button>
 		        <button type="button" class="btn btn-outline-secondary btn-sm px-4" id="caravan" data-bs-toggle="modal" data-bs-target="#exampleModal4">리뷰보기</button>

@@ -86,9 +86,10 @@ public class ReservationController {
 		
 		reservation.setResCheckin(checkin);
 		reservation.setResCheckout(checkout);
+		log.debug("couponCode = {}", couponCode);
 		
 		// 할인 결제시
-		if(couponCode != null || point != 0) {
+		if(couponCode != "" || point != 0) {
 			
 			Map<Object, Object> map = new HashMap<>();
 			map.put("userId", reservation.getUserId());
@@ -96,7 +97,7 @@ public class ReservationController {
 			
 			int effect = 0;
 			
-			if(couponCode != null) {
+			if(couponCode != "") {
 				int dc = couponCode.indexOf('@');
 				int resultPrice = reservation.getResPrice() - (reservation.getResPrice() / (Integer.parseInt(couponCode.substring(0, dc)))) - point;
 				reservation.setResPrice(resultPrice);
