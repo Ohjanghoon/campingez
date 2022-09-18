@@ -18,4 +18,10 @@ public interface AssignmentService {
 
 	Assignment assignmentDetail(String assignNo);
 
+	Reservation insertAssignmentApply(Reservation reservation);
+
+	String selectAssignState(String assignNo);
+
+	int updateAssignStateAndTransfer(String assignNo, String assignTransfer);
+
 }

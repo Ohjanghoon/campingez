@@ -53,7 +53,7 @@
 			pay_method : '<%= payMethod %>',    // 결제 수단
 			merchant_uid : '${payRes.resNo}_new Date().getTime()' ,
 			name : '${payRes.campId}/<%= schedule %>',    // order 테이블에 들어갈 주문명 혹은 주문 번호
-			amount : '100',    // 결제 금액
+			amount : '1',    // 결제 금액
 			buyer_name : '${payRes.resUsername}',   //주문자명(=예약자명)
 			buyer_tel : '${payRes.resPhone}',
 			buyer_email : ''
@@ -77,6 +77,7 @@
 					msg += '\n결제 금액 : ' + rsp.paid_amount + '원';
 					msg += '\n-------------------------------------';
 					alert(msg);
+					history.go(-4);
    	    		},
    	    		error : console.log
    	    	 });
@@ -86,6 +87,7 @@
    	         var msg = '결제에 실패하였습니다.';
    	         msg += '에러내용 : ' + rsp.error_msg;
    	         alert(msg);
+   	         history.go(-4);
    	     }
    	 	});
 	};

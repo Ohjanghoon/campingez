@@ -1,11 +1,13 @@
 package com.kh.campingez.assignment.controller;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -88,16 +90,46 @@ public class AssignmentController {
 		model.addAttribute("assign", assign);
 	}
 	
+	@PostMapping("/assignmentCheck.do")
+	public ResponseEntity<?> assignmentCheck(@RequestParam String assignNo, @RequestParam String assignTransfer){
+		log.debug("assignNo = {}", assignNo);
+		log.debug("assignTransfer = {}", assignTransfer);
+		
+		String assignState = assignmentService.selectAssignState(assignNo);
+		
+		Boolean assignCheck = false;
+		if("양도대기".equals(assignState)) {
+			assignCheck = true;
+			int result = assignmentService.updateAssignStateAndTransfer(assignNo, assignTransfer);
+		}
+		log.debug("assignCheck = {}", assignCheck);
+		
+//		return ResponseEntity.ok(null);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(assignCheck);
+	}
+	
 	@PostMapping("/assignmentApply.do")
 	public String assignmentApply(
-			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate resCheckin,
-			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate resCheckout,
-			Reservation reservation) {
+			@RequestParam String checkin,
+			@RequestParam String checkout,
+			Reservation reservation,
+			RedirectAttributes redirectAttr) {
+		
+		//입/퇴실일자 날짜형 변환
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		LocalDate resCheckin = LocalDate.parse(checkin, dtf);
+		LocalDate resCheckout = LocalDate.parse(checkout, dtf);
 		
 		reservation.setResCheckin(resCheckin);
-		reservation.setResCheckin(resCheckout);
+		reservation.setResCheckout(resCheckout);
 		log.debug("reservation = {}", reservation);
 		
-		return null;
+		Reservation result = assignmentService.insertAssignmentApply(reservation);
+		log.debug("result = {}", result);
+	
+		redirectAttr.addFlashAttribute("payRes", result);
+		
+		return "redirect:/payment/payment.do";
 	}
 }
