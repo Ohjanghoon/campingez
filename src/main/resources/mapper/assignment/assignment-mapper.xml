@@ -14,7 +14,7 @@
 	where
 		res_checkin - 1 > current_date
 	order by
-		res_date desc
+		assign_date desc
   </select>
   
   <resultMap type="assignment" id="assignmentListMap">
@@ -27,6 +27,7 @@
   	<result column="assign_date" property="assignDate"/>
   	<result column="assign_like_count" property="assignLikeCount"/>
   	<result column="assign_state" property="assignState"/>
+  	<result column="assign_transfer" property="assignTransfer"/>
   	<association property="reservation" javaType="reservation">
   		<result column="camp_id" property="campId"/>
   		<result column="res_price" property="resPrice"/>
@@ -50,5 +51,6 @@
 	    join reservation r using(res_no, user_id)
 	where 
 		assign_no = #{assign_no}
+	for update
   </select>
 </mapper>

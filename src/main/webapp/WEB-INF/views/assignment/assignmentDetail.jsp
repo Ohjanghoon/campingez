@@ -30,28 +30,40 @@
 	String schedule = betDay + "박" + (betDay+1) + "일";
 	
 	LocalDateTime lastDate = (res.getResCheckin().atStartOfDay()).minusDays(1);
+	
+	pageContext.setAttribute("newLine", "\n");
 %>
-<div class="container">
+<style>
+#detail-container th {
+	width : 30%;
+	text-indent : 1.1rem;
+	vertical-align : middle;
+}
 
-	<table class="w-75 my-4 mx-auto table">
-		<tr>
-			<th>제목</th>
-			<td>${assign.assignTitle}</td>
-		</tr>
-		<tr>
-			<th>작성자</th>
-			<td>${assign.userId}</td>
-		</tr>
-		<tr>
-			<th class="py-5 pl-5">내용</th>
-			<td>${assign.assignContent}</td>
-		</tr>
-	</table>
-		
-	<div class="assignInfo w-75 mx-auto">
+</style>
+<div class="container w-75" id="detail-container">
+	<div>
+		<strong class="fs-3">양도 글</strong>
+		<hr />
+		<table class="my-4 mx-auto table" id="assignBoard">
+			<tr>
+				<th><span>제목</span></th>
+				<td>${assign.assignTitle}</td>
+			</tr>
+			<tr>
+				<th>작성자</th>
+				<td>${assign.userId}</td>
+			</tr>
+			<tr>
+				<th class="py-5 pl-5">내용</th>
+				<td><p>${fn:replace(assign.assignContent, newLine, "<br />")}</p></td>
+			</tr>
+		</table>
+	</div>
+	<div class="assignInfo mx-auto">
 		<strong class="fs-3">양도정보</strong>
-		
-		<table class="w-75 my-2 table">
+		<hr />
+		<table class="my-2 table">
 			<tr>
 				<th>양도마감일</th>
 				<td><%= lastDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) %></td>
@@ -101,11 +113,11 @@
 	  	</div>
 	</div>
 	<div class=" d-flex justify-content-center">
-		<button type="button" class="w-75 my-2 py-2" id="btn-readmore">더보기▼</button>
+		<button type="button" class="w-100 my-2 py-2 btn btn-outline-dark" id="btn-readmore">더보기▼</button>
 	</div>
 	
 	
-	<div class="w-75 mx-auto my-4">
+	<div class="mx-auto my-4">
 		<strong class="fs-3">양도거래 시 유의사항</strong>
 		<div class="card p-3">
 			<ul>
@@ -125,47 +137,87 @@
 		<input type="hidden" name="assignNo" value="${assign.assignNo}" />
 		<sec:authentication property="principal.username" var="loginUser"/>
 		<sec:authorize access="isAuthenticated() and ${assign.userId ne loginUser}">
-			<input type="hidden" name="userId" value="${loginUser }" />
-			<button type="submit" class="w-50 mb-3 fs-5 btn btn-block" id="btn-assignment-apply">해당 예약 양도받기</button>
+			<c:if test="${(assign.assignState eq '양도대기') or (assign.assignTransfer eq loginUser)}">
+				<input type="hidden" name="userId" value="${loginUser}" />
+				<button type="button" class="w-50 mb-3 fs-5 btn btn-block" id="btn-assignment-apply">해당 예약 양도받기</button>
+			</c:if>
 		</sec:authorize>
 	</form:form>
 	</div>
 </div>
 	
-	<script>
-	const resNo = "${assign.resNo}";
-	const zoneInfos = document.querySelector(".zoneInfo");
-	$(document).ready(function(){
-		$("#btn-readmore").click((e) => {
-			
-			$.ajax({
-				url: "${pageContext.request.contextPath}/camp/selectCampZone.do",
-				data: {resNo},
-				success(response){
-					console.log(response);
-					const {zoneInfo} = response;
-					
-					
-					
-					zoneInfo.forEach((zone) => {
-						zoneInfos.innerHTML += `
-							<img class="zoneImg col-2 my-3" src="${pageContext.request.contextPath}/resources/images/zone/\${zone}.png" alt="구역사진" />
-						`;
-					});
-					 
-				},
-				error : console.log
-			});
-			
-			const text = e.target;
-		    if(text.textContent === "더보기▼"){
-		      text.innerHTML = "접기▲";
-		      zoneInfos.innerHTML = "";
-		    } else {
-		      text.innerHTML = "더보기▼";
-		    }
-			$(".img-wrapper").toggle();
+<script>
+const resNo = "${assign.resNo}";
+const zoneInfos = document.querySelector(".zoneInfo");
+$(document).ready(function(){
+	$("#btn-readmore").click((e) => {
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/camp/selectCampZone.do",
+			data: {resNo},
+			success(response){
+				console.log(response);
+				const {zoneInfo} = response;
+				
+				
+				
+				zoneInfo.forEach((zone) => {
+					zoneInfos.innerHTML += `
+						<img class="zoneImg col-2 my-3" src="${pageContext.request.contextPath}/resources/images/zone/\${zone}.png" alt="구역사진" />
+					`;
+				});
+				 
+			},
+			error : console.log
 		});
+		
+		const text = e.target;
+	    if(text.textContent === "더보기▼"){
+	      text.innerHTML = "접기▲";
+	      zoneInfos.innerHTML = "";
+	    } else {
+	      text.innerHTML = "더보기▼";
+	    }
+		$(".img-wrapper").toggle();
 	});
-	</script>
+});
+
+document.querySelector("#btn-assignment-apply").addEventListener('click', (e) => {
+	const check = document.querySelector("#check");
+	const assignNo = "${assign.assignNo}";
+	const assignTransfer = "${loginUser}";
+	if(!check.checked){
+		e.preventDefault();
+		alert("유의사항을 확인하고 체크 부탁드립니다.");
+		return;
+	}
+	
+	const frm = document.assignApplyForm;
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+	$.ajax({
+		url : '${pageContext.request.contextPath}/assignment/assignmentCheck.do',
+		headers,
+		method : 'POST',
+		data : {assignNo, assignTransfer},
+		success(response){
+			console.log(response);
+			
+			if(response || ${assign.assignTransfer eq loginUser}){
+				frm.submit();
+			}
+			else {
+				alert("다른 회원이 양도중인 예약입니다.");
+				location.reload();
+			}
+		},
+		error : console.log
+	});
+	
+
+	
+	
+});
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

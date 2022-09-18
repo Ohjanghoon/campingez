@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.assignment.model.dto.AssignmentEntity;
@@ -32,10 +34,22 @@ public interface AssignmentDao {
 	Reservation selectResInfo(String resNo);
 
 	@Insert("insert into assignment values('AS' || seq_assign_no.nextval, #{userId}, #{resNo},"
-			+ " #{assignTitle}, #{assignContent}, #{assignPrice}, default, default, default)")
+			+ " #{assignTitle}, #{assignContent}, #{assignPrice}, default, default, default, #{assignTransfer})")
 	int insertAssignment(AssignmentEntity assignment);
 
 	Assignment assignmentDetail(String assignNo);
+
+	@Insert("insert into reservation values (#{campId}||seq_reservation_res_no.nextval, #{campId}, #{userId}, #{resUsername}, #{resPhone}, #{resPerson}, #{resPrice}, default, #{resCheckin}, #{resCheckout}, #{resCarNo}, #{resRequest}, '양도결제대기', #{resPayment})")
+	int insertAssignmentApply(Reservation reservation);
+	
+	@Select("select assign_state from assignment where assign_no = #{assignNo}")
+	String selectAssignState(String assignNo);
+
+	@Update("update assignment set assign_state = '양도중', assign_transfer = #{assignTransfer} where assign_no = #{assignNo}")
+	int updateAssignStateAndTransfer(String assignNo, String assignTransfer);
+	
+	
+
 
 	
 }

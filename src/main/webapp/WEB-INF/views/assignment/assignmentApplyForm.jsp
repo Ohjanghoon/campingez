@@ -24,25 +24,31 @@
 	LocalDateTime lastDate = (res.getResCheckin().atStartOfDay()).minusDays(1);
 %>
 <style>
-th {
-	width : 25%;
+#applyForm-continer hr {
+	margin: 1rem 0 0;
+}
+#applyForm-continer th {
+	width : 20%;
 	text-indent : 1.1rem;
 	vertical-align : middle;
 }
-
-#resPerson {
+#applyForm-continer #tbl-apply #resPerson {
 	width: 10%;
 }
-
-#maxPeople {
+#applyForm-continer #tbl-apply #carNo {
+	display : inline;
+}
+#applyForm-continer #tbl-apply span {
 	font-size : 12px !important;
 }
+
+
 </style>
-<div class="container w-75">
+<div class="container w-75" id="applyForm-continer">
 	
 	<!-- 양도 정보 -->
 	<div class="mx-auto my-5" id="assignInfo">
-		<h2>양도정보</h2>
+		<strong class="fs-3">양도정보</strong>
 		<hr />
 		<table class="table">
 			<tr>
@@ -53,10 +59,10 @@ th {
 				<th>구역</th>
 				<td>
 					<c:choose>
-						<c:when test="${fn:startsWith(assign.resNo, 'ZA')}">데크존&nbsp;🌳</c:when>
-						<c:when test="${fn:startsWith(assign.resNo, 'ZB')}">반려견존&nbsp;🐕</c:when>
-						<c:when test="${fn:startsWith(assign.resNo, 'ZC')}">글램핑존&nbsp;🏕️</c:when>
-						<c:when test="${fn:startsWith(assign.resNo, 'ZD')}">카라반존&nbsp;🚙</c:when>
+						<c:when test="${fn:startsWith(assign.resNo, 'ZA')}"><span>데크존&nbsp;🌳</span></c:when>
+						<c:when test="${fn:startsWith(assign.resNo, 'ZB')}"><span>반려견존&nbsp;🐕</span></c:when>
+						<c:when test="${fn:startsWith(assign.resNo, 'ZC')}"><span>글램핑존&nbsp;🏕️</span></c:when>
+						<c:when test="${fn:startsWith(assign.resNo, 'ZD')}"><span>카라반존&nbsp;🚙</span></c:when>
 					</c:choose>
 				</td>
 			</tr>
@@ -81,36 +87,40 @@ th {
 	 	name="assignmentApplyForm"
 	 	method="post"
 		action="${pageContext.request.contextPath}/assignment/assignmentApply.do">
+		<input type="hidden" name="assignNo" value="${assign.assignNo }" />
 		<input type="hidden" name="resNo" value="${assign.resNo}"/>
 		<input type="hidden" name="campId" value="${res.campId}" />
 		<input type="hidden" name="userId" value="<sec:authentication property='principal.username'/>" />
 		<input type="hidden" name="resPrice" value="${assign.assignPrice}" />
-		<input type="hidden" name="resCheckin" value="${res.resCheckin}"/>
-		<input type="hidden" name="resCheckout" value="${res.resCheckout}" />
+		<input type="hidden" name="checkin" value="${res.resCheckin}"/>
+		<input type="hidden" name="checkout" value="${res.resCheckout}" />
 		<div class="mx-auto my-5">
-		<h2>예약 정보</h2>
+		<strong class="fs-3">예약 정보</strong>
 		<hr />
-			<table class="table" id="tbl-">
+			<table class="table" id="tbl-apply">
 				<tr>
 					<th>예약자명</th>
-					<td><input type="text" class="form-control w-50" name="resUsername" required/></td>
+					<td>
+						<input type="text" class="form-control w-50" name="resUsername" required/>
+						<span><i class="fa-solid fa-circle-exclamation"></i> 예약자명과 입금자명이 동일해야 합니다.</span>
+					</td>
 				</tr>
 				<tr>
 					<th>연락처</th>
 					<td><input type="text" class="form-control w-50" name="resPhone" maxlength="11" required /></td>
 				</tr>
 				<tr>
-					<th>숙박인원</th>
+					<th>예약인원</th>
 					<td>
 						<input type="number" class="form-control" name="resPerson" id="resPerson" min="1" max="6" value="1" required />
-						<span id="maxPeople">(최대숙박인원 : 6명)</span>
+						<span><i class="fa-solid fa-circle-exclamation"></i> 최대숙박인원 : 6명</span>
 					</td>
 				</tr>
 				<tr>
 					<th>차량유무</th>
 					<td>
 						<input type="radio" name="carExist" id="carN" checked />
-						<label for="carN">없음</label>
+						<label class="py-2" for="carN">없음</label>
 						<input type="radio" name="carExist" id="carY" value="Y" />
 						<label for="carY">있음</label>
 						<input type="hidden" class="form-control w-25" name="resCarNo" id="carNo" value="" required/>
@@ -123,7 +133,7 @@ th {
 			</table>
 		</div>
 		<div>
-			<h2>결제방법 선택</h2>
+			<strong class="fs-3">결제방법 선택</strong>
 			<hr />
 			<table class="table">
 				<tr>
@@ -133,9 +143,9 @@ th {
 				<tr>
 					<th>결제수단</th>
 					<td>
-						<input type="radio" name="resPayment" id="card" value="card" checked/>
+						<input type="radio" name="resPayment" id="card" value="카드" checked/>
 						<label for="card">카드</label>
-						<input type="radio" name="resPayment" id="vbank" value="vbank" />
+						<input type="radio" name="resPayment" id="vbank" value="무통장입금" />
 						<label for="vbank">무통장입금</label>
 					</td>
 				</tr>
@@ -162,9 +172,22 @@ document.querySelectorAll("[name=carExist]").forEach((radio) => {
 	});
 });
 
+document.querySelector("#resPerson").addEventListener('blur', (e) => {
+	const person = e.target;
+	
+	if(person.value < 1){
+		person.value = 1;
+	}
+	if(person.value > 6){
+		alert("최대 숙박가능인원은 6명입니다.\n추가인원은 관리자에게 문의부탁드립니다.");
+		person.value = 6;
+	}
+});
+
 document.assignmentApplyForm.addEventListener('submit', (e) => {
-	const str = "양도받기는 20분이내에 결제하셔야 합니다.\n" + "양도받기를 진행하시겠습니까?"; 
-		
+	const str = "양도받기는 10분이내에 결제하셔야 합니다.\n" + "결제를 진행하시겠습니까?"; 
+	const frm = document.assignmentApplyForm;
+	
 	if(!confirm(str)){
 		e.preventDefault();
 		return false;

@@ -22,4 +22,5 @@ public class AssignmentEntity {
     private LocalDateTime assignDate;
     private int assignLikeCount;
     private AssignState assignState;
+    private String assignTransfer;
 }
