@@ -108,12 +108,6 @@ function reservationPaingAjax(cPage){
             var results = response.reservationList;
             var str = "";
             for(var i = 0; i < results.length; i++){
-            	var months1 = results[i].resDate[1] < 10 ? '0' + results[i].resDate[1] : results[i].resDate[1];
-            	var months2 = results[i].resCheckin[1] < 10 ? '0' + results[i].resCheckin[1] : results[i].resCheckin[1];
-            	var months3 = results[i].resCheckout[1] < 10 ? '0' + results[i].resCheckout[1] : results[i].resCheckout[1];
-            	var days1 = results[i].resDate[2] < 10 ? '0' + results[i].resDate[2] : results[i].resDate[2];
-            	var days2 = results[i].resCheckin[2] < 10 ? '0' + results[i].resCheckin[2] : results[i].resCheckin[2];
-            	var days3 = results[i].resCheckout[2] < 10 ? '0' + results[i].resCheckout[2] : results[i].resCheckout[2];
             	str += 	'<tr style ="height : 55.7px" data-no="'+results[i].resNo+'">'+
 								'<td>'+ (i+1) +'</td>'+
 								'<td>'+results[i].resNo+'</td>'+
@@ -123,13 +117,13 @@ function reservationPaingAjax(cPage){
 								'<td>'+(results[i].resPerson == null ? "" : results[i].resPerson)+'</td>'+
 								'<td>'+results[i].resPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원</td>'+
 								'<td>'+
-									results[i].resDate[0]+'-' + months1 + '-' + days1 +
+									results[i].resDate.substr(0,10) +
 								'</td>'+
 								'<td>'+
-									results[i].resCheckin[0]+'-' + months2 + '-' + days2 +
+									results[i].resCheckin.substr(0,10) +
 								'</td>'+
 								'<td>'+
-									results[i].resCheckout[0]+'-' + months3 + '-' + days3 +
+									results[i].resCheckout.substr(0,10) +
 								'</td>'+
 								'<td>'+(results[i].resCarNo == null ? "" : results[i].resCarNo)+'</td>'+
 								'<td>'+(results[i].resState == null ? "" : results[i].resState)+'</td>'+
