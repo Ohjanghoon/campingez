@@ -46,9 +46,16 @@
 			</c:if>			
 		</tbody>
 	</table>
+	<nav>${pagebar}</nav>
 	</div>
 </main>
 	<script>
+		// 페이지버튼
+		document.querySelectorAll("ul").forEach((span) => {
+			console.log(span.value);
+			// span.addEventListener('click', location.href = "${pageContext.request.contextPath}/notice/list?cPage=" + span.value);
+		});
+	
 		// 공지사항 등록
 		document.querySelector("#notice").addEventListener('click', (e) => {
 			location.href = "${pageContext.request.contextPath}/notice/enrollNotice.do";
