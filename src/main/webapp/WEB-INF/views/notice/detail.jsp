@@ -21,8 +21,10 @@
 <main>
 	<div class="container">
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5">
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
 			<button class="btn btn-outline-dark" type="button" id="update">수정 <i class="fa-solid fa-wrench"></i></button>
 			<button class="btn btn-outline-dark" type="button" id="delete">삭제 <i class="fa-solid fa-xmark"></i></button>
+	</sec:authorize>
 			<button class="btn btn-outline-dark" type="button" onclick="location.href='${pageContext.request.contextPath}/notice/list';">목록으로 <i class="fa-solid fa-list"></i></button>
 		</div>
 	<hr />

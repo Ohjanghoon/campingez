@@ -237,7 +237,7 @@
 			</div>
 			<div class="container col-xxl-8 px-4 py-5" id="calendar"></div>
 		</div>
-		<img src="${pageContext.request.contextPath}/resources/images/reservation/campMap2.png" alt="" style="width:100%;height:63%;"/>
+		<img src="${pageContext.request.contextPath}/resources/images/reservation/campMap2.png" alt="" style="width:100%;height:78%;"/>
 		<!-- <div id="map" style="width:100%;height:350px;"></div> -->
 		
 		<div class="pt-5 pb-5" id="list"></div>
@@ -307,7 +307,9 @@
             				            <h6 class="my-0">선택한 구역</h6>
             				            <small class="text-muted" id="zone"></small>
             				          </div>
-            				          <span class="text-muted" id="zonePrice"></span>
+            				          <div>
+            				          <span class="text-muted">₩</span><span class="text-muted" id="zonePrice"></span>
+            				          </div>
             				        </li>
             				        <li class="list-group-item d-flex justify-content-between bg-light">
             				          <div class="text-danger">
@@ -512,8 +514,8 @@
             					let minuscoupon = (couponList.value.split('@'))[0];
     						
     							let price = Number(document.querySelector("#zonePrice").innerHTML);
-                				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
-                				document.querySelector("#Rprice").innerHTML = resPrice;	
+                				let resPrice = ((price-(price*(minuscoupon/100)))-minuspoint).toLocaleString('ko-KR');
+                				document.querySelector("#Rprice").innerHTML = `₩`+resPrice;
             				});
             				
             				couponList.addEventListener("blur", (e) => {
@@ -522,8 +524,8 @@
             					let minuscoupon = (couponList.value.split('@'))[0];
     						
     							let price = Number(document.querySelector("#zonePrice").innerHTML);
-                				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
-                				document.querySelector("#Rprice").innerHTML = resPrice;	
+                				let resPrice = ((price-(price*(minuscoupon/100)))-minuspoint).toLocaleString('ko-KR');
+                				document.querySelector("#Rprice").innerHTML = `₩`+resPrice;	
             				});
             				
             			
@@ -537,16 +539,16 @@
             						success(response){
             							console.log(response);
             							const zonePrice = response.zonePrice;
-            							document.querySelector("#zonePrice").innerHTML = `\${zonePrice}`;
+            							document.querySelector("#zonePrice").innerHTML = `\${zonePrice}`
             							document.querySelector("#zone").innerHTML = `\${campId}`;            						
 
             							let minuspoint = document.querySelector("#Rpoint").value;
             							let minuscoupon = (couponList.value.split('@'))[0];
             						
             							let price = Number(document.querySelector("#zonePrice").innerHTML);
-                        				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
+                        				let resPrice = ((price-(price*(minuscoupon/100)))-minuspoint).toLocaleString('ko-KR');
             							
-                        				document.querySelector("#Rprice").innerHTML = resPrice;
+                        				document.querySelector("#Rprice").innerHTML = `₩`+resPrice;
                         				
                         				document.querySelector("#doPay").addEventListener('click', (e) => {
                         					const couponCode = couponList.value;
@@ -555,7 +557,6 @@
                         					const resPhone = document.querySelector("#Rphone").value;
                         					const resCarNo = document.querySelector("#Rcar").value;
                         					const resRequest = document.querySelector("#Rrequest").value;
-                        					const resPrice = document.querySelector("#Rprice").value;
                         					const resPerson = document.querySelector("#Rperson").value;
                         					const resPayment = document.querySelector("#Rpayment").value;
                         					
