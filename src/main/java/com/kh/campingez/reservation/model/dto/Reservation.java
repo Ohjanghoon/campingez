@@ -2,6 +2,8 @@ package com.kh.campingez.reservation.model.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,8 +21,11 @@ public class Reservation {
 	private String resPhone; // 예약자 전화번호
 	private int resPerson; // 예약인원
 	private int resPrice; // 예약 금액
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private LocalDate resDate; // 예약일자
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private LocalDate resCheckin; // 입실일자
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private LocalDate resCheckout; // 퇴실일자
 	private String resCarNo; // 차량번호
 	private String resRequest; // 예약요청사항
