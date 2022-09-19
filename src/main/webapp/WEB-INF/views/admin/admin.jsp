@@ -38,7 +38,7 @@ tr > td {
     width: 150px;
     margin-right: 5px;
 }
-#selectKeywordGroup {
+#selectKeywordGroup, #insertInputGroup {
 	width:300px;
 }
 .searchBtn {
@@ -52,14 +52,13 @@ tr > td {
 #updateBtn, [name=updateBtn], [name=yellowCardBtn]{
 	height: 35px;
     width: 50px;
-   	background-color: #A8A4CE;
-    color: white;
-    border:none;
+   	border: 1px solid #A8A4CE;
+    color: #A8A4CE;
+    background-color: white;
 }
 #updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover {
-	background-color: #c8b6e269;
-    border: 1px solid lightgray;
-    color:black;
+	background-color: #A8A4CE;
+    color:white;
 }
 #user-list-tbl, #reservation-tbl {
 	margin-top: 30px;

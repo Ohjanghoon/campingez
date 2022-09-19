@@ -23,7 +23,7 @@
 							<input type="date" name="startDate" id="startDate" value="${param.startDate == null ? date.startDate : param.startDate}" class="form-control" />
 							&nbsp;-&nbsp;
 							<input type="date" name="endDate" id="endDate" value="${param.endDate == null ? date.endDate : param.endDate}" class="form-control" />
-							<button class="btn searchBtn" type="button" id="search-btn">검색</button>
+							<button class="btn searchBtn" type="button" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
 						</div>
 					</form>
 				</div>

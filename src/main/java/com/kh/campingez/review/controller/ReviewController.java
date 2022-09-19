@@ -10,6 +10,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,9 +105,9 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/reviewDetail.do")
-	public void reviewDetail(@RequestParam int revId, Model model) {
+	public ResponseEntity<?> reviewDetail(@RequestParam int revId) {
 		Review review = reviewService.findOneReviewById(revId);
-		model.addAttribute("review", review);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(review);
 	}
 	
 	@GetMapping("/reviewForm.do")
