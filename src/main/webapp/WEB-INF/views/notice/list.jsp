@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
@@ -18,11 +19,13 @@
 </style>
 <main>
 	<div class="container">
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5">
 			<button class="btn btn-outline-dark" type="button" id="notice">공지사항 등록 <i class="fa-regular fa-pen-to-square"></i></button>
 			<button class="btn btn-outline-dark" type="button" id="event">이벤트 등록 <i class="fa-regular fa-calendar"></i></button>
 			<button class="btn btn-outline-dark" type="button" id="coupon">쿠폰 생성 <i class="fa-solid fa-barcode"></i></button>
 		</div>
+	</sec:authorize>
 	<hr/>
 	<table class="table table-lg">
 		<thead>
@@ -46,9 +49,11 @@
 			</c:if>			
 		</tbody>
 	</table>
+	<nav>${pagebar}</nav>
 	</div>
 </main>
 	<script>
+	
 		// 공지사항 등록
 		document.querySelector("#notice").addEventListener('click', (e) => {
 			location.href = "${pageContext.request.contextPath}/notice/enrollNotice.do";

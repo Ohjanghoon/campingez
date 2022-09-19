@@ -293,6 +293,7 @@
 			method : "POST",
 			success(review){
 				console.log(review);
+				
 				document.querySelector(".deck").innerHTML += `
 					<c:if test="\${not empty review.reviewPhotos}">
 						<c:forEach items="\${review.reviewPhotos}" var="photo">
@@ -305,9 +306,11 @@
 					<div class="card-body">
 					    <h5 class="card-title">\${review.reservation.userId}</h5>
 					    <p class="card-text">\${review.revContent}</p>
+					    
 					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small></p>
 					</div>
 				`;
+			
 				document.querySelector("#moveToAllReview").addEventListener('click', (e) => {
 						const url = `${pageContext.request.contextPath}/review/reviewList.do`;
 						const name = "AllReview"; // window의 이름으로 사용;
