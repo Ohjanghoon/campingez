@@ -53,4 +53,10 @@
 		assign_no = #{assign_no}
 	for update
   </select>
+  
+  <update id="insertAssignmentApply">
+  	merge into reservation
+  		using dual on
+  		
+  </update>
 </mapper>
