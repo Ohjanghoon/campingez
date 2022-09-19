@@ -38,7 +38,7 @@ public class InquireController {
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		
-		List<Inquire> list = inquireService.selectInquireList();
+		List<Inquire> list = inquireService.selectInquireList(param);
 		//log.debug("list = {}", list);
 		model.addAttribute("inquireList", list);
 		
