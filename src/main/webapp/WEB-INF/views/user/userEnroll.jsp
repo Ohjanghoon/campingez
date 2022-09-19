@@ -135,7 +135,7 @@ document.userEnrollFrm.addEventListener('submit', (e) => {
 				return false;
 			}
 			else{
-				//document.userEnrollFrm.submit();
+				document.userEnrollFrm.submit();
 			}
 		}
 		else{

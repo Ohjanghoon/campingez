@@ -9,7 +9,6 @@
 <jsp:include page="/WEB-INF/views/admin/admin.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-
 			<div class="content-wrap">
 				<div class="user-list-wrap">
 					<h2>회원경고</h2>
@@ -21,7 +20,7 @@
 						</select>
 						<div class="input-group" id="selectKeywordGroup">
 							<input type="text" id="selectKeyword" class="form-control"/>
-							<button type="button" id="searchBtn" class="btn searchBtn">검색</button>
+							<button type="button" id="searchBtn" class="btn searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
 						</div>
 					</div>
 					

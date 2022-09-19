@@ -7,6 +7,7 @@
 <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxa5222b687369489dad174bcba92f1a00"></script>
 <script src="./resources/js/tmap.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/weather.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/map.css" />
  <script>
 window.onload = () => {
 	weather();
@@ -31,6 +32,7 @@ window.onload = () => {
 		      <h5 class="day" id="day"></h5>
 		    </div>
 		</article>
+		<div class="weatherText">오늘의 날씨</div>
 	</div>
 <div id="weather"></div>
 <script>
@@ -62,7 +64,6 @@ window.onload = () => {
 			const today = clockString();
 			const time = timeString();
 			console.log(today, time);
-			document.querySelector('#weather').innerHTML = "";
 			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/data/weather.do",
@@ -76,7 +77,6 @@ window.onload = () => {
 					const comb = [];
 					
 					data.forEach((data) => {
-						const wrapper = document.querySelector('#weather');
 						const description = document.querySelector('.description');
 						const temperature = document.querySelector('.temperature');
 						
@@ -107,17 +107,14 @@ window.onload = () => {
 							//없음(0), 비(1), 비/눈(2), 눈(3), 빗방울(5), 빗방울눈날림(6), 눈날림(7) 
 							if(data.category == 'PTY'){
 								if(Number(data.fcstValue) == 1 || Number(data.fcstValue) == 5){
-									//wrapper.innerHTML += "<p>비</p>";
 									description.innerHTML += " (비)";
 									comb.push(data.fcstValue);
 								}
 								else if(Number(data.fcstValue) == 2 || Number(data.fcstValue) == 6){
-									//wrapper.innerHTML += "<p>비/눈</p>";
 									description.innerHTML += " (비 / 눈)";
 									comb.push(data.fcstValue);
 								}
 								else if(Number(data.fcstValue) == 3 || Number(data.fcstValue) == 7){
-									//wrapper.innerHTML += "<p>눈</p>";
 									description.innerHTML += " (눈)";
 									comb.push(data.fcstValue);
 								}
@@ -168,20 +165,22 @@ window.onload = () => {
 		};
 		</script>
 	<br />
-	<button id="research" style="display: none;" onclick="research()">다시검색하기</button>
-	<div id="xyCode" style="display: inline;">
-		<input type="text" class="text_custom" id="fullAddr" name="fullAddr"
-			value="홍대">
-		<button id="btn_select1">적용하기</button>
+	<div class="buttonWrapper">
+		<button id="research" style="display: none;" onclick="research()">다시검색하기</button>
+		<div id="xyCode" style="display: inline;">
+			<input type="text" class="text_custom" id="fullAddr" name="fullAddr"
+				value="홍대">
+			<button id="btn_select1">적용하기</button>
+		</div>
+		<button id="btn_select2" onclick="lineDisplay()">경로보기</button>
+		<p id="result"></p>
 	</div>
 
-	<button id="btn_select2" onclick="lineDisplay()">경로보기</button>
 
-	<div id="map_wrap" class="map_wrap" style="width: 700px;">
+	<div id="map_wrap" class="map_wrap" style="width: 500px;">
 		<div id="map_div"></div>
 	</div>
 
-	<p id="result"></p>
 
 	<div id="codeSave">
 		<input type="hidden" id="save1"> <input type="hidden"

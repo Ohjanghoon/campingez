@@ -1,15 +1,18 @@
 package com.kh.campingez.campzone.model.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class Camp {
-	private String CampId;
-	private String zoneCode;
+@ToString(callSuper = true)
+public class Camp extends CampEntity {
+	private String zoneName;
+
+	public Camp(String campId, String zoneCode, String zoneName) {
+		super(campId, zoneCode);
+		this.zoneName = zoneName;
+	}
 }

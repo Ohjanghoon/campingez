@@ -23,7 +23,7 @@
 					</select>
 					<div class="input-group" id="selectKeywordGroup">
 						<input type="text" id="selectKeyword" class="form-control" />
-					    <button class="btn searchBtn" type="button" id="searchBtn">검색</button>
+					    <button class="btn searchBtn" type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
 					</div>
 				</div>
 				<table id="user-list-tbl" class="table text-center">

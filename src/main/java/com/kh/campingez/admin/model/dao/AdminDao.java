@@ -124,8 +124,7 @@ public interface AdminDao {
 	@Delete("delete from camp_photo where zone_photo_no = #{photoNo}")
 	int deleteCampPhotoByPhotoNo(int photoNo);
 	
-	@Select("select * from camp order by camp_id")
-	List<Camp> findAllCampList();
+	List<CampZone> findAllCampList();
 	
 	@Insert("insert into stats_daily_visit values(#{userId}, default)")
 	int insertDailyVisit(String userId);
@@ -165,5 +164,11 @@ public interface AdminDao {
 	
 	@Select("select nvl(sum(res_price), 0) total_price from reservation where res_state = '예약완료' and extract(year from res_date) = #{year}")
 	int getYearTotalSalesPrice(Map<String, Object> param);
+	
+	@Select("select * from camp where camp_id = #{campId}")
+	Camp selectCampByCampId(String campId);
+	
+	@Insert("insert into camp values (#{campId}, #{zoneCode})")
+	int insertCamp(Map<String, Object> param);
 
 }
