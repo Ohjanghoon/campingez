@@ -36,7 +36,7 @@ public class AssignmentController {
 	
 	@GetMapping("/assignmentList.do")
 	public void selectAssignmentList(@RequestParam(defaultValue = "1") int cPage, Model model) {
-		int limit = 5;
+		int limit = 3;
 		int totalContent = assignmentService.getTotalContent();
 		int totalPage = (int) Math.ceil((double) totalContent / limit);
 		
@@ -50,17 +50,13 @@ public class AssignmentController {
 	@GetMapping("/assignmentListMore.do")
 	public ResponseEntity<?> selectAssignmentListMore(@RequestParam int cPage) {
 		log.debug("cPage = {}", cPage);
-		int limit = 5;
-		Map<String, Integer> param = new HashMap<>();
-		param.put("cPage", cPage);
-		param.put("limit", limit);
+		int photoCount = 4;
+		int limit = 3;
+		int start = (cPage - 1) * limit * photoCount + 1;
+		int end = cPage * limit * photoCount;
 		
-		List<Assignment> list = assignmentService.selectAssignmentList(param);
-		for(Assignment assign : list) {
-			
-			log.debug("assign################ = {}", assign);
-		}
-		//log.debug("list = {}", list);
+		List<Assignment> list = assignmentService.selectAssignmentList(start, end);
+		log.debug("list = {}", list);
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
