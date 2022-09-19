@@ -2,10 +2,11 @@ package com.kh.campingez.assignment.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,12 +35,36 @@ public class AssignmentController {
 	AssignmentService assignmentService;
 	
 	@GetMapping("/assignmentList.do")
-	public void selectAssignmentList(Model model) {
-		List<Assignment> list = assignmentService.selectAssignmentList();
-		log.debug("list = {}", list);
+	public void selectAssignmentList(@RequestParam(defaultValue = "1") int cPage, Model model) {
+		int limit = 5;
+		int totalContent = assignmentService.getTotalContent();
+		int totalPage = (int) Math.ceil((double) totalContent / limit);
 		
-		model.addAttribute("assignmentList", list);
+		log.debug("totalPage = {}, totalContent = {}", totalPage, totalContent);
 		
+		model.addAttribute("totalPage", totalPage);
+		
+	}
+	
+	
+	@GetMapping("/assignmentListMore.do")
+	public ResponseEntity<?> selectAssignmentListMore(@RequestParam int cPage) {
+		log.debug("cPage = {}", cPage);
+		int limit = 5;
+		Map<String, Integer> param = new HashMap<>();
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		List<Assignment> list = assignmentService.selectAssignmentList(param);
+		for(Assignment assign : list) {
+			
+			log.debug("assign################ = {}", assign);
+		}
+		//log.debug("list = {}", list);
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.body(list);
 	}
 	
 	@PostMapping("/assignmentForm.do")
