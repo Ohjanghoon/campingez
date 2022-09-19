@@ -1,6 +1,5 @@
 package com.kh.campingez.user.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -105,8 +104,10 @@ public class UserController {
 	};
 
 	@GetMapping("/userLogin.do")
-	public void userLogin() {
-
+	public void userLogin(@RequestHeader("Referer") String referer, Model model, HttpSession session) {
+		log.debug("referer = {}", referer);
+		model.addAttribute("loginRedirect", referer);
+		session.setAttribute("loginRedirect", referer);
 	}
 
 //	@PostMapping("/userLoginSuccess.do")
