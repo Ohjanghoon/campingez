@@ -18,18 +18,20 @@
 		
 		<p>작성자: </p><input type="text" name="userId" value="${loginMember.userId}" readonly><br> 
 		
-		
+		<div>
 		<p>중고물품 구분</p>
 			<input type="radio" name="categoryId" value="tra1" checked>텐트/타프
 			<input type="radio" name="categoryId" value="tra2">캠핑 테이블 가구
 			<input type="radio" name="categoryId" value="tra3">캠핑용 조리도구
 			<input type="radio" name="categoryId" value="tra4">기타 캠핑용품
-			
+		</div>
+		
+		<div>
 		<p>상품 상태</p>
 			<input type="radio" name="tradeQuality" value="S" checked>상태 좋음 (S급)
 			<input type="radio" name="tradeQuality" value="A">상태 양호 (A급)
 			<input type="radio" name="tradeQuality" value="B">아쉬운 상태 (B급)
-		
+		</div>
 		<p>가격</p>
 			<input type="text" name="tradePrice" id="tradePrice"/>
 		

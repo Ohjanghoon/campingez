@@ -217,6 +217,7 @@ public class TradeController {
 				@RequestParam(name = "upFile") List<MultipartFile> upFileList,
 				@RequestParam(name = "delFile", required = false) int[] delFiles,
 				RedirectAttributes redirectAttr) throws IllegalStateException, IOException{
+		log.debug("trade = {}", trade);
 		String saveDirectory = application.getRealPath("/resources/upload/trade");
 		int result = 0;
 		// 첨부 파일 삭제
