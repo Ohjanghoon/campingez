@@ -1,23 +1,2 @@
 @charset "UTF-8";
 
-[name=assignInfo] {
-	cursor: pointer;
-}
-
-#btn-assignment-enroll {
-	font-weight : bold;
-	background-color : #A8A4CE;
-	color : white;
-}
-
-#btn-assignment-enroll:hover {
-	color : #495C83;
-}
-
-.assignTitle .assignState {
-	padding : 0.3rem;
-	background-color : #f28749;
-	border-radius : 0.5rem;
-	color : white;
-	vertical-align : text-top;
-}

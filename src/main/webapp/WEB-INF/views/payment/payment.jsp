@@ -77,7 +77,7 @@
 					msg += '\n결제 금액 : ' + rsp.paid_amount + '원';
 					msg += '\n-------------------------------------';
 					alert(msg);
-					history.go(-4);
+					location.href = "${pageContext.request.contextPath}/";
    	    		},
    	    		error : console.log
    	    	 });
