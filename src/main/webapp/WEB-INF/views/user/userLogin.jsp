@@ -73,19 +73,24 @@
 	if(loginRedirect.contains("http://localhost:9090/campingez/user/userPasswordUpdate.do?userId=")){
 		loginRedirect = "/";
 	}
+	if(loginRedirect.contains("userLogin.do")){
+	String _loginRedirect = request.getHeader("Referer");
+	System.out.println("ㅎㅇ" + _loginRedirect);
+		loginRedirect = "/";
+	}
 %>
 <div class="login-container" style="height: 700px;">
     <div class="img">
       <img src="${pageContext.request.contextPath}/resources/images/loginCamping.png" style="border-radius: 10%;"/>
     </div>
     <div class="login-content">
-      <form:form action="" method="post">
 	    <c:if test="${param.error != null}">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert" style="font-size: 12px;">
 			  <strong style="font-size: 13px;">아이디 또는 비밀번호가</strong> 일치하지 않습니다.
 			  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		</c:if>
+      <form:form action="" method="post">
         <h2 class="title">Welcome</h2>
         <div class="input-div one">
           <div class="i">

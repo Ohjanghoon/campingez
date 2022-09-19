@@ -213,7 +213,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public List<Camp> findAllCampList() {
+	public List<CampZone> findAllCampList() {
 		return adminDao.findAllCampList();
 	}
 	
@@ -260,6 +260,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int getYearTotalSalesPrice(Map<String, Object> param) {
 		return adminDao.getYearTotalSalesPrice(param);
+	}
+
+	@Override
+	public Camp selectCampByCampId(String campId) {
+		return adminDao.selectCampByCampId(campId);
+	}
+	
+	@Override
+	public int insertCamp(Map<String, Object> param) {
+		return adminDao.insertCamp(param);
 	}
 	
 	private RowBounds getRowBounds(Map<String, Object> param) {

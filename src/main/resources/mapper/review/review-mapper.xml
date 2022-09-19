@@ -14,7 +14,8 @@
 	    p.rev_photo_no,
 	    p.rev_id rev_photo_rev_id,
 	    p.rev_original_filename,
-	    p.rev_renamed_filename
+	    p.rev_renamed_filename,
+	    (select user_name from ez_user where s.user_id = user_id) user_name
 	from    
 	    review r left join reservation s
 	        on r.res_no = s.res_no
@@ -39,7 +40,8 @@
 	        p.rev_id rev_photo_rev_id,
 	        p.rev_original_filename,
 	        p.rev_renamed_filename,
-	        (select zone_code from camp c where s.camp_id = camp_id) zone_code
+	        (select zone_code from camp c where s.camp_id = camp_id) zone_code,
+	        (select user_name from ez_user where s.user_id = user_id) user_name
 	    from
 	        review r left join reservation s
 	            on r.res_no = s.res_no
@@ -75,7 +77,8 @@
 	        p.rev_id rev_photo_rev_id,
 	        p.rev_original_filename,
 	        p.rev_renamed_filename,
-	        (select zone_code from camp c where s.camp_id = camp_id) zone_code
+	        (select zone_code from camp c where s.camp_id = camp_id) zone_code,
+	        (select user_name from ez_user where s.user_id = user_id) user_name
 	    from
 	        review r left join reservation s
 	            on r.res_no = s.res_no
@@ -107,7 +110,8 @@
 	        p.rev_id rev_photo_rev_id,
 	        p.rev_original_filename,
 	        p.rev_renamed_filename,
-	        (select zone_code from camp c where s.camp_id = camp_id) zone_code
+	        (select zone_code from camp c where s.camp_id = camp_id) zone_code,
+	        (select user_name from ez_user where s.user_id = user_id) user_name
 	    from
 	        review r left join reservation s
 	            on r.res_no = s.res_no
@@ -125,6 +129,7 @@
   	<result column="rev_score" property="revScore"/>
   	<result column="rev_enroll_date" property="revEnrollDate"/>
   	<result column="zone_code" property="zoneCode"/>
+	<result column="user_name" property="userName"/>
   	<association property="reservation" javaType="reservation">
   		<id column="res_no" property="resNo"/>
   		<result column="camp_id" property="campId"/>

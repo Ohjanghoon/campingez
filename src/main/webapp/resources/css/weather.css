@@ -9,9 +9,16 @@
 	height: 300px;
 	width: 450px;
 	position: absolute;
-  	left: 50%;
+  	right: 5%;
 	top: 45%;
 	transform: translate(-50%, -50%);
+}
+
+.weatherText{
+	display: inline;
+    position: absolute;
+    top: 45%;
+    left: 15%;
 }
 
 .weatherIcon{
@@ -41,7 +48,6 @@
 	font-family: 'Open Sans';
   	font-weight: 200;
 	font-size: 3.5em;
-	line-height: 3em;
 	position: absolute;
 	left: 5%;
 	top: 45%;

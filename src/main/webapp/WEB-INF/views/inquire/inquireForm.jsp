@@ -47,19 +47,57 @@
 			<tr>
 				<th>문의유형</th>
 				<td>
-					<div class="dropdown">
-						<div class="dropend">
-							<button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-							  Dropright
-							</button>
-						<div class="dropend">캠핑장관련</div>
-						<div class="dropend">예약관련</div>
-					</div>
-					<select class="form-control" name="categoryId" id="inqType">
-						<option value="inq1">환불문의</option>
-						<option value="inq2">예약문의</option>
-						<option value="inq3">기타</option>
-					</select>
+					<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <!-- Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+          data-mdb-toggle="dropdown" aria-expanded="false">
+          Dropdown link
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li>
+            <a class="dropdown-item" href="#">Action</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Another action</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">
+              Submenu &raquo;
+            </a>
+            <ul class="dropdown-menu dropdown-submenu">
+              <li>
+                <a class="dropdown-item" href="#">Submenu item 1</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Submenu item 2</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
+                <ul class="dropdown-menu dropdown-submenu">
+                  <li>
+                    <a class="dropdown-item" href="#">Multi level 1</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Multi level 2</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Submenu item 4</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Submenu item 5</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
 				</td>
 			</tr>
 			<tr>

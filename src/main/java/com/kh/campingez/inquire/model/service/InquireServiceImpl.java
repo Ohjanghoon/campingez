@@ -1,7 +1,9 @@
 package com.kh.campingez.inquire.model.service;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +20,12 @@ public class InquireServiceImpl implements InquireService {
 	InquireDao inquireDao;
 	
 	@Override
-	public List<Inquire> selectInquireList() {
-		return inquireDao.selectInquireList();
+	public List<Inquire> selectInquireList(Map<String, Integer> param) {
+		int limit = param.get("limit");
+        int offset = (param.get("cPage")- 1) * limit;
+        RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return inquireDao.selectInquireList(rowBounds);
 	}
 	
 	@Override
