@@ -375,14 +375,13 @@ public class AdminController {
 	
 	@GetMapping("/campList.do")
 	public void campList(Model model) {
-		List<Camp> campList = adminService.findAllCampList();
+		List<CampZone> campList = adminService.findAllCampList();
 		log.debug("campList = {}", campList);
+		List<CampZone> campZoneList = adminService.findAllCampZoneList();
 		model.addAttribute("campList", campList);
+		model.addAttribute("campZoneList", campZoneList);
 	}
-	
-//	@GetMapping("/stats.do")
-//	public void stats() {}
-	
+
 	@GetMapping("/statsVisited.do")
 	public void statsVisited() {}
 	
@@ -438,6 +437,29 @@ public class AdminController {
 		param.put("saleList", saleList);
 		
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(param);
+	}
+	
+	@GetMapping("/duplicateCampId.do")
+	public ResponseEntity<?> duplicateCampId(@RequestParam String campId) {
+		Camp camp = adminService.selectCampByCampId(campId);
+		boolean available = camp == null;
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("camp", camp);
+		param.put("available", available);
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(param);
+	}
+	
+	@PostMapping("/insertCamp.do")
+	public String insertCamp(@RequestParam(name = "selectType") String zoneCode, @RequestParam String campId, RedirectAttributes redirectAttr) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("zoneCode", zoneCode);
+		param.put("campId", campId);
+		
+		int result = adminService.insertCamp(param);
+		redirectAttr.addFlashAttribute("msg", "캠핑자리가 성공적으로 등록 되었습니다.");
+		return "redirect:/admin/campList.do";
 	}
 	
 	private Date addMonth(Date date, int months) {

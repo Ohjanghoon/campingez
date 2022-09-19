@@ -63,7 +63,7 @@ public interface AdminService {
 
 	int deleteCampPhotoByPhotoNo(int photoNo);
 
-	List<Camp> findAllCampList();
+	List<CampZone> findAllCampList();
 
 	int insertDailyVisit(String userId);
 
@@ -94,5 +94,9 @@ public interface AdminService {
 	List<User> selectNotBlackListByKeyword(Map<String, Object> param);
 
 	int getTotalContentNotBlackListByKeyword(Map<String, Object> param);
+
+	Camp selectCampByCampId(String campId);
+
+	int insertCamp(Map<String, Object> param);
 
 }

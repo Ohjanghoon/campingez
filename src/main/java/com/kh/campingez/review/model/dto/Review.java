@@ -19,12 +19,14 @@ public class Review extends ReviewEntity {
 	private Reservation reservation;
 	private List<ReviewPhoto> reviewPhotos = new ArrayList<>();
 	private String zoneCode;
+	private String userName;
 	
-	public Review(int revId, String resNo, String revContent, int revScore, LocalDateTime revEnrollDate, Reservation reservation, List<ReviewPhoto> reviewPhotos, String zoneCode) {
+	public Review(int revId, String resNo, String revContent, int revScore, LocalDateTime revEnrollDate, Reservation reservation, List<ReviewPhoto> reviewPhotos, String zoneCode, String userName) {
 		super(revId, resNo, revContent, revScore, revEnrollDate);
 		this.reservation = reservation;
 		this.reviewPhotos = reviewPhotos;
 		this.zoneCode = zoneCode;
+		this.userName = userName;
 	}
 	
 	public void addReviewPhoto(ReviewPhoto reviewPhoto) {
