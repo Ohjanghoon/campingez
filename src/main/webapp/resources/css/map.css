@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+.buttonWrapper{
+	display: block;
+    float: right;
+    width: 350px;
+    margin: 0 150px 0 0;
+}
+
