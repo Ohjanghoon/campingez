@@ -44,7 +44,7 @@
                         ${trade.tradeContent}
                         </p>
                         <div class="d-flex">
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                            <button id="chatBtn" class="btn btn-outline-dark flex-shrink-0" onclick="location.href='${pageContext.request.contextPath}/chat/chat.do';" type="button">
                                 <i class="bi-cart-fill me-1"></i>
                                 판매자와 대화하기
                             </button>
@@ -159,6 +159,15 @@ $(document).ready(function () {
         });
     });
 });
+
+$(document).ready(function () {
+	$("#chatBtn").on('click', (e) => {
+		localStorage.setItem("tradeNo", ${tradeNo});
+	});
+});
+
+
+
 
 
 
