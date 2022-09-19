@@ -13,10 +13,12 @@ import lombok.ToString;
 public class CampZone extends CampZoneEntity {
 
 	private List<CampPhoto> campPhotos = new ArrayList<>();
+	private List<Camp> campList;
 	
-	public CampZone(String zoneCode, String zoneName, String[] zoneInfo, int zoneMaximum, int zonePrice, List<CampPhoto> campPhotos) {
+	public CampZone(String zoneCode, String zoneName, String[] zoneInfo, int zoneMaximum, int zonePrice, List<CampPhoto> campPhotos, List<Camp> campList) {
 		super(zoneCode, zoneName, zoneInfo, zoneMaximum, zonePrice);
 		this.campPhotos = campPhotos;
+		this.campList = campList;
 	}
 	
 	public void campPhotoAdd(CampPhoto photo) {
