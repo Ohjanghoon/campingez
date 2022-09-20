@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxa5222b687369489dad174bcba92f1a00"></script>
-<script src="./resources/js/tmap.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/tmap.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/weather.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/map.css" />
 <link href="${pageContext.request.contextPath}/resources/css/carousel.css" rel="stylesheet">
@@ -14,7 +14,6 @@
  <script>
 window.onload = () => {
 	weather();
-	initTmap();
 }
 </script>
 <fmt:requestEncoding value="utf-8" />
@@ -70,7 +69,7 @@ window.onload = () => {
                 <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="https://i.pinimg.com/564x/6f/71/bb/6f71bb1dc7c58ae8dd877d8784a36cbb.jpg">
         
                 <h2 class="m-3">찾아오시는 길</h2>
-                <p><a class="btn btn-secondary" href="#">찾기 &raquo;</a></p>
+                <p><a class="btn btn-secondary" href="javascript:openWindowPop('${pageContext.request.contextPath}/camp/rootSearch.do','popup');">찾기 &raquo;</a></p>
             </div>
             </div>
         
@@ -241,6 +240,7 @@ window.onload = () => {
 	        return yyyy + MM + dd;
 	    }
 	
+		//날씨
 		const timeString = () => {
             const f = (n) => {
                 return n <10 ? "0" + n : n;
@@ -357,43 +357,7 @@ window.onload = () => {
 				error : console.log
 			});
 		};
-		</script>
-	<br />
-	<div class="buttonWrapper">
-		<button id="research" style="display: none;" onclick="research()">다시검색하기</button>
-		<div id="xyCode" style="display: inline;">
-			<input type="text" class="text_custom" id="fullAddr" name="fullAddr"
-				value="홍대">
-			<button id="btn_select1">적용하기</button>
-		</div>
-		<button id="btn_select2" onclick="lineDisplay()">경로보기</button>
-		<p id="result"></p>
-	</div>
 
-
-	<div id="map_wrap" class="map_wrap" style="width: 500px;">
-		<div id="map_div"></div>
-	</div>
-
-
-	<div id="codeSave">
-		<input type="hidden" id="save1"> <input type="hidden"
-			id="save2">
-	</div>
-</div>
-<script>
-function lineDisplay(){
-	document.querySelector('#btn_select2').style.display = 'none';
-	lineSearch();
-};
-function research() {
-    document.querySelector('#map_div').innerHTML = '';
-    document.querySelector('#xyCode').style.display = 'inline';
-    document.querySelector('#research').style.display = 'none';
-    document.querySelector('#result').innerHTML = '';
-	document.querySelector('#btn_select2').style.display = 'inline';
-    initTmap();
-};
 var d = new Date();
 document.getElementById("day").innerHTML = d.getDate();
 var month = new Array();
