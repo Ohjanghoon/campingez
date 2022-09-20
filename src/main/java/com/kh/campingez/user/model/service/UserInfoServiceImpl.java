@@ -93,4 +93,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public int getTotalLike(User user) {
 		return userInfoDao.getTotalLike(user);
 	}
+	
+	@Override
+	public Reservation selectReservationDetail(String resNo) {
+		return userInfoDao.selectReservationDetail(resNo);
+	}
 }
