@@ -22,12 +22,13 @@ public class Assignment extends AssignmentEntity {
 	private Reservation reservation;
 	
 	public Assignment(String assignNo, String userId, String resNo, String assignTitle, String assignContent,
-			int assignPrice, LocalDateTime assignDate, int assignLikeCount, AssignState assignState, String assignTransfer) {
-		super(assignNo, userId, resNo, assignTitle, assignContent, assignPrice, assignDate, assignLikeCount, assignState, assignTransfer);
+			int assignPrice, LocalDateTime assignDate, int assignLikeCount, AssignState assignState,
+			String assignTransfer, LocalDateTime assignApplyDate) {
+		super(assignNo, userId, resNo, assignTitle, assignContent, assignPrice, assignDate, assignLikeCount, assignState,
+				assignTransfer, assignApplyDate);
 	}
 	
 	public void add(CampPhoto campPhoto) {
 		this.campPhotos.add(campPhoto);
 	}
-
 }

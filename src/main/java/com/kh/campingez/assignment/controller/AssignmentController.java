@@ -1,6 +1,7 @@
 package com.kh.campingez.assignment.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,19 +36,23 @@ public class AssignmentController {
 	@Autowired
 	AssignmentService assignmentService;
 	
+	/**
+	 * 양도 목록 더보기 전체 페이지 수 
+	 */
 	@GetMapping("/assignmentList.do")
 	public void selectAssignmentList(@RequestParam(defaultValue = "1") int cPage, Model model) {
 		int limit = 3;
 		int totalContent = assignmentService.getTotalContent();
 		int totalPage = (int) Math.ceil((double) totalContent / limit);
 		
-		log.debug("totalPage = {}, totalContent = {}", totalPage, totalContent);
+		//log.debug("totalPage = {}, totalContent = {}", totalPage, totalContent);
 		
 		model.addAttribute("totalPage", totalPage);
-		
 	}
-	
-	
+
+	/**
+	 * 양도 목록에서 더보기 클릭시 현재 페이지 이후의 게시글 3개씩 불러오기 (비동기 요청)
+	 */
 	@GetMapping("/assignmentListMore.do")
 	public ResponseEntity<?> selectAssignmentListMore(@RequestParam int cPage) {
 		log.debug("cPage = {}", cPage);
@@ -56,13 +62,16 @@ public class AssignmentController {
 		int end = cPage * limit * photoCount;
 		
 		List<Assignment> list = assignmentService.selectAssignmentList(start, end);
-		log.debug("list = {}", list);
+		//log.debug("list = {}", list);
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.body(list);
 	}
 	
+	/**
+	 * 양도하기 가능한 예약을 조회 → 양도하기 폼 요청 후 페이지으로 이동
+	 */
 	@PostMapping("/assignmentForm.do")
 	public void assignmentEnroll(Model model, @RequestParam String userId) {
 		//log.debug("userId = {}", userId);
@@ -73,6 +82,9 @@ public class AssignmentController {
 		model.addAttribute("reservationList", list);
 	}
 	
+	/**
+	 * 양도하기 가능한 예약을 클릭시 → 해당 예약정보 조회 (비동기 요청)
+	 */
 	@PostMapping("/resInfo.do")
 	public ResponseEntity<?> selectResInfo(@RequestParam String resNo) {
 		//log.debug("resNo = {}", resNo);
@@ -82,6 +94,9 @@ public class AssignmentController {
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(resInfo);
 	}
 	
+	/**
+	 * 양도하기 등록 폼 제출 
+	 */
 	@PostMapping("/assignmentEnroll.do")
 	public String insertAssignment(AssignmentEntity assignment, RedirectAttributes redirectAttr) {
 //		log.debug("assignment = {}", assignment);
@@ -91,6 +106,9 @@ public class AssignmentController {
 		return "redirect:/assignment/assignmentList.do";
 	}
 	
+	/**
+	 * 양도 상세보기 페이지 
+	 */
 	@GetMapping("/assignmentDetail.do")
 	public void assignmentDetail(@RequestParam String assignNo, Model model) {
 //		log.debug("assignNo = {}", assignNo);
@@ -101,6 +119,9 @@ public class AssignmentController {
 		model.addAttribute("assign", assign);
 	}
 	
+	/**
+	 * 양도받기 신청 폼 요청 후 페이지으로 이동 
+	 */
 	@PostMapping("/assignmentApplyForm.do")
 	public void assignmentApply(@RequestParam String assignNo, Model model) {
 //		log.debug("assignNo = {}", assignNo);
@@ -111,6 +132,9 @@ public class AssignmentController {
 		model.addAttribute("assign", assign);
 	}
 	
+	/**
+	 * 양도받기 가능한 양도건인지 조회 후 요청 처리 (비동기 요청)
+	 */
 	@PostMapping("/assignmentCheck.do")
 	public ResponseEntity<?> assignmentCheck(@RequestParam String assignNo, @RequestParam String assignTransfer){
 		log.debug("assignNo = {}", assignNo);
@@ -129,8 +153,12 @@ public class AssignmentController {
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(assignCheck);
 	}
 	
+	/**
+	 * 양도받기 신청 폼 제출 
+	 */
 	@PostMapping("/assignmentApply.do")
 	public String assignmentApply(
+			@RequestParam String assignNo,
 			@RequestParam String checkin,
 			@RequestParam String checkout,
 			Reservation reservation,
@@ -144,13 +172,35 @@ public class AssignmentController {
 		
 		reservation.setResCheckin(resCheckin);
 		reservation.setResCheckout(resCheckout);
-		log.debug("reservation = {}", reservation);
+		//log.debug("reservation = {}", reservation);
 		
-		Reservation result = assignmentService.insertAssignmentApply(reservation);
+		String alreadyResNo = assignmentService.selectOneReservation(reservation);
+		log.debug("alreadyResNo%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% = {}", alreadyResNo);
+		
+		Reservation result = new Reservation();
+		// 이미 등록된 양도 예약이 없을 경우
+		if(alreadyResNo == null) {
+			result = assignmentService.insertAssignmentApply(reservation);
+		}
+		// 이미 등록된 양도 예약이 있을 경우
+		else {
+			reservation.setResNo(alreadyResNo);
+			result = assignmentService.updateAssignmentApply(reservation);
+		}
 		log.debug("result = {}", result);
 	
 		redirectAttr.addFlashAttribute("payRes", result);
-		
+		redirectAttr.addFlashAttribute("assignNo", assignNo);
 		return "redirect:/payment/payment.do";
+	}
+	
+	/**
+	 * 1분마다 실행되면서 결제시간이 10분 지난 양도테이블 - '양도중' 상태 및 예약테이블 - '양도결제대기' 처리 
+	 */
+	@Scheduled(cron="0 0/1 * * * *")
+	public void assignmentLimitTime() {
+		
+		int result = assignmentService.assignmentLimitTime();
+		System.out.println(LocalDateTime.now() + " ======> 10분 지난 데이터 삭제!");
 	}
 }
