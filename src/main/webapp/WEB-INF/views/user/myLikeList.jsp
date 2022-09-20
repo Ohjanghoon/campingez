@@ -56,7 +56,7 @@
 					<td>${trade.likeCount}</td>
 					<td>
 						<fmt:parseDate value="${trade.tradeDate}" pattern="yyyy-MM-dd" var="resDate" />
-						<fmt:formatDate value="${resDate}" pattern="yyyy/MM/dd" />
+						<fmt:formatDate value="${resDate}" pattern="yyyy-MM-dd" />
 					</td>
 					<td>${trade.readCount}</td>
 				</tr>

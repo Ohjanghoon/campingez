@@ -87,4 +87,63 @@
   		<result column="renamed_filename" property="renamedFilename"/>
   	</collection>
   </resultMap>
+  
+  <select id="findAllAssignmentList" resultMap="assignmentMap"> 
+	select  
+	    *
+	from
+	    assignment a left join reservation r
+	        on a.res_no = r.res_no
+	where
+	    res_checkin > current_date
+	order by
+	    res_checkin
+  </select>
+  
+  <select id="findAssignmentListBySelectType" resultMap="assignmentMap">
+	select  
+	    *
+	from
+	    assignment a left join reservation r
+	        on a.res_no = r.res_no
+	where
+	    res_checkin > current_date
+	    and
+	    assign_state = #{selectType}
+	order by
+	    res_checkin  
+  </select>
+  
+  <select id="findAllExpireAssignmentList" resultMap="assignmentMap">
+	select  
+	    *
+	from
+	    assignment a left join reservation r
+	        on a.res_no = r.res_no
+	where
+	    <![CDATA[
+	    	res_checkin <= current_date
+	    ]]>
+	order by
+	    res_checkin  	
+  </select>
+  
+  <resultMap type="assignment" id="assignmentMap">
+   	<id column="assign_no" property="assignNo"/>
+  	<result column="user_id" property="userId"/>
+  	<result column="res_no" property="resNo"/>
+  	<result column="assign_title" property="assignTitle"/>
+  	<result column="assign_content" property="assignContent"/>
+  	<result column="assign_price" property="assignPrice"/>
+  	<result column="assign_date" property="assignDate"/>
+  	<result column="assign_like_count" property="assignLikeCount"/>
+  	<result column="assign_state" property="assignState"/>
+  	<result column="assign_transfer" property="assignTransfer"/>
+  	<association property="reservation" javaType="reservation">
+  		<result column="camp_id" property="campId"/>
+  		<result column="res_price" property="resPrice"/>
+  		<result column="res_checkin" property="resCheckin"/>
+  		<result column="res_checkout" property="resCheckout"/>
+  	</association>	
+  </resultMap>
 </mapper>

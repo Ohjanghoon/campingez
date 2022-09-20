@@ -94,8 +94,6 @@ function assignmentPaingAjax(cPage){
             var results = response.assignList;
             var str = "";
             for(var i = 0; i < results.length; i++){
-            	var months = results[i].assignDate[1] < 10 ? '0' + results[i].assignDate[1] : results[i].assignDate[1];
-            	var days = results[i].assignDate[2] < 10 ? '0' + results[i].assignDate[2] : results[i].assignDate[2];
             	str += 	`<tr onclick="location.href='${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=`+results[i].assignNo+`'" data-no="'+results[i].assignNo+'">`+
 								'<td>'+results[i].assignNo+'</td>'+
 								'<td>'+results[i].userId+'</td>'+
@@ -112,11 +110,11 @@ function assignmentPaingAjax(cPage){
 								'</td>'+
 								'<td>'+results[i].assignPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원</td>'+
 								'<td>'+
-									results[i].assignDate[0]+'-' + months + '-' + days +
+								results[i].assignDate.substr(0,10)+
 								'</td>'+
 								'<td>'+results[i].assignLikeCount+'</td>'+
 								'<td>'+results[i].assignState+'</td>'+
-						'</tr>';            	
+						'</tr>';     
             }
 			$("#assignTbody").append(str); 
 		},

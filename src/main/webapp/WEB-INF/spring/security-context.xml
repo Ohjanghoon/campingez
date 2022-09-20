@@ -16,7 +16,6 @@
 
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
-		<intercept-url pattern="/user/userTest.do" access="isAuthenticated()"/>
 		<intercept-url pattern="/user/userEnroll.do" access="isAnonymous()"/>
 		<intercept-url pattern="/user/userLogin.do" access="isAnonymous()"/>
 		<intercept-url pattern="/user/userIdCheck.do" access="permitAll"/>
@@ -36,10 +35,10 @@
 		<form-login 
 			login-page="/user/userLogin.do"
 			login-processing-url="/user/userLogin.do"
-			default-target-url="/"
-			always-use-default-target="false"
 			username-parameter="userId"
 			password-parameter="password"			
+			default-target-url="/"
+			always-use-default-target="false"
 			authentication-success-handler-ref = "customAuthenticationSuccessHandler"/>
 						
 		<logout 
@@ -52,11 +51,7 @@
 	<beans:bean id="adminServiceImpl" class="com.kh.campingez.admin.model.service.AdminServiceImpl"></beans:bean>
 
 	<!-- 로그인 통계를 위한 handler -->
-	<beans:bean id="customAuthenticationSuccessHandler" class="com.kh.campingez.common.security.handler.CustomAuthenticationSuccessHandler">
-		<beans:property name="targetUrlParameter" value="loginRedirect"/>
-		<beans:property name="useReferer" value="false"/>
-		<beans:property name="defaultUrl" value="/"/>
-	</beans:bean>
+	<beans:bean id="customAuthenticationSuccessHandler" class="com.kh.campingez.common.security.handler.CustomAuthenticationSuccessHandler"></beans:bean>
 	
 	<authentication-manager>
 		<authentication-provider user-service-ref="userSecurityService">

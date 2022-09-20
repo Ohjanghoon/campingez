@@ -8,10 +8,6 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 <style>
-.btn-primary{
- 	background-color:  #A8A4CE !important;
- 	border-color:  #A8A4CE !important;
-}
 .btn-outline-secondary{
 	border-color: #A8A4CE !important;
 	color: #A8A4CE !important;
