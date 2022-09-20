@@ -13,6 +13,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.kh.campingez.admin.model.dto.Stats;
 import com.kh.campingez.alarm.model.dto.Alarm;
+import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -170,5 +171,25 @@ public interface AdminDao {
 	
 	@Insert("insert into camp values (#{campId}, #{zoneCode})")
 	int insertCamp(Map<String, Object> param);
+	
+	@Delete("delete from camp where camp_id = #{campId}")
+	int deleteCampByCampId(String campId);
+
+	List<CampZone> findCampByZoneCode(String zoneCode);
+	
+	List<Assignment> findAllAssignmentList(RowBounds rowBounds);
+	
+	@Select("select count(*) from  assignment a left join reservation r on a.res_no = r.res_no where res_checkin > current_date")
+	int getAssignmentTotalContent();
+
+	List<Assignment> findAssignmentListBySelectType(Map<String, Object> param, RowBounds rowBound);
+	
+	@Select("select count(*) from  assignment a left join reservation r on a.res_no = r.res_no where res_checkin > current_date and assign_state = #{selectType}")
+	int getAssignmentBySelectTypeTotalContent(Map<String, Object> param);
+
+	List<Assignment> findAllExpireAssignmentList(RowBounds rowBounds);
+	
+	@Select("select count(*) from  assignment a left join reservation r on a.res_no = r.res_no where res_checkin <= current_date")
+	int getExpireAssignmentTotalContent();
 
 }

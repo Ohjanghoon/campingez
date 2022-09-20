@@ -16,6 +16,7 @@ import com.kh.campingez.alarm.model.dao.AlarmDao;
 import com.kh.campingez.alarm.model.dto.Alarm;
 import com.kh.campingez.alarm.model.dto.AlarmType;
 import com.kh.campingez.alarm.model.service.AlarmService;
+import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -270,6 +271,47 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int insertCamp(Map<String, Object> param) {
 		return adminDao.insertCamp(param);
+	}
+	
+	@Override
+	public int deleteCampByCampId(String campId) {
+		return adminDao.deleteCampByCampId(campId);
+	}
+	
+	@Override
+	public List<CampZone> findCampByZoneCode(String zoneCode) {
+		return adminDao.findCampByZoneCode(zoneCode);
+	}
+	
+	@Override
+	public List<Assignment> findAllAssignmentList(Map<String, Object> param) {
+		return adminDao.findAllAssignmentList(getRowBounds(param));
+	}
+	
+	@Override
+	public int getAssignmentTotalContent() {
+		return adminDao.getAssignmentTotalContent();
+	}
+	
+	@Override
+	public List<Assignment> findAssignmentListBySelectType(Map<String, Object> param) {
+		RowBounds rowBound = getRowBounds(param);
+		return adminDao.findAssignmentListBySelectType(param, rowBound);
+	}
+	
+	@Override
+	public int getAssignmentBySelectTypeTotalContent(Map<String, Object> param) {
+		return adminDao.getAssignmentBySelectTypeTotalContent(param);
+	}
+	
+	@Override
+	public List<Assignment> findAllExpireAssignmentList(Map<String, Object> param) {
+		return adminDao.findAllExpireAssignmentList(getRowBounds(param));
+	}
+	
+	@Override
+	public int getExpireAssignmentTotalContent() {
+		return adminDao.getExpireAssignmentTotalContent();
 	}
 	
 	private RowBounds getRowBounds(Map<String, Object> param) {

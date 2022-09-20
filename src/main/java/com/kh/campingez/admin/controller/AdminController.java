@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.campingez.admin.model.dto.Stats;
 import com.kh.campingez.admin.model.service.AdminService;
 import com.kh.campingez.alarm.model.service.AlarmService;
+import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
@@ -460,6 +461,67 @@ public class AdminController {
 		int result = adminService.insertCamp(param);
 		redirectAttr.addFlashAttribute("msg", "캠핑자리가 성공적으로 등록 되었습니다.");
 		return "redirect:/admin/campList.do";
+	}
+	
+	@PostMapping("/deleteCamp.do")
+	public String deleteCamp(@RequestParam String campId) {
+		log.debug("campId = {}", campId);
+		int result = adminService.deleteCampByCampId(campId);
+		return "redirect:/admin/campList.do";
+	}
+	
+	@GetMapping("/findCampByZoneCode.do")
+	public ResponseEntity<?> findCampByZoneCode(@RequestParam String zoneCode) {
+		log.debug("zoneCode = {}", zoneCode);
+		List<CampZone> campList = adminService.findCampByZoneCode(zoneCode);
+		log.debug("campList = {}", campList);
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(campList);
+	}
+	
+	@GetMapping("/assignmentList.do")
+	public void assignmentList(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, Model model) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 10;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		List<Assignment> assignmentList = adminService.findAllAssignmentList(param);
+		int totalContent = adminService.getAssignmentTotalContent();
+		String uri = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
+		
+		model.addAttribute("assignmentList", assignmentList);
+		model.addAttribute("pagebar", pagebar);
+		
+		List<Assignment> expireAssignmentList = adminService.findAllExpireAssignmentList(param);
+		int expireTotalContent = adminService.getExpireAssignmentTotalContent();
+		String expirePagebar = CampingEzUtils.getPagebar2(cPage, limit, expireTotalContent, uri);
+		
+		model.addAttribute("expireAssignmentList", expireAssignmentList);
+		model.addAttribute("expirePagebar", expirePagebar);
+		model.addAttribute("expireTotalContent", expireTotalContent);
+	}
+	
+	@GetMapping("/assignmentListBySelectType.do")
+	public ResponseEntity<?> assignmentListBySelectType(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, @RequestParam String selectType) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 5;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		param.put("selectType", selectType);
+		
+		List<Assignment> assignmentList = adminService.findAssignmentListBySelectType(param);
+		log.debug("assignmentList = {}", assignmentList);
+		int totalContent = adminService.getAssignmentBySelectTypeTotalContent(param);
+		String uri = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, uri);
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("assignmentList", assignmentList);
+		data.put("pagebar", pagebar);
+	
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(data);
 	}
 	
 	private Date addMonth(Date date, int months) {

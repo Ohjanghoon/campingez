@@ -10,7 +10,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 <style>
-.ok, .error {
+.error, .noKr {
 	display: none;
 }
 #insertCamp {
@@ -21,39 +21,52 @@
 					<div class="camp-list-wrap">
 						<h2>캠핑 자리 리스트</h2>
 						<div class="map-wrap">
-							<img src="${pageContext.request.contextPath}/resources/images/reservation/campMap2.png" alt="" width="900px"/>
+							<img src="${pageContext.request.contextPath}/resources/images/reservation/campMap2.png" alt="캠핑구역" width="100%" height="650px"/>
 						</div>
 						<c:if test="${not empty campList}">
 							<c:forEach items="${campList}" var="list" varStatus="tbVs">
-								<table>
-									<thead>
-										<tr>
-											<th>No</th>
-											<th>구역명[구역코드]</th>
-											<th>자리코드</th>
-										</tr>
-									</thead>
+								<table class="table text-center" id="camp-list-tbl">
+									  <thead>
+									    <tr>
+									    </tr>
+									  </thead>
 									<tbody>
 										<c:if test="${not empty list.campList}">
-											<c:forEach items="${list.campList}" var="camp" varStatus="vs">
-											${vs.last}
-												<tr>
-													<c:if test="${vs.first}">
-														<td rowspan="3">${tbVs.count}</td>
-														<td rowspan="3">${list.zoneName}[${list.zoneCode}]</td>
-														<td>${camp.campId}</td>
-													</c:if>
-													<c:if test="${not vs.first }">
-														<td>${camp.campId}</td>
-													</c:if>								
-												</tr>
-											</c:forEach>
+											<tr>
+												<th scope="col">No</th>
+												<td  scope="row" colspan="${fn:length(list.campList)}">${tbVs.count}</td>
+											</tr>
+											<tr>
+												<th scope="col">구역</th>
+												<td scope="row" colspan="${fn:length(list.campList)}">${list.zoneName}[${list.zoneCode}]</td>
+											</tr>
+											<tr>
+												<th scope="col">자리정보</th>
+												<c:forEach items="${list.campList}" var="camp" varStatus="vs">
+													<td scope="row">${camp.campId}</td>
+												</c:forEach>
+											</tr>
+											<tr>
+												<th scope="col">관리</th> 
+												<c:forEach items="${list.campList}" var="camp" varStatus="vs">
+												<td scope="row"> 
+													<button type="button" id="deleteBtn" data-camp-id="${camp.campId}">삭제</button>
+												</td>
+												</c:forEach>
+											</tr>
 										</c:if>
 										<c:if test="${empty list.campList}">
 											<tr>
-												<td>${tbVs.count}</td>
-												<td>${list.zoneName}[${list.zoneCode}]</td>
-												<td colspan="3">등록된 자리가 없습니다.</td>
+												<th scope="col">No</th>
+												<td scope="row">${tbVs.count}</td>
+											</tr>
+											<tr>
+												<th scope="col">구역</th>
+												<td scope="row">${list.zoneName}[${list.zoneCode}]</td>
+											</tr>
+											<tr>
+												<th scope="col">자리정보</th>
+												<td scope="row" colspan="3">등록된 자리가 없습니다.</td>
 											</tr>
 										</c:if>
 									</tbody>
@@ -76,19 +89,24 @@
 									<button type="button" id="insertBtn" class="btn searchBtn"><i class="fa-solid fa-plus"></i></button>
 								</div>
 								<span class="infomsg error">해당 자리코드는 사용할 수 없습니다.</span>
-								<span class="infomsg ok">해당 자리코드는 사용 가능 합니다.</span>
-								<input type="hidden" id="isPossable" value="0"/>
+								<span class="infomsg noKr">영문 혹은 숫자만 입력 가능합니다.</span>
 							</div>
 						</form:form>
 					</div>
+					<div class="select-camp-wrap">
+						
+					</div>
+					<form:form name="deleteCampFrm" method="POST" action="${pageContext.request.contextPath}/admin/deleteCamp.do">					
+						<input type="hidden" name="campId"/>
+					</form:form>
 				</div>
+				
 			</div>
 	</section>
 </main>
 <script>
-const isPossable = document.querySelector("#isPossable");
 const error = document.querySelector(".error");
-const ok = document.querySelector(".ok");
+const noKr = document.querySelector(".noKr");
 
 // select 변경 시
 document.querySelector("#selectType").addEventListener('change', (e) => {
@@ -104,43 +122,88 @@ document.querySelector("#selectType").addEventListener('change', (e) => {
 	// 값 초기화 및 placeholder 설정
 	input.value = '';
 	input.placeholder = 'ex) ' + zoneCode + '1';
-	isPossable.value = 0;
-});
-
-// 중복검사
-document.querySelector("#insertCamp").addEventListener('keyup', (e) => {
-	const value = e.target.value;
 	
-	// 모든 문자를 대문자로 변환
-	if(/[^a-zA-Z0-9+]/g.test(value)) {
-		e.target.value = value.replace(/[^a-zA-Z0-9+]/g, ''); 
-	} else {		
-		e.target.value = value.toUpperCase();
-	}
-	
-	if(value.length < 3) return;
-	
+	// 해당 selectType만 보여주기
 	$.ajax({
-		url : "${pageContext.request.contextPath}/admin/duplicateCampId.do",
-		data : {campId:value},
+		url : "${pageContext.request.contextPath}/admin/findCampByZoneCode.do",
+		data : {zoneCode},
 		content : "application/json",
 		success(response) {
-			const {available, camp} = response;
+			const {campList, zoneCode, zoneName} = response[0];
+			console.log(campList, zoneCode, zoneName);
+			const wrap = document.querySelector(".select-camp-wrap");
+			wrap.innerHTML = '';
 			
-			if(available) {
-				isPossable.value = 1;
-				ok.style.display = 'inline';
-				error.style.display = 'none';
+			let html = `
+			<h5>[\${zoneName} \${zoneCode}] - 자리 리스트</h5>
+			<table class="table text-center">
+				<tbody>
+			`;
+			if(campList.length > 0) {
+				html += `
+					<tr>
+						<th scope="col">구역</th>
+						<td scope="row" colspan="\${campList.length}">\${zoneName}[\${zoneCode}]</td>
+					</tr>
+					<tr>
+						<th scope="col">자리정보</th>
+					`;
+					
+				campList.forEach((camp) => {
+					html += `
+					<td scope="row">\${camp.campId}</td>
+					`;
+				});		
+				
+				html += `
+				</tr>
+				`;
 			} else {
-				isPossable.value = 0;
-				ok.style.display = 'none';
-				error.style.display = 'inline';
+				html += `
+				<tr>
+					<th scope="col">구역</th>
+					<td scope="row">\${zoneName}[\${zoneCode}]</td>
+				</tr>
+				<tr>
+					<th scope="col">자리정보</th>
+					<td scope="row" colspan="3">등록된 자리가 없습니다.</td>
+				</tr>
+				`;
 			}
+			
+			html += `
+				</tbody>
+			</table>
+			`;
+			
+			wrap.insertAdjacentHTML('beforeend', html);
 		},
 		error : console.log
 	});
 });
 
+// 필수 기본값 제공
+document.querySelector("#insertCamp").addEventListener('input', (e) => {
+	const selectType = document.querySelector("#selectType").value;
+	const regex = new RegExp(`^\${selectType}`, "g");
+	const value = e.target.value;
+	
+	if(!regex.test(value)) {
+		e.target.value = selectType;
+	} else {
+		if(/[^a-zA-Z0-9+]/g.test(value)) {
+			e.target.value = value.replace(/[^a-zA-Z0-9+]/g, '');
+			noKr.style.display = 'inline';
+			error.style.display = 'none';
+		} else {		
+			noKr.style.display = 'none';
+			error.style.display = 'none';
+			e.target.value = value.toUpperCase();
+		}
+	}
+});
+
+// 기본 값 제공
 document.querySelector("#insertCamp").addEventListener('focus', (e) => {
 	if(!e.target.value) {
 		const selectType = document.querySelector("#selectType").value;
@@ -150,22 +213,54 @@ document.querySelector("#insertCamp").addEventListener('focus', (e) => {
 
 // 자리 추가
 document.querySelector("#insertBtn").addEventListener('click', (e) => {
-	const input = document.querySelector("#insertCamp");
+	e.preventDefault();
+	
+	const input = document.querySelector("#insertCamp").value;
 	const selectType = document.querySelector("#selectType").value;
 	const regex = new RegExp(`^\${selectType}[0-9]`, "g");
 	
-	if(!input.value) {
+	if(!input) {
 		alert("자리코드를 입력해주세요.");
 		return;
 	}
 	
 	// 정규식 검사
-	if(regex.test(input.value) && isPossable.value == 1) {
-		document.insertCampFrm.submit();
+	if(regex.test(input)) {
+		$.ajax({
+			url : "${pageContext.request.contextPath}/admin/duplicateCampId.do",
+			data : {campId:input},
+			content : "application/json",
+			success(response) {
+				const {available, camp} = response;
+				
+				if(available) {
+					error.style.display = 'none';
+					noKr.style.display = 'none';
+					document.insertCampFrm.submit();
+					return;
+				} else {
+					noKr.style.display = 'none';
+					error.style.display = 'inline';
+				}
+			},
+			error : console.log
+		});
 	} else {
 		alert("구역코드가 틀리거나 형식이 올바르지 않습니다.");
 		input.value = '';
 	}
+});
+
+// 삭제
+document.querySelectorAll("#deleteBtn").forEach((btn) => {
+	btn.addEventListener('click', (e) => {
+		const campId = e.target.dataset.campId;
+		if(confirm(`[\${campId}]자리를 정말로 삭제하시겠습니까?`)) {
+			const frm = document.deleteCampFrm;
+			frm.campId.value = campId;
+			frm.submit();
+		}
+	});
 });
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
