@@ -135,9 +135,9 @@
 		method="post"
 		name="assignApplyForm">
 		<input type="hidden" name="assignNo" value="${assign.assignNo}" />
+		<sec:authorize access="isAuthenticated()">
 		<sec:authentication property="principal.username" var="loginUser"/>
-		<sec:authorize access="isAuthenticated() and ${assign.userId ne loginUser}">
-			<c:if test="${(assign.assignState eq '양도대기') or (assign.assignTransfer eq loginUser)}">
+			<c:if test="${(assign.userId ne loginUser) and (assign.assignState eq '양도대기') or (assign.assignTransfer eq loginUser)}">
 				<input type="hidden" name="userId" value="${loginUser}" />
 				<button type="button" class="w-50 mb-3 fs-5 btn btn-block" id="btn-assignment-apply">해당 예약 양도받기</button>
 			</c:if>

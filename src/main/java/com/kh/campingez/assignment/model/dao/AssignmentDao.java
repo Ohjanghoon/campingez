@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.session.RowBounds;
 
 import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.assignment.model.dto.AssignmentEntity;
@@ -15,7 +15,7 @@ import com.kh.campingez.reservation.model.dto.Reservation;
 @Mapper
 public interface AssignmentDao {
 
-	List<Assignment> selectAssignmentList(RowBounds rowBounds);
+	List<Assignment> selectAssignmentList(@Param("start") int start, @Param("end") int end);
 
 	@Select("select count(*) from assignment join reservation r using(res_no, user_id) where res_checkin - 1 > current_date")
 	int getTotalContent();
@@ -48,7 +48,9 @@ public interface AssignmentDao {
 	String selectAssignState(String assignNo);
 
 	@Update("update assignment set assign_state = '양도중', assign_transfer = #{assignTransfer} where assign_no = #{assignNo}")
-	int updateAssignStateAndTransfer(String assignNo, String assignTransfer);
+	int updateAssignStateAndTransfer(@Param("assignNo") String assignNo, @Param("assignTransfer") String assignTransfer);
+
+	List<Assignment> selectAssignmentList();
 
 	
 	

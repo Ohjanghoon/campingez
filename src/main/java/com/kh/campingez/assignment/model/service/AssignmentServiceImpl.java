@@ -28,11 +28,8 @@ public class AssignmentServiceImpl implements AssignmentService {
 	ReservationDao reservationDao;
 	
 	@Override
-	public List<Assignment> selectAssignmentList(Map<String, Integer> param) {
-		int limit = param.get("limit");
-        int offset = (param.get("cPage")- 1) * limit;
-        RowBounds rowBounds = new RowBounds(offset, limit);
-		return assignmentDao.selectAssignmentList(rowBounds);
+	public List<Assignment> selectAssignmentList(int start, int end) {
+		return assignmentDao.selectAssignmentList(start, end);
 	}
 	
 	@Override

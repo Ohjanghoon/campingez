@@ -49,19 +49,25 @@ tr > td {
 	background-color: #A8A4CE;
     color: white;
 }
-#updateBtn, [name=updateBtn], [name=yellowCardBtn]{
+#updateBtn, [name=updateBtn], [name=yellowCardBtn], #deleteBtn {
 	height: 35px;
     width: 50px;
    	border: 1px solid #A8A4CE;
     color: #A8A4CE;
     background-color: white;
 }
-#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover {
+#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover, #deleteBtn:hover {
 	background-color: #A8A4CE;
     color:white;
 }
-#user-list-tbl, #reservation-tbl {
+#user-list-tbl, #reservation-tbl, .select-camp-wrap {
 	margin-top: 30px;
+}
+#camp-list-tbl, .camp-insert-wrap {
+	margin-top: 60px;
+}
+#camp-list-tbl tr:last-child {
+	border-bottom: 2px solid black;
 }
 .input-date {
 	width: 370px
@@ -98,7 +104,10 @@ tr > td {
 					    </h2>
 					    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
 					      <div class="accordion-body">
-					      	<a href="${pageContext.request.contextPath}/admin/reservationList.do">예약관리</a>
+					      	<a href="${pageContext.request.contextPath}/admin/reservationList.do">예약현황</a>
+					      </div>
+					      <div class="accordion-body">
+					      	<a href="${pageContext.request.contextPath}/admin/assignmentList.do">양도현황</a>
 					      </div>
 					    </div>
 					  </div>

@@ -12,7 +12,21 @@
 		    camp_zone z left join camp c 
 		        on z.zone_code = c.zone_code
 		order by
-			z.zone_code
+			z.zone_code, length(c.camp_id), c.camp_id
+	</select>
+	
+	<select id="findCampByZoneCode" resultMap="campMap">
+		select 
+		    z.*,
+		    c.camp_id,
+		    c.zone_code camp_zone_code
+		from 
+		    camp_zone z left join camp c 
+		        on z.zone_code = c.zone_code
+		where
+			z.zone_code = #{zoneCode}
+		order by
+			z.zone_code, length(c.camp_id), c.camp_id	
 	</select>
 	
 	<resultMap type="campZone" id="campMap">
