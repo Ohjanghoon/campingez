@@ -52,6 +52,7 @@
 	<nav>${pagebar}</nav>
 	</div>
 </main>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
 	<script>
 	
 		// 공지사항 등록
@@ -68,6 +69,9 @@
 		document.querySelector("#coupon").addEventListener('click', (e) => {
 			location.href = "${pageContext.request.contextPath}/coupon/insertCoupon.do";
 		});
+	</script>
+</sec:authorize>
+	<script>
 	
 		const insertHandler = (e) => {
 			const parent = e.target.parentElement;
