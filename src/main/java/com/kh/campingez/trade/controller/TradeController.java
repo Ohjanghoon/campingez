@@ -31,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.common.CampingEzUtils;
+import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.dto.TradeLike;
 import com.kh.campingez.trade.model.dto.TradePhoto;
@@ -74,13 +75,23 @@ public class TradeController {
  		// 게시글 상세보기 쿼리
  		Trade trade = tradeService.selectTradeByNo(no);
  		model.addAttribute("trade", trade);
+ 		String userId = principal != "anonymousUser" ? ((User)principal).getUserId() : null;
+ 		Map<String, Object> param = new HashMap<>();
+ 		param.put("no", no);
+ 		param.put("userId", userId);
+ 		String reportUserId = tradeService.getUserReportTrade(param);
+ 		log.debug("reportUserId = {}", reportUserId);
+ 		model.addAttribute("reportUserId", reportUserId);
+ 		
+ 		List<Category> categoryList = tradeService.getReportCategory();
+ 		model.addAttribute("categoryList", categoryList);
  		
  		TradeLike tl = new TradeLike();
 
  		// 로그인 한 아이디 확인(좋아요 구분용)
  		if(principal != "anonymousUser") {
  		User user = (User) principal;
- 		String userId = user.getUserId();	
+ 		userId = user.getUserId();	
  		
  		model.addAttribute("user", user);
  		

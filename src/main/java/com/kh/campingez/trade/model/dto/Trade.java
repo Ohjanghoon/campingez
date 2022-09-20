@@ -19,13 +19,16 @@ import lombok.ToString;
 public class Trade extends TradeEntity {
 	private int photoCount;
 	private List<TradePhoto> photos = new ArrayList<>();
+	// 신고 누른 회원 조회 필드
+	private String reportUserId;
 	
 	public Trade(String tradeNo, String userId, String categoryId, String trade_title,
 			String trade_content, LocalDateTime trade_date, int readCount, int price, String trade_success,
-			TradeQuality tradeQuality, int like_count, int photoCount) {
+			TradeQuality tradeQuality, int like_count, int photoCount, String reportUserId) {
 		super(tradeNo, userId, categoryId, trade_title, trade_content, trade_date, readCount, price, trade_success,
 				tradeQuality, like_count);
 		this.photoCount = photoCount;
+		this.reportUserId = reportUserId;
 	}
 	
 	public void add(TradePhoto attach) {

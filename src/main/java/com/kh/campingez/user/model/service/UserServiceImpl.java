@@ -53,4 +53,9 @@ public class UserServiceImpl implements UserService {
 	public int userUsePoint(Map<Object, Object> map) {
 		return userDao.userUsePoint(map);
 	}
+	
+	@Override
+	public int insertReport(Map<String, Object> param) {
+		return userDao.insertReport(param);
+	}
 }

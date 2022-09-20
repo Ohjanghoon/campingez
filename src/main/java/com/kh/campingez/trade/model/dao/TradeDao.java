@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.dto.TradeLike;
 import com.kh.campingez.trade.model.dto.TradePhoto;
@@ -25,7 +26,7 @@ public interface TradeDao {
 	int getTotalContent();
 	
 //	@Select("select * from trade where trade_no = #{tradeNo}")
-	Trade selectTradeByNo(String TradeNo);
+	Trade selectTradeByNo(String tradeNo);
 	
 //	@Select("select * from trade_photo where trade_no = #{tdNo}")
 	List<TradePhoto> selectPhotoListByTradeNo(String no);
@@ -76,6 +77,12 @@ public interface TradeDao {
 	
 	@Update("update trade set trade_success = '거래 완료' where trade_no = #{tradeNo}")
 	int updateSuccess(String no);
+	
+	@Select("select * from category_list where category_id like '%' || 'rep' || '%'")
+	List<Category> getReportCategory();
+
+	@Select("select (select user_id from report where comm_no = t.trade_no and user_id = #{userId}) report_user_id from trade t where trade_no = #{no}")
+	String getUserReportTrade(Map<String, Object> param);
 	
 	
 	
