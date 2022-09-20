@@ -94,7 +94,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return userInfoDao.getTotalLike(user);
 	}
 	
-	public UserInfoServiceImpl() {
-		// TODO Auto-generated constructor stub
+	@Override
+	public Reservation selectReservationDetail(String resNo) {
+		return userInfoDao.selectReservationDetail(resNo);
 	}
 }

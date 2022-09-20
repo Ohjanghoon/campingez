@@ -31,4 +31,8 @@ public class CampZoneController {
 		
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(campZone);
 	}
+	
+	@GetMapping("/info")
+	public void campInfo() {}
+
 }

@@ -1,0 +1,152 @@
+@charset "UTF-8";
+
+.items {
+	border: 1px solid #c6b5e140;
+	background-color: #c6b5e140;
+	display: flex;
+	align-items: center;
+	height: 540px;
+	flex-direction: row;
+	flex-wrap: wrap;
+	border-radius: 10px 10px 10px 10px;
+}
+
+.item {
+	border: 1px solid white;
+	padding: 15px;
+	background-color: white;
+	margin: 10px;
+	height: 250px;
+	width: 410px;
+	border-radius: 10px 10px 10px 10px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	flex-direction: column;
+}
+
+.firstLine {
+	width: 370px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.resDate {
+	position: absolute;
+	font-size: 17pt;
+	width: 130px;
+}
+
+.resStatus {
+	position: relative;
+	top: 8px;
+	left: 130px;
+	display: flex;
+	justify-content: center;
+	width: 90px;
+	border-radius: 10px 10px 10px 10px;
+	background-color: #c6b5e140;
+	text-align:center;
+	font-size: 10pt;
+}
+
+.resType {
+    position: relative;
+    left: 227px;
+    top: -12px;
+    display: flex;
+    justify-content: center;
+    width: 90px;
+    border-radius: 10px 10px 10px 10px;
+    background-color: #c6b5e140;
+    text-align: center;
+    font-size: 10pt;
+}
+
+.resNo {
+	position: relative;
+	left: 241px;
+	width: 120px;
+	top: -40px;
+	font-size: 10pt;
+}
+
+.resUser {
+	top: -64px;
+	position: relative;
+	left: 310px;
+	font-size: 10pt;
+}
+
+.resStart {
+	position: relative;
+    top: 30px;
+    width: 106px;
+    left: 4px;
+    background-color: #c6b5e1;
+    border-radius: 10px 10px 10px 10px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+
+}
+
+.resStartTxt {
+    position: relative;
+    top: 50px;
+    left: 28px;
+}
+
+.resEnd {
+    position: relative;
+    top: 41px;
+    width: 100px;
+    left: -96px;
+    background: #c6b5e1;
+    border-radius: 10px 10px 10px 10px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+}
+
+.resEndTxt {
+    position: relative;
+    top: 27px;
+    left: -76px;
+}
+.resPrice{
+    left: 151px;
+    position: relative;
+    top: -72px;
+}
+.resName{
+    position: relative;
+    left: 171px;
+    top: -33px;
+    width: 300px;
+}
+.arrow{
+	left: 128px;
+    position: relative;
+    height: 80px;
+    width: 120px;
+    top: -46px;
+}
+.resReview{
+    position: relative;
+    top: 69px;
+    left: -136px;
+}
+.hr{
+	width: 361px;
+    position: relative;
+    left: -361px;
+    top: 95px;
+}
+.resDetail{
+    width: 90px;
+    position: relative;
+    left: -320px;
+    top: 31px;
+}

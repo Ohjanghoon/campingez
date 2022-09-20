@@ -44,14 +44,14 @@
     <script>
 	window.onload = () => {
 		console.log("${payMethod}");
-		console.log("${payRes.resNo}_" + new Date().getTime());
-		
+		const merchantCustomId = "${payRes.resNo}_" + new Date().getTime();
 		var IMP = window.IMP; // 생략가능
+		
 		IMP.init('imp63276768');  // 가맹점 식별 코드
 		IMP.request_pay({
 			pg : 'html5_inicis', // 결제방식
 			pay_method : '<%= payMethod %>',    // 결제 수단
-			merchant_uid : '${payRes.resNo}_new Date().getTime()' ,
+			merchant_uid : '${merchantCustomId}' ,
 			name : '${payRes.campId}/<%= schedule %>',    // order 테이블에 들어갈 주문명 혹은 주문 번호
 			amount : '1',    // 결제 금액
 			buyer_name : '${payRes.resUsername}',   //주문자명(=예약자명)
@@ -67,14 +67,18 @@
    	    		url : '${pageContext.request.contextPath}/payment/paymentSuccess.do',
    	    		headers,
    	    		method : 'POST',
-   	    		data : {resNo : "${payRes.resNo}"},
+   	    		data : {
+   	    			resNo : '${payRes.resNo}',
+   	    			resState : '${payRes.resState}',
+   	    			assignNo : '${assignNo}'
+   	    		},
    	    		success(response){
    	    			console.log(response);
    	    			var msg = '-------------------------------------';
-   	    			msg += '\n예약/결제가 완료되었습니다.';
+   	    			msg += '\n결제가 완료되었습니다.';
    	    			msg += '\n예약자 : ${payRes.resUsername}';
    	    			msg += '\n예약내용 : ${payRes.campId} / <%= schedule %>';
-					msg += '\n결제 금액 : ' + rsp.paid_amount + '원';
+					msg += '\n결제 금액 : ' + ${payRes.resPrice} + '원';
 					msg += '\n-------------------------------------';
 					alert(msg);
 					location.href = "${pageContext.request.contextPath}/";

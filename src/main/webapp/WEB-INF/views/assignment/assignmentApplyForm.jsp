@@ -88,7 +88,7 @@
 	 	method="post"
 		action="${pageContext.request.contextPath}/assignment/assignmentApply.do">
 		<input type="hidden" name="assignNo" value="${assign.assignNo }" />
-		<input type="hidden" name="resNo" value="${assign.resNo}"/>
+		<%-- <input type="hidden" name="resNo" value="${assign.resNo}"/> --%>
 		<input type="hidden" name="campId" value="${res.campId}" />
 		<input type="hidden" name="userId" value="<sec:authentication property='principal.username'/>" />
 		<input type="hidden" name="resPrice" value="${assign.assignPrice}" />

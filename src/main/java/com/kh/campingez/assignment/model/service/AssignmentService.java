@@ -10,6 +10,8 @@ import com.kh.campingez.reservation.model.dto.Reservation;
 public interface AssignmentService {
 
 	List<Assignment> selectAssignmentList(int start, int end);
+	
+	int getTotalContent();
 
 	List<Reservation> selectReservationList(String userId);
 
@@ -25,6 +27,14 @@ public interface AssignmentService {
 
 	int updateAssignStateAndTransfer(String assignNo, String assignTransfer);
 
-	int getTotalContent();
+	String selectOneReservation(Reservation reservation);
+
+	Reservation updateAssignmentApply(Reservation reservation);
+
+	int assignmentLimitTime();
+
+	
+	
+
 
 }

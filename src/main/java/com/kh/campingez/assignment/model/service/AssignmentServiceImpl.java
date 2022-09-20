@@ -71,6 +71,12 @@ public class AssignmentServiceImpl implements AssignmentService {
 	}
 	
 	@Override
+	public String selectOneReservation(Reservation reservation) {
+		return assignmentDao.selectOneReservation(reservation);
+	}
+
+	
+	@Override
 	public Reservation insertAssignmentApply(Reservation reservation) {
 		//1. 양도 희망자 예약 테이블에 insert
 		int result = assignmentDao.insertAssignmentApply(reservation);
@@ -81,4 +87,34 @@ public class AssignmentServiceImpl implements AssignmentService {
 		
 		return reservationDao.selectCurrReservation(resNo);
 	}
+	
+	@Override
+	public Reservation updateAssignmentApply(Reservation reservation) {
+		//1. 양도 희망자 예약 테이블에 update
+		int result = assignmentDao.updateAssignmentApply(reservation);
+		
+		//2. 양도 희망자 결제를 위한 해당 예약 리턴
+		String resNo = reservation.getResNo();
+		return reservationDao.selectCurrReservation(resNo);
+	}
+	
+	@Override
+	public int assignmentLimitTime() {
+		int result = assignmentDao.updateAssignmetLimitTime();
+		
+		result = assignmentDao.deleteAssignResLimitTime();
+		return result;
+	}
+	
+//	@Override
+//	public Reservation updateAssignmentApply(String alreadyResNo) {
+//		//1. 양도 희망자 예약 테이블에 update
+//		int result = assignmentDao.updateAssignmentApply(alreadyResNo);
+//		
+//		//2. 양도 희망자 결제를 위한 해당 예약 리턴
+//		String resNo = alreadyRes.getResNo();
+//		log.debug("resNo = {}", alreadyRes.getResNo());
+//		
+//		return reservationDao.selectCurrReservation(resNo);
+//	}
 }

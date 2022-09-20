@@ -24,15 +24,15 @@ window.onload = () => {
 <div class="container">
 <section>
         <div class="container marketing">
-
+        
             <div class="row featurette">
-            <div class="col-md-7">
-                <h2 class="featurette-heading">오늘 캠핑장 날씨<span class="text-muted">??</span></h2>
-                <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
+            <div class="col-md-7 d-inline-block">
+                <h2 class="featurette-heading">현재 캠핑장 날씨정보<span class="text-muted"></span></h2>
+                <p class="lead">캠핑이지는 고객님들의 편의를 위해 날씨정보를 제공합니다.</p>
             </div>
             <div class="col-md-5">
             	<!-- 해석님 여기 날씨 이미지가 상단에 고정되서 나와유 ㅠㅠ -->
-            	<!-- <div class="weatherContainer" style="height: 400px;">
+            	<div class="weatherContainer" style="height: 400px;">
 					<article class="widget">
 					    <div class="weatherIcon" style="text-align: center;"></div>
 					    <div class="weatherData">
@@ -45,10 +45,7 @@ window.onload = () => {
 					      <h5 class="day" id="day"></h5>
 					    </div>
 					</article>
-					<div class="weatherText">오늘의 날씨</div>
 				</div>
-				<div id="weather"></div> -->
-                <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="https://i.pinimg.com/564x/2a/5b/80/2a5b8055099fb3eee4e4691c720c1433.jpg">
         
             </div>
             </div>
@@ -61,13 +58,13 @@ window.onload = () => {
                 <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="https://i.pinimg.com/564x/e8/d0/b2/e8d0b2aa9819b489fbc1958adba0c2a2.jpg">
         
                 <h2 class="m-3">이용안내</h2>
-                <p><a class="btn btn-secondary" href="#">확인 &raquo;</a></p>
+                <p><a class="btn btn-secondary" href="javascript:openWindowPop('${pageContext.request.contextPath}/camp/info.do','popup');">확인 &raquo;</a></p>
             </div>
             <div class="col-lg-4">
                 <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="https://i.pinimg.com/564x/4d/0d/18/4d0d188d7d243052d9339d1cb200643d.jpg">
         
                 <h2 class="m-3">예약 조회</h2>
-                <p><a class="btn btn-secondary" href="#">조회 &raquo;</a></p>
+                <p><a class="btn btn-secondary" href="javascript:openWindowPop('${pageContext.request.contextPath}/reservation/find.do','popup');">조회 &raquo;</a></p>
             </div>
             <div class="col-lg-4">
                 <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="https://i.pinimg.com/564x/6f/71/bb/6f71bb1dc7c58ae8dd877d8784a36cbb.jpg">
@@ -79,14 +76,22 @@ window.onload = () => {
         
             <hr class="featurette-divider">
         
-            <div class="row featurette">
-            <div class="col-md-7 order-md-2">
-                <h2 class="featurette-heading">캠핑이지 사진모음집<span class="text-muted">여러개 와야함</span></h2>
-                <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
-            </div>
-            <div class="col-md-5 order-md-1">
-                <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="https://i.pinimg.com/564x/11/d1/c9/11d1c920b75b2696af6d7c80016458fb.jpg">
-            </div>
+            <div class="row">
+	            <div class="col-lg-4">
+	               <img src="https://camp.yjcmc.or.kr/epoc/images/img/land7.jpg" class="rounded m-5" height="350">
+	               <img src="https://i.pinimg.com/564x/d7/ff/07/d7ff0794b9746c4e7ef9f9ba188d08f7.jpg" class="rounded m-2" height="500" width="400">
+	               <img src="https://i.pinimg.com/564x/5b/cb/5f/5bcb5f4b7adf6931236f2380e2c8aa62.jpg" class="rounded float-end m-3" width="350" height="400">
+	            </div>
+	            <div class="col-lg-4">
+	            	<img src="https://camp.yjcmc.or.kr/epoc/images/img/land6.jpg" class="rounded m-3" height="500" width="400">
+	            	<img src="https://i.pinimg.com/564x/d3/fd/70/d3fd70941b2a27d8bce92874aa27dc81.jpg" class="rounded float-start m-3" height="300" width="400">
+	                <img src="https://camp.yjcmc.or.kr/epoc/images/img/land2.jpg" class="rounded m-2" width="400" height="400">
+	            </div>
+	            <div class="col-lg-4">
+	            	<img src="https://i.pinimg.com/736x/ea/b3/35/eab335377424507b5be1471e4e89237d.jpg" class="rounded float-end m-2" height="250" width="370">
+	            	<img src="https://i.pinimg.com/564x/6f/6f/7c/6f6f7ce84ee3db91cf7f76e08dadb717.jpg" class="rounded" height="500" width="400">
+	                <img src="https://i.pinimg.com/564x/5e/ee/20/5eee20a1e613fa26dff13a1456762a9a.jpg" class="rounded float-start mt-3" width="420" height="530">
+	            </div>
             </div>
 
         </div>
@@ -219,6 +224,12 @@ window.onload = () => {
     </section>  
 		
 <script>
+		// 팝업
+		function openWindowPop(url, name){
+		    var options = 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no';
+		    window.open(url, name, options);
+		}
+
 		const clockString = () => {
 	        const f = (n) => {
 	            return n <10 ? "0" + n : n;
@@ -310,7 +321,7 @@ window.onload = () => {
 							//강수량(1시간)
 							if(data.category == 'RN1'){
 								if(data.fcstValue != '강수없음'){
-									description.style.fontSize = '15px';
+									description.style.fontSize = '22px';
 									description.style.top = '15%';
 									description.innerHTML += ` 강수량 : \${data.fcstValue}<br>`
 								}
@@ -324,23 +335,23 @@ window.onload = () => {
 					//맑음(1), 구름많음(3), 흐림(4)
 					if(comb[0] == 0 && comb[1] == 1){
 						console.log('걍 맑음 그 자체');
-						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/sun.png" alt="" style="width: 210px; height: 210px;">`;
+						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/sun.png" alt="" style="width: 300px; height: 300px;">`;
 					}
 					if(comb[0] == 0 && (comb[1] == 3 || comb[1] == 4)){
 						console.log('걍 흐리기만 함');
-						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/cloudy.png" alt="" style="width: 210px; height: 210px;">`;
+						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/cloudy.png" alt="" style="width: 300px; height: 300px;">`;
 					}
 					if((comb[0] == 5 || comb[0] == 1) && (comb[1] == 3 || comb[1] == 4)){
 						console.log('비오고 흐림');
-						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/rainAndCloud.png" alt="" style="width: 210px; height: 210px;">`;
+						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/rainAndCloud.png" alt="" style="width: 300px; height: 300px;">`;
 					}
 					if((comb[0] == 3 || comb[0] == 7) && (comb[1] == 3 || comb[1] == 4)){
 						console.log('와 눈온당');
-						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/snowman.png" alt="" style="width: 210px; height: 210px;">`;
+						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/snowman.png" alt="" style="width: 300px; height: 300px;">`;
 					}
 					if((comb[0] == 2 || comb[0] == 6) && (comb[1] == 3 || comb[1] == 4)){
 						console.log('비랑 눈이랑 같이 옴');
-						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/rainAndSnow.png" alt="" style="width: 210px; height: 210px;">`;
+						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/rainAndSnow.png" alt="" style="width: 300px; height: 300px;">`;
 					}
 				},
 				error : console.log
@@ -375,7 +386,6 @@ function lineDisplay(){
 	document.querySelector('#btn_select2').style.display = 'none';
 	lineSearch();
 };
-
 function research() {
     document.querySelector('#map_div').innerHTML = '';
     document.querySelector('#xyCode').style.display = 'inline';
@@ -384,10 +394,8 @@ function research() {
 	document.querySelector('#btn_select2').style.display = 'inline';
     initTmap();
 };
-
 var d = new Date();
 document.getElementById("day").innerHTML = d.getDate();
-
 var month = new Array();
 month[0] = "January";
 month[1] = "February";
