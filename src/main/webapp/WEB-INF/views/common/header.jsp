@@ -107,8 +107,22 @@ a {
 	background-color:  #A8A4CE !important;
 	color: white !important;
 }
+
+
 </style>
 <script>
+//스크롤 배경색 변경
+//스크롤 200px이상일때 박스 상단 따라다니기 및 배경색 변경
+$(window).scroll(function() {
+
+	if($(this).scrollTop() > 200) {
+		$("#navbar").css('background','rgba(60, 60, 60, 0.7)');
+	}
+	else {
+		$("#navbar").css('background','rgba(250, 250, 250, 0)');
+	}
+});
+
 const beforeTime = (alarmDate) => {
 	  const millis = new Date().getTime() - new Date(alarmDate).getTime();
 	  const seconds = Math.floor(millis / 1000);
@@ -277,9 +291,9 @@ window.addEventListener('load', (e) => {
 </sec:authorize>
 </head>
 <body>
-	<nav class="navbar-light fixed-top p-1">
+	<nav class="navbar-light fixed-top" id="navbar">
 		<div class="container">
-			<header class="blog-header py-3">
+			<header class="blog-header">
 				<div class="row flex-nowrap justify-content-between align-items-center">
 					<div class="col-4 pt-1">
 						<button class="navbar-toggler" type="button"
@@ -310,6 +324,7 @@ window.addEventListener('load', (e) => {
 								</span>
 							</button>
 							<form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
+								<div class="header-layer shadow mb-5 bg-body rounded"></div>
 								<button class="btn btn-primary" type="submit">로그아웃</button>
 							</form:form>
 						</sec:authorize>
@@ -454,7 +469,7 @@ window.addEventListener('load', (e) => {
 		<div class="carousel-inner">
 		
 			<div class="carousel-item active">
-				<img src="${pageContext.request.contextPath}/resources/images/dark1.jpeg" width="100%" height="750px">
+				<img src="https://cdn.pixabay.com/photo/2020/05/26/12/55/milkyway-5222932_960_720.jpg" width="100%" height="550px">
 
 				<div class="container">
 					<div class="carousel-caption text-start">
@@ -466,7 +481,7 @@ window.addEventListener('load', (e) => {
 			</div>
 			
 			<div class="carousel-item">
-				<img src="${pageContext.request.contextPath}/resources/images/mountain2.jpeg" width="100%" height="750px">
+				<img src="${pageContext.request.contextPath}/resources/images/mountain2.jpeg" width="100%" height="550px">
 
 				<div class="container">
 					<div class="carousel-caption">
@@ -478,7 +493,7 @@ window.addEventListener('load', (e) => {
 			</div>
 			
 			<div class="carousel-item">
-				<img src="${pageContext.request.contextPath}/resources/images/portugal3.jpeg" width="100%" height="750px">
+				<img src="${pageContext.request.contextPath}/resources/images/portugal3.jpeg" width="100%" height="550px">
 
 				<div class="container">
 					<div class="carousel-caption text-end">
