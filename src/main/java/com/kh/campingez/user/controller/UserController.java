@@ -1,6 +1,5 @@
 package com.kh.campingez.user.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -105,8 +105,22 @@ public class UserController {
 	};
 
 	@GetMapping("/userLogin.do")
-	public void userLogin() {
-
+	public void userLogin(@RequestHeader("Referer") String referer, Model model, HttpSession session) {
+		log.debug("referer = {}", referer);
+//		SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+//		log.debug("세이브 = {}", savedRequest);
+		if(referer.contains("/userLogin.do")) {
+			referer = "/";
+		}
+		if(referer.contains("/userEnroll.do")) {
+			referer = "/";
+		}
+		if(referer.contains("/userPasswordUpdate.do")) {
+			referer = "/";
+		}
+		
+		model.addAttribute("loginRedirect", referer);
+		session.setAttribute("loginRedirect", referer);
 	}
 
 //	@PostMapping("/userLoginSuccess.do")

@@ -38,7 +38,7 @@ public class DataServiceImpl implements DataService {
 				  + "&pageNo=1"
 				  + "&base_date=" + date
 				  + "&base_time=" + time
-				  + "&nx=60&ny=38";
+				  + "&nx=100&ny=90";
 		//우도 x : 60 y : 38
 		//경주 x : 100 y : 90
 		//수원 x : 61 y : 120

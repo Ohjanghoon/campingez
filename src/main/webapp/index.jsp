@@ -32,7 +32,7 @@ window.onload = () => {
             </div>
             <div class="col-md-5">
             	<!-- 해석님 여기 날씨 이미지가 상단에 고정되서 나와유 ㅠㅠ -->
-            	<!-- <div class="weatherContainer" style="height: 400px;">
+            	<div class="weatherContainer" style="height: 400px;">
 					<article class="widget">
 					    <div class="weatherIcon" style="text-align: center;"></div>
 					    <div class="weatherData">
@@ -45,10 +45,8 @@ window.onload = () => {
 					      <h5 class="day" id="day"></h5>
 					    </div>
 					</article>
-					<div class="weatherText">오늘의 날씨</div>
 				</div>
-				<div id="weather"></div> -->
-                <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="https://i.pinimg.com/564x/2a/5b/80/2a5b8055099fb3eee4e4691c720c1433.jpg">
+                <!-- <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="https://i.pinimg.com/564x/2a/5b/80/2a5b8055099fb3eee4e4691c720c1433.jpg"> -->
         
             </div>
             </div>
@@ -310,7 +308,7 @@ window.onload = () => {
 							//강수량(1시간)
 							if(data.category == 'RN1'){
 								if(data.fcstValue != '강수없음'){
-									description.style.fontSize = '15px';
+									description.style.fontSize = '22px';
 									description.style.top = '15%';
 									description.innerHTML += ` 강수량 : \${data.fcstValue}<br>`
 								}
@@ -324,23 +322,23 @@ window.onload = () => {
 					//맑음(1), 구름많음(3), 흐림(4)
 					if(comb[0] == 0 && comb[1] == 1){
 						console.log('걍 맑음 그 자체');
-						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/sun.png" alt="" style="width: 210px; height: 210px;">`;
+						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/sun.png" alt="" style="width: 300px; height: 300px;">`;
 					}
 					if(comb[0] == 0 && (comb[1] == 3 || comb[1] == 4)){
 						console.log('걍 흐리기만 함');
-						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/cloudy.png" alt="" style="width: 210px; height: 210px;">`;
+						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/cloudy.png" alt="" style="width: 300px; height: 300px;">`;
 					}
 					if((comb[0] == 5 || comb[0] == 1) && (comb[1] == 3 || comb[1] == 4)){
 						console.log('비오고 흐림');
-						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/rainAndCloud.png" alt="" style="width: 210px; height: 210px;">`;
+						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/rainAndCloud.png" alt="" style="width: 300px; height: 300px;">`;
 					}
 					if((comb[0] == 3 || comb[0] == 7) && (comb[1] == 3 || comb[1] == 4)){
 						console.log('와 눈온당');
-						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/snowman.png" alt="" style="width: 210px; height: 210px;">`;
+						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/snowman.png" alt="" style="width: 300px; height: 300px;">`;
 					}
 					if((comb[0] == 2 || comb[0] == 6) && (comb[1] == 3 || comb[1] == 4)){
 						console.log('비랑 눈이랑 같이 옴');
-						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/rainAndSnow.png" alt="" style="width: 210px; height: 210px;">`;
+						document.querySelector('.weatherIcon').innerHTML += `<img src="${pageContext.request.contextPath}/resources/images/weather/rainAndSnow.png" alt="" style="width: 300px; height: 300px;">`;
 					}
 				},
 				error : console.log
@@ -375,7 +373,6 @@ function lineDisplay(){
 	document.querySelector('#btn_select2').style.display = 'none';
 	lineSearch();
 };
-
 function research() {
     document.querySelector('#map_div').innerHTML = '';
     document.querySelector('#xyCode').style.display = 'inline';
@@ -384,10 +381,8 @@ function research() {
 	document.querySelector('#btn_select2').style.display = 'inline';
     initTmap();
 };
-
 var d = new Date();
 document.getElementById("day").innerHTML = d.getDate();
-
 var month = new Array();
 month[0] = "January";
 month[1] = "February";
