@@ -95,6 +95,18 @@ a {
 	max-width:400px;
 	height:30px;
 }
+.btn-primary{
+ 	background-color:  #A8A4CE !important;
+ 	border-color:  #A8A4CE !important;
+}
+.btn-outline-primary{
+	border-color: #A8A4CE !important;
+	color: #A8A4CE !important;
+}
+.btn-outline-primary:hover{
+	background-color:  #A8A4CE !important;
+	color: white !important;
+}
 </style>
 <script>
 const beforeTime = (alarmDate) => {
@@ -265,148 +277,231 @@ window.addEventListener('load', (e) => {
 </sec:authorize>
 </head>
 <body>
-	<nav class="navbar navbar-light bg-light p-1">
-        <div class="container">
-            <a href="${pageContext.request.contextPath}/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-              <img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo2.png" alt="" width="200">
-            </a>
-            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="${pageContext.request.contextPath}/" class="nav-link px-2 link-secondary">Home</a></li>
-              <li><a href="#" class="nav-link px-2 link-dark">보류</a></li>
-              <li><a href="#" class="nav-link px-2 link-dark">보류</a></li>
-              <li><a href="#" class="nav-link px-2 link-dark">보류</a></li>
-              <li><a href="#" class="nav-link px-2 link-dark">보류</a></li>
-            </ul>
-            <div class="col-md-2 text-end">
-              <sec:authorize access="isAnonymous()">
-                <button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userLogin.do';" class="btn btn-outline-primary me-2">Login</button>
-                <button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userEnroll.do';" class="btn btn-primary">Sign-up</button>
-              </sec:authorize>
-              <sec:authorize access="isAuthenticated()">
-					<button type="button"
-						class="btn btn-light position-relative" id="bell">
-						<i class="fa-regular fa-bell fa-lg"></i>
-							<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger visually-hidden" id="new-alarm">N 
-							<span class="visually-hidden">New alerts</span>
-						</span>
-					</button>
-					<div class="header-layer shadow mb-5 bg-body rounded">
-						 
+	<nav class="navbar-light fixed-top p-1">
+		<div class="container">
+			<header class="blog-header py-3">
+				<div class="row flex-nowrap justify-content-between align-items-center">
+					<div class="col-4 pt-1">
+						<button class="navbar-toggler" type="button"
+							data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+							aria-controls="offcanvasNavbar">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+				    </div>
+					<div class="col-4 text-center">
+						<a href="${pageContext.request.contextPath}/" class="blog-header-logo text-dark"> 
+							<img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo2.png" alt="" width="320">
+						</a>
 					</div>
-                <form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
-                  <button type="submit">로그아웃</button>
-                </form:form>
-              </sec:authorize>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-              <div>
-                <img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo2.png" alt="" width="120">
-                <span class="fs-5 fw-semibold">Camping Easy</span>
-              </div>
-              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-              <ul class="list-unstyled ps-0">
-                <li class="mb-3">
-                  <span><i class="fa-solid fa-bullhorn"></i></span>
-                  <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
-                    공지사항
-                  </button>
-                  <div class="collapse" id="home-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      <li><a href="${pageContext.request.contextPath}/notice/list" class="link-dark rounded p-2">공지사항</a></li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="border-top my-3"></li>
-                <li class="mb-3">
-                  <span><i class="fa-solid fa-tent"></i></span>
-                  <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    예약 & 양도
-                  </button>
-                  <div class="collapse" id="dashboard-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      <li><a href="${pageContext.request.contextPath}/reservation/intro.do" class="link-dark rounded p-2">예약</a></li>
-                      <li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do" class="link-dark rounded p-2">양도</a></li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="border-top my-3"></li>
-                <li class="mb-3">
-                  <span><i class="fa-solid fa-pen"></i></span>
-                  <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-                    커뮤니티
-                  </button>
-                  <div class="collapse" id="orders-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      <li><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-2">중고거래</a></li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="border-top my-3"></li>
-                <li class="mb-3">
-                  <span><i class="fa-solid fa-comment-dots"></i></span>
-                  <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#market-collapse" aria-expanded="false">
-                    1:1 문의
-                  </button>
-                  <div class="collapse" id="market-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      <li><a href="${pageContext.request.contextPath}/inquire/inquireList.do" class="link-dark rounded p-2">1:1 문의</a></li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="border-top my-3"></li>
-                <li class="mb-3">
-                <span><i class="fa-solid fa-star-half-stroke"></i></span>
-                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#pass-collapse" aria-expanded="false">
-                  리뷰
-                </button>
-                <div class="collapse" id="pass-collapse">
-                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="${pageContext.request.contextPath}/review/reviewList.do" class="link-dark rounded p-2">리뷰</a></li>
-                  </ul>
-                </div>
-              </li>
-              <li class="border-top my-3"></li>
-              <li class="mb-5">
-                <span><i class="fa-solid fa-house-lock"></i></span>
-                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-                  관리자
-                </button>
-                <div class="collapse" id="account-collapse">
-                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-2">관리자페이지</a></li>
-                  </ul>
-                </div>
-                </li>
-              </ul>
-              <sec:authorize access="isAnonymous()">
-                <button type="button" onclick="location.href='${pageContext.request.contextPath}/user/userLogin.do';" class="btn btn-outline-primary me-2">Login</button>
-              </sec:authorize>
-              <sec:authorize access="isAuthenticated()">
-                <div class="dropdown">
-                  <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="${pageContext.request.contextPath}/resources/images/user.jpeg" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong><sec:authentication property="principal.username"/><sec:authentication property="authorities" />님, 안녕하세요!</strong>
-                  </a>
-                  <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myPage.do">내정보</a></li>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myReservation.do">예약 & 리뷰</a></li>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myLikeList.do">찜 목록</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userEnroll.do">로그아웃</a></li>
-                  </ul>
-                </div>
-              </sec:authorize>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <div class="title">
+					<div class="col-4 d-flex justify-content-end align-items-center">
+						<sec:authorize access="isAnonymous()">
+							<button type="button"
+								onclick="location.href='${pageContext.request.contextPath}/user/userLogin.do';"
+								class="btn btn-outline-primary me-2">Login</button>
+							<button type="button"
+								onclick="location.href='${pageContext.request.contextPath}/user/userEnroll.do';"
+								class="btn btn-primary">Sign-up</button>
+						</sec:authorize>
+						<sec:authorize access="isAuthenticated()">
+							<button type="button" class="btn btn-light position-relative" id="bell">
+								<i class="fa-regular fa-bell fa-lg"></i> 
+								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger visually-hidden"
+									id="new-alarm">N <span class="visually-hidden">New alerts</span>
+								</span>
+							</button>
+							<form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
+								<button class="btn btn-primary" type="submit">로그아웃</button>
+							</form:form>
+						</sec:authorize>
+					</div>
+				</div>
+			</header>
+		</div>
+	</nav>
+
+	<!-- side bar  start -->
+	<div class="offcanvas offcanvas-start" tabindex="-1"
+		id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+		<div class="offcanvas-header">
+			<div>
+				<img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo2.png" alt="" width="120">
+				<span class="fs-5 fw-semibold">CampingEasy</span>
+			</div>
+			<button type="button" class="btn-close text-reset"
+				data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+			<ul class="list-unstyled ps-0">
+			
+				<li class="mb-3"><span><i class="fa-solid fa-bullhorn"></i></span>
+					<button class="btn btn-toggle align-items-center rounded collapsed"
+						data-bs-toggle="collapse" data-bs-target="#home-collapse"
+						aria-expanded="false">공지사항</button>
+					<div class="collapse" id="home-collapse">
+						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+							<li><a href="${pageContext.request.contextPath}/notice/list"class="link-dark rounded p-2">공지사항</a></li>
+						</ul>
+					</div>
+				</li>
+				
+				<li class="border-top my-3"></li>
+				
+				<li class="mb-3"><span><i class="fa-solid fa-tent"></i></span>
+					<button class="btn btn-toggle align-items-center rounded collapsed"
+						data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
+						aria-expanded="false">예약 & 양도</button>
+					<div class="collapse" id="dashboard-collapse">
+						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+							<li><a href="${pageContext.request.contextPath}/reservation/intro.do" class="link-dark rounded p-2">예약</a></li>
+							<li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do" class="link-dark rounded p-2">양도</a></li>
+						</ul>
+					</div>
+				</li>
+				
+				<li class="border-top my-3"></li>
+				
+				<li class="mb-3"><span><i class="fa-solid fa-pen"></i></span>
+					<button class="btn btn-toggle align-items-center rounded collapsed"
+						data-bs-toggle="collapse" data-bs-target="#orders-collapse"
+						aria-expanded="false">커뮤니티</button>
+					<div class="collapse" id="orders-collapse">
+						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+							<li><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-2">중고거래</a></li>
+						</ul>
+					</div>
+				</li>
+				
+				<li class="border-top my-3"></li>
+				
+				<li class="mb-3"><span><i class="fa-solid fa-comment-dots"></i></span>
+					<button class="btn btn-toggle align-items-center rounded collapsed"
+						data-bs-toggle="collapse" data-bs-target="#market-collapse"
+						aria-expanded="false">1:1 문의</button>
+					<div class="collapse" id="market-collapse">
+						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+							<li><a href="${pageContext.request.contextPath}/inquire/inquireList.do" class="link-dark rounded p-2">1:1 문의</a></li>
+						</ul>
+					</div>
+				</li>
+				
+				<li class="border-top my-3"></li>
+				
+				<li class="mb-3"><span><i class="fa-solid fa-star-half-stroke"></i></span>
+					<button class="btn btn-toggle align-items-center rounded collapsed"
+						data-bs-toggle="collapse" data-bs-target="#pass-collapse"
+						aria-expanded="false">리뷰</button>
+					<div class="collapse" id="pass-collapse">
+						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+							<li><a href="${pageContext.request.contextPath}/review/reviewList.do" class="link-dark rounded p-2">리뷰</a></li>
+						</ul>
+					</div>
+				</li>
+				
+				<li class="border-top my-3"></li>
+				
+				<li class="mb-5"><span><i class="fa-solid fa-house-lock"></i></span>
+					<button class="btn btn-toggle align-items-center rounded collapsed"
+						data-bs-toggle="collapse" data-bs-target="#account-collapse"
+						aria-expanded="false">관리자</button>
+					<div class="collapse" id="account-collapse">
+						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+							<li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-2">관리자페이지</a></li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+			
+			<sec:authorize access="isAnonymous()">
+				<button type="button"
+					onclick="location.href='${pageContext.request.contextPath}/user/userLogin.do';"
+					class="btn btn-outline-primary me-2">Login</button>
+			</sec:authorize>
+			
+			<sec:authorize access="isAuthenticated()">
+				<div class="dropdown">
+					<a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+						id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+						<img src="${pageContext.request.contextPath}/resources/images/user.jpeg" alt="" width="32" height="32" class="rounded-circle me-2">
+						 <strong>
+							 <sec:authentication property="principal.username" /> 
+							 <sec:authentication property="authorities" />님, 안녕하세요!
+						 </strong>
+					</a>
+					<ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myPage.do">내정보</a></li>
+						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myReservation.do">예약 & 리뷰</a></li>
+						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myLikeList.do">찜 목록</a></li>
+						<li><hr class="dropdown-divider"></li>
+						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userEnroll.do">로그아웃</a></li>
+					</ul>
+				</div>
+			</sec:authorize>
+		</div>
+	</div>
+	<!-- side bar  end -->
+
+	<!-- carousel start -->
+	<div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+		<div class="carousel-indicators">
+			<button type="button" data-bs-target="#myCarousel"
+				data-bs-slide-to="0" class="active" aria-current="true"
+				aria-label="Slide 1"></button>
+			<button type="button" data-bs-target="#myCarousel"
+				data-bs-slide-to="1" aria-label="Slide 2"></button>
+			<button type="button" data-bs-target="#myCarousel"
+				data-bs-slide-to="2" aria-label="Slide 3"></button>
+		</div>
+		<div class="carousel-inner">
+		
+			<div class="carousel-item active">
+				<img src="${pageContext.request.contextPath}/resources/images/dark1.jpeg" width="100%" height="750px">
+
+				<div class="container">
+					<div class="carousel-caption text-start">
+						<h1>Event Notice1</h1>
+						<p>Some representative placeholder content for the first slideof the carousel.</p>
+						<p><a class="btn btn-sm btn-primary" href="#">Sign up today</a></p>
+					</div>
+				</div>
+			</div>
+			
+			<div class="carousel-item">
+				<img src="${pageContext.request.contextPath}/resources/images/mountain2.jpeg" width="100%" height="750px">
+
+				<div class="container">
+					<div class="carousel-caption">
+						<h1>Event Notice2</h1>
+						<p>Some representative placeholder content for the second slide of the carousel.</p>
+						<p><a class="btn btn-sm btn-primary" href="#">Learn more</a></p>
+					</div>
+				</div>
+			</div>
+			
+			<div class="carousel-item">
+				<img src="${pageContext.request.contextPath}/resources/images/portugal3.jpeg" width="100%" height="750px">
+
+				<div class="container">
+					<div class="carousel-caption text-end">
+						<h1>Event Notice3</h1>
+						<p>Some representative placeholder content for the third slide of this carousel.</p>
+						<p><a class="btn btn-sm btn-primary" href="#">Browse gallery</a></p>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Next</span>
+		</button>
+	</div>
+	<!-- carousel end -->
+
+	<div class="title">
     <div>
         <div id="chatbot" class="main-card ch-collapsed">
     <button id="chatbot_toggle">
