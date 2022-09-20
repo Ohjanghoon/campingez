@@ -35,4 +35,7 @@ public class CampZoneController {
 	@GetMapping("/info")
 	public void campInfo() {}
 
+	@GetMapping("/rootSearch")
+	public void rootSearch() {}
+
 }
