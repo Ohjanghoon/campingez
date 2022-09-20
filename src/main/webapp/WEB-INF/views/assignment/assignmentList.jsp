@@ -53,7 +53,6 @@
     color: #A8A4CE;
     cursor: pointer;
     position: fixed; bottom: 200px; right: 350px;
-    z-index: 100000;
 }
 #btn_bottom {
 	width: 50px; 
@@ -62,7 +61,6 @@
     color: #A8A4CE;
     cursor: pointer;
     position: fixed; bottom: 150px; right: 350px;
-    z-index: 100000;
 }
 </style>
 <div class="container">

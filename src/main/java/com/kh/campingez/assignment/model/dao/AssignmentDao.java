@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.assignment.model.dto.AssignmentEntity;
@@ -17,7 +19,7 @@ public interface AssignmentDao {
 
 	List<Assignment> selectAssignmentList(@Param("start") int start, @Param("end") int end);
 
-	@Select("select count(*) from assignment join reservation r using(res_no, user_id) where res_checkin - 1 > current_date")
+	@Select("select count(*) from assignment join reservation r using(res_no, user_id) where res_checkin - 1 > current_date and	assign_state != '양도완료'")
 	int getTotalContent();
 	
 	@Select("select * \r\n"
@@ -26,7 +28,7 @@ public interface AssignmentDao {
 			+ "    minus\r\n"
 			+ "    select r.* from reservation r join assignment a on r.res_no = a.res_no)\r\n"
 			+ "where\r\n"
-			+ "	   res_checkin > current_date - 1\r\n"
+			+ "	   res_checkin - 1 > current_date\r\n"
 			+ "	   and\r\n"
 			+ "    res_state = '예약완료'\r\n"
 			+ "order by\r\n"
@@ -37,22 +39,28 @@ public interface AssignmentDao {
 	Reservation selectResInfo(String resNo);
 
 	@Insert("insert into assignment values('AS' || seq_assign_no.nextval, #{userId}, #{resNo},"
-			+ " #{assignTitle}, #{assignContent}, #{assignPrice}, default, default, default, #{assignTransfer})")
+			+ " #{assignTitle}, #{assignContent}, #{assignPrice}, default, default, default, #{assignTransfer}, null)")
 	int insertAssignment(AssignmentEntity assignment);
 
 	Assignment assignmentDetail(String assignNo);
 
-	int insertAssignmentApply(Reservation reservation);
-	
 	@Select("select assign_state from assignment where assign_no = #{assignNo}")
 	String selectAssignState(String assignNo);
-
-	@Update("update assignment set assign_state = '양도중', assign_transfer = #{assignTransfer} where assign_no = #{assignNo}")
-	int updateAssignStateAndTransfer(@Param("assignNo") String assignNo, @Param("assignTransfer") String assignTransfer);
-
-	List<Assignment> selectAssignmentList();
-
 	
+	@Update("update assignment set assign_state = '양도중', assign_transfer = #{assignTransfer}, assign_apply_date = current_date where assign_no = #{assignNo}")
+	int updateAssignStateAndTransfer(@Param("assignNo") String assignNo, @Param("assignTransfer") String assignTransfer);
+	
+	@Select("select res_no from reservation where camp_id = #{campId} and user_id = #{userId} and res_checkin = #{resCheckin} and res_checkout = #{resCheckout}")
+	String selectOneReservation(Reservation reservation);
+	
+	int insertAssignmentApply(Reservation reservation);
+
+	int updateAssignmentApply(Reservation reservation);
+
+	int updateAssignmetLimitTime();
+
+	int deleteAssignResLimitTime();
+
 	
 	
 
