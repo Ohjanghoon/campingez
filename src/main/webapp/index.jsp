@@ -24,11 +24,11 @@ window.onload = () => {
 <div class="container">
 <section>
         <div class="container marketing">
-
+        
             <div class="row featurette">
-            <div class="col-md-7">
-                <h2 class="featurette-heading">오늘 캠핑장 날씨<span class="text-muted">??</span></h2>
-                <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
+            <div class="col-md-7 d-inline-block">
+                <h2 class="featurette-heading">현재 캠핑장 날씨정보<span class="text-muted"></span></h2>
+                <p class="lead">캠핑이지는 고객님들의 편의를 위해 날씨정보를 제공합니다.</p>
             </div>
             <div class="col-md-5">
             	<!-- 해석님 여기 날씨 이미지가 상단에 고정되서 나와유 ㅠㅠ -->
@@ -46,7 +46,6 @@ window.onload = () => {
 					    </div>
 					</article>
 				</div>
-                <!-- <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="https://i.pinimg.com/564x/2a/5b/80/2a5b8055099fb3eee4e4691c720c1433.jpg"> -->
         
             </div>
             </div>
@@ -59,13 +58,13 @@ window.onload = () => {
                 <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="https://i.pinimg.com/564x/e8/d0/b2/e8d0b2aa9819b489fbc1958adba0c2a2.jpg">
         
                 <h2 class="m-3">이용안내</h2>
-                <p><a class="btn btn-secondary" href="#">확인 &raquo;</a></p>
+                <p><a class="btn btn-secondary" href="javascript:openWindowPop('${pageContext.request.contextPath}/camp/info.do','popup');">확인 &raquo;</a></p>
             </div>
             <div class="col-lg-4">
                 <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="https://i.pinimg.com/564x/4d/0d/18/4d0d188d7d243052d9339d1cb200643d.jpg">
         
                 <h2 class="m-3">예약 조회</h2>
-                <p><a class="btn btn-secondary" href="#">조회 &raquo;</a></p>
+                <p><a class="btn btn-secondary" href="javascript:openWindowPop('${pageContext.request.contextPath}/reservation/find.do','popup');">조회 &raquo;</a></p>
             </div>
             <div class="col-lg-4">
                 <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="https://i.pinimg.com/564x/6f/71/bb/6f71bb1dc7c58ae8dd877d8784a36cbb.jpg">
@@ -77,14 +76,22 @@ window.onload = () => {
         
             <hr class="featurette-divider">
         
-            <div class="row featurette">
-            <div class="col-md-7 order-md-2">
-                <h2 class="featurette-heading">캠핑이지 사진모음집<span class="text-muted">여러개 와야함</span></h2>
-                <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
-            </div>
-            <div class="col-md-5 order-md-1">
-                <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="https://i.pinimg.com/564x/11/d1/c9/11d1c920b75b2696af6d7c80016458fb.jpg">
-            </div>
+            <div class="row">
+	            <div class="col-lg-4">
+	               <img src="https://camp.yjcmc.or.kr/epoc/images/img/land7.jpg" class="rounded m-5" height="350">
+	               <img src="https://i.pinimg.com/564x/d7/ff/07/d7ff0794b9746c4e7ef9f9ba188d08f7.jpg" class="rounded m-2" height="500" width="400">
+	               <img src="https://i.pinimg.com/564x/5b/cb/5f/5bcb5f4b7adf6931236f2380e2c8aa62.jpg" class="rounded float-end m-3" width="350" height="400">
+	            </div>
+	            <div class="col-lg-4">
+	            	<img src="https://camp.yjcmc.or.kr/epoc/images/img/land6.jpg" class="rounded m-3" height="500" width="400">
+	            	<img src="https://i.pinimg.com/564x/d3/fd/70/d3fd70941b2a27d8bce92874aa27dc81.jpg" class="rounded float-start m-3" height="300" width="400">
+	                <img src="https://camp.yjcmc.or.kr/epoc/images/img/land2.jpg" class="rounded m-2" width="400" height="400">
+	            </div>
+	            <div class="col-lg-4">
+	            	<img src="https://i.pinimg.com/736x/ea/b3/35/eab335377424507b5be1471e4e89237d.jpg" class="rounded float-end m-2" height="250" width="370">
+	            	<img src="https://i.pinimg.com/564x/6f/6f/7c/6f6f7ce84ee3db91cf7f76e08dadb717.jpg" class="rounded" height="500" width="400">
+	                <img src="https://i.pinimg.com/564x/5e/ee/20/5eee20a1e613fa26dff13a1456762a9a.jpg" class="rounded float-start mt-3" width="420" height="530">
+	            </div>
             </div>
 
         </div>
@@ -217,6 +224,12 @@ window.onload = () => {
     </section>  
 		
 <script>
+		// 팝업
+		function openWindowPop(url, name){
+		    var options = 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no';
+		    window.open(url, name, options);
+		}
+
 		const clockString = () => {
 	        const f = (n) => {
 	            return n <10 ? "0" + n : n;
