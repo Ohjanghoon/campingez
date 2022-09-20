@@ -43,4 +43,6 @@ public interface UserInfoService {
 
 	int getTotalLike(User user);
 
+	Reservation selectReservationDetail(String resNo);
+
 }
