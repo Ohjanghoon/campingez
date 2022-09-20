@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -106,6 +107,18 @@ public class UserController {
 	@GetMapping("/userLogin.do")
 	public void userLogin(@RequestHeader("Referer") String referer, Model model, HttpSession session) {
 		log.debug("referer = {}", referer);
+//		SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+//		log.debug("세이브 = {}", savedRequest);
+		if(referer.contains("/userLogin.do")) {
+			referer = "/";
+		}
+		if(referer.contains("/userEnroll.do")) {
+			referer = "/";
+		}
+		if(referer.contains("/userPasswordUpdate.do")) {
+			referer = "/";
+		}
+		
 		model.addAttribute("loginRedirect", referer);
 		session.setAttribute("loginRedirect", referer);
 	}

@@ -37,7 +37,8 @@
 			login-processing-url="/user/userLogin.do"
 			username-parameter="userId"
 			password-parameter="password"			
-			default-target-url="/user/userLogin.do"
+			default-target-url="/"
+			always-use-default-target="false"
 			authentication-success-handler-ref = "customAuthenticationSuccessHandler"/>
 						
 		<logout 
