@@ -47,6 +47,7 @@ a {
     font-size: 13px;
     max-height: 300px;
     z-index:999;
+    top: 155px;
 }
 .header-layer > * {
 	background-color: white;
@@ -149,7 +150,6 @@ const beforeTime = (alarmDate) => {
 	<script src="${pageContext.request.contextPath}/resources/js/ws.js"></script>
 	
 <script>
-
 // 알림
 window.addEventListener('load', (e) => {
 	
@@ -309,6 +309,7 @@ window.addEventListener('load', (e) => {
 									id="new-alarm">N <span class="visually-hidden">New alerts</span>
 								</span>
 							</button>
+							<div class="header-layer shadow mb-5 bg-body rounded"></div>
 							<form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
 								<button class="btn btn-primary" type="submit">로그아웃</button>
 							</form:form>

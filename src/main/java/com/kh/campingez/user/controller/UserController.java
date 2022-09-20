@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -252,5 +253,21 @@ public class UserController {
 		int notReadCount = alarmService.getNotReadCount(userId);
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.body(notReadCount);
+	}
+	
+	@PostMapping("/insertReport.do")
+	public String insertReport(@RequestParam String reportType, @RequestParam String reportContent, @RequestParam String commNo, @RequestParam String userId, HttpServletRequest request, RedirectAttributes redirectAttr) {
+		log.debug("userId = {}", userId);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("reportType", reportType);
+		param.put("reportContent", reportContent);
+		param.put("commNo", commNo);
+		param.put("userId", userId);
+		
+		int result = userService.insertReport(param);
+		redirectAttr.addFlashAttribute("msg", "신고가 접수되었습니다.");
+		
+		return "redirect:" + request.getHeader("Referer");
 	}
 }

@@ -93,4 +93,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public int getTotalLike(User user) {
 		return userInfoDao.getTotalLike(user);
 	}
+	
+	public UserInfoServiceImpl() {
+		// TODO Auto-generated constructor stub
+	}
 }
