@@ -34,9 +34,9 @@ from
 
 <select id="selectTradeByNo" resultMap="tradeViewMap">
 select
-		*
+		t.*
 from
-		trade
+		trade t
 where
 		trade_no = #{tradeNo}
 
@@ -54,6 +54,7 @@ where
 	<result column="trade_success" property="tradeSuccess" />
 	<result column="trade_quality" property="tradeQuality" />
 	<result column="trade_like_count" property="likeCount" />
+	<result column="report_user_id" property="reportUserId" />
 	<collection property="photos" ofType="tradePhoto">
 			<id column="trade_photo_no" property="tradePhotoNo" />
 			<result column="trade_no" property="tdNo"/>

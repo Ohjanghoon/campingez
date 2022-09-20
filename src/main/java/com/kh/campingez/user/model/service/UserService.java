@@ -22,4 +22,6 @@ public interface UserService {
 
 	int userUsePoint(Map<Object, Object> map);
 
+	int insertReport(Map<String, Object> param);
+
 }

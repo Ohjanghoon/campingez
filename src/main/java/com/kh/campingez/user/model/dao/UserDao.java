@@ -2,6 +2,7 @@ package com.kh.campingez.user.model.dao;
 
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -33,5 +34,8 @@ public interface UserDao {
 
 	@Update("update user_coupon set coupon_usedate = current_date where user_id = #{userId} and coupon_code = #{couponCode}")
 	int userUsePoint(Map<Object, Object> map);
+	
+	@Insert("insert into report values(seq_report_no.nextval, #{commNo}, #{userId}, #{reportContent}, default, #{reportType}, default)")
+	int insertReport(Map<String, Object> param);
 
 }

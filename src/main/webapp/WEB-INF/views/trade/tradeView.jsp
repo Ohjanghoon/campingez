@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래 상세보기" name="title" />
 </jsp:include>
@@ -49,7 +50,7 @@
                                 판매자와 대화하기
                             </button>
                         </div>
-                        	<sec:authorize access="isAuthenticated()"> 
+                       	<sec:authorize access="isAuthenticated()"> 
                         <div class="d-flex" style="margin-top:10px; height:38px;">
                             <c:if test="${not empty user.userId}">
                             <c:if test="${trade.tradeSuccess eq '거래 대기중'}">
@@ -72,20 +73,96 @@
                         <div class="jobgutdeul" style="text-align:right;">
                             <p>조회수 : ${trade.readCount}</p>
                             <p>좋아요 : ${trade.likeCount} <c:if test="${not empty user.userId}">
-									<form action="${pageContext.request.contextPath}/trade/like.do" name="tradeLikeFrm" >
-									<input type="hidden" name="no" value="${trade.tradeNo}" />
-										<a class="heart">
-											<img id="heart" src="${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png" style="width:30px; heigh:30px; cursor:pointer" >
-										</a>
-									</form>
+							<form action="${pageContext.request.contextPath}/trade/like.do" name="tradeLikeFrm" >
+							<input type="hidden" name="no" value="${trade.tradeNo}" />
+								<a class="heart">
+									<img id="heart" src="${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png" style="width:30px; heigh:30px; cursor:pointer" >
+								</a>
+							</form>
+							<button type="button" id="report-btn" data-report-user-id="${reportUserId}" data-bs-toggle="modal" data-bs-target="#reportModal">신고하기 <i class="fa-solid fa-land-mine-on"></i></button>
 						</c:if>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        
+        <!-- 신고 모달창 -->
+        <form:form name="reportFrm" action="${pageContext.request.contextPath}/user/insertReport.do" method="POST">
+	        <div class="modal" tabindex="-1" id="reportModal">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">게시글 신고하기</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			      	<div class="form-floating">
+				      	<select name="reportType" id="report-type" class="form-select" aria-label="Floating label select example" >
+				      		<option value="" selected disabled>선택</option>
+				      		<c:forEach items="${categoryList}" var="category">
+					      		<option value="${category.categoryId}">${category.categoryName}</option>				      		
+				      		</c:forEach>
+				      	</select>
+				      	<label for="reportType">신고유형</label>
+			      	</div>
+			      	<div class="form-floating">
+					  <textarea class="form-control" name="reportContent" placeholder="신고사유" id="report-content" style="height: 100px"></textarea>
+					  <label for="report-content">신고사유(10자 이상 작성)</label>
+					</div>
+					(<span id="text-count">0</span>/1000)
+					<span id="text-count-info"></span>
+					<input type="hidden" name="commNo" value="${trade.tradeNo}" />
+					<input type="hidden" name="userId" value="${loginMember != 'anonymousUser' ? loginMember.userId : ''}" />
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-primary" id="report">신고<i class="fa-solid fa-land-mine-on"></i></button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+        </form:form>
 <script>
+// 신고 content 글자수
+document.querySelector("#report-content").addEventListener('input', (e) => {
+	const count = document.querySelector("#text-count");
+	count.innerHTML = e.target.value.length;
+	
+	if(e.target.value.length < 10) {
+		count.style.color = 'red';
+	} else {
+		count.style.color = 'black';
+	}
+});
+
+// 신고
+document.querySelector("#report").addEventListener('click', (e) => {
+	const count = document.querySelector("#text-count");
+	const countInfo = document.querySelector("#text-count-info");
+	const reportType = document.querySelector("#report-type");
+	
+	// 글자수 체크
+	if(count.innerHTML < 10 || !reportType.value) {
+		countInfo.innerHTML = '신고유형을 반드시 선택하거나 신고사유를 10자 이상으로 작성해주세요';
+		return;
+	} else {
+		countInfo.innerHTML = '';
+		if(confirm('해당 게시글을 정말로 신고하시겠습니까?')) {
+			document.reportFrm.submit();
+		}
+	}
+});
+
+// 이미 신고한 게시글이라면 모달창 안 열림
+document.querySelector("#reportModal").addEventListener('show.bs.modal', (e) => {
+	const reportUserId = document.querySelector("#report-btn").dataset.reportUserId;
+	
+	if(reportUserId) {
+		alert('이미 신고 접수가 된 게시글입니다.');
+		e.preventDefault();
+	}
+});
+
 // 게시글 삭제
 function deleteTrade(){
 	if(confirm("삭제하실건가요?")){
@@ -160,16 +237,12 @@ $(document).ready(function () {
     });
 });
 
+
 $(document).ready(function () {
 	$("#chatBtn").on('click', (e) => {
 		localStorage.setItem("tradeNo", ${tradeNo});
 	});
 });
-
-
-
-
-
 
 </script>
 
