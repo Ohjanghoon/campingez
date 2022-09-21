@@ -12,12 +12,6 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-<style>
-.btn-primary{
- 	background-color: #A8A4CE !important;
- 	border-color: #A8A4CE !important;
-}
-</style>
 <main>
 	<div class="container">
 		<h2 class="text-center fw-bold pt-5">예약페이지</h2>

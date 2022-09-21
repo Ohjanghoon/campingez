@@ -310,7 +310,7 @@ const beforeTime = (alarmDate) => {
 				    </div>
 					<div class="col-4 text-center">
 						<a href="${pageContext.request.contextPath}/" class="blog-header-logo text-dark"> 
-							<img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo2.png" alt="" width="320">
+							<img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo2.png" alt="" width="200">
 						</a>
 					</div>
 					<div class="col-4 d-flex justify-content-end align-items-center">
@@ -323,12 +323,10 @@ const beforeTime = (alarmDate) => {
 								class="btn btn-primary">Sign-up</button>
 						</sec:authorize>
 						<sec:authorize access="isAuthenticated()">
-							<button type="button" class="btn btn-light position-relative" id="bell">
-								<i class="fa-regular fa-bell fa-lg"></i> 
+							<input type="button" class="btn btn-light position-relative" id="bell" value="🔔"/>
 								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger visually-hidden"
 									id="new-alarm">N <span class="visually-hidden">New alerts</span>
 								</span>
-							</button>
 							<div class="header-layer shadow mb-5 bg-body rounded"></div>
 							<form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
 								<div class="header-layer shadow mb-5 bg-body rounded"></div>
