@@ -197,4 +197,24 @@
 			<result column="category_name" property="categoryName"/>
 		</collection>
 	</resultMap>
+	
+	<!-- https://velog.io/@zawook/Mybatis-Mapper-if -->
+	<update id="updateIsDelete">
+		<if test="type eq 'T'.toString()">
+			update
+				trade
+			set
+				trade_isdelete = 'Y'
+			where
+				trade_no = #{commNo}
+		</if>
+		<if test="type eq 'C'.toString()">
+			update
+				community
+			set
+				comm_isdelete = 'Y'
+			where
+				comm_no = #{commNo}
+		</if>
+	</update>
 </mapper>

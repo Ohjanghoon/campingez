@@ -544,8 +544,23 @@ public class AdminController {
 	
 	@PostMapping("/updateReportAction.do")
 	public String updateReportAction(@RequestParam String commNo) {
-		log.debug("commNo = {}", commNo);
 		int result = adminService.updateReportAction(commNo);
+		
+		return "redirect:/admin/reportList.do";
+	}
+	
+	@PostMapping("/updateReportActionAndIsDelete.do")
+	public String updateReportActionAndIsDelete(@RequestParam String commNo, @RequestParam String type) {
+		Map<String, Object> param = new HashMap<>();
+		String location = type.equals("T") ? "/trade/tradeView.do?no=" + commNo : "";
+		param.put("commNo", commNo);
+		param.put("type", type);
+		param.put("location", location);
+		
+		int result = adminService.updateReportActionAndIsDelete(param);
+		if(result > 0) {
+			result = alarmService.commReportAlarm(param);
+		}
 		
 		return "redirect:/admin/reportList.do";
 	}

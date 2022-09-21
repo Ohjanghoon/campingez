@@ -135,6 +135,8 @@ tr > td {
 					    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
 					      <div class="accordion-body">
 					      	<a href="${pageContext.request.contextPath}/admin/reportList.do">신고관리</a>
+					      </div>
+					      <div class="accordion-body">
 					      	<a href="${pageContext.request.contextPath}/admin/inquireList.do">1:1문의 답변</a>
 					      </div>
 					    </div>
