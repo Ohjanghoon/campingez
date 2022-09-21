@@ -223,9 +223,21 @@ window.onload = () => {
     </section>  
 		
 <script>
+		// 중고거래 최근 3건 비동기 처리
+		window.addEventListener('load', (e) => {
+			$.ajax({
+				url : "${pageContext.request.contextPath}/trade/selectCurrentTrade.do",
+				POST : "POST",
+				success(response) {
+					console.log(response);
+				},
+				error : console.log
+			});
+		});
+		
 		// 팝업
 		function openWindowPop(url, name){
-		    var options = 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no';
+		    var options = 'top=100, left=50, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no';
 		    window.open(url, name, options);
 		}
 
