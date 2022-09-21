@@ -83,6 +83,8 @@ public interface TradeDao {
 
 	@Select("select (select user_id from report where comm_no = t.trade_no and user_id = #{userId}) report_user_id from trade t where trade_no = #{no}")
 	String getUserReportTrade(Map<String, Object> param);
+
+	List<Trade> selectCurrentTrade();
 	
 	
 	
