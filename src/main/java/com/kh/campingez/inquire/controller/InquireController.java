@@ -47,7 +47,7 @@ public class InquireController {
 		log.debug("totalContent = {}", totalContent);
 	
 		String url = request.getRequestURI();
-		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, url);
 		model.addAttribute("pagebar", pagebar);
 	}
 	
