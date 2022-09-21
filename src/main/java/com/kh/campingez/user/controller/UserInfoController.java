@@ -179,10 +179,24 @@ public class UserInfoController {
 	 * !!!!!!!!!!!!!!!!자기 문의글 보기!!!!!!!!!!!!!!!!!!!!!
 	 */
 	@GetMapping("/inquireList.do")
-	public ModelAndView inquireList(Authentication authentication ,Model model, ModelAndView mav) {
+	public ModelAndView inquireList(@RequestParam(defaultValue = "1") int cPage, Authentication authentication ,Model model, ModelAndView mav,HttpServletRequest request) {
+		int limit = 3;
+		Map<String, Object> param = new HashMap<>();
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
 		User principal = (User)authentication.getPrincipal();
-		List<Inquire> list = userInfoService.selectInquireList(principal);
+		List<Inquire> list = userInfoService.selectInquireList(param, principal);
 		log.debug("list = {}", list);
+		
+		//2. pagebar 처리
+		int totalInquire = userInfoService.getTotalInquire(principal);
+		log.debug("totalContent = {}", totalInquire);
+	
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalInquire, url);
+		model.addAttribute("pagebar", pagebar);
+		
 		model.addAttribute("inquireList", list);
 		model.addAttribute("prePageName", "mypage");
 		mav.setViewName("inquire/inquireList");

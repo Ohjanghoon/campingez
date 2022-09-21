@@ -46,6 +46,10 @@
 </style>
 <div class="container w-75" id="applyForm-continer">
 	
+	<sec:authorize access="isAuthenticated()">
+		<sec:authentication property='principal.username' var="loginUser"/>
+		<c:if test="${loginUser eq assign.assignTransfer}" var="transferCheck"></c:if>
+	</sec:authorize>
 	<!-- 양도 정보 -->
 	<div class="mx-auto my-5" id="assignInfo">
 		<strong class="fs-3">양도정보</strong>
@@ -90,7 +94,7 @@
 		<input type="hidden" name="assignNo" value="${assign.assignNo }" />
 		<%-- <input type="hidden" name="resNo" value="${assign.resNo}"/> --%>
 		<input type="hidden" name="campId" value="${res.campId}" />
-		<input type="hidden" name="userId" value="<sec:authentication property='principal.username'/>" />
+		<input type="hidden" name="userId" value="${loginUser}" />
 		<input type="hidden" name="resPrice" value="${assign.assignPrice}" />
 		<input type="hidden" name="checkin" value="${res.resCheckin}"/>
 		<input type="hidden" name="checkout" value="${res.resCheckout}" />
@@ -158,6 +162,25 @@
 
 </div>
 <script>
+const assignTransferCheck = () => {
+	//const transfer = '${assign.assignTransfer}';
+	//console.log(transfer);
+	
+	console.log(${transferCheck});
+	if(!${transferCheck}){
+		alert("다시 시도 바랍니다.");
+		location.href='${pageContext.request.contextPath}/';
+	}
+	
+	
+	
+}
+
+setInterval(() => location.reload(), 1000 * 60 * 10);
+window.onload = () => {
+	assignTransferCheck();
+}
+
 document.querySelectorAll("[name=carExist]").forEach((radio) => {
 	
 	radio.addEventListener('click', (e) => {

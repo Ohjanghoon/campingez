@@ -9,12 +9,17 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/mypage.css" />
 	<div class="container">
-	
+		<h3 style="margin-top:20px;" id="titleLeft">
+			<img style="margin-right:20px;" src="${pageContext.request.contextPath}/resources/images/mypage/question.png" width="50px">
+			1:1 문의
+		</h3>
 		<c:if test="${empty prePageName}">
 			<sec:authorize access="isAuthenticated()">
 				<div class="my-3 d-flex justify-content-end">
 					<button
+						style="margin-top:20px;"
 						type="button"
 						class="btn btn-outline-dark"
 						onclick="location.href='${pageContext.request.contextPath}/inquire/inquireForm.do'">문의하기
@@ -22,9 +27,9 @@
 				</div>
 			</sec:authorize>
 		</c:if>
-	<table class="table table-striped table-hover">
-		<thead>
-			<tr class="table-active text-center">
+	<table class="table table-striped table-hover" id="tradeTable">
+		<thead style=" line-height: 46px;" class="table-light">
+			<tr class="text-center">
 				<th style="width: 5%">No</th>
 				<th style="width: 9%">문의유형</th>
 				<th>작성자</th>
@@ -40,7 +45,7 @@
 					<sec:authentication property="principal.username" var="userId"/>
 					<sec:authorize access="!hasRole('ROLE_ADMIN') and !${userId eq inq.inqWriter}" var="notAllow" />
 				</sec:authorize>
-				<tr data-no="${inq.inqNo}" data-allow="${anonymous or notAllow}" style="cursor:pointer">
+				<tr style=" line-height: 46px; cursor:pointer;" data-no="${inq.inqNo}" data-allow="${anonymous or notAllow}">
 					<td class="text-center">${vs.count}</td>
 					<td class="text-center">${inq.categoryName}</td>
 					<td class="text-center">${inq.inqWriter}</td>

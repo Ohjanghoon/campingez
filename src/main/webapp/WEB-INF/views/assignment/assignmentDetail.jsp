@@ -41,9 +41,13 @@
 }
 
 </style>
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal.username" var="loginUser"/>
+</sec:authorize>		
 <div class="container w-75" id="detail-container">
-	<div>
-		<strong class="fs-3">양도 글</strong>
+	<!-- 양도 글 -->
+	<div class="mx-auto mt-5">
+		<strong class="fs-3"><i class="fa-solid fa-campground"></i> 양도글</strong>
 		<hr />
 		<table class="my-4 mx-auto table" id="assignBoard">
 			<tr>
@@ -60,8 +64,18 @@
 			</tr>
 		</table>
 	</div>
-	<div class="assignInfo mx-auto">
-		<strong class="fs-3">양도정보</strong>
+	
+	<!-- 양도 취소 버튼 영역 -->
+	<div class="text-end">
+		<c:if test="${loginUser eq assign.userId }">
+			<button type="button" class="btn btn-outline-dark" id="btn-assign-delete"
+				onclick="deleteClick()">양도취소</button>
+		</c:if>
+	</div>
+	
+	<!-- 양도 정보 -->
+	<div class="my-5" id="assignInfo">
+		<strong class="fs-3"><i class="fa-solid fa-campground"></i> 양도정보</strong>
 		<hr />
 		<table class="my-2 table">
 			<tr>
@@ -116,18 +130,21 @@
 		<button type="button" class="w-100 my-2 py-2 btn btn-outline-dark" id="btn-readmore">더보기▼</button>
 	</div>
 	
-	
 	<div class="mx-auto my-4">
-		<strong class="fs-3">양도거래 시 유의사항</strong>
+		<strong class="fs-3"><i class="fa-solid fa-house-circle-exclamation"></i> 양도거래 시 유의사항</strong>
 		<div class="card p-3">
 			<ul>
-				<li class="my-2"><strong>반드시 캠핑장의 공지사항/유의사항 등을 숙지하시길 바랍니다. 캠핑장에 입실하여 발생되는 사고 및 분쟁에 대하여 캠핑이지는 책임사유가 없음을 알려 드립니다.
-	(예 : 반려견 입장 불가/최대인원 제한/입,퇴실시간 준수 등)</strong></li>
-				<li class="my-2"><strong>양도자의 사기거래로 인하여 캠핑장에 입실을 못 하시는 경우, 해당여부를 파악하여 예약양도결제금액에 한하여 전액취소처리가 가능합니다.</strong></li>
+				<li class="my-2">
+					<strong># 반드시 캠핑장의 공지사항/유의사항 등을 숙지하시길 바랍니다. 캠핑장에 입실하여 발생되는 사고 및 분쟁에 대하여 캠핑이지는 책임사유가 없음을 알려 드립니다.
+	(예 : 반려견 입장 불가/최대인원 제한/입,퇴실시간 준수 등)</strong>
+				</li>
+				<li class="my-2">
+					<strong># 양도자의 사기거래로 인하여 캠핑장에 입실을 못 하시는 경우, 해당여부를 파악하여 예약양도결제금액에 한하여 전액취소처리가 가능합니다.</strong>
+				</li>
 			</ul>
 		</div>
 		<input type="checkbox" name="check" id="check" />
-		<label for="check">캠핑장 이용수칙과 양도거래 유의사항을 확인하였습니다.</label>
+		<label class="align-middle" for="check">캠핑장 이용수칙과 양도거래 유의사항을 확인하였습니다.</label>
 	</div>
 	<div class="text-center">
 	<form:form
@@ -135,13 +152,15 @@
 		method="post"
 		name="assignApplyForm">
 		<input type="hidden" name="assignNo" value="${assign.assignNo}" />
-		<sec:authorize access="isAuthenticated()">
-		<sec:authentication property="principal.username" var="loginUser"/>
-			<c:if test="${(assign.userId ne loginUser) and (assign.assignState eq '양도대기') or (assign.assignTransfer eq loginUser)}">
-				<input type="hidden" name="userId" value="${loginUser}" />
-				<button type="button" class="w-50 mb-3 fs-5 btn btn-block" id="btn-assignment-apply">해당 예약 양도받기</button>
+			<c:if test="${loginUser ne null }">
+				<!-- (로그인유저 != 양도등록자 and 양도대기상태) or (양도신청자 == 로그인유저) -->
+				<c:if test="${(assign.userId ne loginUser) and (assign.assignState eq '양도대기') or (assign.assignTransfer eq loginUser)}">
+					<input type="hidden" name="userId" value="${loginUser}" />
+					<button type="button" class="w-50 mb-3 fs-5 btn btn-block" id="btn-assignment-apply"
+						onclick="applyClick()">해당 예약 양도받기</button>
+				</c:if>
 			</c:if>
-		</sec:authorize>
+		
 	</form:form>
 	</div>
 </div>
@@ -149,6 +168,8 @@
 <script>
 const resNo = "${assign.resNo}";
 const zoneInfos = document.querySelector(".zoneInfo");
+
+//---------------------------- 더보기 버튼 클릭시 ---------------------------- 
 $(document).ready(function(){
 	$("#btn-readmore").click((e) => {
 		
@@ -158,9 +179,7 @@ $(document).ready(function(){
 			success(response){
 				console.log(response);
 				const {zoneInfo} = response;
-				
-				
-				
+
 				zoneInfo.forEach((zone) => {
 					zoneInfos.innerHTML += `
 						<img class="zoneImg col-2 my-3" src="${pageContext.request.contextPath}/resources/images/zone/\${zone}.png" alt="구역사진" />
@@ -182,10 +201,12 @@ $(document).ready(function(){
 	});
 });
 
-document.querySelector("#btn-assignment-apply").addEventListener('click', (e) => {
+//---------------------------- 양도받기 버튼 클릭시 ---------------------------- 
+const applyClick = () => {
 	const check = document.querySelector("#check");
 	const assignNo = "${assign.assignNo}";
 	const assignTransfer = "${loginUser}";
+	
 	if(!check.checked){
 		e.preventDefault();
 		alert("유의사항을 확인하고 체크 부탁드립니다.");
@@ -215,9 +236,44 @@ document.querySelector("#btn-assignment-apply").addEventListener('click', (e) =>
 		error : console.log
 	});
 	
+};
 
+//---------------------------- 양도취소 버튼 클릭시 ---------------------------- 
+const deleteClick = () => {
 	
+	const assignNo = '${assign.assignNo}';
+	const assignState = '${assign.assignState}';
 	
-});
+	if("양도대기" !== assignState){
+		alert("양도중인 예약은 취소 불가능합니다.");
+		return;
+	}
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+	if(confirm("해당 양도건을 취소하시겠습니까?")){
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/assignment/assignmentDelete.do',
+			headers,
+			method : 'POST',
+			data : {assignNo},
+			success(response){
+				console.log(response);
+				
+				if(response){
+					location.href="${pageContext.request.contextPath}/assignment/assignmentList.do";
+				}
+				else {
+					alert("양도중인 예약은 취소 불가능합니다.");
+					return;
+				}
+			},
+			error : console.log
+			
+		});
+	}
+	
+};
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
