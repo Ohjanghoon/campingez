@@ -331,6 +331,14 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.updateReportAction(commNo);
 	}
 	
+	@Override
+	public int updateReportActionAndIsDelete(Map<String, Object> param) {
+		int result = adminDao.updateIsDelete(param);
+		result = adminDao.updateReportAction((String)param.get("commNo"));
+		
+		return result;
+	}
+	
 	private RowBounds getRowBounds(Map<String, Object> param) {
 		int limit = (int)param.get("limit");
 		int offset = ((int)param.get("cPage") - 1) * limit;

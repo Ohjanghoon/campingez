@@ -15,7 +15,7 @@ stompClient.connect({}, (frame) => {
 		const {alarm, notReadCount} = JSON.parse(body);
 		const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
 		const [yy, MM, dd, HH, mm, ss] = alrDatetime;
-	
+		const targetUrl = alrUrl == null ? '#' : `http://${location.host}/campingez${alrUrl}`;
 	
 		let html;
 		const notReadCountSpan = document.querySelector("#notReadCount");
@@ -33,33 +33,29 @@ stompClient.connect({}, (frame) => {
 		
 		if(!alrReadDatetime) {
 			html = `
-			<a href="http://${location.host}/campingez${alrUrl}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
-				<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
-					<span id="badge-wrap">
-						<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
+			<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
+				<span id="badge-wrap">
+					<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
+				</span>
+				<div id="alarm-content-wrap">
+					<div id="alr-msg">${alrMessage}</div>
+					<span id="alarm-date-wrap">
+						<span id="alarm-date">${alrDate}</span>
 					</span>
-					<div id="alarm-content-wrap">
-						<div id="alr-msg">${alrMessage}</div>
-						<span id="alarm-date-wrap">
-							<span id="alarm-date">${alrDate}</span>
-						</span>
-					</div>
-				</li>
-			</a>
+				</div>
+			</li>
 			`;							
 		} else {
 			html = `
-			<a href="http://${location.host}/campingez${alrUrl}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
-				<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
-					<span id="badge-wrap"></span>
-					<div id="alarm-content-wrap">
-						<div id="alr-msg">${alrMessage}</div>
-						<span id="alarm-date-wrap">
-							<span id="alarm-date">${alrDate}</span>
-						</span>
-					</div>
-				</li>
-			</a>
+			<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
+				<span id="badge-wrap"></span>
+				<div id="alarm-content-wrap">
+					<div id="alr-msg">${alrMessage}</div>
+					<span id="alarm-date-wrap">
+						<span id="alarm-date">${alrDate}</span>
+					</span>
+				</div>
+			</li>
 			`;														
 		}
 		ul.insertAdjacentHTML('afterbegin', html);
@@ -69,7 +65,8 @@ stompClient.connect({}, (frame) => {
 		
 		document.querySelectorAll("#alarm").forEach((li) => {
 			li.addEventListener('click', (e) => {
-				const alrId = e.target.parentElement.dataset.alrId;
+				const alrId = e.target.offsetParent.dataset.alrId;
+				console.log(alrId);
 				if(alrId == undefined) return;
 					const token = $("meta[name='_csrf']").attr("content");
 					const header = $("meta[name='_csrf_header']").attr("content");
@@ -82,7 +79,9 @@ stompClient.connect({}, (frame) => {
 					data : {alrId:alrId},
 					method : "POST",
 					success(response) {
-						
+						$('.alarmList').tooltip('hide');
+						location.href = `${targetUrl}`;
+						getAlarmList(userId);
 					},
 					error : console.log
 				});
