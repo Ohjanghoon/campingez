@@ -58,6 +58,11 @@ public class AssignmentServiceImpl implements AssignmentService {
 	}
 	
 	@Override
+	public Assignment assignmentApplyCheck(String assignNo, String userId) {
+		return assignmentDao.assignmentApplyCheck(assignNo, userId);
+	}
+	
+	@Override
 	public String selectAssignState(String assignNo) {
 		log.debug("assignNo = {}", assignNo);
 		String assignState = assignmentDao.selectAssignState(assignNo);
@@ -103,6 +108,21 @@ public class AssignmentServiceImpl implements AssignmentService {
 		int result = assignmentDao.updateAssignmetLimitTime();
 		
 		result = assignmentDao.deleteAssignResLimitTime();
+		return result;
+	}
+	
+	@Override
+	public int deleteAssignment(String assignNo) {
+		int result = 1;
+		String state = selectAssignState(assignNo);
+		
+		if("양도대기".equals(state)) {
+			result = assignmentDao.deleteAssignment(assignNo);
+			log.debug("result = {}", result);
+		}
+		else {
+			result = 0;
+		}
 		return result;
 	}
 	

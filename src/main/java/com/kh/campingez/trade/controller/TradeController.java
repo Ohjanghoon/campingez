@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -368,5 +370,13 @@ public class TradeController {
 		
 		return "redirect:/trade/tradeView.do?no=" + no;
 	}
+	
+	@GetMapping("/selectCurrentTrade")
+	public ResponseEntity<?> selectCurrentTrade(){
+		List<Trade> list = tradeService.selectCurrentTrade();
+		log.debug("list = {}", list);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(list);
+	}
+	
 	
 }

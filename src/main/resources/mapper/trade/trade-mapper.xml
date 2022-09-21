@@ -103,12 +103,17 @@ from
 		on t.trade_no = p.trade_no
 where
 		category_id = #{categoryId}
+		and
+		trade_isdelete = 'N'
 
 
 </select>
 
-
-
-
+<select id="selectCurrentTrade" resultMap="tradeListMap">
+	select 
+			* 
+	from 
+			(select * from trade where rownum &lt;= 3 order by trade_date desc) join trade_photo using(trade_no)
+</select>
 
 </mapper>

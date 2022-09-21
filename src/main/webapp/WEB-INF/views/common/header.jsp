@@ -160,134 +160,140 @@ const beforeTime = (alarmDate) => {
 	<script>
 	const userId = "<sec:authentication property='principal.username'/>";
 	
-	</script>
-	<script src="${pageContext.request.contextPath}/resources/js/ws.js"></script>
-	
-<script>
-// 알림
-window.addEventListener('load', (e) => {
-	
-	$.ajax({
-		url : "${pageContext.request.contextPath}/user/getNotReadAlarm.do",
-		data : {userId},
-		POST : "GET",
-		success(notReadCount) {
-			if(notReadCount > 0) {
-				const newAlarm = document.querySelector("#new-alarm");
-				newAlarm.classList.remove("visually-hidden");
-			}
-		},
-		error : console.log
-	});
-	
-	const div = document.querySelector(".header-layer");
-	
-	$.ajax({
-		url : "${pageContext.request.contextPath}/user/alarmList.do",
-		data : {userId},
-		content : "application/json",
-		success(response) {
-			const {notReadCount, alarmList} = response;
-			
-			div.innerHTML = '';
-			
-			let html = `
-			<span id="notReadCount-wrap">
-				새소식 &nbsp;<div id="notReadCount">\${notReadCount}</div>
-			</span>
-			<ul id="alarm-list" class="list-group">
-			`;
-			
-			let targetUrl;
-			if(alarmList.length < 1) {
-				html += `
-					<li id="alarm" class="list-group-item d-flex justify-content-between align-items-center no-alarm">알림이 없습니다.</li>
+	const getAlarmList = (userId) => {
+		const div = document.querySelector(".header-layer");
+		$.ajax({
+			url : "${pageContext.request.contextPath}/user/alarmList.do",
+			data : {userId},
+			content : "application/json",
+			success(response) {
+				const {notReadCount, alarmList} = response;
+				
+				div.innerHTML = '';
+				
+				let html = `
+				<span id="notReadCount-wrap">
+					새소식 &nbsp;<div id="notReadCount">\${notReadCount}</div>
+				</span>
+				<ul id="alarm-list" class="list-group">
 				`;
-			} else {
-				alarmList.forEach((alarm) => {
-					const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
-					targetUrl = alrUrl;
-					const [yy, MM, dd, HH, mm, ss] = alrDatetime;
-
-					if(!alrReadDatetime) {
-						html += `
-						<a href="${pageContext.request.contextPath}\${targetUrl}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
-							<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
-								<span id="badge-wrap">
-									<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
-								</span>
-								<div id="alarm-content-wrap">
-									<div id="alr-msg">\${alrMessage}</div>
-									<span id="alarm-date-wrap">
-										<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+				
+				let targetUrl;
+				if(alarmList.length < 1) {
+					html += `
+						<li id="alarm" class="list-group-item d-flex justify-content-between align-items-center no-alarm">알림이 없습니다.</li>
+					`;
+				} else {
+					alarmList.forEach((alarm) => {
+						const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
+						targetUrl = alrUrl == null ? '#' : `${pageContext.request.contextPath}\${alrUrl}`;
+						const [yy, MM, dd, HH, mm, ss] = alrDatetime;
+	
+						if(!alrReadDatetime) {
+							html += `
+								<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+									<span id="badge-wrap">
+										<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 									</span>
-								</div>
-							</li>
-						</a>
-						`;							
-					} else {
-						html += `
-						<a href="${pageContext.request.contextPath}\${targetUrl}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}" >
-							<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
-								<span id="badge-wrap"></span>
-								<div id="alarm-content-wrap">
-									<div id="alr-msg">\${alrMessage}</div>
-									<span id="alarm-date-wrap">
-										<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
-									</span>
-								</div>
-							</li>
-						</a>
-						`;														
-					}
+									<div id="alarm-content-wrap">
+										<div id="alr-msg">\${alrMessage}</div>
+										<span id="alarm-date-wrap">
+											<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+										</span>
+									</div>
+								</li>
+							`;							
+						} else {
+							html += `
+								<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+									<span id="badge-wrap"></span>
+									<div id="alarm-content-wrap">
+										<div id="alr-msg">\${alrMessage}</div>
+										<span id="alarm-date-wrap">
+											<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+										</span>
+									</div>
+								</li>
+							`;														
+						}
+					});
+				};
+				html += `
+				</ul>
+				`;
+				div.insertAdjacentHTML('beforeend', html);
+				$('.alarmList').tooltip();
+				
+				
+				document.querySelectorAll("#alarm-date").forEach((span) => {
+					const alarmDate = span.innerHTML;
+					span.innerHTML = beforeTime(alarmDate);
 				});
-			};
-			html += `
-			</ul>
-			`;
-			div.insertAdjacentHTML('beforeend', html);
-			
-			document.querySelectorAll("#alarm-date").forEach((span) => {
-				const alarmDate = span.innerHTML;
-				span.innerHTML = beforeTime(alarmDate);
-			});
-			
-			document.querySelectorAll("#alarm").forEach((li) => {
-				li.addEventListener('click', (e) => {
-					const alrId = e.target.offsetParent.dataset.alrId;
-					if(alrId == undefined) return;
-					
-					const headers = {};
-					headers['${_csrf.headerName}'] = '${_csrf.token}';
-					
-					$.ajax({
-						url : "${pageContext.request.contextPath}/user/updateAlarm.do",
-						headers,
-						data : {alrId},
-						method : "POST",
-						success(response) {
-							
-						},
-						error : console.log
+				
+				document.querySelectorAll("#alarm").forEach((li) => {
+					li.addEventListener('click', (e) => {
+						const alrId = e.target.offsetParent.dataset.alrId;
+						if(alrId == undefined) return;
+						
+						$('.alarmList').tooltip('hide');
+						
+						const headers = {};
+						headers['${_csrf.headerName}'] = '${_csrf.token}';
+						
+						$.ajax({
+							url : "${pageContext.request.contextPath}/user/updateAlarm.do",
+							headers,
+							data : {alrId},
+							method : "POST",
+							success(response) {
+								$('.alarmList').tooltip('hide');
+								location.href = `\${targetUrl}`;
+								getAlarmList(userId);
+							},
+							error : console.log
+						});
 					});
 				});
-			});
-		},
-		error : console.log
-	});
-	
-	document.querySelector("#bell").addEventListener('click', (e) => {
-		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+			},
+			error : console.log
+		});
 		
-		if(div.style.display == 'none' || !div.style.display) {
-			div.style.display = 'block';
-		} else {
-			div.style.display = 'none';
-		}	
+		$.ajax({
+			url : "${pageContext.request.contextPath}/user/getNotReadAlarm.do",
+			data : {userId},
+			POST : "GET",
+			success(notReadCount) {
+				const newAlarm = document.querySelector("#new-alarm");
+				if(notReadCount > 0) {
+					newAlarm.classList.remove("visually-hidden");
+				} else {
+					newAlarm.classList.add("visually-hidden");					
+				}
+			},
+			error : console.log
+		});
+	};
+	</script>
+	
+	<script>
+	// 알림
+	window.addEventListener('load', (e) => {
+		getAlarmList(userId);
+		
+		const div = document.querySelector(".header-layer");
+		document.querySelector("#bell").addEventListener('click', (e) => {
+			const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+			const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+			
+			if(div.style.display == 'none' || !div.style.display) {
+				div.style.display = 'block';
+			} else {
+				div.style.display = 'none';
+			}	
+		});
 	});
-});
-</script>
+	</script>
+	<script src="${pageContext.request.contextPath}/resources/js/ws.js"></script>
 </sec:authorize>
 </head>
 <body>
@@ -304,7 +310,7 @@ window.addEventListener('load', (e) => {
 				    </div>
 					<div class="col-4 text-center">
 						<a href="${pageContext.request.contextPath}/" class="blog-header-logo text-dark"> 
-							<img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo2.png" alt="" width="320">
+							<img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo2.png" alt="" width="200">
 						</a>
 					</div>
 					<div class="col-4 d-flex justify-content-end align-items-center">
@@ -317,12 +323,10 @@ window.addEventListener('load', (e) => {
 								class="btn btn-primary">Sign-up</button>
 						</sec:authorize>
 						<sec:authorize access="isAuthenticated()">
-							<button type="button" class="btn btn-light position-relative" id="bell">
-								<i class="fa-regular fa-bell fa-lg"></i> 
+							<input type="button" class="btn btn-light position-relative" id="bell" value="🔔"/>
 								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger visually-hidden"
 									id="new-alarm">N <span class="visually-hidden">New alerts</span>
 								</span>
-							</button>
 							<div class="header-layer shadow mb-5 bg-body rounded"></div>
 							<form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
 								<div class="header-layer shadow mb-5 bg-body rounded"></div>
@@ -470,37 +474,37 @@ window.addEventListener('load', (e) => {
 		<div class="carousel-inner">
 		
 			<div class="carousel-item active">
-				<img src="https://cdn.pixabay.com/photo/2020/05/26/12/55/milkyway-5222932_960_720.jpg" width="100%" height="550px">
+				<img src="https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067_960_720.png" width="100%" height="550px">
 
 				<div class="container">
 					<div class="carousel-caption text-start">
-						<h1>Event Notice1</h1>
-						<p>Some representative placeholder content for the first slideof the carousel.</p>
-						<p><a class="btn btn-sm btn-primary" href="#">Sign up today</a></p>
+						<h2>캠핑이지 오픈이벤트</h2>
+						<p>회원가입을 하신 모든 분들께 쿠폰을 드립니다.<br>저희 캠핑이지 회원이 되어주셔서 감사합니다.</p>
+						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/notice/detail.do?noticeNo=N149">쿠폰 받으러 가기</a></p>
 					</div>
 				</div>
 			</div>
 			
 			<div class="carousel-item">
-				<img src="${pageContext.request.contextPath}/resources/images/mountain2.jpeg" width="100%" height="550px">
+				<img src="https://cdn.pixabay.com/photo/2022/07/21/07/05/island-7335510_960_720.jpg" width="100%" height="550px">
 
 				<div class="container">
 					<div class="carousel-caption">
-						<h1>Event Notice2</h1>
-						<p>Some representative placeholder content for the second slide of the carousel.</p>
-						<p><a class="btn btn-sm btn-primary" href="#">Learn more</a></p>
+						<h2>캠핑이지 양도서비스 오픈</h2>
+						<p>캠핑이지는 회원 간 예약 건에 대한 양도 서비스를 제공합니다.</p>
+						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/assignment/assignmentList.do">양도 페이지 이동하기</a></p>
 					</div>
 				</div>
 			</div>
 			
 			<div class="carousel-item">
-				<img src="${pageContext.request.contextPath}/resources/images/portugal3.jpeg" width="100%" height="550px">
+				<img src="https://cdn.pixabay.com/photo/2022/08/19/21/50/clouds-7397802_960_720.jpg" width="100%" height="550px">
 
 				<div class="container">
 					<div class="carousel-caption text-end">
-						<h1>Event Notice3</h1>
-						<p>Some representative placeholder content for the third slide of this carousel.</p>
-						<p><a class="btn btn-sm btn-primary" href="#">Browse gallery</a></p>
+						<h2>뭘 좋아할지 몰라 다 준비해봤어..<i class="fa-regular fa-heart"></i></h2>
+						<p>캠핑이지는 다양한 형태의 캠핑을 한 곳에서 즐기실 수 있습니다.</p>
+						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/reservation/intro.do">캠핑구역 보러가기</a></p>
 					</div>
 				</div>
 			</div>

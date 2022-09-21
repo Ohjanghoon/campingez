@@ -101,9 +101,9 @@
 						headers,
 						data : {couponCode, userId},
 						method : "POST",
-						success(response){
-							console.log(response);
-							alert(response.resultMessage);
+						success(map){
+							console.log(map);
+							alert(map.resultMessage);
 						},
 						error : console.log
 					});

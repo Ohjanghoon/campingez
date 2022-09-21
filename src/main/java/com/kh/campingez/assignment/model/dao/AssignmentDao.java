@@ -2,13 +2,12 @@ package com.kh.campingez.assignment.model.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.assignment.model.dto.AssignmentEntity;
@@ -43,7 +42,10 @@ public interface AssignmentDao {
 	int insertAssignment(AssignmentEntity assignment);
 
 	Assignment assignmentDetail(String assignNo);
-
+	
+	@Select("select * from assignment where assign_no = #{assignNo} and assign_transfer= #{userId}")
+	Assignment assignmentApplyCheck(@Param("assignNo") String assignNo, @Param("userId") String userId);
+	
 	@Select("select assign_state from assignment where assign_no = #{assignNo}")
 	String selectAssignState(String assignNo);
 	
@@ -60,6 +62,11 @@ public interface AssignmentDao {
 	int updateAssignmetLimitTime();
 
 	int deleteAssignResLimitTime();
+
+	@Delete("delete from assignment where assign_no = #{assignNo} and assign_state = '양도대기'")
+	int deleteAssignment(String assignNo);
+
+
 
 	
 	

@@ -202,4 +202,16 @@ public interface AdminDao {
 	@Update("update report set report_action = 'Y' where comm_no = #{commNo}")
 	int updateReportAction(String commNo);
 
+	int updateIsDelete(String type);
+
+	int updateIsDelete(Map<String, Object> param);
+	
+	Object selectCommByNo(Map<String, Object> param);
+	
+	@Select("select * from trade where trade_no = #{tradeNo}")
+	Trade findTradeByTradeNo(String tradeNo);
+	
+	@Select("select user_id from report where comm_no = #{commNo}")
+	List<String> findReportUserListByCommNo(String commNo);
+
 }
