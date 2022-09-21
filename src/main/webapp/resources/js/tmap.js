@@ -14,8 +14,8 @@ var map;
             // 1. 지도 띄우기
             map = new Tmapv2.Map("map_div", {
                 center: new Tmapv2.LatLng(37.56520450, 126.98702028),
-                width: "500px",
-                height: "400px",
+                width: "450px",
+                height: "350px",
                 zoom: 17,
                 zoomControl: true,
                 scrollwheel: true
@@ -318,20 +318,25 @@ var map;
 
                     var tDistance = "총 거리 : "
                         + (resultData[0].properties.totalDistance / 1000)
-                            .toFixed(1) + "km,";
+                            .toFixed(1) + "km";
                     var tTime = " 총 시간 : "
                         + (resultData[0].properties.totalTime / 60)
-                            .toFixed(0) + "분,";
+                            .toFixed(0) + "분";
                     var tFare = " 총 요금 : "
                         + resultData[0].properties.totalFare
-                        + "원,";
+                        + "원";
                     var taxiFare = " 예상 택시 요금 : "
                         + resultData[0].properties.taxiFare
                         + "원";
 
-                    $("#result").text(
-                        tDistance + tTime + tFare
-                        + taxiFare);
+                    $("#result1").text(
+                        tDistance);
+                    $("#result2").text(
+                        tTime);
+                    $("#result3").text(
+                        tFare);
+                    $("#result4").text(
+                        taxiFare);
 
                     //교통정보 표출 옵션값을 체크
                     if (trafficInfochk == "Y") {
