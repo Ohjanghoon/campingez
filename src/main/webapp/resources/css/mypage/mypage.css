@@ -100,16 +100,16 @@
 }
 
 .table-hover { 
-	--bs-table-hover-bg: #c6b5e1 !important;
+	--bs-table-hover-bg: #dacfed!important;
 }
 #tradeTable{
 	border-collapse : collapse !important;
 	text-align: center; 
 	border-color: #00000000 !important;
-	--bs-table-bg: #f1ecf7 !important;
+	--bs-table-bg: #f8f4fb!important;
 }
 .table-light{
-	--bs-table-bg: #c6b5e140 !important;
+	--bs-table-bg: #f8f4fb !important;
 }
 #tradeTable > tbody > tr:last-child > td:first-child {
 	border-bottom-left-radius : 30px !important;
