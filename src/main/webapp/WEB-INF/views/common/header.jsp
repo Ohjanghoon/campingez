@@ -47,7 +47,7 @@ a {
     font-size: 13px;
     max-height: 300px;
     z-index:999;
-    top: 155px;
+    top: 90px;
 }
 .header-layer > * {
 	background-color: white;
