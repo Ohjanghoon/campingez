@@ -29,4 +29,5 @@ public class TradeEntity {
 	private String tradeSuccess;
 	private TradeQuality tradeQuality;
 	private int likeCount;
+	private String tradeIsdelete;
 }

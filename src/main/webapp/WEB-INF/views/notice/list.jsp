@@ -19,6 +19,7 @@
 </style>
 <main>
 	<div class="container">
+	<h2 class="text-center fw-bold pt-5">공지사항</h2>
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5">
 			<button class="btn btn-outline-dark" type="button" id="notice">공지사항 등록 <i class="fa-regular fa-pen-to-square"></i></button>

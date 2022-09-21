@@ -146,4 +146,75 @@
   		<result column="res_checkout" property="resCheckout"/>
   	</association>	
   </resultMap>
+	
+	<select id="findAllTradeReportList" resultMap="tradeReportMap">
+	select
+	    *
+	from (
+	    select
+	        r.*,
+	        t.trade_no,
+	        t.user_id comm_user_id,
+	        t.category_id,
+	        t.trade_title,
+	        t.trade_content,
+	        t.trade_date,
+	        t.trade_read_count,
+	        count(*) over(partition by r.comm_no) as report_count,
+	        (select category_name from category_list where r.report_type = category_id) category_name
+	    from
+	        report r left join trade t 
+	            on r.comm_no = t.trade_no
+	    where
+	        substr(r.comm_no, 1, 1) = 'T'
+	) a
+	where
+	    report_count >= 2 and report_action = 'N'
+	order by
+	    report_no desc
+	</select>  
+	
+	<resultMap type="trade" id="tradeReportMap">
+		<id column="trade_no" property="tradeNo"/>
+		<result column="comm_user_id" property="userId"/>
+		<result column="category_id" property="categoryId" />
+		<result column="trade_title" property="tradeTitle" />
+		<result column="trade_content" property="tradeContent" />
+		<result column="trade_date" property="tradeDate" />
+		<result column="trade_read_count" property="readCount" />
+		<result column="trade_price" property="tradePrice" />
+		<result column="trade_success" property="tradeSuccess" />
+		<result column="trade_quality" property="tradeQuality" />
+		<result column="trade_like_count" property="likeCount" />
+		<collection property="reportList" ofType="report">
+			<id column="report_no" property="reportNo"/>
+			<result column="comm_no" property="commNo"/>
+			<result column="user_id" property="userId"/>
+			<result column="report_content" property="reportContent"/>
+			<result column="report_date" property="reportDate"/>
+			<result column="report_type" property="reportType"/>
+			<result column="report_action" property="reportAction"/>
+			<result column="category_name" property="categoryName"/>
+		</collection>
+	</resultMap>
+	
+	<!-- https://velog.io/@zawook/Mybatis-Mapper-if -->
+	<update id="updateIsDelete">
+		<if test="type eq 'T'.toString()">
+			update
+				trade
+			set
+				trade_isdelete = 'Y'
+			where
+				trade_no = #{commNo}
+		</if>
+		<if test="type eq 'C'.toString()">
+			update
+				community
+			set
+				comm_isdelete = 'Y'
+			where
+				comm_no = #{commNo}
+		</if>
+	</update>
 </mapper>

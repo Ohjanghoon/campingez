@@ -46,4 +46,6 @@ public interface TradeService {
 
 	String getUserReportTrade(Map<String, Object> param);
 
+	List<Trade> selectCurrentTrade();
+
 }

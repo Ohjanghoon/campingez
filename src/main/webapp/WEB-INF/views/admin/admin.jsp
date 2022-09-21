@@ -49,14 +49,14 @@ tr > td {
 	background-color: #A8A4CE;
     color: white;
 }
-#updateBtn, [name=updateBtn], [name=yellowCardBtn], #deleteBtn {
+#updateBtn, [name=updateBtn], [name=yellowCardBtn], #deleteBtn, #noProblemBtn {
 	height: 35px;
     width: 50px;
    	border: 1px solid #A8A4CE;
     color: #A8A4CE;
     background-color: white;
 }
-#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover, #deleteBtn:hover {
+#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover, #deleteBtn:hover, #noProblemBtn:hover {
 	background-color: #A8A4CE;
     color:white;
 }
@@ -133,6 +133,9 @@ tr > td {
 					      </button>
 					    </h2>
 					    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+					      <div class="accordion-body">
+					      	<a href="${pageContext.request.contextPath}/admin/reportList.do">신고관리</a>
+					      </div>
 					      <div class="accordion-body">
 					      	<a href="${pageContext.request.contextPath}/admin/inquireList.do">1:1문의 답변</a>
 					      </div>
