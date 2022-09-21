@@ -476,37 +476,37 @@ const beforeTime = (alarmDate) => {
 		<div class="carousel-inner">
 		
 			<div class="carousel-item active">
-				<img src="https://cdn.pixabay.com/photo/2020/05/26/12/55/milkyway-5222932_960_720.jpg" width="100%" height="550px">
+				<img src="https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067_960_720.png" width="100%" height="550px">
 
 				<div class="container">
 					<div class="carousel-caption text-start">
-						<h1>Event Notice1</h1>
-						<p>Some representative placeholder content for the first slideof the carousel.</p>
-						<p><a class="btn btn-sm btn-primary" href="#">Sign up today</a></p>
+						<h2>캠핑이지 오픈이벤트</h2>
+						<p>회원가입을 하신 모든 분들께 쿠폰을 드립니다.<br>저희 캠핑이지 회원이 되어주셔서 감사합니다.</p>
+						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/notice/detail.do?noticeNo=N149">쿠폰 받으러 가기</a></p>
 					</div>
 				</div>
 			</div>
 			
 			<div class="carousel-item">
-				<img src="${pageContext.request.contextPath}/resources/images/mountain2.jpeg" width="100%" height="550px">
+				<img src="https://cdn.pixabay.com/photo/2022/07/21/07/05/island-7335510_960_720.jpg" width="100%" height="550px">
 
 				<div class="container">
 					<div class="carousel-caption">
-						<h1>Event Notice2</h1>
-						<p>Some representative placeholder content for the second slide of the carousel.</p>
-						<p><a class="btn btn-sm btn-primary" href="#">Learn more</a></p>
+						<h2>캠핑이지 양도서비스 오픈</h2>
+						<p>캠핑이지는 회원 간 예약 건에 대한 양도 서비스를 제공합니다.</p>
+						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/assignment/assignmentList.do">양도 페이지 이동하기</a></p>
 					</div>
 				</div>
 			</div>
 			
 			<div class="carousel-item">
-				<img src="${pageContext.request.contextPath}/resources/images/portugal3.jpeg" width="100%" height="550px">
+				<img src="https://cdn.pixabay.com/photo/2022/08/19/21/50/clouds-7397802_960_720.jpg" width="100%" height="550px">
 
 				<div class="container">
 					<div class="carousel-caption text-end">
-						<h1>Event Notice3</h1>
-						<p>Some representative placeholder content for the third slide of this carousel.</p>
-						<p><a class="btn btn-sm btn-primary" href="#">Browse gallery</a></p>
+						<h2>뭘 좋아할지 몰라 다 준비해봤어..<i class="fa-regular fa-heart"></i></h2>
+						<p>캠핑이지는 다양한 형태의 캠핑을 한 곳에서 즐기실 수 있습니다.</p>
+						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/reservation/intro.do">캠핑구역 보러가기</a></p>
 					</div>
 				</div>
 			</div>

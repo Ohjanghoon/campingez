@@ -15,7 +15,7 @@ import com.kh.campingez.reservation.model.dto.Reservation;
 @Mapper
 public interface ReservationDao {
 
-	@Select("select * from camp where camp_id not in (select camp_id from reservation where res_checkin between #{checkin} and #{checkout} or res_checkout between #{checkin} and #{checkout})")
+	@Select("select * from camp where camp_id not in (select camp_id from reservation where res_checkin between #{checkin} and #{checkout} or res_checkout between #{checkin} and #{checkout}) order by camp_id asc")
 	List<Camp> campList(Map<String, Object> param);
 
 	@Select("select * from camp_zone z join camp c on z.zone_code = c.zone_code where camp_id = #{campId}")
