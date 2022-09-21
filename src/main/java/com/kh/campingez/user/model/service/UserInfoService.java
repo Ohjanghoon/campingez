@@ -17,7 +17,7 @@ public interface UserInfoService {
 
 	int profileDelete(User user);
 
-	List<Inquire> selectInquireList(User user);
+	List<Inquire> selectInquireList(Map<String, Object> param,User user);
 
 	List<Reservation> selectReservationList(Map<String, Object> param,User user);
 
@@ -44,5 +44,7 @@ public interface UserInfoService {
 	int getTotalLike(User user);
 
 	Reservation selectReservationDetail(String resNo);
+
+	int getTotalInquire(User user);
 
 }
