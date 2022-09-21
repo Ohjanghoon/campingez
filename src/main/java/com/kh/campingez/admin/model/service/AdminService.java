@@ -11,7 +11,9 @@ import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.report.dto.Report;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.user.model.dto.User;
 
 public interface AdminService {
@@ -115,5 +117,11 @@ public interface AdminService {
 	List<Assignment> findAllExpireAssignmentList(Map<String, Object> param);
 
 	int getExpireAssignmentTotalContent();
+
+	List<Trade> findAllTradeReportList(Map<String, Object> param);
+
+	int getTradeReportTotalContent();
+
+	int updateReportAction(String commNo);
 
 }

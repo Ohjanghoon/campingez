@@ -22,7 +22,7 @@ public interface TradeDao {
 //	@Select("select * from trade order by trade_no desc")
 	List<Trade> selectTradeList(RowBounds rowBounds);
 	
-	@Select("select count(*) from trade")
+	@Select("select count(*) from trade where trade_isdelete = 'N'")
 	int getTotalContent();
 	
 //	@Select("select * from trade where trade_no = #{tradeNo}")
@@ -32,7 +32,7 @@ public interface TradeDao {
 	List<TradePhoto> selectPhotoListByTradeNo(String no);
 	
 	@Insert("insert into trade values('T' || seq_trade_trade_no.nextval, #{userId}, #{categoryId}, #{tradeTitle}, " 
-			+ "#{tradeContent}, default, default, #{tradePrice}, default, #{tradeQuality}, default)")
+			+ "#{tradeContent}, default, default, #{tradePrice}, default, #{tradeQuality}, default, default)")
 	@SelectKey(statement = "select 'T' || seq_trade_trade_no.currval from dual" , before = false, keyProperty = "tradeNo", resultType = String.class)
 	int insertTrade(Trade trade);
 	
@@ -54,13 +54,13 @@ public interface TradeDao {
 	@Update("update trade set trade_read_count = ${readCount} + 1 where trade_no = #{tradeNo}")
 	int updateReadCount(Trade trade);
 
-	@Select("select count(like_check) from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId}")
+	@Select("select count(like_check) from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId} and trade_isdelete = 'N'")
 	int getTradeLike(TradeLike tl);
 	
-	@Delete("delete from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId}")
+	@Delete("delete from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId} and trade_isdelete = 'N'")
 	void deleteTradeLike(TradeLike tl);
 	
-	@Update("update trade set trade_like_count = (select count(*) from trade_like where trade_no = #{likeTradeNo}) where trade_no = #{tradeNo} ")
+	@Update("update trade set trade_like_count = (select count(*) from trade_like where trade_no = #{likeTradeNo} and trade_isdelete = 'N') where trade_no = #{tradeNo} ")
 	void updateTradeLike(String likeTradeNo);
 	
 	@Insert("insert into trade_like (trade_no, user_id) values (#{likeTradeNo}, #{likeUserId})")
@@ -72,10 +72,10 @@ public interface TradeDao {
 //	@Select("select * from trade where category_id = #{categoryId}")
 	List<Trade> selectTradeListKind(RowBounds rowBounds, String categoryId);
 	
-	@Select("select count(*) from trade where category_id = #{categoryId}")
+	@Select("select count(*) from trade where category_id = #{categoryId} and trade_isdelete = 'N'")
 	int getTotalContentKind();
 	
-	@Update("update trade set trade_success = '거래 완료' where trade_no = #{tradeNo}")
+	@Update("update trade set trade_success = '거래 완료' where trade_no = #{tradeNo} and trade_isdelete = 'N'")
 	int updateSuccess(String no);
 	
 	@Select("select * from category_list where category_id like '%' || 'rep' || '%'")

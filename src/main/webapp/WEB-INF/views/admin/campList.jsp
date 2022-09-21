@@ -34,7 +34,7 @@
 										<c:if test="${not empty list.campList}">
 											<tr>
 												<th scope="col">No</th>
-												<td  scope="row" colspan="${fn:length(list.campList)}">${tbVs.count}</td>
+												<td scope="row" colspan="${fn:length(list.campList)}">${tbVs.count}</td>
 											</tr>
 											<tr>
 												<th scope="col">구역</th>

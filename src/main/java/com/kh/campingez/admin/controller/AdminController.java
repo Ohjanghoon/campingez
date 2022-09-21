@@ -37,6 +37,7 @@ import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.user.model.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -522,6 +523,31 @@ public class AdminController {
 		data.put("pagebar", pagebar);
 	
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(data);
+	}
+	
+	@GetMapping("/reportList.do")
+	public void reportList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 10;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		List<Trade> tradeReportList = adminService.findAllTradeReportList(param);
+		log.debug("tradeReportList = {}", tradeReportList);
+		model.addAttribute("tradeReportList", tradeReportList);
+		
+		int totalContent = adminService.getTradeReportTotalContent();
+		String uri = request.getRequestURI();
+		String tradePagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
+		model.addAttribute("tradePagebar", tradePagebar);
+	}
+	
+	@PostMapping("/updateReportAction.do")
+	public String updateReportAction(@RequestParam String commNo) {
+		log.debug("commNo = {}", commNo);
+		int result = adminService.updateReportAction(commNo);
+		
+		return "redirect:/admin/reportList.do";
 	}
 	
 	private Date addMonth(Date date, int months) {
