@@ -20,7 +20,10 @@
 </head>
 <body>
 <div class="container" id="myReservationList">
-<h3>예약목록</h3>
+<h3>
+	<img style="margin-right:20px;" src="${pageContext.request.contextPath}/resources/images/mypage/reserved.png" width="50px">
+	예약목록
+</h3>
 <div id="resList">
 	
 </div>
