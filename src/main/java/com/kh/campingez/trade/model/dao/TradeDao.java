@@ -54,13 +54,13 @@ public interface TradeDao {
 	@Update("update trade set trade_read_count = ${readCount} + 1 where trade_no = #{tradeNo}")
 	int updateReadCount(Trade trade);
 
-	@Select("select count(like_check) from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId} and trade_isdelete = 'N'")
+	@Select("select count(like_check) from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId}")
 	int getTradeLike(TradeLike tl);
 	
-	@Delete("delete from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId} and trade_isdelete = 'N'")
+	@Delete("delete from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId}")
 	void deleteTradeLike(TradeLike tl);
 	
-	@Update("update trade set trade_like_count = (select count(*) from trade_like where trade_no = #{likeTradeNo} and trade_isdelete = 'N') where trade_no = #{tradeNo} ")
+	@Update("update trade set trade_like_count = (select count(*) from trade_like where trade_no = #{likeTradeNo}) where trade_no = #{tradeNo} ")
 	void updateTradeLike(String likeTradeNo);
 	
 	@Insert("insert into trade_like (trade_no, user_id) values (#{likeTradeNo}, #{likeUserId})")
