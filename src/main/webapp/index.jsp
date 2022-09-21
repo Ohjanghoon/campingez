@@ -69,7 +69,7 @@ window.onload = () => {
                 <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="https://i.pinimg.com/564x/6f/71/bb/6f71bb1dc7c58ae8dd877d8784a36cbb.jpg">
         
                 <h2 class="m-3">찾아오시는 길</h2>
-                <p><a class="btn btn-secondary" href="javascript:openWindowPop('${pageContext.request.contextPath}/camp/rootSearch.do','popup');">찾기 &raquo;</a></p>
+                <p><a class="btn btn-secondary" href="javascript:openWindowPop2('${pageContext.request.contextPath}/camp/rootSearch.do','popup');">찾기 &raquo;</a></p>
             </div>
             </div>
         
@@ -226,6 +226,10 @@ window.onload = () => {
 		// 팝업
 		function openWindowPop(url, name){
 		    var options = 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no';
+		    window.open(url, name, options);
+		}
+		function openWindowPop2(url, name){
+		    var options = 'top=10, left=10, width=1000, height=900, status=no, menubar=no, toolbar=no, resizable=no';
 		    window.open(url, name, options);
 		}
 
