@@ -22,7 +22,7 @@ public interface TradeDao {
 //	@Select("select * from trade order by trade_no desc")
 	List<Trade> selectTradeList(RowBounds rowBounds);
 	
-	@Select("select count(*) from trade")
+	@Select("select count(*) from trade where trade_isdelete = 'N'")
 	int getTotalContent();
 	
 //	@Select("select * from trade where trade_no = #{tradeNo}")
@@ -32,7 +32,7 @@ public interface TradeDao {
 	List<TradePhoto> selectPhotoListByTradeNo(String no);
 	
 	@Insert("insert into trade values('T' || seq_trade_trade_no.nextval, #{userId}, #{categoryId}, #{tradeTitle}, " 
-			+ "#{tradeContent}, default, default, #{tradePrice}, default, #{tradeQuality}, default)")
+			+ "#{tradeContent}, default, default, #{tradePrice}, default, #{tradeQuality}, default, default)")
 	@SelectKey(statement = "select 'T' || seq_trade_trade_no.currval from dual" , before = false, keyProperty = "tradeNo", resultType = String.class)
 	int insertTrade(Trade trade);
 	
@@ -72,10 +72,10 @@ public interface TradeDao {
 //	@Select("select * from trade where category_id = #{categoryId}")
 	List<Trade> selectTradeListKind(RowBounds rowBounds, String categoryId);
 	
-	@Select("select count(*) from trade where category_id = #{categoryId}")
+	@Select("select count(*) from trade where category_id = #{categoryId} and trade_isdelete = 'N'")
 	int getTotalContentKind();
 	
-	@Update("update trade set trade_success = '거래 완료' where trade_no = #{tradeNo}")
+	@Update("update trade set trade_success = '거래 완료' where trade_no = #{tradeNo} and trade_isdelete = 'N'")
 	int updateSuccess(String no);
 	
 	@Select("select * from category_list where category_id like '%' || 'rep' || '%'")
@@ -83,6 +83,8 @@ public interface TradeDao {
 
 	@Select("select (select user_id from report where comm_no = t.trade_no and user_id = #{userId}) report_user_id from trade t where trade_no = #{no}")
 	String getUserReportTrade(Map<String, Object> param);
+
+	List<Trade> selectCurrentTrade();
 	
 	
 	

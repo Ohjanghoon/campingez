@@ -39,4 +39,9 @@ public class ReservationServiceImpl implements ReservationService {
 		return reservationDao.selectCurrReservation(resNo);
 	}
 	
+	@Override
+	public List<Reservation> findReservationByName(Map<Object, String> param) {
+		return reservationDao.findReservationByName(param);
+	}
+	
 }

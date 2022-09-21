@@ -20,6 +20,8 @@
 </style>
 <main>
 	<div class="container">
+		<h2 class="text-center fw-bold pt-5">예약페이지</h2>
+		<hr />
 		<div class="container px-4 py-5" id="hanging-icons">
 	    <h3 class="pb-2 border-bottom"><i class="fa-solid fa-campground"></i> 예약전 필독사항</h3>
 	    <div class="row g-4 py-5 row-cols-1 row-cols-lg-1">

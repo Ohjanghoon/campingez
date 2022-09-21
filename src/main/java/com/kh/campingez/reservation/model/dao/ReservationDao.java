@@ -28,5 +28,8 @@ public interface ReservationDao {
 	@Select("select * from reservation where res_no = #{resNo}")
 	Reservation selectCurrReservation(String resNo);
 
+	@Select("select * from reservation where res_username = #{resUsername} and res_phone = #{resPhone} and (res_state = '예약완료' or res_state = '양도예약완료') and res_checkin >= current_date")
+	List<Reservation> findReservationByName(Map<Object, String> param);
+
 	
 }

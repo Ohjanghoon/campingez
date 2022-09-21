@@ -20,7 +20,9 @@ import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.report.dto.Report;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.user.model.dto.User;
 
 @Mapper
@@ -191,5 +193,13 @@ public interface AdminDao {
 	
 	@Select("select count(*) from  assignment a left join reservation r on a.res_no = r.res_no where res_checkin <= current_date")
 	int getExpireAssignmentTotalContent();
+	
+	List<Trade> findAllTradeReportList(RowBounds rowBounds);
+	
+	@Select("select count(*) from ( select r.*, count(*) over(partition by r.comm_no) as report_count from report r where substr(r.comm_no, 1, 1) = 'T') a where report_count >= 2")
+	int getTradeReportTotalContent();
+	
+	@Update("update report set report_action = 'Y' where comm_no = #{commNo}")
+	int updateReportAction(String commNo);
 
 }

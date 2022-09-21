@@ -23,7 +23,9 @@ import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.report.dto.Report;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.user.model.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -312,6 +314,21 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int getExpireAssignmentTotalContent() {
 		return adminDao.getExpireAssignmentTotalContent();
+	}
+	
+	@Override
+	public List<Trade> findAllTradeReportList(Map<String, Object> param) {
+		return adminDao.findAllTradeReportList(getRowBounds(param));
+	}
+	
+	@Override
+	public int getTradeReportTotalContent() {
+		return adminDao.getTradeReportTotalContent();
+	}
+	
+	@Override
+	public int updateReportAction(String commNo) {
+		return adminDao.updateReportAction(commNo);
 	}
 	
 	private RowBounds getRowBounds(Map<String, Object> param) {

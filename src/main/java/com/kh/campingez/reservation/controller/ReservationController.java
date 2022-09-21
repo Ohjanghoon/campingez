@@ -146,5 +146,20 @@ public class ReservationController {
 	@GetMapping("/find")
 	public void findReservation() {}
 	
+	@PostMapping("/find")
+	public String findReservationByName(@RequestParam String resUsername, @RequestParam String resPhone, RedirectAttributes redirectAttr) {
+		
+		Map<Object, String> param = new HashMap<>();
+		param.put("resUsername", resUsername);
+		param.put("resPhone", resPhone);
+		List<Reservation> reservations = reservationService.findReservationByName(param);
+		log.debug("reservations = {}", reservations);
+		redirectAttr.addFlashAttribute("reservations", reservations);
+		
+		return "redirect:/reservation/result.do";
+	}
+	
+	@GetMapping("result.do")
+	public void findReservationResult() {}
 	
 }

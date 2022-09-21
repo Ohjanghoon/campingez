@@ -9,6 +9,8 @@
 </jsp:include>
 <main>
 	<div class="container">
+	<h2 class="text-center fw-bold pt-5">쿠폰 등록</h2>
+	<hr />
 		<form name="couponFrm" action="${pageContext.request.contextPath}/coupon/insertCoupon.do" method="post">
 			<sec:csrfInput/>
 			<div class="form-floating m-5">
