@@ -21,6 +21,8 @@ public interface AssignmentService {
 
 	Assignment assignmentDetail(String assignNo);
 
+	Assignment assignmentApplyCheck(String assignNo, String userId);
+
 	Reservation insertAssignmentApply(Reservation reservation);
 
 	String selectAssignState(String assignNo);
@@ -32,6 +34,9 @@ public interface AssignmentService {
 	Reservation updateAssignmentApply(Reservation reservation);
 
 	int assignmentLimitTime();
+
+	int deleteAssignment(String assignNo);
+
 
 	
 	

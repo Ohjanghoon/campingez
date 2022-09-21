@@ -62,7 +62,7 @@
 	    left join camp_photo cp on substr(a.res_no, 0, 2) = cp.zone_code
 	    join reservation r using(res_no, user_id)
 	where 
-		assign_no = #{assign_no}
+		assign_no = #{assignNo}
   </select>
   
   <insert id="insertAssignmentApply">
@@ -124,7 +124,7 @@
   	delete from
   		reservation
   	where
-  		res_state = '양도결제대기'
+  		res_state like '%결제대기'
   		and
   		res_date +10/24/60 <![CDATA[ < ]]> current_date
   </delete>

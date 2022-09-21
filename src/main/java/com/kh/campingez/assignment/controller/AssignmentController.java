@@ -3,9 +3,10 @@ package com.kh.campingez.assignment.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -129,7 +130,17 @@ public class AssignmentController {
 		Assignment assign = assignmentService.assignmentDetail(assignNo);
 //		log.debug("assign = {}", assign);
 		
+//		String location = "";
+//		if(assign != null) {
+//			assign = assignmentService.assignmentDetail(assignNo);
+//			location = "redirect:/assignmentApplyForm.do";
+//		} else {
+//			location = "redirect:/assignment/assignmentList.do";
+//			model.addAttribute("msg", "다시 시도 부탁드립니다.");
+//		}
 		model.addAttribute("assign", assign);
+//		return location;
+//		response.addCookie(applyCookie);
 	}
 	
 	/**
@@ -202,5 +213,14 @@ public class AssignmentController {
 		
 		int result = assignmentService.assignmentLimitTime();
 		System.out.println(LocalDateTime.now() + " ======> 10분 지난 데이터 삭제!");
+	}
+	
+	@PostMapping("/assignmentDelete.do")
+	public ResponseEntity<?> assignmentDelete(@RequestParam String assignNo) {
+		//log.debug("assignNo = {}", assignNo);
+		
+		int result = assignmentService.deleteAssignment(assignNo);
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(result);
 	}
 }
