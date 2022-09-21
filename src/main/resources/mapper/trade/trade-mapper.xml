@@ -9,7 +9,8 @@ select
 from
 		trade t join trade_photo p 
 		on t.trade_no = p.trade_no
-
+where
+	t.trade_isdelete = 'N'
 
 </select>
 <resultMap type="trade" id="tradeListMap">
@@ -24,6 +25,7 @@ from
 	<result column="trade_success" property="tradeSuccess" />
 	<result column="trade_quality" property="tradeQuality" />
 	<result column="trade_like_count" property="likeCount" />
+	<result column="trade_isdelete" property="tradeIsdelete" />
 	<collection property="photos" ofType="tradePhoto">
 			<id column="trade_photo_no" property="tradePhotoNo" />
 			<result column="trade_no" property="tdNo"/>
@@ -39,7 +41,7 @@ from
 		trade t
 where
 		trade_no = #{tradeNo}
-
+		and trade_isdelete = 'N'
 
 </select>
 <resultMap type="trade" id="tradeViewMap">
@@ -55,6 +57,7 @@ where
 	<result column="trade_quality" property="tradeQuality" />
 	<result column="trade_like_count" property="likeCount" />
 	<result column="report_user_id" property="reportUserId" />
+	<result column="trade_isdelete" property="tradeIsdelete" />
 	<collection property="photos" ofType="tradePhoto">
 			<id column="trade_photo_no" property="tradePhotoNo" />
 			<result column="trade_no" property="tdNo"/>
