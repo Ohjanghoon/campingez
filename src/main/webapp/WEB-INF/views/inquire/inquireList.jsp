@@ -45,7 +45,7 @@
 					<sec:authentication property="principal.username" var="userId"/>
 					<sec:authorize access="!hasRole('ROLE_ADMIN') and !${userId eq inq.inqWriter}" var="notAllow" />
 				</sec:authorize>
-				<tr style=" line-height: 46px;" data-no="${inq.inqNo}" data-allow="${anonymous or notAllow}" style="cursor:pointer">
+				<tr style=" line-height: 46px; cursor:pointer;" data-no="${inq.inqNo}" data-allow="${anonymous or notAllow}">
 					<td class="text-center">${vs.count}</td>
 					<td class="text-center">${inq.categoryName}</td>
 					<td class="text-center">${inq.inqWriter}</td>
