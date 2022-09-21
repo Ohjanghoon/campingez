@@ -95,6 +95,9 @@
             </div>
           </div>
         </div>
+        <div class="d-grid gap-2 col-6 mx-auto">
+	 		<input class="btn btn-outline-dark" type="button" value="닫기" onClick="window.close()">
+	  	</div>
       </div>
 </body>
 </html>

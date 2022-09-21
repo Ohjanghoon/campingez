@@ -19,6 +19,8 @@
 </style>
 <main>
 	<div class="container">
+	<h2 class="text-center fw-bold pt-5">공지사항 등록</h2>
+	<hr />
 		<form name="noticeEnrollFrm" action="${pageContext.request.contextPath}/notice/enrollNotice.do"
 			method="post" enctype="multipart/form-data">
 			<sec:csrfInput/>

@@ -20,6 +20,7 @@
 </style>
 <main>
 	<div class="container">
+	<h2 class="text-center fw-bold pt-5">공지사항</h2>
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5">
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 			<button class="btn btn-outline-dark" type="button" id="update">수정 <i class="fa-solid fa-wrench"></i></button>
