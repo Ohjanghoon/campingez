@@ -108,8 +108,9 @@ a {
 	background-color:  #A8A4CE !important;
 	color: white !important;
 }
-
-
+.translate-middle{
+	transform: translate(-280%,-100%)!important;
+}
 </style>
 <script>
 //스크롤 배경색 변경
@@ -324,7 +325,7 @@ const beforeTime = (alarmDate) => {
 						</sec:authorize>
 						<sec:authorize access="isAuthenticated()">
 							<input type="button" class="btn btn-light position-relative" id="bell" value="🔔"/>
-								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger visually-hidden"
+								<span class="position-absolute top-1 start-1 translate-middle badge rounded-pill bg-danger visually-hidden"
 									id="new-alarm">N <span class="visually-hidden">New alerts</span>
 								</span>
 							<div class="header-layer shadow mb-5 bg-body rounded"></div>
