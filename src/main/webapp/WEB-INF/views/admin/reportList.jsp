@@ -45,8 +45,8 @@
 												<fmt:formatDate value="${reportDate}" pattern="yy/MM/dd"/>
 											</td>
 											<td scope="row" rowspan="${fn:length(trade.reportList)}">
-												<button type="button" id="deleteBtn" data-comm-no="${trade.tradeNo}">삭제처리</button>
-												<button type="button" id="noProblemBtn" data-comm-no="${trade.tradeNo}">문제없음</button>
+												<button type="button" id="deleteBtn" data-comm-no="${trade.tradeNo}" onclick="deleteComm(event);">삭제처리</button>
+												<button type="button" id="noProblemBtn" data-comm-no="${trade.tradeNo}" onclick="noProblemUpdate(event);">문제없음</button>
 											</td>
 										</c:if>
 										<c:if test="${not vs.first}">
@@ -71,8 +71,9 @@
 							</c:if>
 						</tbody>
 					</table>
-					<form:form name="noProblemFrm" action="${pageContext.request.contextPath}/admin/updateReportAction.do" method="POST">
+					<form:form name="updateFrm" method="POST">
 						<input type="hidden" name="commNo" />
+						<input type="hidden" name="type" />
 					</form:form>
 					<nav id="tradePagebar">
 						${tradePagebar}
@@ -83,13 +84,26 @@
 </main>
 
 <script>
-document.querySelector("#noProblemBtn").addEventListener('click', (e) => {
+const noProblemUpdate = (e) => {	
 	const commNo = e.target.dataset.commNo;
 	
 	if(confirm(`[\${commNo}] 게시글에 대해 '문제없음' 조치를 취하시겠습니까?`)) {
-		document.noProblemFrm.commNo.value = commNo;
-		document.noProblemFrm.submit();
+		document.updateFrm.commNo.value = commNo;
+		document.updateFrm.action = "${pageContext.request.contextPath}/admin/updateReportAction.do";
+		document.updateFrm.submit();
 	}
-});
+}
+
+const deleteComm = (e) => {	
+	const commNo = e.target.dataset.commNo;
+
+	if(confirm(`[\${commNo}] 게시글에 대해 '삭제' 조치를 취하시겠습니까?`)) {
+		document.updateFrm.commNo.value = commNo;
+		document.updateFrm.type.value = "T";
+		document.updateFrm.action = "${pageContext.request.contextPath}/admin/updateReportActionAndIsDelete.do";
+		document.updateFrm.submit();
+	} 
+}
+
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

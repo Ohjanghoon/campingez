@@ -124,4 +124,6 @@ public interface AdminService {
 
 	int updateReportAction(String commNo);
 
+	int updateReportActionAndIsDelete(Map<String, Object> param);
+
 }

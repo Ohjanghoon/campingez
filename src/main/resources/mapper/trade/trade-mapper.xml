@@ -103,6 +103,8 @@ from
 		on t.trade_no = p.trade_no
 where
 		category_id = #{categoryId}
+		and
+		trade_isdelete = 'N'
 
 
 </select>
