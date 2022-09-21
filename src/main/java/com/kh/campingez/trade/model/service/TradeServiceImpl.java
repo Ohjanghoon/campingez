@@ -169,6 +169,11 @@ public class TradeServiceImpl implements TradeService {
 		return tradeDao.getUserReportTrade(param);
 	}
 	
+	@Override
+	public List<Trade> selectCurrentTrade() {
+		return tradeDao.selectCurrentTrade();
+	}
+	
 	
 }
 
