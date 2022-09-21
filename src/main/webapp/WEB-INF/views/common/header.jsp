@@ -108,8 +108,6 @@ a {
 	background-color:  #A8A4CE !important;
 	color: white !important;
 }
-
-
 </style>
 <script>
 //스크롤 배경색 변경
