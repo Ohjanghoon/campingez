@@ -77,7 +77,7 @@ window.onload = () => {
         
             <div class="row">
 	            <div class="col-lg-4">
-	               <img src="https://camp.yjcmc.or.kr/epoc/images/img/land7.jpg" class="rounded m-5" height="350">
+	               <img src="https://camp.yjcmc.or.kr/epoc/images/img/land7.jpg" class="rounded m-4" height="350">
 	               <img src="https://i.pinimg.com/564x/d7/ff/07/d7ff0794b9746c4e7ef9f9ba188d08f7.jpg" class="rounded m-2" height="500" width="400">
 	               <img src="https://i.pinimg.com/564x/5b/cb/5f/5bcb5f4b7adf6931236f2380e2c8aa62.jpg" class="rounded float-end m-3" width="350" height="400">
 	            </div>
@@ -88,7 +88,7 @@ window.onload = () => {
 	            </div>
 	            <div class="col-lg-4">
 	            	<img src="https://i.pinimg.com/736x/ea/b3/35/eab335377424507b5be1471e4e89237d.jpg" class="rounded float-end m-2" height="250" width="370">
-	            	<img src="https://i.pinimg.com/564x/6f/6f/7c/6f6f7ce84ee3db91cf7f76e08dadb717.jpg" class="rounded" height="500" width="400">
+	            	<img src="https://i.pinimg.com/564x/6f/6f/7c/6f6f7ce84ee3db91cf7f76e08dadb717.jpg" class="rounded m-3" height="500" width="400">
 	                <img src="https://i.pinimg.com/564x/5e/ee/20/5eee20a1e613fa26dff13a1456762a9a.jpg" class="rounded float-start mt-3" width="420" height="530">
 	            </div>
             </div>
@@ -156,71 +156,8 @@ window.onload = () => {
         <h2 class="pb-2 border-bottom">캠핑이지 중고거래 <a href="${pageContext.request.contextPath}/trade/tradeList.do"><span class="text-muted" style="font-size: small;">이동하기 &raquo;</sapn></a></h2>
     
         <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5" id="tradeCard">
-        
-          <div class="col">
-            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('https://i.pinimg.com/564x/12/b9/c0/12b9c0b89a9f356758709eba5def97fb.jpg');">
-              <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h2>
-                <ul class="d-flex list-unstyled mt-auto">
-                  <li class="me-auto">
-                    <img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo.png" width="32" height="32" class="rounded-circle border border-white">
-                  </li>
-                  <li class="d-flex align-items-center me-3">
-                    <i class="fa-solid fa-heart"></i>
-                    <small>Earth</small>
-                  </li>
-                  <li class="d-flex align-items-center">
-                    <i class="fa-solid fa-heart"></i>
-                    <small>3d</small>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-    
-          <div class="col">
-            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('https://i.pinimg.com/564x/12/b9/c0/12b9c0b89a9f356758709eba5def97fb.jpg');">
-              <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Much longer title that wraps to multiple lines</h2>
-                <ul class="d-flex list-unstyled mt-auto">
-                  <li class="me-auto">
-                    <img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo.png" width="32" height="32" class="rounded-circle border border-white">
-                  </li>
-                  <li class="d-flex align-items-center me-3">
-                    <i class="fa-solid fa-heart"></i>
-                    <small>Pakistan</small>
-                  </li>
-                  <li class="d-flex align-items-center">
-                    <i class="fa-solid fa-heart"></i>
-                    <small>4d</small>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-    
-          <div class="col">
-            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('https://i.pinimg.com/736x/8e/d0/1a/8ed01a6f7af56581331e1941c0f33fa9.jpg');">
-              <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
-                <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Another longer title belongs here</h2>
-                <ul class="d-flex list-unstyled mt-auto">
-                  <li class="me-auto">
-                    <img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo.png" width="32" height="32" class="rounded-circle border border-white">
-                  </li>
-                  <li class="d-flex align-items-center me-3">
-                    <i class="fa-solid fa-heart"></i>
-                    <small>California</small>
-                  </li>
-                  <li class="d-flex align-items-center">
-                    <i class="fa-solid fa-heart"></i>
-                    <small>5d</small>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          
         </div>
+        
       </div>
     </section>  
 		
