@@ -599,9 +599,7 @@ public class AdminController {
 		List<Coupon> expireCouponList = adminService.findAllExpireCouponList(param);
 		model.addAttribute("expireCouponList", expireCouponList);
 		int expireCouponTotalContent = adminService.getExpireCouponTotalContent();
-		log.debug("cPage = {}", cPage);
 		String expirePagebar = CampingEzUtils.getPagebar2(cPage, limit, expireCouponTotalContent, uri);
-		log.debug("expirePagebar = {}", expirePagebar);
 		model.addAttribute("expirePagebar", expirePagebar);
 	}
 	
