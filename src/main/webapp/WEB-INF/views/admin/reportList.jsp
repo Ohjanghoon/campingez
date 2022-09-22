@@ -66,7 +66,7 @@
 							</c:if>
 							<c:if test="${empty tradeReportList}">
 								<tr>
-									<td colspan="7">조회된 신고 내역이 없습니다.</td>
+									<td colspan="8">조회된 신고 내역이 없습니다.</td>
 								</tr>
 							</c:if>
 						</tbody>

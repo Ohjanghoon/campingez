@@ -62,6 +62,7 @@ a {
 #alarm-content-wrap {
 	width:92%;
 	display:flex;
+	height: 100%;
 }
 #alr-msg {
 	width:83%;
@@ -69,6 +70,7 @@ a {
   	overflow: hidden;
   	text-overflow: ellipsis;
   	padding-right: 5px;  
+  	line-height: 300%
 }
 #badge-wrap {
 	width:8%;
@@ -94,7 +96,7 @@ a {
 .tooltip-inner {
 	font-size:13px;
 	max-width:400px;
-	height:30px;
+	max-height: 400px;
 }
 .btn-primary{
  	background-color:  #A8A4CE !important;
@@ -192,29 +194,33 @@ const beforeTime = (alarmDate) => {
 	
 						if(!alrReadDatetime) {
 							html += `
-								<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
-									<span id="badge-wrap">
-										<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
-									</span>
-									<div id="alarm-content-wrap">
-										<div id="alr-msg">\${alrMessage}</div>
-										<span id="alarm-date-wrap">
-											<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+								<a href="\${targetUrl}" id="alarmLink" >
+									<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+										<span id="badge-wrap">
+											<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 										</span>
-									</div>
-								</li>
+										<div id="alarm-content-wrap">
+											<div id="alr-msg">\${alrMessage}</div>
+											<span id="alarm-date-wrap">
+												<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+											</span>
+										</div>
+									</li>
+								</a>
 							`;							
 						} else {
 							html += `
-								<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
-									<span id="badge-wrap"></span>
-									<div id="alarm-content-wrap">
-										<div id="alr-msg">\${alrMessage}</div>
-										<span id="alarm-date-wrap">
-											<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
-										</span>
-									</div>
-								</li>
+								<a href="\${targetUrl}" id="alarmLink">
+									<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+										<span id="badge-wrap"></span>
+										<div id="alarm-content-wrap">
+											<div id="alr-msg">\${alrMessage}</div>
+											<span id="alarm-date-wrap">
+												<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+											</span>
+										</div>
+									</li>
+								</a>
 							`;														
 						}
 					});
@@ -231,9 +237,12 @@ const beforeTime = (alarmDate) => {
 					span.innerHTML = beforeTime(alarmDate);
 				});
 				
-				document.querySelectorAll("#alarm").forEach((li) => {
+				document.querySelectorAll("#alarmLink").forEach((li) => {
 					li.addEventListener('click', (e) => {
+					
 						const alrId = e.target.offsetParent.dataset.alrId;
+						console.dir(e.target);
+						console.log(alrId);
 						if(alrId == undefined) return;
 						
 						$('.alarmList').tooltip('hide');
@@ -248,7 +257,6 @@ const beforeTime = (alarmDate) => {
 							method : "POST",
 							success(response) {
 								$('.alarmList').tooltip('hide');
-								location.href = `\${targetUrl}`;
 								getAlarmList(userId);
 							},
 							error : console.log
