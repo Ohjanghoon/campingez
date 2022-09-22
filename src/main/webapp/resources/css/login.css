@@ -134,7 +134,7 @@ form{
   margin-bottom: 4px;
 }
 
-a{
+.find{
   display: block;
   text-decoration: none;
   color: #999;
@@ -142,7 +142,7 @@ a{
   transition: .3s;
 }
 
-a:hover{
+.find:hover{
   color: #495C83;
 }
 
