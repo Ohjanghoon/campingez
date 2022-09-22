@@ -30,7 +30,7 @@
 	accent-color : #A8A4CE;
 }
 </style>
-<div class="container w-75" id="enrollForm-container">
+<div class="container w-75 top" id="enrollForm-container">
 	<!-- 양도 등록 -->
 	<div class="mx-auto my-5" id="assignEnroll">
 		<strong class="fs-3"><i class="fa-solid fa-campground"></i> 양도 가능 예약</strong>
@@ -256,6 +256,9 @@ document.assignEnrollForm.addEventListener('submit', (e) => {
 	}
 });
 
-
+//화면 로드시 스크롤 이동
+$(document).ready(function () {
+	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
+});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

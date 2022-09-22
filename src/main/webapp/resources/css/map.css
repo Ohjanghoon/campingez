@@ -1,2 +1,43 @@
 @charset "UTF-8";
-
+  
+  .text_custom {
+    position: relative;
+    width: 220px;
+    border: 3px solid #A8A4CE;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  #btn_select1 {
+    position: absolute;
+    width: 25px;
+    right: 230px;
+    bottom: -36%;
+    margin: 0;
+  }
+  
+  .text_custom:focus{
+  	border-color: #C8B6E2;
+	  outline: none;
+  }
+  
+  #btn_select2{
+  	color: white;
+    outline: none;
+    background-color: #C8B6E2;
+    height: 45px;
+    position: relative;
+    top: -3.2px;
+  }
+  
+  #research{
+  	color : #7A86B6;
+  	background-color : white;
+  	border : 1px solid #7A86B6;
+  }
+  
+  #research:hover{
+  	color : white;
+  	background-color : #C8B6E2;
+  }

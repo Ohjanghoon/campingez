@@ -34,7 +34,7 @@
 	pageContext.setAttribute("newLine", "\n");
 %>
 <style>
-#detail-container th {
+.container th {
 	width : 30%;
 	text-indent : 1.1rem;
 	vertical-align : middle;
@@ -44,7 +44,7 @@
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal.username" var="loginUser"/>
 </sec:authorize>		
-<div class="container w-75" id="detail-container">
+<div class="container w-75 top">
 	<!-- 양도 글 -->
 	<div class="mx-auto mt-5">
 		<strong class="fs-3"><i class="fa-solid fa-campground"></i> 양도글</strong>
@@ -208,7 +208,6 @@ const applyClick = () => {
 	const assignTransfer = "${loginUser}";
 	
 	if(!check.checked){
-		e.preventDefault();
 		alert("유의사항을 확인하고 체크 부탁드립니다.");
 		return;
 	}
@@ -275,5 +274,10 @@ const deleteClick = () => {
 	}
 	
 };
+
+//화면 로드시 스크롤 이동
+$(document).ready(function () {
+	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
+});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

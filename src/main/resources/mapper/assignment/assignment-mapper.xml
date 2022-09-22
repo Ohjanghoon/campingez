@@ -18,10 +18,15 @@
 	            assignment a
 	            join reservation r using(res_no, user_id)
 	            left join camp_photo cp on substr(res_no, 0, 2) = cp.zone_code
-	        where
+	        <where>
         		res_checkin - 1 > current_date
         		and
         		assign_state != '양도완료'
+        		<if test="zoneSelect != null and zoneSelect != ''">
+        		and
+        		zone_code = #{zoneSelect}
+        		</if>
+	        </where>
 		) ass
 	)
 	where
@@ -53,6 +58,24 @@
   		<result column="renamed_filename" property="renamedFilename"/>
   	</collection>
   </resultMap>
+  
+  <select id="getTotalContent" resultType="_int" parameterType="string">
+	select
+		count(*)
+	from
+		assignment join reservation r
+		using(res_no, user_id)
+	<where>
+		res_checkin - 1 > current_date
+		and
+		assign_state != '양도완료'
+		<if test="zoneSelect != '' and zoneSelect != null">
+   		and
+   		substr(res_no, 0, 2) = #{zoneSelect}
+   		</if>
+	</where>
+  </select>
+  
   
   <select id="assignmentDetail" resultMap="assignmentListMap">
   	select

@@ -44,7 +44,7 @@ public class InquireController {
 		
 		//2. pagebar 처리
 		int totalContent = inquireService.getTotalContent();
-		log.debug("totalContent = {}", totalContent);
+		//log.debug("totalContent = {}", totalContent);
 	
 		String url = request.getRequestURI();
 		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, url);

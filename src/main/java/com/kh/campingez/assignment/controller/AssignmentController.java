@@ -3,10 +3,9 @@ package com.kh.campingez.assignment.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -42,8 +41,9 @@ public class AssignmentController {
 	 */
 	@GetMapping("/assignmentList.do")
 	public void selectAssignmentList(@RequestParam(defaultValue = "1") int cPage, Model model) {
+		String zoneSelect = null;
 		int limit = 3;
-		int totalContent = assignmentService.getTotalContent();
+		int totalContent = assignmentService.getTotalContent(zoneSelect);
 		int totalPage = (int) Math.ceil((double) totalContent / limit);
 		
 		//log.debug("totalPage = {}, totalContent = {}", totalPage, totalContent);
@@ -55,19 +55,27 @@ public class AssignmentController {
 	 * 양도 목록에서 더보기 클릭시 현재 페이지 이후의 게시글 3개씩 불러오기 (비동기 요청)
 	 */
 	@GetMapping("/assignmentListMore.do")
-	public ResponseEntity<?> selectAssignmentListMore(@RequestParam int cPage) {
+	public ResponseEntity<?> selectAssignmentListMore(@RequestParam int cPage, @RequestParam String zoneSelect) {
 		log.debug("cPage = {}", cPage);
+		log.debug("zoneSelect = {}", zoneSelect);
 		int photoCount = 4;
 		int limit = 3;
 		int start = (cPage - 1) * limit * photoCount + 1;
 		int end = cPage * limit * photoCount;
 		
-		List<Assignment> list = assignmentService.selectAssignmentList(start, end);
-		//log.debug("list = {}", list);
+		List<Assignment> list = assignmentService.selectAssignmentList(zoneSelect, start, end);
+		log.debug("list = {}", list);
+		int totalContent = assignmentService.getTotalContent(zoneSelect);
+		log.debug("totalContent = {}", totalContent);
+		int totalPage = (int) Math.ceil((double) totalContent / limit);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("totalPage", totalPage);
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.body(list);
+				.body(map);
 	}
 	
 	/**

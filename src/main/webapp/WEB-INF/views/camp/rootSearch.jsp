@@ -26,7 +26,8 @@ window.onload = () => {
 		<div class="mainMap">
 			<img src="${pageContext.request.contextPath}/resources/images/mainMap.png" alt="" style="width: 900px; height: 500px;">
 		</div><br><br>
-		<h1>찾아오시는 길</h1><br>
+		<h1>찾아오시는 길</h1>
+		<hr />
 		<h5>캠핑이지 : 경북 경주시 인왕동 839-1</h5><br><br>
 		<div class="busRoot">
 			<i class="fa-solid fa-bus fa-2x" style="height: 50px;"></i>
@@ -61,12 +62,13 @@ window.onload = () => {
 		</div>
 		<br>
 
-		<div class="buttonWrapper" style="float: right; margin-right: 100px;">
-			<button id="research" style="display: none;" onclick="research()">다시검색하기</button>
+		<div class="buttonWrapper" style="float: left; margin-left: 70px;">
+			<button id="research" style="display: none;" onclick="research()" class="btn">다시검색하기</button>
 			<div id="xyCode" style="display: inline;">
 				<input type="text" class="text_custom" id="fullAddr" name="fullAddr" value="홍대">
-				<button id="btn_select1">적용하기</button>
-				<button id="btn_select2" onclick="lineDisplay()">경로보기</button>
+				<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="btn_select1" style="cursor: pointer;">
+				<!-- <button type id="btn_select1" class="btn btn-outline-secondary">적용하기</button> -->
+				<button id="btn_select2" onclick="lineDisplay()" class="btn">경로보기</button>
 			</div><br><br>
 			<p id="result1"></p>
 			<p id="result2"></p>
