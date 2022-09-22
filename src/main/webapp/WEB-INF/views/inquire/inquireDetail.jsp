@@ -20,6 +20,11 @@
 	pageContext.setAttribute("newLine", "\n");
 %>
 
+<style>
+textarea {
+	resize : none;
+}
+</style>
 <div class="container w-75 my-5">
 	<%------------------------------------------------------ 
 							문의 글(사용자)
@@ -107,7 +112,7 @@
 			<form:form action="${pageContext.request.contextPath}/admin/inquireAnswer.do" name="answerFrm" method="POST">
 				<input type="hidden" name="inqNo" value="${inquire.inqNo}" />
 				<c:if test="${empty answer}">
-					<textarea class="card w-100 my-3" name="answerContent" rows="7" cols="50"></textarea>
+					<textarea class="card w-100 my-3 p-2" name="answerContent" rows="7" cols="50"></textarea>
 					<button id="btn-admin-answer" class="btn btn-outline-dark" type="button" value="${inquire.inqNo}" onclick="enrollAnswer();">답변</button>
 				</c:if>
 				<c:if test="${not empty answer}">
