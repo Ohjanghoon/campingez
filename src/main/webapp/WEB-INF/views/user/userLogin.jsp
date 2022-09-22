@@ -100,8 +100,8 @@
           </div>
         </div>
         <div style="text-align: right;">
-	        <a href="#" class="button" id="btnModal" style="display: inline;">Forgot Id?</a><br />
-	        <a href="${pageContext.request.contextPath}/user/userFindPassword.do" style="display: inline;">Forgot Password?</a>
+	        <a href="#" class="find" id="btnModal" style="display: inline;">Forgot Id?</a><br />
+	        <a href="${pageContext.request.contextPath}/user/userFindPassword.do" class="find" style="display: inline;">Forgot Password?</a>
         </div>
 		<div>
 			<button type="submit" class="login-btn">Login</button>
