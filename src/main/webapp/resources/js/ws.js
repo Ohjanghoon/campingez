@@ -22,7 +22,6 @@ stompClient.connect({}, (frame) => {
 		notReadCountSpan.innerHTML = notReadCount;
 		
 		const date = `${yy}/${MM}/${dd} ${HH}:${mm}:${ss}`;
-		console.log(date);
 		const alrDate = beforeTime(date);
 		
 		document.querySelectorAll("#alarm").forEach((li) => {
@@ -63,7 +62,8 @@ stompClient.connect({}, (frame) => {
 			`;														
 		}
 		ul.insertAdjacentHTML('afterbegin', html);
-
+		$('.alarmList').tooltip();
+		
 		const newAlarm = document.querySelector("#new-alarm");
 		newAlarm.classList.remove('visually-hidden');
 		

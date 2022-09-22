@@ -109,6 +109,27 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 	
 	@Override
+	public int cancelWarningToUserAlarm(String userId) {
+		String msg = "[경고취소] 문의 주신 내용 반영하여 경고 취소처리 되셨습니다.🙂";
+		
+		AlarmEntity alarm = (AlarmEntity)Alarm.builder()
+						.targetUserId(userId)
+						.alrType(AlarmType.REPORT)
+						.alrMessage(msg).build();
+		int result = alarmDao.insertAlarmWithoutContentIdAndUrl(alarm);
+		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
+		int notReadCount = alarmDao.getNotReadCount(userId);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("alarm", alarm);
+		map.put("notReadCount", notReadCount);
+		
+		simpMessagingTemplate.convertAndSend("/app/notice/" + userId, map);
+		
+		return result;
+	}
+	
+	@Override
 	public int commReportAlarm(Map<String, Object> param) {
 		String type = (String)param.get("type");
 		String commNo = (String)param.get("commNo");

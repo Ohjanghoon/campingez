@@ -34,8 +34,10 @@ import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.CampingEzUtils;
 import com.kh.campingez.common.category.mode.dto.Category;
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.report.dto.Report;
 import com.kh.campingez.reservation.model.dto.Reservation;
 import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.user.model.dto.User;
@@ -70,7 +72,7 @@ public class AdminController {
 		
 		int totalContent = adminService.getTotalContent();
 		String url = request.getRequestURI();
-		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
 	}
@@ -91,14 +93,14 @@ public class AdminController {
 		int NotBlacktotalContent = adminService.getNotBlackListTotalContent();
 		
 		String url = request.getRequestURI();
-		String blackPagebar = CampingEzUtils.getPagebar(cPage, limit, BlacktotalContent, url);
-		String notBlackPagebar = CampingEzUtils.getPagebar(cPage, limit, NotBlacktotalContent, url);
+		String blackPagebar = CampingEzUtils.getPagebar2(cPage, limit, BlacktotalContent, url);
+		String notBlackPagebar = CampingEzUtils.getPagebar2(cPage, limit, NotBlacktotalContent, url);
 		
 		model.addAttribute("blackPagebar", blackPagebar);
 		model.addAttribute("notBlackPagebar", notBlackPagebar);
 	}
 
-	@PostMapping("/warning")
+	@PostMapping("/warning.do")
 	public ResponseEntity<?> warning(@RequestParam String userId, @RequestParam String reason) {
 		String location = "/notice/detail.do?noticeNo=N17";
 		Map<String, Object> param = new HashMap<>();
@@ -108,6 +110,14 @@ public class AdminController {
 		
 		int result = adminService.updateWarningToUser(param);
 		result = alarmService.warningToUserAlarm(param);
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	@PostMapping("/cancelWarning.do")
+	public ResponseEntity<?> cancelWarning(@RequestParam String userId) {
+		int result = adminService.updateCancelWarningToUser(userId);
+		result = alarmService.cancelWarningToUserAlarm(userId);
 		
 		return ResponseEntity.ok().build();
 	}
@@ -179,7 +189,7 @@ public class AdminController {
 		
 		int totalContent = adminService.getInquireListTotalContent();
 		String uri = request.getRequestURI();
-		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, uri);
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
 		model.addAttribute("pagebar", pagebar);
 		
 		List<Category> categoryList = adminService.getCategoryList();
@@ -218,7 +228,7 @@ public class AdminController {
 	@GetMapping("/inquireListByCategoryId.do")
 	public ResponseEntity<?> findInquireListByCategoryId(@RequestParam(defaultValue = "1") int cPage, @RequestParam String categoryId, HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
-		int limit = 5;
+		int limit = 10;
 		param.put("limit", limit);
 		param.put("cPage", cPage);
 		param.put("categoryId", categoryId);
@@ -252,7 +262,7 @@ public class AdminController {
 		model.addAttribute("date", param);
 		
 		// 페이징 처리
-		int limit = 5;
+		int limit = 10;
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		
@@ -261,7 +271,7 @@ public class AdminController {
 		
 		int totalContent = adminService.getReservationListTotalContent(param);
 		String uri = request.getRequestURI();
-		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, uri);
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
 		model.addAttribute("pagebar", pagebar);
 	}
 	
@@ -280,7 +290,7 @@ public class AdminController {
 		
 		int totalContent = adminService.getReservationListTotalContent(param);
 		String uri = request.getRequestURI();
-		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, uri);
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
 		model.addAttribute("pagebar", pagebar);
 		
 		return "admin/reservationList";
@@ -473,9 +483,7 @@ public class AdminController {
 	
 	@GetMapping("/findCampByZoneCode.do")
 	public ResponseEntity<?> findCampByZoneCode(@RequestParam String zoneCode) {
-		log.debug("zoneCode = {}", zoneCode);
 		List<CampZone> campList = adminService.findCampByZoneCode(zoneCode);
-		log.debug("campList = {}", campList);
 		
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(campList);
 	}
@@ -493,6 +501,7 @@ public class AdminController {
 		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
 		
 		model.addAttribute("assignmentList", assignmentList);
+		model.addAttribute("totalContent", totalContent);
 		model.addAttribute("pagebar", pagebar);
 		
 		List<Assignment> expireAssignmentList = adminService.findAllExpireAssignmentList(param);
@@ -536,10 +545,18 @@ public class AdminController {
 		log.debug("tradeReportList = {}", tradeReportList);
 		model.addAttribute("tradeReportList", tradeReportList);
 		
+		List<Report> userReportTotal = adminService.findAllUserReportTotal(param);
+		log.debug("userReportTotal = {}", userReportTotal);
+		model.addAttribute("userReportTotal", userReportTotal);
+		
 		int totalContent = adminService.getTradeReportTotalContent();
 		String uri = request.getRequestURI();
 		String tradePagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
 		model.addAttribute("tradePagebar", tradePagebar);
+		
+		int userReportTotalContent = adminService.getUserReportTotalContent();
+		String totalContentPagebar = CampingEzUtils.getPagebar2(cPage, limit, userReportTotalContent, uri);
+		model.addAttribute("totalContentPagebar", totalContentPagebar);
 	}
 	
 	@PostMapping("/updateReportAction.do")
@@ -563,6 +580,29 @@ public class AdminController {
 		}
 		
 		return "redirect:/admin/reportList.do";
+	}
+	
+	@GetMapping("/statsCouponDown.do")
+	public void statsCouponDown(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 10;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		List<Coupon> ingCouponList = adminService.findAllIngCouponList(param);
+		model.addAttribute("ingCouponList", ingCouponList);
+		int ingCouponTotalContent = adminService.getIngCouponTotalContent();
+		String uri = request.getRequestURI();
+		String ingPagebar = CampingEzUtils.getPagebar2(cPage, limit, ingCouponTotalContent, uri);
+		model.addAttribute("ingPagebar", ingPagebar);
+		
+		List<Coupon> expireCouponList = adminService.findAllExpireCouponList(param);
+		model.addAttribute("expireCouponList", expireCouponList);
+		int expireCouponTotalContent = adminService.getExpireCouponTotalContent();
+		log.debug("cPage = {}", cPage);
+		String expirePagebar = CampingEzUtils.getPagebar2(cPage, limit, expireCouponTotalContent, uri);
+		log.debug("expirePagebar = {}", expirePagebar);
+		model.addAttribute("expirePagebar", expirePagebar);
 	}
 	
 	private Date addMonth(Date date, int months) {
