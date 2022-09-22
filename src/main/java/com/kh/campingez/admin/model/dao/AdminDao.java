@@ -18,6 +18,7 @@ import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.report.dto.Report;
@@ -45,6 +46,9 @@ public interface AdminDao {
 	
 	@Update("update ez_user set yellowcard = yellowcard + 1 where user_id = #{userId}")
 	int updateWarningToUser(String userId);
+	
+	@Update("update ez_user set yellowcard = yellowcard - 1 where user_id = #{userId}")
+	int updateCancelWarningToUser(String userId);
 	
 	@Select("select * from ez_user where ${selectType} like '%' || #{selectKeyword} || '%' order by enroll_date desc")
 	List<User> selectUserByKeyword(RowBounds rowBounds, Map<String, Object> param);
@@ -214,4 +218,23 @@ public interface AdminDao {
 	@Select("select user_id from report where comm_no = #{commNo}")
 	List<String> findReportUserListByCommNo(String commNo);
 
+	List<Report> findAllUserReportTotal(RowBounds rowBounds);
+	
+	@Select("select count(*) from ( select count(*) from report r left join trade t on r.comm_no = t.trade_no where substr(r.comm_no, 1, 1) = 'T' group by t.user_id) a")
+	int getUserReportTotalContent();
+	
+	@Select("select * from coupon where coupon_endday >= current_date")
+	List<Coupon> findAllIngCouponList(Map<String, Object> param);
+	
+	@Select("select * from coupon where coupon_endday < current_date")
+	List<Coupon> findAllExpireCouponList(Map<String, Object> param);
+
+	@Select("select count(*) from coupon where coupon_endday >= current_date")
+	int getIngCouponTotalContent();
+	
+	@Select("select count(*) from coupon where coupon_endday < current_date")
+	int getExpireCouponTotalContent();
+	
+	
+	
 }

@@ -50,10 +50,12 @@
 											<option value="" selected disabled>사유를 선택하세요.</option>
 											<option value="violation">이용수칙위반</option>
 											<option value="noshow">노쇼</option>
+											<option value="report">커뮤니티이용수칙위반</option>
 										</select>
 									</td>
 									<td scope="row">
 										<button type="button" name="yellowCardBtn" id="${user.userId}" onclick="warningToUser(event)">경고</button>
+										<button type="button" name="cancelBtn" id="${user.userId}" onclick="cancelWarningToUser(event)">취소</button>
 									</td>
 								</tr>
 							</c:forEach>
@@ -157,6 +159,30 @@ const warningToUser = (e) => {
 		error : console.log
 	});
 };
+
+const cancelWarningToUser = (e) => {
+	const userId = e.target.id;
+	const yellowcard = e.target.parentElement.previousElementSibling.previousElementSibling.innerHTML;
+	
+	if(yellowcard < 1) {
+		alert("경고 횟수가 없는 회원입니다.");
+		return;
+	} else if(confirm(`[\${userId}]님의 경고를 정말 취소하시겠습니까?`)) {
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : `${pageContext.request.contextPath}/admin/cancelWarning.do`,
+			headers,
+			data : {userId},
+			method : "POST",
+			success(response) {
+				location.reload();
+			},
+			error : console.log
+		});
+	}
+}
 
 document.querySelector("#selectType").addEventListener('change', (e) => {
 	if(!e.target.value) {

@@ -245,8 +245,6 @@ const beforeTime = (alarmDate) => {
 						console.log(alrId);
 						if(alrId == undefined) return;
 						
-						$('.alarmList').tooltip('hide');
-						
 						const headers = {};
 						headers['${_csrf.headerName}'] = '${_csrf.token}';
 						

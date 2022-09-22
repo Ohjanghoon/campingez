@@ -11,4 +11,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Report extends ReportEntity {
 	private String categoryName;
+	private String commUserId;
+	private int totalReport;
+	private String isBlacklist;
 }

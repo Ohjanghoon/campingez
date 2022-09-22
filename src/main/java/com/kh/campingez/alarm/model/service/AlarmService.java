@@ -20,4 +20,6 @@ public interface AlarmService {
 
 	int commReportAlarm(Map<String, Object> param);
 
+	int cancelWarningToUserAlarm(String userId);
+
 }

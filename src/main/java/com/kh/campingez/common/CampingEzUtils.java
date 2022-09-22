@@ -4,6 +4,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CampingEzUtils {
 	public static String getPagebar(int cPage, int limit, int totalContent, String url) {
 		StringBuffer pagebar = new StringBuffer();
@@ -43,6 +46,8 @@ public class CampingEzUtils {
 	}
 	
 	public static String getPagebar2(int cPage, int limit, int totalContent, String url) {
+		log.debug("cPage = {}", cPage);
+		
 		StringBuffer pagebar = new StringBuffer();
 		url += "?cPage="; // spring/board/boardList.do?cPage=
 		
@@ -51,6 +56,7 @@ public class CampingEzUtils {
 		final int pagebarStart = ((cPage -1) / pagebarSize) * pagebarSize + 1;
 		final int pagebarEnd = pagebarStart + pagebarSize - 1;
 		int pageNo = pagebarStart;
+		log.debug("pagebarStart = {}", pagebarStart);
 		
 		pagebar.append("<ul class=\"pagination justify-content-center\">\n");
 		
@@ -74,6 +80,9 @@ public class CampingEzUtils {
 		
 		// pageNo
 		while(pageNo <= pagebarEnd && pageNo <= totalPage) {
+			log.debug("pageNo = {}", pageNo);
+			log.debug("cPage = {}", cPage);
+			log.debug("{}", cPage == pageNo);
 			if(pageNo == cPage) {
 				pagebar.append("<li class=\"page-item active\"><a class=\"page-link\" href=\"#\">"+ pageNo + "</a></li>\n");
 			}

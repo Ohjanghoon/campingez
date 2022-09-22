@@ -124,6 +124,7 @@
 	    <![CDATA[
 	    	res_checkin <= current_date
 	    ]]>
+	    and assign_state != '양도완료'
 	order by
 	    res_checkin  	
   </select>
@@ -217,4 +218,39 @@
 				comm_no = #{commNo}
 		</if>
 	</update>
+	
+	<select id="findAllUserReportTotal" resultMap="reportMap">
+		select
+		    a.*,
+		    case when
+		        (select yellowcard from ez_user where a.comm_user_id = user_id) >= 3
+		    then '블랙리스트' end is_blacklist
+		from (
+		    select
+		       t.user_id comm_user_id,
+		       count(*) total_report
+		    from
+		        report r left join trade t 
+		            on r.comm_no = t.trade_no
+		    where
+		        substr(r.comm_no, 1, 1) = 'T'
+		    group by
+		        t.user_id
+		) a
+		order by
+		    2
+	</select>
+	
+	<resultMap type="report" id="reportMap">
+		<id column="report_no" property="reportNo"/>
+		<result column="comm_no" property="commNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="report_content" property="reportContent"/>
+		<result column="report_date" property="reportDate"/>
+		<result column="report_type" property="reportType"/>
+		<result column="report_action" property="reportAction"/>
+		<result column="comm_user_id" property="commUserId"/>
+		<result column="total_report" property="totalReport"/>
+		<result column="is_blacklist" property="isBlacklist"/>
+	</resultMap>
 </mapper>
