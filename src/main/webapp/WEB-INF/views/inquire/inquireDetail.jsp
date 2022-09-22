@@ -12,7 +12,6 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 
-<div class="container w-75" id="top">
 <%
 	Inquire inquire = (Inquire) request.getAttribute("inquire");
 	Answer answer = inquire.getAnswer();
@@ -21,15 +20,23 @@
 	pageContext.setAttribute("newLine", "\n");
 %>
 
+<div class="container w-75 my-5">
 	<%------------------------------------------------------ 
 							문의 글(사용자)
 	------------------------------------------------------%>
-	<h1>
-		<i class="fa-solid fa-q"></i>
-		<c:if test="${not empty inquire.inqUpdatedDate}">
-			<span class="fs-6" style="color: rgb(155, 155, 155)">(수정된 문의글)</span>
-		</c:if>	
-	</h1>
+	<div class="text-center">
+		<strong class="fs-3"><i class="fa-regular fa-circle-question"></i> 1:1 문의</strong>
+	</div>
+	<div class="d-flex justify-content-between align-items-end">
+		<h1>
+			<i class="fa-solid fa-q"></i>
+			<c:if test="${not empty inquire.inqUpdatedDate}">
+				<span class="fs-6" style="color: rgb(155, 155, 155)">(수정된 문의글)</span>
+			</c:if>
+		</h1>
+		<a class="align-center" href="${pageContext.request.contextPath}/inquire/inquireList.do"><i class="fa-solid fa-list"></i> 목록으로</a>
+		
+	</div>
 	
 	<hr />
 	<div>
@@ -214,7 +221,7 @@ const updateAnswer = (e) => {
 
 //화면 로드시 스크롤 이동
 $(document).ready(function () {
-	$('html, body, .container').animate({scrollTop: $('#top').offset().top - 150}, 'fast');
+	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
 });
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

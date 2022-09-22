@@ -34,7 +34,7 @@ public class InquireController {
 	public void inquireList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
 		//1. content 영역
 		Map<String, Integer> param = new HashMap<>();
-		int limit = 10;
+		int limit = 5;
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		
@@ -49,6 +49,8 @@ public class InquireController {
 		String url = request.getRequestURI();
 		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, url);
 		model.addAttribute("pagebar", pagebar);
+		model.addAttribute("cPage", cPage);
+		model.addAttribute("limit", limit);
 	}
 	
 	@GetMapping("/inquireDetail.do")
