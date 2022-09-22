@@ -74,7 +74,7 @@ public class UserController {
 			redirectAttr.addFlashAttribute("msg", "회원가입 완료!");
 			return "redirect:/";
 		} catch (Exception e) {
-			log.error("회원 등룍 오류 : " + e.getMessage(), e);
+			log.error("회원 등록 오류 : " + e.getMessage(), e);
 			throw e;
 		}
 	}

@@ -305,8 +305,8 @@ var map;
                     "appKey": "l7xxa5222b687369489dad174bcba92f1a00",
                     "startX": lon,
                     "startY": lat,
-                    "endX": "126.92406666666668",
-                    "endY": "37.56169444444444",
+                    "endX": "129.22033479416132",
+                    "endY": "35.83503654502385",
                     "reqCoordType": "WGS84GEO",
                     "resCoordType": "EPSG3857",
                     "searchOption": searchOption,
@@ -320,8 +320,10 @@ var map;
                         + (resultData[0].properties.totalDistance / 1000)
                             .toFixed(1) + "km";
                     var tTime = " 총 시간 : "
-                        + (resultData[0].properties.totalTime / 60)
-                            .toFixed(0) + "분";
+                        + Math.floor(((resultData[0].properties.totalTime / 60)
+                            .toFixed(0) / 60)) + "시간 "
+                        + ((resultData[0].properties.totalTime / 60)
+                            .toFixed(0) % 60) + "분";
                     var tFare = " 총 요금 : "
                         + resultData[0].properties.totalFare
                         + "원";
@@ -329,14 +331,18 @@ var map;
                         + resultData[0].properties.taxiFare
                         + "원";
 
-                    $("#result1").text(
-                        tDistance);
-                    $("#result2").text(
-                        tTime);
-                    $("#result3").text(
-                        tFare);
-                    $("#result4").text(
-                        taxiFare);
+                    $("#result1").html(
+                    `<li style="list-style: none;"><i class="fa-solid fa-route fa-2x"></i>&nbsp;&nbsp;&nbsp;${tDistance}</li>`
+                        );
+                    $("#result2").html(
+                    `<li style="list-style: none;"><i class="fa-regular fa-clock fa-2x"></i>&nbsp;&nbsp;&nbsp;${tTime}</li>`
+                        );
+                    $("#result3").html(
+                    `<li style="list-style: none;"><i class="fa-solid fa-sack-dollar fa-2x"></i>&nbsp;&nbsp;&nbsp;${tFare}</li>`
+						);
+                    $("#result4").html(
+                    `<li style="list-style: none;"><i class="fa-solid fa-taxi fa-2x"></i>&nbsp;&nbsp;&nbsp;${taxiFare}</li>`
+                        );
 
                     //교통정보 표출 옵션값을 체크
                     if (trafficInfochk == "Y") {
