@@ -45,7 +45,7 @@
 		</thead>
 		<tbody id="tradeTbody">
 			<c:forEach items="${result}" var="trade" varStatus="vs">
-				<tr style=" line-height: 46px;" onclick="location.href='${pageContext.request.contextPath}/trade/tradeView.do?no=${trade.tradeNo}'" data-no="${trade.tradeNo}">
+				<tr style=" line-height: 46px; cursor:pointer;" onclick="location.href='${pageContext.request.contextPath}/trade/tradeView.do?no=${trade.tradeNo}'" data-no="${trade.tradeNo}">
 					<td>${vs.count}</td>
 					<td>${trade.tradeNo}</td>
 					<td>${trade.userId}</td>

@@ -40,7 +40,7 @@
 		</thead>
 		<tbody id="assignTbody">
 			<c:forEach items="${assignList}" var="assign" varStatus="vs" >
-				<tr style=" line-height: 46px;" onclick="location.href='${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=${assign.assignNo}'" data-no="${assign.assignNo}">
+				<tr style=" line-height: 46px; cursor:pointer;" onclick="location.href='${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=${assign.assignNo}'" data-no="${assign.assignNo}">
 					<td>${assign.assignNo}</td>
 					<td>${assign.userId}</td>
 					<td>${assign.resNo}</td>
