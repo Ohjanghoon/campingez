@@ -12,7 +12,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 
-<div class="container w-75">
+<div class="container w-75" id="top">
 <%
 	Inquire inquire = (Inquire) request.getAttribute("inquire");
 	Answer answer = inquire.getAnswer();
@@ -212,5 +212,9 @@ const updateAnswer = (e) => {
 	});
 };
 
+//화면 로드시 스크롤 이동
+$(document).ready(function () {
+	$('html, body, .container').animate({scrollTop: $('#top').offset().top - 150}, 'fast');
+});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

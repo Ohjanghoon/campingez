@@ -28,13 +28,13 @@ public class AssignmentServiceImpl implements AssignmentService {
 	ReservationDao reservationDao;
 	
 	@Override
-	public List<Assignment> selectAssignmentList(int start, int end) {
-		return assignmentDao.selectAssignmentList(start, end);
+	public List<Assignment> selectAssignmentList(String zoneSelect, int start, int end) {
+		return assignmentDao.selectAssignmentList(zoneSelect, start, end);
 	}
 	
 	@Override
-	public int getTotalContent() {
-		return assignmentDao.getTotalContent();
+	public int getTotalContent(String zoneSelect) {
+		return assignmentDao.getTotalContent(zoneSelect);
 	}
 	
 	@Override
@@ -125,6 +125,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 		}
 		return result;
 	}
+	
 	
 //	@Override
 //	public Reservation updateAssignmentApply(String alreadyResNo) {

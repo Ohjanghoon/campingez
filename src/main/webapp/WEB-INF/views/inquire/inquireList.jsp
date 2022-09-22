@@ -10,7 +10,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/mypage.css" />
-	<div class="container">
+	<div class="container" id="inquireList">
 		<h3 style="margin-top:20px;" id="titleLeft">
 			<img style="margin-right:20px;" src="${pageContext.request.contextPath}/resources/images/mypage/question.png" width="50px">
 			1:1 문의
@@ -89,6 +89,11 @@
 				location.href="${pageContext.request.contextPath}/inquire/inquireDetail.do?no=" + inqNo;
 			}
 		});
+	});
+	
+	//화면 로드시 스크롤 이동
+	$(document).ready(function () {
+		$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
 	});
 	</script>
 	
