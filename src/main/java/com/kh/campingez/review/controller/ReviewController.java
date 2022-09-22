@@ -53,7 +53,7 @@ public class ReviewController {
 	@GetMapping("/reviewList.do")
 	public void reviewList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
-		int limit = 5;
+		int limit = 6;
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		
@@ -63,7 +63,7 @@ public class ReviewController {
 		
 		int totalContent = reviewService.getTotalContentByAllReviewList(param);
 		String uri = request.getRequestURI();
-		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, uri);
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
 		model.addAttribute("pagebar", pagebar);
 		
 		List<CampZone> campZoneList = adminService.findAllCampZoneList();
@@ -73,7 +73,7 @@ public class ReviewController {
 	@GetMapping("/reviewListBySearchType.do")
 	public String reviewList(@RequestParam(defaultValue = "1") int cPage, @RequestParam String searchType, @RequestParam(required = false) String campZoneType, Model model, HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
-		int limit = 5;
+		int limit = 4;
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		param.put("campZoneType", campZoneType);
@@ -94,7 +94,7 @@ public class ReviewController {
 		log.debug("totalContent = {}", totalContent);
 		
 		String uri = request.getRequestURI();
-		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, uri);
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
 		model.addAttribute("pagebar", pagebar);
 		log.debug("pagebar = {}", pagebar);
 		
