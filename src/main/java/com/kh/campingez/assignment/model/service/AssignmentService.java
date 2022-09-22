@@ -9,9 +9,9 @@ import com.kh.campingez.reservation.model.dto.Reservation;
 
 public interface AssignmentService {
 
-	List<Assignment> selectAssignmentList(int start, int end);
+	List<Assignment> selectAssignmentList(String zoneSelect, int start, int end);
 	
-	int getTotalContent();
+	int getTotalContent(String zoneSelect);
 
 	List<Reservation> selectReservationList(String userId);
 

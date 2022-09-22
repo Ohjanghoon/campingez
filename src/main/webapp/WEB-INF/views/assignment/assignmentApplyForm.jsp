@@ -44,7 +44,7 @@
 
 
 </style>
-<div class="container w-75" id="applyForm-continer">
+<div class="container w-75 top" id="applyForm-continer">
 	
 	<sec:authorize access="isAuthenticated()">
 		<sec:authentication property='principal.username' var="loginUser"/>
@@ -215,6 +215,11 @@ document.assignmentApplyForm.addEventListener('submit', (e) => {
 		e.preventDefault();
 		return false;
 	}
+});
+
+//화면 로드시 스크롤 이동
+$(document).ready(function () {
+	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
 });
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

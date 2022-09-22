@@ -32,10 +32,6 @@
 	color : white;
 }
 
-#btn-assignment-enroll:hover {
-	color : #495C83;
-}
-
 .assignTitle .assignState {
 	padding : 0.5rem;
 	border-radius : 0.5rem;
@@ -47,56 +43,92 @@
 	position : relative;
 }
 #btn_top{
-    width: 50px; 
-    height: 50px;
+    width: 30px; 
+    height: 30px;
     border: 1px solid #A8A4CE; 
     color: #A8A4CE;
     cursor: pointer;
-    position: fixed; bottom: 200px; right: 350px;
+    position: fixed; bottom: 30%; right: 5%;
+    z-index : 2;
 }
 #btn_bottom {
-	width: 50px; 
-    height: 50px;
+	width: 30px; 
+    height: 30px;
     border: 1px solid #A8A4CE; 
     color: #A8A4CE;
     cursor: pointer;
-    position: fixed; bottom: 150px; right: 350px;
+    position: fixed; bottom: 26%; right: 5%;
+    z-index : 2;
+}
+#assignListHeader {
+	height : 20%;
+	background-color : black;
+}
+
+#zoneSelect {
 }
 </style>
-<div class="container">
-
-	<sec:authorize access="isAuthenticated()">
-	<div class="text-center">
-		<form:form action="${pageContext.request.contextPath}/assignment/assignmentForm.do" method="POST">
-			<input type="hidden" name="userId" value='<sec:authentication property="principal.username"/>' />
-			<button type="submit" class="w-50 mb-3 fs-5 btn btn-block" id="btn-assignment-enroll">양도 등록</button>
-		</form:form>
+<header class="py-2 top">
+	<div class="container px-4 px-lg-5 mt-5">
+		<h1 class="display-4 text-center fw-bolder">양도</h1>
+		<hr />
 	</div>
-	</sec:authorize>
+</header>
+<div class="container w-75">
+	<div class="text-center">
+		<p><strong>구역별로 모아보기 </strong></p>
+
+		<select class="w-25 p-2 form-select mx-auto border border-dark" name="zoneSelect" id="zoneSelect">
+			<option value="" selected>전체보기</option>
+			<option value="ZA">🌳 데크존</option>
+			<option value="ZB">🐕 반려견존</option>
+			<option value="ZC">🏕️ 글램핑존</option>
+			<option value="ZD">🚙 카라반존</option>
+		</select>
+		<div class="my-3 text-end">
+		<sec:authorize access="isAuthenticated()">
+			<form:form action="${pageContext.request.contextPath}/assignment/assignmentForm.do" method="POST">
+				<input type="hidden" name="userId" value='<sec:authentication property="principal.username"/>' />
+				<button type="submit" class="mb-3 btn btn-block" id="btn-assignment-enroll">양도 등록</button>
+			</form:form>
+		</sec:authorize>
+	</div>
+		
+	</div>
+	
+	
 	<div id="assign-container"></div>
-	<div class="text-center" id='btn-more-container'>
-		<button class="w-50 btn btn-outline-dark" id="btn-more" value="" >
-			더보기 (<span id="cPage"></span> / <span id="totalPage">${totalPage}</span>)
+	<div class="text-center mt-4" id='btn-more-container'>
+		<button class="w-75 p-2 btn btn-outline-dark" id="btn-more" value="" >
+			<strong>더보기 ( <span id="cPage"></span> / <span id="totalPage">${totalPage}</span> )</strong>
 		</button>
 		<button type="button" id="btn_top" onclick="scrollToTop();">▲</button>
 		<button type="button" id="btn_bottom" onclick="scrollToBottom();">▼</button>
 	</div>
 </div>
 <script>
-document.querySelector("#btn-more").addEventListener('click', (e) => {
-	const cPage = Number(document.querySelector("#cPage").textContent) + 1;
-	getPage(cPage);
-});
+let zoneSelect = "";
 
-
-const getPage = (cPage) => {
+const getPage = (cPage, zoneSelect) => {
+	//console.log(typeof zoneSelect);
 	$.ajax({
 		url : '${pageContext.request.contextPath}/assignment/assignmentListMore.do',
-		data : {cPage},
+		data : {cPage, zoneSelect},
 		success(response){
 			console.log(response);
+			const {list, totalPage} = response;
 			
-			response.forEach((assign) => {
+			let html = ``;
+			if(totalPage == 0){
+				html = `
+					<div class="w-75 mt-4 mx-auto card text-center">
+						<p class="p-5">해당 구역의 양도건이 존재하지 않습니다.</p>
+					</div>
+				`;
+				const container = document.querySelector("#assign-container");
+				container.insertAdjacentHTML('beforeend', html);
+			}
+			list.forEach((assign) => {
 				let {assignNo, resNo, userId, assignDate, assignTitle, assignState, assignPrice, 
 					campPhotos, reservation : {campId, resCheckin, resCheckout}} = assign;
 				
@@ -112,8 +144,8 @@ const getPage = (cPage) => {
 				const zoneCode = zoneCodeKr(resNo.substring(0, 2));
 				const schedule = calSchedule(checkin, checkout);
 				
-				let html = `
-					<div class="w-50 mt-4 mx-auto card" name="assignInfo"  data-no="\${assignNo}">
+				html = `
+					<div class="w-75 mt-4 mx-auto card" name="assignInfo"  data-no="\${assignNo}">
 						<div class="py-2 d-flex justify-content-around" name="userInfo">
 						<!-- 양도 작성자 -->
 						<span>
@@ -174,8 +206,21 @@ const getPage = (cPage) => {
 				const container = document.querySelector("#assign-container");
 				container.insertAdjacentHTML('beforeend', html);
 				
-				
 			});
+			
+			const total = document.querySelector("#totalPage");
+			
+			total.innerHTML = totalPage;
+			
+			// 더보기 버튼에 현재 페이지 표시
+			document.querySelector('#cPage').innerHTML = cPage;
+
+			// 현재 페이지 == 마지막 페이지 일 때, 더보기 버튼 비활성화
+			if(cPage >= total.innerHTML){
+				document.querySelector("#btn-more").disabled = true;
+			} else {
+				document.querySelector("#btn-more").disabled = false;
+			}
 			document.querySelectorAll(".assignDate").forEach((span) => {
 				let assignDate = span.innerHTML; 
 				console.log();
@@ -190,13 +235,6 @@ const getPage = (cPage) => {
 		error : console.log,
 		complete(){
 			
-			// 더보기 버튼에 현재 페이지 표시
-			document.querySelector('#cPage').innerHTML = cPage;
-
-			// 현재 페이지 == 마지막 페이지 일 때, 더보기 버튼 비활성화 
-			if(cPage == ${totalPage}){
-				document.querySelector("#btn-more").disabled = true;
-			}
 			
 			// 이미지 슬라이더 슬릭
 			const slider = $('.img-wrapper');
@@ -228,8 +266,22 @@ const getPage = (cPage) => {
 	});
 };
 
-// 첫 화면
-getPage(1);
+//첫 화면
+getPage(1, "");
+
+
+document.querySelector("#zoneSelect").addEventListener('change', (e) => {
+	const container = document.querySelector("#assign-container");
+	container.innerHTML = "";
+	zoneSelect = e.target.value;
+	getPage(1, zoneSelect);
+});
+
+document.querySelector("#btn-more").addEventListener('click', (e) => {
+	const cPage = Number(document.querySelector("#cPage").textContent) + 1;
+	getPage(cPage, zoneSelect);
+});
+
 
 // 날짜 포맷팅
 const formatDate = (val) => {
@@ -273,12 +325,15 @@ const assignStateChange = (assignState) => {
 
 // 스크롤 제어
 const scrollToTop = () => {
-	window.scrollTo({
-	    top: 0
-	});
+	$('html, body').animate({scrollTop: $('#top').offset().top - 135}, 'fast');
 };
 const scrollToBottom = () => {
 	window.scrollTo(0, document.body.scrollHeight);
 }
+
+//화면 로드시 스크롤 이동
+$(document).ready(function () {
+	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
+});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

@@ -9,25 +9,26 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-<script src="/js/summernote/summernote-lite.js"></script>
-<script src="/js/summernote/lang/summernote-ko-KR.js"></script>
-
-<link rel="stylesheet" href="/css/summernote/summernote-lite.css">
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 <style>
 #tbl-inquire-enroll th {
+	text-indent : 1.1rem;
 	vertical-align : middle;
-	text-align : center;
+}
+::placeholder {
+  color: black;
+  font-size: 0.8rem;
+}
+textarea {
+	resize : none;
 }
 </style>
-<div class="w-75 container">
-	<sec:authentication property="principal.username" var="userId"/>
+<div class="w-75 container my-5">
+	<sec:authentication property="principal.username" var="loginUser"/>
+	<div class="text-center">
+		<strong class="fs-3"><i class="fa-regular fa-circle-question"></i> 1:1 문의</strong>
+	</div>
+	<hr />
 	<form:form
 		name="inquireFrm"
 		action="${pageContext.request.contextPath}/inquire/inquireEnroll.do"
@@ -40,91 +41,121 @@
 			</tr>
 			<tr>
 				<th>작성자</th>
-				<td> ${userId}
-					<input type="hidden" name="inqWriter" value="${userId}" />
+				<td> ${loginUser}
+					<input type="hidden" name="inqWriter" value="${loginUser}" />
 				</td>
 			</tr>
 			<tr>
 				<th>문의유형</th>
 				<td>
-					<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <ul class="navbar-nav">
-      <!-- Dropdown -->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-          data-mdb-toggle="dropdown" aria-expanded="false">
-          Dropdown link
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li>
-            <a class="dropdown-item" href="#">Action</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">Another action</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">
-              Submenu &raquo;
-            </a>
-            <ul class="dropdown-menu dropdown-submenu">
-              <li>
-                <a class="dropdown-item" href="#">Submenu item 1</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Submenu item 2</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
-                <ul class="dropdown-menu dropdown-submenu">
-                  <li>
-                    <a class="dropdown-item" href="#">Multi level 1</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">Multi level 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Submenu item 4</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Submenu item 5</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-</nav>
+					<div class="dropdown">
+					  <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+					  문의유형 선택
+					  </button>
+					  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+					    <li class="dropdown-submenu">
+					    	<a class="dropdown-item" href="#">Action</a>
+					    </li>
+					    <li><a class="dropdown-item" href="#">Another action</a></li>
+					    <li><a class="dropdown-item" href="#">Something else here</a></li>
+					  </ul>
+					</div>
+				</td>
+			</tr>
+			
+			<tr>
+				<td colspan="2">
+					<div class="container-fluid">
+					<a class="navbar-brand" href="#">Brand</a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"  aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="main_nav">
+					  <ul class="navbar-nav">
+					    <li class="nav-item active"> <a class="nav-link" href="#">Home </a> </li>
+					    <li class="nav-item"><a class="nav-link" href="#"> About </a></li>
+					    <li class="nav-item dropdown" id="myDropdown">
+					      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">  Treeview menu  </a>
+					      <ul class="dropdown-menu">
+					        <li> <a class="dropdown-item" href="#"> Dropdown item 1 </a></li>
+					        <li> <a class="dropdown-item" href="#"> Dropdown item 2 &raquo; </a>
+					          <ul class="submenu dropdown-menu">
+					            <li><a class="dropdown-item" href="#">Submenu item 1</a></li>
+					            <li><a class="dropdown-item" href="#">Submenu item 2</a></li>
+					            <li><a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
+					              <ul class="submenu dropdown-menu">
+					                <li><a class="dropdown-item" href="#">Multi level 1</a></li>
+					                <li><a class="dropdown-item" href="#">Multi level 2</a></li>
+					              </ul>
+					            </li>
+					            <li><a class="dropdown-item" href="#">Submenu item 4</a></li>
+					            <li><a class="dropdown-item" href="#">Submenu item 5</a></li>
+					          </ul>
+					        </li>
+					        <li><a class="dropdown-item" href="#"> Dropdown item 3 </a></li>
+					        <li><a class="dropdown-item" href="#"> Dropdown item 4 </a></li>
+					      </ul>
+					    </li>
+					  </ul>
+					</div>
+					</div>
 				</td>
 			</tr>
 			<tr>
 				<th>문의내용</th>
 				<td>
-					<textarea id="summernote" name="inqContent" id="inqContent" cols="30" rows="10"></textarea>
+					<textarea class="form-control w-100 p-2" name="inqContent" id="inqContent" cols="30" rows="10"
+					placeholder="자유롭게 글을 작성할 수 있습니다. 명예훼손이나 상대방을 비방, 불쾌감을 주는 글, 욕설, 남을 모욕하는 글은 임의로 제제가 있을 수 있습니다."></textarea>
 				</td>
 			</tr>
 		</table>
 		<div>
-			<button type="submit" id="btn-submit">작성</button>
+			<button type="submit" class="btn btn-primary" id="btn-submit"><strong>작성</strong></button>
 		</div>
 	</form:form>
 </div>
 	
 <script>
-$(document).ready(function() {
-    $('#summernote').summernote({
-    	placeholder: '자유롭게 글을 작성할 수 있습니다.\n 명예훼손이나 상대방을 비방, 불쾌감을 주는 글, 욕설, 남을 모욕하는 글은 임의로 제제가 있을 수 있습니다.',
-        height: 300,
 
-    });
-});
+document.addEventListener("DOMContentLoaded", function(){
+	// make it as accordion for smaller screens
+	if (window.innerWidth < 992) {
+
+	  // close all inner dropdowns when parent is closed
+	  document.querySelectorAll('.navbar .dropdown').forEach(function(everydropdown){
+	    everydropdown.addEventListener('hidden.bs.dropdown', function () {
+	      // after dropdown is hidden, then find all submenus
+	        this.querySelectorAll('.submenu').forEach(function(everysubmenu){
+	          // hide every submenu as well
+	          everysubmenu.style.display = 'none';
+	        });
+	    })
+	  });
+
+	  document.querySelectorAll('.dropdown-menu a').forEach(function(element){
+	    element.addEventListener('click', function (e) {
+	        let nextEl = this.nextElementSibling;
+	        if(nextEl && nextEl.classList.contains('submenu')) {	
+	          // prevent opening link if link needs to open dropdown
+	          e.preventDefault();
+	          if(nextEl.style.display == 'block'){
+	            nextEl.style.display = 'none';
+	          } else {
+	            nextEl.style.display = 'block';
+	          }
+
+	        }
+	    });
+	  })
+	}
+	// end if innerWidth
+	}); 
+	// DOMContentLoaded  end
 document.querySelector("#btn-submit").addEventListener('click', (e) => {
 	const frm = document.inquireFrm;
-	
-	
 });
+
+$('.dropdown-submenu > a').submenupicker();
+
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

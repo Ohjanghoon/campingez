@@ -16,10 +16,9 @@ import com.kh.campingez.reservation.model.dto.Reservation;
 @Mapper
 public interface AssignmentDao {
 
-	List<Assignment> selectAssignmentList(@Param("start") int start, @Param("end") int end);
+	List<Assignment> selectAssignmentList(@Param("zoneSelect") String zoneSelect, @Param("start") int start, @Param("end") int end);
 
-	@Select("select count(*) from assignment join reservation r using(res_no, user_id) where res_checkin - 1 > current_date and	assign_state != '양도완료'")
-	int getTotalContent();
+	int getTotalContent(@Param("zoneSelect") String zoneSelect);
 	
 	@Select("select * \r\n"
 			+ "from( \r\n"
