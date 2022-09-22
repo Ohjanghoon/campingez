@@ -233,7 +233,7 @@
 			</div>
 			<div class="container col-xxl-8 px-4 py-5" id="calendar"></div>
 		</div>
-		<img src="${pageContext.request.contextPath}/resources/images/reservation/campMap2.png" alt="" style="width:100%;height:78%;"/>
+		<img src="${pageContext.request.contextPath}/resources/images/reservation/campMap2.png" alt="" style="width:100%;height:68%;"/>
 		<!-- <div id="map" style="width:100%;height:350px;"></div> -->
 		
 		<div class="pt-5 pb-5" id="list"></div>
@@ -259,6 +259,15 @@
             defaultDate: new Date(),
 
             select: function(info) {
+            	var today = new Date();
+            	var year = today.getFullYear();
+            	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+            	var day = ('0' + today.getDate()).slice(-2);
+            	var dateString = year + '-' + month  + '-' + day;
+          		if(info.startStr < dateString){
+          			alert("입실일이 과거에요. ㅠ_ㅠ");
+          			return;
+          		}
              	const date = confirm("입실일 : " + info.startStr + '\n퇴실일 : ' + (info.endStr) + " 로 예약 하시겠습니까?");
              	if(date == true){
              		let checkin = info.startStr;
@@ -587,6 +596,7 @@
         calendar.render();
 	});
 	
+
 	/* var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
         center: new kakao.maps.LatLng(37.29377, 127.66580), // 지도의 중심좌표

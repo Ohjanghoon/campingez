@@ -47,7 +47,7 @@ a {
     font-size: 13px;
     max-height: 300px;
     z-index:999;
-    top: 155px;
+    top: 90px;
 }
 .header-layer > * {
 	background-color: white;
@@ -62,6 +62,7 @@ a {
 #alarm-content-wrap {
 	width:92%;
 	display:flex;
+	height: 100%;
 }
 #alr-msg {
 	width:83%;
@@ -69,6 +70,7 @@ a {
   	overflow: hidden;
   	text-overflow: ellipsis;
   	padding-right: 5px;  
+  	line-height: 300%
 }
 #badge-wrap {
 	width:8%;
@@ -94,7 +96,7 @@ a {
 .tooltip-inner {
 	font-size:13px;
 	max-width:400px;
-	height:30px;
+	max-height: 400px;
 }
 .btn-primary{
  	background-color:  #A8A4CE !important;
@@ -192,29 +194,33 @@ const beforeTime = (alarmDate) => {
 	
 						if(!alrReadDatetime) {
 							html += `
-								<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
-									<span id="badge-wrap">
-										<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
-									</span>
-									<div id="alarm-content-wrap">
-										<div id="alr-msg">\${alrMessage}</div>
-										<span id="alarm-date-wrap">
-											<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+								<a href="\${targetUrl}" id="alarmLink" >
+									<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+										<span id="badge-wrap">
+											<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 										</span>
-									</div>
-								</li>
+										<div id="alarm-content-wrap">
+											<div id="alr-msg">\${alrMessage}</div>
+											<span id="alarm-date-wrap">
+												<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+											</span>
+										</div>
+									</li>
+								</a>
 							`;							
 						} else {
 							html += `
-								<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
-									<span id="badge-wrap"></span>
-									<div id="alarm-content-wrap">
-										<div id="alr-msg">\${alrMessage}</div>
-										<span id="alarm-date-wrap">
-											<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
-										</span>
-									</div>
-								</li>
+								<a href="\${targetUrl}" id="alarmLink">
+									<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+										<span id="badge-wrap"></span>
+										<div id="alarm-content-wrap">
+											<div id="alr-msg">\${alrMessage}</div>
+											<span id="alarm-date-wrap">
+												<span id="alarm-date">\${yy}/\${MM}/\${dd} \${HH}:\${mm}:\${ss}</span>
+											</span>
+										</div>
+									</li>
+								</a>
 							`;														
 						}
 					});
@@ -231,9 +237,12 @@ const beforeTime = (alarmDate) => {
 					span.innerHTML = beforeTime(alarmDate);
 				});
 				
-				document.querySelectorAll("#alarm").forEach((li) => {
+				document.querySelectorAll("#alarmLink").forEach((li) => {
 					li.addEventListener('click', (e) => {
+					
 						const alrId = e.target.offsetParent.dataset.alrId;
+						console.dir(e.target);
+						console.log(alrId);
 						if(alrId == undefined) return;
 						
 						$('.alarmList').tooltip('hide');
@@ -248,7 +257,6 @@ const beforeTime = (alarmDate) => {
 							method : "POST",
 							success(response) {
 								$('.alarmList').tooltip('hide');
-								location.href = `\${targetUrl}`;
 								getAlarmList(userId);
 							},
 							error : console.log
@@ -359,8 +367,8 @@ const beforeTime = (alarmDate) => {
 						data-bs-toggle="collapse" data-bs-target="#home-collapse"
 						aria-expanded="false">공지사항</button>
 					<div class="collapse" id="home-collapse">
-						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-							<li><a href="${pageContext.request.contextPath}/notice/list"class="link-dark rounded p-2">공지사항</a></li>
+						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
+							<li><a href="${pageContext.request.contextPath}/notice/list"class="link-dark rounded p-4">공지사항</a></li>
 						</ul>
 					</div>
 				</li>
@@ -372,9 +380,9 @@ const beforeTime = (alarmDate) => {
 						data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
 						aria-expanded="false">예약 & 양도</button>
 					<div class="collapse" id="dashboard-collapse">
-						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-							<li><a href="${pageContext.request.contextPath}/reservation/intro.do" class="link-dark rounded p-2">예약</a></li>
-							<li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do" class="link-dark rounded p-2">양도</a></li>
+						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
+							<li class="mb-3"><a href="${pageContext.request.contextPath}/reservation/intro.do" class="link-dark rounded p-4">예약</a></li>
+							<li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do" class="link-dark rounded p-4">양도</a></li>
 						</ul>
 					</div>
 				</li>
@@ -386,8 +394,8 @@ const beforeTime = (alarmDate) => {
 						data-bs-toggle="collapse" data-bs-target="#orders-collapse"
 						aria-expanded="false">커뮤니티</button>
 					<div class="collapse" id="orders-collapse">
-						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-							<li><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-2">중고거래</a></li>
+						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
+							<li><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-4">중고거래</a></li>
 						</ul>
 					</div>
 				</li>
@@ -399,8 +407,8 @@ const beforeTime = (alarmDate) => {
 						data-bs-toggle="collapse" data-bs-target="#market-collapse"
 						aria-expanded="false">1:1 문의</button>
 					<div class="collapse" id="market-collapse">
-						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-							<li><a href="${pageContext.request.contextPath}/inquire/inquireList.do" class="link-dark rounded p-2">1:1 문의</a></li>
+						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
+							<li><a href="${pageContext.request.contextPath}/inquire/inquireList.do" class="link-dark rounded p-4">1:1 문의</a></li>
 						</ul>
 					</div>
 				</li>
@@ -412,24 +420,25 @@ const beforeTime = (alarmDate) => {
 						data-bs-toggle="collapse" data-bs-target="#pass-collapse"
 						aria-expanded="false">리뷰</button>
 					<div class="collapse" id="pass-collapse">
-						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-							<li><a href="${pageContext.request.contextPath}/review/reviewList.do" class="link-dark rounded p-2">리뷰</a></li>
+						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
+							<li><a href="${pageContext.request.contextPath}/review/reviewList.do" class="link-dark rounded p-4">리뷰</a></li>
 						</ul>
 					</div>
 				</li>
 				
 				<li class="border-top my-3"></li>
-				
-				<li class="mb-5"><span><i class="fa-solid fa-house-lock"></i></span>
-					<button class="btn btn-toggle align-items-center rounded collapsed"
-						data-bs-toggle="collapse" data-bs-target="#account-collapse"
-						aria-expanded="false">관리자</button>
-					<div class="collapse" id="account-collapse">
-						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-							<li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-2">관리자페이지</a></li>
-						</ul>
-					</div>
-				</li>
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<li class="mb-5"><span><i class="fa-solid fa-house-lock"></i></span>
+						<button class="btn btn-toggle align-items-center rounded collapsed"
+							data-bs-toggle="collapse" data-bs-target="#account-collapse"
+							aria-expanded="false">관리자</button>
+						<div class="collapse" id="account-collapse">
+							<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
+								<li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-4">관리자페이지</a></li>
+							</ul>
+						</div>
+					</li>
+				</sec:authorize>
 			</ul>
 			
 			<sec:authorize access="isAnonymous()">

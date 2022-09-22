@@ -6,10 +6,6 @@
   box-sizing: border-box;
 }
 
-body{
-    font-family: 'Poppins', sans-serif;
-} 
-
 .login-container{
     display: grid;
     grid-template-columns: repeat(2, 1fr);

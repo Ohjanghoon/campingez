@@ -116,18 +116,21 @@ public class AlarmServiceImpl implements AlarmService {
 		Trade trade = null;
 		String title = null;
 		String commWriter = null;
+		// 중고거래인 경우
 		if(String.valueOf('T').equals(type)) {
 			trade = adminDao.findTradeByTradeNo(commNo);
 			title = trade.getTradeTitle();
 			commWriter = trade.getUserId();
-		} else {
+		}
+		// 커뮤니티인 경우
+		else {
 			
 		}
 		
 		// 게시글 작성자 알림
-		String writerMsg = "[신고] '" + title + "'게시글이 3회 이상 신고되어 삭제처리 되었습니다.";
+		String writerMsg = "[신고] '" + title + "' 게시글이 3회 이상 신고되어 삭제처리 되었습니다.";
 		// 신고자 알림
-		String reportUserMsg = "[신고조치] 신고해주신 '" + title + "'게시글에 대한 조치를 취했습니다.🙂";
+		String reportUserMsg = "[신고조치] 신고해주신 '" + title + "' 게시글에 대한 조치를 취했습니다.🙂";
 		
 		// 신고자 리스트 조회
 		List<String> reportUserList = adminDao.findReportUserListByCommNo(commNo);
@@ -138,9 +141,8 @@ public class AlarmServiceImpl implements AlarmService {
 							.targetUserId(commWriter)
 							.alrContentId(commNo)
 							.alrType(AlarmType.REPORT)
-							.alrMessage(writerMsg)
-							.alrUrl((String)param.get("location")).build();
-		int result = alarmDao.insertAlarmWithContentId(commWriterAlarm);
+							.alrMessage(writerMsg).build();
+		int result = alarmDao.insertAlarmWithoutContentIdAndUrl(commWriterAlarm);
 		commWriterAlarm = alarmDao.selectAlarmByAlrId(commWriterAlarm.getAlrId());
 		int commWriternotReadCount = alarmDao.getNotReadCount(commWriter);
 		Map<String, Object> writerMap = new HashMap<>();
@@ -162,7 +164,6 @@ public class AlarmServiceImpl implements AlarmService {
 			reportUserMap.put("notReadCount", reportUserNotReadCount);
 			simpMessagingTemplate.convertAndSend("/app/notice/" + user, reportUserMap);
 		}
-		
 		return result;
 	}
 }
