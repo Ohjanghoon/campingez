@@ -475,6 +475,9 @@ var map;
                         + "message:"
                         + request.responseText
                         + "\n" + "error:" + error);
+                        $("#result1").html(
+                        	`<span style="color : red;">!!</span> 위치 지정 후 경로검색을 해주세요. <span style="color : red;">!!</span>`
+                        );
                 }
             //JSON TYPE EDIT [E]
             });
