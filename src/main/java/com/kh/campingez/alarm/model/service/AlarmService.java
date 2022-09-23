@@ -22,4 +22,6 @@ public interface AlarmService {
 
 	int cancelWarningToUserAlarm(String userId, boolean isBlack);
 
+	void assignSuccessAlarm(String assignNo);
+
 }

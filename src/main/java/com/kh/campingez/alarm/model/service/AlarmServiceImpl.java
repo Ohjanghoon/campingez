@@ -14,6 +14,8 @@ import com.kh.campingez.alarm.model.dao.AlarmDao;
 import com.kh.campingez.alarm.model.dto.Alarm;
 import com.kh.campingez.alarm.model.dto.AlarmEntity;
 import com.kh.campingez.alarm.model.dto.AlarmType;
+import com.kh.campingez.assignment.model.dao.AssignmentDao;
+import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.inquire.model.dao.InquireDao;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
@@ -37,6 +39,9 @@ public class AlarmServiceImpl implements AlarmService {
 	
 	@Autowired
 	SimpMessagingTemplate simpMessagingTemplate;
+	
+	@Autowired
+	AssignmentDao assignmentDao;
 	
 	@Override
 	public int inquireAnswerAlarm(Map<String, Object> param) {
@@ -191,5 +196,30 @@ public class AlarmServiceImpl implements AlarmService {
 			simpMessagingTemplate.convertAndSend("/app/notice/" + user, reportUserMap);
 		}
 		return result;
+	}
+	
+	@Override
+	public void assignSuccessAlarm(String assignNo) {
+		Assignment assignment = assignmentDao.selectOneAssignment(assignNo);
+		
+		String msg = "[양도완료] '" + assignment.getAssignTitle() + "' 게시글에 대한 양도가 완료되었습니다.";
+		String location = "/assignment/assignmentDetail.do?assignNo=" + assignNo;
+		
+		AlarmEntity alarm = (AlarmEntity)Alarm.builder()
+				.targetUserId(assignment.getUserId())
+				.alrContentId(assignment.getAssignNo())
+				.alrType(AlarmType.INQUIRE)
+				.alrMessage(msg)
+				.alrUrl(location).build();
+		
+		int result = alarmDao.insertAlarmWithContentId(alarm);
+		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
+		int notReadCount = alarmDao.getNotReadCount(assignment.getUserId());
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("alarm", alarm);
+		map.put("notReadCount", notReadCount);
+		
+		simpMessagingTemplate.convertAndSend("/app/notice/" + alarm.getTargetUserId(), map);
 	}
 }
