@@ -35,9 +35,6 @@
       <c:if test="${empty list}">
          <p>등록된게시글이 없습니다.</p>
       </c:if>
-      
-   
-
 
    <table class="table table-hover" style="margin-top:30px;">
 	<thead>
