@@ -302,7 +302,7 @@ const deleteClick = () => {
 					location.href="${pageContext.request.contextPath}/assignment/assignmentList.do";
 				}
 				else {
-					alert("양도중인 예약은 취소 불가능합니다.");
+					alert("양도대기인 상태만 취소 가능합니다.");
 					return;
 				}
 			},
