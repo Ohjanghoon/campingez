@@ -19,7 +19,6 @@ public class ChatUser {
 	private String chatroomId;
 	@NonNull
 	private String userId;
-	@NonNull
 	private String tradeNo;
 	private long lastCheck;
 	private LocalDateTime createdAt;
