@@ -371,7 +371,7 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">공지사항</button>
 					<div class="collapse" id="home-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/notice/list"class="link-dark rounded p-4">공지사항</a></li>
+							<li><a href="${pageContext.request.contextPath}/notice/list"class="link-dark rounded p-2 m-3">공지사항</a></li>
 						</ul>
 					</div>
 				</li>
@@ -384,8 +384,8 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">예약 & 양도</button>
 					<div class="collapse" id="dashboard-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li class="mb-3"><a href="${pageContext.request.contextPath}/reservation/intro.do" class="link-dark rounded p-4">예약</a></li>
-							<li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do" class="link-dark rounded p-4">양도</a></li>
+							<li class="mb-3"><a href="${pageContext.request.contextPath}/reservation/intro.do" class="link-dark rounded p-2 m-3">예약</a></li>
+							<li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do" class="link-dark rounded p-2 m-3">양도</a></li>
 						</ul>
 					</div>
 				</li>
@@ -398,8 +398,8 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">커뮤니티</button>
 					<div class="collapse" id="orders-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li class="mb-3"><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-4">중고거래</a></li>
-							<li><a href="${pageContext.request.contextPath}/community/communityList.do" class="link-dark rounded p-4">팁/자유게시판</a></li>
+							<li class="mb-3"><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-2 m-3">중고거래</a></li>
+							<li><a href="${pageContext.request.contextPath}/community/communityList.do" class="link-dark rounded p-2 m-3">팁/자유게시판</a></li>
 						</ul>
 					</div>
 				</li>
@@ -412,7 +412,7 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">1:1 문의</button>
 					<div class="collapse" id="market-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/inquire/inquireList.do" class="link-dark rounded p-4">1:1 문의</a></li>
+							<li><a href="${pageContext.request.contextPath}/inquire/inquireList.do" class="link-dark rounded p-2 m-3">1:1 문의</a></li>
 						</ul>
 					</div>
 				</li>
@@ -425,7 +425,7 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">리뷰</button>
 					<div class="collapse" id="pass-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/review/reviewList.do" class="link-dark rounded p-4">리뷰</a></li>
+							<li><a href="${pageContext.request.contextPath}/review/reviewList.do" class="link-dark rounded p-2 m-3">리뷰</a></li>
 						</ul>
 					</div>
 				</li>
@@ -438,7 +438,7 @@ const beforeTime = (alarmDate) => {
 							aria-expanded="false">관리자</button>
 						<div class="collapse" id="account-collapse">
 							<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-								<li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-4">관리자페이지</a></li>
+								<li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-2 m-3">관리자페이지</a></li>
 							</ul>
 						</div>
 					</li>
