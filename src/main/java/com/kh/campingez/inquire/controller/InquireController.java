@@ -51,6 +51,7 @@ public class InquireController {
 		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("cPage", cPage);
 		model.addAttribute("limit", limit);
+		model.addAttribute("totalContent", totalContent);
 	}
 	
 	@GetMapping("/inquireDetail.do")
