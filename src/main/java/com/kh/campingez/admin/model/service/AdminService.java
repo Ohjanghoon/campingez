@@ -141,4 +141,6 @@ public interface AdminService {
 
 	int getExpireCouponTotalContent();
 
+	int updateUserRole(Map<String, Object> param);
+
 }

@@ -104,42 +104,39 @@ public class UserController {
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(result);
 
 	};
-
-	@GetMapping("/userLogin.do")
-	public void userLogin(@RequestHeader("Referer") String referer, Model model, HttpSession session) {
-		log.debug("referer = {}", referer);
-//		SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-//		log.debug("세이브 = {}", savedRequest);
-		if(referer.contains("/userLogin.do")) {
-			referer = "/";
-		}
-		if(referer.contains("/userEnroll.do")) {
-			referer = "/";
-		}
-		if(referer.contains("/userPasswordUpdate.do")) {
-			referer = "/";
+	
+	@GetMapping("/userPhoneCheck.do")
+	public ResponseEntity<?> userPhoneCheck(@RequestParam String phone) {
+		User result = userService.checkPhone(phone);
+		
+		if(result == null) {
+			return ResponseEntity.ok().body("zero");
 		}
 		
-		model.addAttribute("loginRedirect", referer);
-		session.setAttribute("loginRedirect", referer);
-	}
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(result);
+		
+	};
 
-//	@PostMapping("/userLoginSuccess.do")
-//	public String userLoginSuccess(HttpSession session) {
-//		log.debug("userLoginSuccess 호출!");
-//		
-//		//로그인 후 처리
-//		String location = "/";
-//		
-//		// security가 관리하는 다음 리다이렉트 url
-//		SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-//		if(savedRequest != null) {
-//			location = savedRequest.getRedirectUrl();
-//		}
-//		log.debug("location = {}", location);
-//		
-//		return "redirect:" + location;
-//	}
+	@GetMapping("/userLogin.do")
+	public void userLogin(@RequestHeader(required = false, name = "Referer") String referer, Model model, HttpSession session) {
+		log.debug("referer = {}", referer);
+		if(referer != null) {			
+			if(referer.contains("/userLogin.do")) {
+				referer = "/";
+			} 
+			else if(referer.contains("/userEnroll.do")) {
+				referer = "/";
+			}
+			else if(referer.contains("/userPasswordUpdate.do")) {
+				referer = "/";
+			}
+			else {	
+				model.addAttribute("loginRedirect", referer);
+				session.setAttribute("loginRedirect", referer);
+			}
+		}
+		
+	}
 
 	@GetMapping("/userFindId.do")
 	public ResponseEntity<?> userFindId(@RequestParam String name, @RequestParam String phone) {

@@ -235,6 +235,12 @@ public interface AdminDao {
 	@Select("select count(*) from coupon where coupon_endday < current_date")
 	int getExpireCouponTotalContent();
 	
+	@Insert("insert into authority values(#{userId}, #{changeAuth})")
+	int insertUserRoleToAdmin(Map<String, Object> param);
+	
+	@Delete("delete from authority where user_id = #{userId} and auth = 'ROLE_ADMIN'")
+	int deleteUserRoleToAdmin(Map<String, Object> param);
+	
 	
 	
 }

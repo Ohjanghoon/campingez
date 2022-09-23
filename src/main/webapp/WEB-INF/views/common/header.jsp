@@ -393,7 +393,8 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">커뮤니티</button>
 					<div class="collapse" id="orders-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-4">중고거래</a></li>
+							<li class="mb-3"><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-4">중고거래</a></li>
+							<li><a href="${pageContext.request.contextPath}/community/communityList.do" class="link-dark rounded p-4">팁/자유게시판</a></li>
 						</ul>
 					</div>
 				</li>
@@ -488,7 +489,7 @@ const beforeTime = (alarmDate) => {
 					<div class="carousel-caption text-start">
 						<h2>캠핑이지 오픈이벤트</h2>
 						<p>회원가입을 하신 모든 분들께 쿠폰을 드립니다.<br>저희 캠핑이지 회원이 되어주셔서 감사합니다.</p>
-						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/notice/detail.do?noticeNo=N149">쿠폰 받으러 가기</a></p>
+						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/notice/detail.do?noticeNo=N170">쿠폰 받으러 가기</a></p>
 					</div>
 				</div>
 			</div>
@@ -576,22 +577,35 @@ const beforeTime = (alarmDate) => {
         </span><br />
       </div>
       <div class="que">
-        <span>This is second question.</span>
+        <span>주차요금은 어떻게 되나요?</span>
       </div>
       <div class="anw">
-        <span>This is second answer.</span>
+        <span>
+	        <ul>
+	        	<li>주차요금은 무료입니다. 오토캠핑장 이용시 1사이트 당 1대의 주차가 가능하며, 그 외 캠핑장 이용시 별도의 주차장에 주차하시면 됩니다.</li>
+	        </ul>
+        </span>
       </div>
       <div class="que">
-        <span>This is third question.</span>
+        <span>전기는 사용량은 제한이 있습니까?</span>
       </div>
       <div class="anw">
-        <span>This is third answer.</span>
+        <span>
+        	<ul>
+	        	<li>사이트 당 600W까지 사용이 가능합니다.</li>
+	        	<li>사용제품의 전력량을 확인해주시고, 과도한 출력의 전기제품 사용을 자제해주시기 바랍니다.</li>
+        	</ul>
+        </span>
       </div>
       <div class="que">
-        <span>This is first question.</span>
+        <span>입퇴실 시간은 언제인가요?</span>
       </div>
-      <div class="que">
-        <span>This is first question.</span>
+        <div class="anw">
+        <span>
+        	<ul>
+        		<li>입실은 오후 2시 이후 가능하며 퇴실은 사용 종료일 정오 12시 입니다.</li>
+        	</ul>
+       </span>
       </div>
     </div>
   </div>

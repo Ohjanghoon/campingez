@@ -29,7 +29,7 @@
 			    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
 			    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
 			    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" class="active" aria-current="true" aria-label="Slide 3"></button>
-			    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4" class="active" aria-current="true" aria-label="Slide 4"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3" class="active" aria-current="true" aria-label="Slide 4"></button>
 			  </div>
 			  <div class="carousel-inner">
 			    <div class="carousel-item active" data-bs-interval="4000">
@@ -76,7 +76,7 @@
 					</div>
 					<div class="modal-dialog modal-dialog-scrollable deck"></div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" id="moveToAllReview">리뷰 전체보기</button>
+						<button type="button" class="btn btn-primary" id="moveToAllReview1">리뷰 전체보기</button>
 					</div>
 				</div>
 			</div>
@@ -99,7 +99,7 @@
 			    <button type="button" data-bs-target="#carouselExampleDark2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
 			    <button type="button" data-bs-target="#carouselExampleDark2" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
 			    <button type="button" data-bs-target="#carouselExampleDark2" data-bs-slide-to="2" class="active" aria-current="true" aria-label="Slide 3"></button>
-			    <button type="button" data-bs-target="#carouselExampleDark2" data-bs-slide-to="4" class="active" aria-current="true" aria-label="Slide 4"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark2" data-bs-slide-to="3" class="active" aria-current="true" aria-label="Slide 4"></button>
 			  </div>
 			  <div class="carousel-inner">
 			    <div class="carousel-item active" data-bs-interval="4000">
@@ -139,7 +139,7 @@
 					</div>
 					<div class="modal-dialog modal-dialog-scrollable animal"></div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" id="moveToAllReview">리뷰 전체보기</button>
+						<button type="button" class="btn btn-primary" id="moveToAllReview2">리뷰 전체보기</button>
 					</div>
 				</div>
 			</div>
@@ -153,7 +153,7 @@
 			    <button type="button" data-bs-target="#carouselExampleDark3" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
 			    <button type="button" data-bs-target="#carouselExampleDark3" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
 			    <button type="button" data-bs-target="#carouselExampleDark3" data-bs-slide-to="2" class="active" aria-current="true" aria-label="Slide 3"></button>
-			    <button type="button" data-bs-target="#carouselExampleDark3" data-bs-slide-to="4" class="active" aria-current="true" aria-label="Slide 4"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark3" data-bs-slide-to="3" class="active" aria-current="true" aria-label="Slide 4"></button>
 			  </div>
 			  <div class="carousel-inner">
 			    <div class="carousel-item active" data-bs-interval="4000">
@@ -200,7 +200,7 @@
 					</div>
 					<div class="modal-dialog modal-dialog-scrollable glamping"></div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" id="moveToAllReview">리뷰 전체보기</button>
+						<button type="button" class="btn btn-primary" id="moveToAllReview3">리뷰 전체보기</button>
 					</div>
 				</div>
 			</div>
@@ -223,7 +223,7 @@
 			    <button type="button" data-bs-target="#carouselExampleDark4" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
 			    <button type="button" data-bs-target="#carouselExampleDark4" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
 			    <button type="button" data-bs-target="#carouselExampleDark4" data-bs-slide-to="2" class="active" aria-current="true" aria-label="Slide 3"></button>
-			    <button type="button" data-bs-target="#carouselExampleDark4" data-bs-slide-to="4" class="active" aria-current="true" aria-label="Slide 4"></button>
+			    <button type="button" data-bs-target="#carouselExampleDark4" data-bs-slide-to="3" class="active" aria-current="true" aria-label="Slide 4"></button>
 			  </div>
 			  <div class="carousel-inner">
 			    <div class="carousel-item active" data-bs-interval="4000">
@@ -263,7 +263,7 @@
 					</div>
 					<div class="modal-dialog modal-dialog-scrollable caravan"></div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" id="moveToAllReview">리뷰 전체보기</button>
+						<input type="button" class="btn btn-primary" id="moveToAllReview4" value="리뷰 전체보기"/>
 					</div>
 				</div>
 			</div>
@@ -286,30 +286,39 @@
 			headers,
 			data : { campZone : "ZA" },
 			method : "POST",
-			success(review){
-				console.log(review);
-				document.querySelector(".deck").innerHTML += `
-					<c:if test="\${not empty review.reviewPhotos}">
-						<c:forEach items="\${review.reviewPhotos}" var="photo">
-							<img src="\${pageContext.request.contextPath}/resources/upload/review/${photo.revRenamedFilename}" class="card-img-top" alt="...">
-						</c:forEach>
-					</c:if> 
-					<c:if test="\${empty review.reviewPhotos}">
-						<img src="\${pageContext.request.contextPath}/resources/images/reservation/noimages.png" alt="card-img-top" />
-					</c:if> 
-					<div class="card-body">
-					    <h5 class="card-title">\${review.reservation.userId}</h5>
-					    <p class="card-text">\${review.revContent}</p>
-					    
-					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small></p>
-					</div>
-				`;
-			
-				document.querySelector("#moveToAllReview").addEventListener('click', (e) => {
-						const url = `${pageContext.request.contextPath}/review/reviewList.do`;
-						const name = "AllReview"; // window의 이름으로 사용;
-						const spec = "width=1000px, height=1000px";
-						open(url,name, spec);
+			success(response){
+				if(response != "review no"){
+					document.querySelector(".deck").innerHTML += `
+						<div class="m-2" id="card-img"></div>
+						<div class="card-body">
+						    <h5 class="card-title">\${response.reservation.userId}</h5>
+						    <p class="card-text">\${response.revContent}</p>
+						    <p class="card-text"><small class="text-muted">\${response.revEnrollDate}</small></p>
+						</div>
+					`;
+					
+					if(response.reviewPhotos.length > 0){
+						document.querySelector("#card-img").innerHTML = `
+							<img src="${pageContext.request.contextPath}/resources/upload/review/\${response.reviewPhotos[0].revRenamedFilename}" class="card-img-top"/>
+						`;
+					}
+					else{
+						document.querySelector("#card-img").innerHTML = `
+						<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
+						`;
+					}
+				}
+				else{
+					document.querySelector(".deck").innerHTML += `
+						<h5 class="card-title">리뷰가 없습니다.</h5>
+					`;
+				}
+				
+				document.querySelector("#moveToAllReview1").addEventListener('click', (e) => {
+					const url = `${pageContext.request.contextPath}/review/reviewList.do`;
+					const name = "AllReview"; // window의 이름으로 사용;
+					const spec = "width=1000px, height=1000px";
+					open(url,name, spec);
 				});
 			},
 			error : console.log
@@ -325,28 +334,40 @@
 			data : { campZone : "ZB" },
 			method : "POST",
 			success(response){
-				console.log(response);
-				document.querySelector(".animal").innerHTML += `
-					<c:if test="\${not empty review.reviewPhotos}">
-						<c:forEach items="\${review.reviewPhotos}" var="photo">
-							<img src="\${pageContext.request.contextPath}/resources/upload/review/${photo.revRenamedFilename}" class="card-img-top" alt="...">
-						</c:forEach>
-					</c:if> 
-					<c:if test="\${empty review.reviewPhotos}">
-						<img src="\${pageContext.request.contextPath}/resources/images/reservation/noimages.png" alt="card-img-top" />
-					</c:if> 
-					<div class="card-body">
-					    <h5 class="card-title">\${review.reservation.userId}</h5>
-					    <p class="card-text">\${review.revContent}</p>
-					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small></p>
-					</div>
-				`;
-				document.querySelector("#moveToAllReview").addEventListener('click', (e) => {
+				if(response != "review no"){
+					document.querySelector(".animal").innerHTML += `
+						<div class="m-2" id="card-img2"></div>
+						<div class="card-body">
+						    <h5 class="card-title">\${response.reservation.userId}</h5>
+						    <p class="card-text">\${response.revContent}</p>
+						    <p class="card-text"><small class="text-muted">\${response.revEnrollDate}</small></p>
+						</div>
+					`;
+					
+					if(response.reviewPhotos.length > 0){
+						document.querySelector("#card-img2").innerHTML = `
+							<img src="${pageContext.request.contextPath}/resources/upload/review/\${response.reviewPhotos[0].revRenamedFilename}" class="card-img-top"/>
+						`;
+					}
+					else{
+						document.querySelector("#card-img2").innerHTML = `
+						<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
+						`;
+					}
+				}
+				else{
+					document.querySelector(".animal").innerHTML += `
+						<h5 class="card-title">리뷰가 없습니다.</h5>
+					`;
+				}
+				
+				document.querySelector("#moveToAllReview2").addEventListener('click', (e) => {
 					const url = `${pageContext.request.contextPath}/review/reviewList.do`;
 					const name = "AllReview"; // window의 이름으로 사용;
 					const spec = "width=1000px, height=1000px";
 					open(url,name, spec);
 				});
+				
 			},
 			error : console.log
 		});
@@ -360,24 +381,37 @@
 			headers,
 			data : { campZone : "ZC" },
 			method : "POST",
-			success(review){
-				console.log(review);
-				document.querySelector(".glamping").innerHTML += `
-					<c:if test="\${not empty review.reviewPhotos}">
-						<c:forEach items="\${review.reviewPhotos}" var="photo">
-							<img src="\${pageContext.request.contextPath}/resources/upload/review/${photo.revRenamedFilename}" class="card-img-top" alt="...">
-						</c:forEach>
-					</c:if> 
-					<c:if test="\${empty review.reviewPhotos}">
-						<img src="\${pageContext.request.contextPath}/resources/images/reservation/noimages.png" alt="card-img-top" />
-					</c:if> 
-					<div class="card-body">
-					    <h5 class="card-title">\${review.reservation.userId}</h5>
-					    <p class="card-text">\${review.revContent}</p>
-					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small></p>
-					</div>
-				`;
-				document.querySelector("#moveToAllReview").addEventListener('click', (e) => {
+			content : "application/json",
+			success(response){
+				if(response != "review no"){
+					document.querySelector(".glamping").innerHTML += `
+						<div class="m-2" id="card-img3"></div>
+						<div class="card-body">
+						    <h5 class="card-title">\${response.reservation.userId}</h5>
+						    <p class="card-text">\${response.revContent}</p>
+						    <p class="card-text"><small class="text-muted">\${response.revEnrollDate}</small></p>
+						</div>
+					`;
+					
+					if(response.reviewPhotos.length > 0){
+						document.querySelector("#card-img3").innerHTML = `
+							<img src="${pageContext.request.contextPath}/resources/upload/review/\${response.reviewPhotos[0].revRenamedFilename}" class="card-img-top"/>
+						`;
+					}
+					else{
+						document.querySelector("#card-img3").innerHTML = `
+						<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
+						`;
+					}
+				}
+				else{
+					document.querySelector(".glamping").innerHTML += `
+						<h5 class="card-title">리뷰가 없습니다.</h5>
+					`;
+				}
+				
+				
+				document.querySelector("#moveToAllReview3").addEventListener('click', (e) => {
 					const url = `${pageContext.request.contextPath}/review/reviewList.do`;
 					const name = "AllReview"; // window의 이름으로 사용;
 					const spec = "width=1000px, height=1000px";
@@ -396,24 +430,35 @@
 			headers,
 			data : { campZone : "ZD" },
 			method : "POST",
-			success(review){
-				console.log(review);
-				document.querySelector(".caravan").innerHTML += `
-					<c:if test="\${not empty review.reviewPhotos}">
-						<c:forEach items="\${review.reviewPhotos}" var="photo">
-							<img src="\${pageContext.request.contextPath}/resources/upload/review/${photo.revRenamedFilename}" class="card-img-top" alt="...">
-						</c:forEach>
-					</c:if> 
-					<c:if test="\${empty review.reviewPhotos}">
-						<img src="\${pageContext.request.contextPath}/resources/images/reservation/noimages.png" alt="card-img-top" />
-					</c:if> 
-					<div class="card-body">
-					    <h5 class="card-title">\${review.reservation.userId}</h5>
-					    <p class="card-text">\${review.revContent}</p>
-					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small></p>
-					</div>
-				`;
-				document.querySelector("#moveToAllReview").addEventListener('click', (e) => {
+			success(response){
+				if(response != "review no"){
+					document.querySelector(".caravan").innerHTML += `
+						<div class="m-2" id="card-img4"></div>
+						<div class="card-body">
+						    <h5 class="card-title">\${response.reservation.userId}</h5>
+						    <p class="card-text">\${response.revContent}</p>
+						    <p class="card-text"><small class="text-muted">\${response.revEnrollDate}</small></p>
+						</div>
+					`;
+					
+					if(response.reviewPhotos.length > 0){
+						document.querySelector("#card-img4").innerHTML = `
+							<img src="${pageContext.request.contextPath}/resources/upload/review/\${response.reviewPhotos[0].revRenamedFilename}" class="card-img-top"/>
+						`;
+					}
+					else{
+						document.querySelector("#card-img4").innerHTML = `
+						<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
+						`;
+					}
+				}
+				else{
+					document.querySelector(".caravan").innerHTML += `
+						<h5 class="card-title">리뷰가 없습니다.</h5>
+					`;
+				}
+				
+				document.querySelector("#moveToAllReview4").addEventListener('click', (e) => {
 					const url = `${pageContext.request.contextPath}/review/reviewList.do`;
 					const name = "AllReview"; // window의 이름으로 사용;
 					const spec = "width=1000px, height=1000px";
