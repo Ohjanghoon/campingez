@@ -29,7 +29,7 @@ const renderStart = (score, revId) => {
 		<form:form action="${pageContext.request.contextPath}/review/reviewListBySearchType.do" method="GET" name="searchFrm">
 			<div id="select-bar" class="d-flex align-items-center">
 				<strong class="text-muted p-2 "><i class="fa-solid fa-star"></i>구역별 리뷰 상세 조회<i class="fa-solid fa-star"></i></strong>		
-				<select name="campZoneType" id="campZoneType" onchange="enrollFrm()" class="form-select-sm p-1 m-1" aria-label="Default select example">
+				<select name="campZoneType" id="campZoneType" onchange="searchTypeFrm();" class="form-select-sm p-1 m-1" aria-label="Default select example">
 					<option value="">전체</option>
 					<c:forEach items="${campZoneList}" var="zone">
 						<option value="${zone.zoneCode}" ${param.campZoneType eq zone.zoneCode ? 'selected' : ''}>${zone.zoneCode} - ${zone.zoneName}</option>
@@ -109,9 +109,9 @@ const renderStart = (score, revId) => {
 	</div>
 </main>
 <script>
-	const enrollFrm = () => {
-		const frm = document.searchFrm;
-		frm.submit();
-	};
+const searchTypeFrm = () => {
+	const frm = document.searchFrm;
+	frm.submit();
+};
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

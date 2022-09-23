@@ -41,6 +41,13 @@
     	height: 300px;
    	    font-size: 12px;	
     }
+    #all-check {
+     border-radius: 8px;
+     width:30px;
+    }
+    #rule-check {
+    	width:32px;
+    }
   </style>
   <br />
  <div id="enroll-container" class="mx-auto text-center container">
