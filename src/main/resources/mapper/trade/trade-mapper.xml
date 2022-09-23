@@ -111,9 +111,10 @@ where
 
 <select id="selectCurrentTrade" resultMap="tradeListMap">
 	select 
-			* 
+		* 
 	from 
-			(select * from trade where rownum &lt;= 3 order by trade_date desc) join trade_photo using(trade_no)
+		(select * from (select * from trade order by trade_date desc) where rownum &lt;= 3) join trade_photo using (trade_no)
+	
 </select>
 
 </mapper>
