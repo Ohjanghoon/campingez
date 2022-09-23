@@ -11,6 +11,8 @@
 	from
     	ez_user u join authority a
        		on u.user_id = a.user_id
+   order by
+        enroll_date desc
   </select>
   
   <select id="findAllBlackList" resultMap="userMap">

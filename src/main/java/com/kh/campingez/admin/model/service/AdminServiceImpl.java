@@ -375,6 +375,20 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.getExpireCouponTotalContent();
 	}
 	
+	@Override
+	public int updateUserRole(Map<String, Object> param) {
+		String changeAuth = (String)param.get("changeAuth");
+		
+		int result = 0;
+		if("ROLE_ADMIN".equals(changeAuth)) {
+			result = adminDao.insertUserRoleToAdmin(param);
+		} else {
+			result = adminDao.deleteUserRoleToAdmin(param);
+		}
+		
+		return 0;
+	}
+	
 	private RowBounds getRowBounds(Map<String, Object> param) {
 		int limit = (int)param.get("limit");
 		int offset = ((int)param.get("cPage") - 1) * limit;
