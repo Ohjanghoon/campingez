@@ -73,7 +73,7 @@ $(document).ready(function(){
 				
 				$('#list').html('');
 				if(data.list == null){
-					$('#list').html('<p>등록딘 게시물이 없습니다</p>');
+					$('#list').html('<p>등록된 게시물이 없습니다</p>');
 				}
 				for(var item of data.list){
 					var price = item.tradePrice;
