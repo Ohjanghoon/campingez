@@ -18,6 +18,7 @@ import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
+import com.kh.campingez.community.model.dto.Community;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
@@ -200,7 +201,7 @@ public interface AdminDao {
 	
 	List<Trade> findAllTradeReportList(RowBounds rowBounds);
 	
-	@Select("select count(*) from ( select r.*, count(*) over(partition by r.comm_no) as report_count from report r where substr(r.comm_no, 1, 1) = 'T') a where report_count >= 2")
+	@Select("select count(*) from ( select r.*, count(*) over(partition by r.comm_no) as report_count from report r where substr(r.comm_no, 1, 1) = 'T') a where report_count >= 3")
 	int getTradeReportTotalContent();
 	
 	@Update("update report set report_action = 'Y' where comm_no = #{commNo}")
@@ -211,9 +212,6 @@ public interface AdminDao {
 	int updateIsDelete(Map<String, Object> param);
 	
 	Object selectCommByNo(Map<String, Object> param);
-	
-	@Select("select * from trade where trade_no = #{tradeNo}")
-	Trade findTradeByTradeNo(String tradeNo);
 	
 	@Select("select user_id from report where comm_no = #{commNo}")
 	List<String> findReportUserListByCommNo(String commNo);
@@ -240,6 +238,16 @@ public interface AdminDao {
 	
 	@Delete("delete from authority where user_id = #{userId} and auth = 'ROLE_ADMIN'")
 	int deleteUserRoleToAdmin(Map<String, Object> param);
+
+	List<Community> findAllCommReportList(RowBounds rowBounds);
+
+	List<Report> findAllCommUserReportTotal(Map<String, Object> param);
+	
+	@Select("select count(*) from ( select r.*, count(*) over(partition by r.comm_no) as report_count from report r where substr(r.comm_no, 1, 1) = 'C') a where report_count >= 3")
+	int getCommReportTotalContent();
+	
+	@Select("select count(*) from ( select count(*) from report r left join community c on r.comm_no = c.comm_no where substr(r.comm_no, 1, 1) = 'C' group by c.user_id) a")
+	int getCommUserReportTotalContent();
 	
 	
 	

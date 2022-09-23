@@ -41,6 +41,8 @@ public interface CommunityService {
 
    int deleteComment(CommunityComment cc);
 
+   String getUserReportComm(Map<String, Object> param);
+	
 
 
 }

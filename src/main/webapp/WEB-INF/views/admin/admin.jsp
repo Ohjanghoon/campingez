@@ -139,7 +139,10 @@ $(document).ready(function () {
 					    </h2>
 					    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
 					      <div class="accordion-body">
-					      	<a href="${pageContext.request.contextPath}/admin/reportList.do">신고관리</a>
+					      	<a href="${pageContext.request.contextPath}/admin/tradeReportList.do">중고거래 신고관리</a>
+					      </div>
+					      <div class="accordion-body">
+					      	<a href="${pageContext.request.contextPath}/admin/commReportList.do">커뮤니티 신고관리</a>
 					      </div>
 					      <div class="accordion-body">
 					      	<a href="${pageContext.request.contextPath}/admin/inquireList.do">1:1문의 답변</a>

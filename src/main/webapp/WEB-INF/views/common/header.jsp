@@ -132,6 +132,7 @@ $(window).scroll(function() {
 });
 
 const beforeTime = (alarmDate) => {
+	console.log(alarmDate);
 	  const millis = new Date().getTime() - new Date(alarmDate).getTime();
 	  const seconds = Math.floor(millis / 1000);
 	  

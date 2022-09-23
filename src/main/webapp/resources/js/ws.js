@@ -16,7 +16,8 @@ stompClient.connect({}, (frame) => {
 		const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
 		const [yy, MM, dd, HH, mm, ss] = alrDatetime;
 		const targetUrl = alrUrl == null ? '#' : `http://${location.host}/campingez${alrUrl}`;
-	
+		console.log(yy, MM, dd, HH, mm, ss);
+		
 		let html;
 		const notReadCountSpan = document.querySelector("#notReadCount");
 		notReadCountSpan.innerHTML = notReadCount;
