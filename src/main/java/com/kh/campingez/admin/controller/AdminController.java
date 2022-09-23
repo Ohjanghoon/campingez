@@ -35,6 +35,7 @@ import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.CampingEzUtils;
 import com.kh.campingez.common.category.mode.dto.Category;
+import com.kh.campingez.community.model.dto.Community;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
@@ -535,8 +536,8 @@ public class AdminController {
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(data);
 	}
 	
-	@GetMapping("/reportList.do")
-	public void reportList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+	@GetMapping("/tradeReportList.do")
+	public void tradeReportList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
 		int limit = 10;
 		param.put("cPage", cPage);
@@ -560,17 +561,42 @@ public class AdminController {
 		model.addAttribute("totalContentPagebar", totalContentPagebar);
 	}
 	
+	@GetMapping("/commReportList.do")
+	public void commReportList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		int limit = 10;
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
+		List<Community> commReportList = adminService.findAllCommReportList(param);
+		log.debug("commReportList = {}", commReportList);
+		model.addAttribute("commReportList", commReportList);
+		
+		List<Report> userReportTotal = adminService.findAllCommUserReportTotal(param);
+		log.debug("userReportTotal = {}", userReportTotal);
+		model.addAttribute("userReportTotal", userReportTotal);
+		
+		int totalContent = adminService.getCommReportTotalContent();
+		String uri = request.getRequestURI();
+		String commPagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
+		model.addAttribute("commPagebar", commPagebar);
+		
+		int userReportTotalContent = adminService.getCommUserReportTotalContent();
+		String totalContentPagebar = CampingEzUtils.getPagebar2(cPage, limit, userReportTotalContent, uri);
+		model.addAttribute("totalContentPagebar", totalContentPagebar);
+	}
+	
 	@PostMapping("/updateReportAction.do")
-	public String updateReportAction(@RequestParam String commNo) {
+	public String updateReportAction(@RequestParam String commNo, HttpServletRequest request) {
 		int result = adminService.updateReportAction(commNo);
 		
-		return "redirect:/admin/reportList.do";
+		return "redirect:" + request.getHeader("Referer");
 	}
 	
 	@PostMapping("/updateReportActionAndIsDelete.do")
-	public String updateReportActionAndIsDelete(@RequestParam String commNo, @RequestParam String type) {
+	public String updateReportActionAndIsDelete(@RequestParam String commNo, @RequestParam String type, HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
-		String location = type.equals("T") ? "/trade/tradeView.do?no=" + commNo : "";
+		String location = type.equals("T") ? "/trade/tradeView.do?no=" + commNo : "/community/communityView.do?no=" + commNo;
 		param.put("commNo", commNo);
 		param.put("type", type);
 		param.put("location", location);
@@ -580,7 +606,7 @@ public class AdminController {
 			result = alarmService.commReportAlarm(param);
 		}
 		
-		return "redirect:/admin/reportList.do";
+		return "redirect:" + request.getHeader("Referer");
 	}
 	
 	@GetMapping("/statsCouponDown.do")

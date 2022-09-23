@@ -143,7 +143,11 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.deleteComment(cc);
 		
 	}
-
+	
+	@Override
+	public String getUserReportComm(Map<String, Object> param) {
+		return communityDao.getUserReportComm(param);
+	}
 	
 	
    

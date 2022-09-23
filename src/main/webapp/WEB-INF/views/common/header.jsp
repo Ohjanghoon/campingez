@@ -33,6 +33,10 @@
 	padding:0;
 	margin:0;
 }
+a {
+	text-decoration: none;
+	color: black;
+}
 .link-dark{
 	text-decoration: none;
 	color: black;
@@ -128,6 +132,7 @@ $(window).scroll(function() {
 });
 
 const beforeTime = (alarmDate) => {
+	console.log(alarmDate);
 	  const millis = new Date().getTime() - new Date(alarmDate).getTime();
 	  const seconds = Math.floor(millis / 1000);
 	  

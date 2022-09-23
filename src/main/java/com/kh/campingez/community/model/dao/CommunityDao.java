@@ -75,5 +75,8 @@ public interface CommunityDao {
    @Delete("delete from comm_comment where comment_no = #{commentNo}")
    int deleteComment(CommunityComment cc);
    
+   @Select("select (select user_id from report where comm_no = c.comm_no and user_id = #{userId}) report_user_id from community c where comm_no = #{no}")
+   String getUserReportComm(Map<String, Object> param);
+   
 
 }

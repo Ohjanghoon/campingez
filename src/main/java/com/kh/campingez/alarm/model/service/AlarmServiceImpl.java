@@ -16,9 +16,12 @@ import com.kh.campingez.alarm.model.dto.AlarmEntity;
 import com.kh.campingez.alarm.model.dto.AlarmType;
 import com.kh.campingez.assignment.model.dao.AssignmentDao;
 import com.kh.campingez.assignment.model.dto.Assignment;
+import com.kh.campingez.community.model.dao.CommunityDao;
+import com.kh.campingez.community.model.dto.Community;
 import com.kh.campingez.inquire.model.dao.InquireDao;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.trade.model.dao.TradeDao;
 import com.kh.campingez.trade.model.dto.Trade;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +45,12 @@ public class AlarmServiceImpl implements AlarmService {
 	
 	@Autowired
 	AssignmentDao assignmentDao;
+	
+	@Autowired
+	CommunityDao communityDao;
+	
+	@Autowired
+	TradeDao tradeDao;
 	
 	@Override
 	public int inquireAnswerAlarm(Map<String, Object> param) {
@@ -145,17 +154,20 @@ public class AlarmServiceImpl implements AlarmService {
 		String commNo = (String)param.get("commNo");
 		
 		Trade trade = null;
+		Community community = null;
 		String title = null;
 		String commWriter = null;
 		// 중고거래인 경우
 		if(String.valueOf('T').equals(type)) {
-			trade = adminDao.findTradeByTradeNo(commNo);
+			trade = tradeDao.selectTradeByNo(commNo);
 			title = trade.getTradeTitle();
 			commWriter = trade.getUserId();
 		}
 		// 커뮤니티인 경우
 		else {
-			
+			community = communityDao.selectCommByNo(commNo);
+			title = community.getCommTitle();
+			commWriter = community.getUserId();
 		}
 		
 		// 게시글 작성자 알림

@@ -38,7 +38,6 @@
 							<th scope="col">경고</th>
 							<th scope="col">포인트</th>
 							<th scope="col">권한</th>
-							<th scope="col">가입타입</th>
 							<th scope="col">가입일</th>
 						</tr>
 					</thead>
@@ -68,7 +67,6 @@
 										</c:forEach>
 										</select>
 									</td>
-									<td scope="row">${user.enrollType}</td>
 									<td scope="row">
 										<fmt:parseDate value="${user.enrollDate}" var="enrollDate" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
 										<fmt:formatDate value="${enrollDate}" pattern="yyyy/MM/dd"/>
