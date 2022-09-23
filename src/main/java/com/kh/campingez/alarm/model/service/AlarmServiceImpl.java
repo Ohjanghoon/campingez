@@ -109,8 +109,13 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 	
 	@Override
-	public int cancelWarningToUserAlarm(String userId) {
-		String msg = "[경고취소] 문의 주신 내용 반영하여 경고 취소처리 되셨습니다.🙂";
+	public int cancelWarningToUserAlarm(String userId, boolean isBlack) {
+		String msg = null;
+		if(isBlack) {
+			msg = "[블랙리스트 해지] 문의 주신 내용 반영하여 블랙리스트 해지처리 하였습니다.🙂";
+		} else {
+			msg = "[경고취소] 문의 주신 내용 반영하여 경고 취소처리 되셨습니다.🙂";			
+		}
 		
 		AlarmEntity alarm = (AlarmEntity)Alarm.builder()
 						.targetUserId(userId)
