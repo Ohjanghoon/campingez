@@ -288,22 +288,25 @@
 			method : "POST",
 			success(response){
 				if(response != "review no"){
-					const { revRenamedFilename } = response.reviewPhotos[0];
 					document.querySelector(".deck").innerHTML += `
-						<div class="m-2">
-							<c:if test="${not empty response.reviewPhotos}">
-								<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
-							</c:if>
-							<c:if test="${empty response.reviewPhotos}">
-								<img src="${pageContext.request.contextPath}/resources/upload/review/\${revRenamedFilename}" class="card-img-top"/>
-							</c:if> 
-						</div>
+						<div class="m-2" id="card-img"></div>
 						<div class="card-body">
 						    <h5 class="card-title">\${response.reservation.userId}</h5>
 						    <p class="card-text">\${response.revContent}</p>
 						    <p class="card-text"><small class="text-muted">\${response.revEnrollDate}</small></p>
 						</div>
 					`;
+					
+					if(response.reviewPhotos.length > 0){
+						document.querySelector("#card-img").innerHTML = `
+							<img src="${pageContext.request.contextPath}/resources/upload/review/\${response.reviewPhotos[0].revRenamedFilename}" class="card-img-top"/>
+						`;
+					}
+					else{
+						document.querySelector("#card-img").innerHTML = `
+						<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
+						`;
+					}
 				}
 				else{
 					document.querySelector(".deck").innerHTML += `
@@ -332,22 +335,25 @@
 			method : "POST",
 			success(response){
 				if(response != "review no"){
-					const { revRenamedFilename } = response.reviewPhotos[0];
 					document.querySelector(".animal").innerHTML += `
-						<div class="m-2">
-							<c:if test="${not empty response.reviewPhotos}">
-								<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
-							</c:if>
-							<c:if test="${empty response.reviewPhotos}">
-								<img src="${pageContext.request.contextPath}/resources/upload/review/\${revRenamedFilename}" class="card-img-top"/>
-							</c:if> 
-						</div>
+						<div class="m-2" id="card-img2"></div>
 						<div class="card-body">
 						    <h5 class="card-title">\${response.reservation.userId}</h5>
 						    <p class="card-text">\${response.revContent}</p>
 						    <p class="card-text"><small class="text-muted">\${response.revEnrollDate}</small></p>
 						</div>
 					`;
+					
+					if(response.reviewPhotos.length > 0){
+						document.querySelector("#card-img2").innerHTML = `
+							<img src="${pageContext.request.contextPath}/resources/upload/review/\${response.reviewPhotos[0].revRenamedFilename}" class="card-img-top"/>
+						`;
+					}
+					else{
+						document.querySelector("#card-img2").innerHTML = `
+						<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
+						`;
+					}
 				}
 				else{
 					document.querySelector(".animal").innerHTML += `
@@ -378,22 +384,25 @@
 			content : "application/json",
 			success(response){
 				if(response != "review no"){
-					const { revRenamedFilename } = response.reviewPhotos[0];
 					document.querySelector(".glamping").innerHTML += `
-						<div class="m-2">
-							<c:if test="${not empty response.reviewPhotos}">
-								<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
-							</c:if>
-							<c:if test="${empty response.reviewPhotos}">
-								<img src="${pageContext.request.contextPath}/resources/upload/review/\${revRenamedFilename}" class="card-img-top"/>
-							</c:if> 
-						</div>
+						<div class="m-2" id="card-img3"></div>
 						<div class="card-body">
 						    <h5 class="card-title">\${response.reservation.userId}</h5>
 						    <p class="card-text">\${response.revContent}</p>
 						    <p class="card-text"><small class="text-muted">\${response.revEnrollDate}</small></p>
 						</div>
 					`;
+					
+					if(response.reviewPhotos.length > 0){
+						document.querySelector("#card-img3").innerHTML = `
+							<img src="${pageContext.request.contextPath}/resources/upload/review/\${response.reviewPhotos[0].revRenamedFilename}" class="card-img-top"/>
+						`;
+					}
+					else{
+						document.querySelector("#card-img3").innerHTML = `
+						<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
+						`;
+					}
 				}
 				else{
 					document.querySelector(".glamping").innerHTML += `
@@ -423,22 +432,25 @@
 			method : "POST",
 			success(response){
 				if(response != "review no"){
-					const { revRenamedFilename } = response.reviewPhotos[0];
 					document.querySelector(".caravan").innerHTML += `
-						<div class="m-2">
-							<c:if test="${not empty response.reviewPhotos}">
-								<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
-							</c:if>
-							<c:if test="${empty response.reviewPhotos}">
-								<img src="${pageContext.request.contextPath}/resources/upload/review/\${revRenamedFilename}" class="card-img-top"/>
-							</c:if> 
-						</div>
+						<div class="m-2" id="card-img4"></div>
 						<div class="card-body">
 						    <h5 class="card-title">\${response.reservation.userId}</h5>
 						    <p class="card-text">\${response.revContent}</p>
 						    <p class="card-text"><small class="text-muted">\${response.revEnrollDate}</small></p>
 						</div>
 					`;
+					
+					if(response.reviewPhotos.length > 0){
+						document.querySelector("#card-img4").innerHTML = `
+							<img src="${pageContext.request.contextPath}/resources/upload/review/\${response.reviewPhotos[0].revRenamedFilename}" class="card-img-top"/>
+						`;
+					}
+					else{
+						document.querySelector("#card-img4").innerHTML = `
+						<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" class="card-img-top" />
+						`;
+					}
 				}
 				else{
 					document.querySelector(".caravan").innerHTML += `
