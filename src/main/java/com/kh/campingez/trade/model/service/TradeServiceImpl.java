@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.trade.model.dao.TradeDao;
 import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.dto.TradeLike;
@@ -158,9 +159,20 @@ public class TradeServiceImpl implements TradeService {
 		return tradeDao.updateSuccess(no);
 	}
 	
+	@Override
+	public List<Category> getReportCategory() {
+		return tradeDao.getReportCategory();
+	}
 	
+	@Override
+	public String getUserReportTrade(Map<String, Object> param) {
+		return tradeDao.getUserReportTrade(param);
+	}
 	
-	
+	@Override
+	public List<Trade> selectCurrentTrade() {
+		return tradeDao.selectCurrentTrade();
+	}
 	
 	
 }

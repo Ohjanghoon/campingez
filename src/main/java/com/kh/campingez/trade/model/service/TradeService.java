@@ -3,6 +3,7 @@ package com.kh.campingez.trade.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.dto.TradeLike;
 import com.kh.campingez.trade.model.dto.TradePhoto;
@@ -40,5 +41,11 @@ public interface TradeService {
 	int getTotalContentKind(String categoryId);
 
 	int updateSuccess(String no);
+
+	List<Category> getReportCategory();
+
+	String getUserReportTrade(Map<String, Object> param);
+
+	List<Trade> selectCurrentTrade();
 
 }

@@ -23,11 +23,17 @@
 	width : 22%
 }
 
+#check {
+	width : 1.1rem;
+	height : 1.1rem;
+	vertical-align : middle;
+	accent-color : #A8A4CE;
+}
 </style>
-<div class="container w-75" id="enrollForm-container">
+<div class="container w-75 top" id="enrollForm-container">
 	<!-- 양도 등록 -->
 	<div class="mx-auto my-5" id="assignEnroll">
-		<strong class="fs-3">양도등록</strong>
+		<strong class="fs-3"><i class="fa-solid fa-campground"></i> 양도 가능 예약</strong>
 		<hr />
 		<p><strong>양도할 예약을 선택하세요.</strong></p>
 		<select class="form-select w-50" name="choiceRes" id="choiceRes">
@@ -35,9 +41,9 @@
 				<option>양도 가능한 예약이 없습니다.</option>
 			</c:if>
 			<c:if test="${not empty reservationList}">
-				<option value="">예약번호 / 입실일자 ~ 퇴실일자</option>
+				<option value="">(예약번호) 입실일자 ~ 퇴실일자</option>
 				<c:forEach items="${reservationList}" var="res">
-					<option value="${res.resNo}">${res.resNo} / ${res.resCheckin} ~ ${res.resCheckout}</option>
+					<option value="${res.resNo}">(${res.resNo}) ${res.resCheckin} ~ ${res.resCheckout}</option>
 				</c:forEach>
 			</c:if>
 		</select>
@@ -45,7 +51,7 @@
 	
 	<!-- 예약정보 -->
 	<div class="my-5" id="resInfo">
-		<strong class="fs-3">예약정보</strong>
+		<strong class="fs-3"><i class="fa-solid fa-campground"></i> 예약정보</strong>
 		<hr />
 		<div>
 			<table class="table w-75" id="tbl-resInfo">
@@ -55,7 +61,7 @@
 	
 	<!-- 양도 등록 정보 -->
 	<div id="assignForm">
-		<strong class="fs-3">양도등록 정보</strong>
+		<strong class="fs-3"><i class="fa-solid fa-campground"></i> 양도등록 정보</strong>
 		<hr />
 		<form:form
 			name="assignEnrollForm"
@@ -65,7 +71,7 @@
 			<table class="table" id="tbl-assignInfo">
 			<tr>
 				<th>예약번호</th>
-					<td><input class="form-control" type="text" name="resNo" value="" readonly /></td>
+					<td><input class="form-control" type="text" name="resNo" value="" readonly required/></td>
 				</tr>				
 				<tr>
 					<th>제목</th>
@@ -84,11 +90,27 @@
 					</td>
 				</tr>
 			</table>
+			<div class="mx-auto my-5">
+				<strong class="fs-3"><i class="fa-solid fa-house-circle-exclamation"></i> 양도거래 등록 시 유의사항</strong>
+				<div class="card p-3 mt-2">
+				<ul>
+					<li class="my-2">
+						<strong># 캠핑이지 양도 서비스 이외의 카페나 중고마켓등에 양도를 올려 중복 양도거래가 발생할 경우, 예약건의 소유권은 양수자에게 있으며 양도 성사건에 대해서 캠핑이지에서는 취소해 드릴 수 없음을 알려 드립니다.</strong>
+					</li>
+					<li class="my-2">
+						<strong># 단순 변심으로 인한 양도거래를 취소할 경우, 양도대기중인 양도건에 한해서 취소 가능합니다 </strong>
+					</li>
+				</ul>
+				</div>
+					<input type="checkbox"name="check" id="check" />
+					<label class="align-middle" for="check"> 양도거래 유의사항을 확인하였습니다.</label>
+			</div>
 			<div class="text-center">
 				<button class="btn btn-outline-dark" type="submit" id="btn-assign-enroll">양도등록</button>
 			</div>
 		</form:form>
 	</div>
+	
 </div>
 <script>
 document.querySelector("#choiceRes").addEventListener('change', (e) => {
@@ -192,10 +214,10 @@ const calSchedule = (date1, date2) => {
 	return date + '박' + (date + 1) + '일';
 };
 
-document.assignEnrollForm.addEventListener('click', (e) => {
+document.querySelector("#tbl-assignInfo").addEventListener('click', (e) => {
 	const resNo = assignEnrollForm.resNo.value;
 	
-	if(resNo == '') {
+	if(resNo === "") {
 		alert("양도할 예약을 선택해주세요.");
 		document.querySelector("#choiceRes").focus();
 	}
@@ -209,23 +231,34 @@ document.querySelector("#assignPrice").addEventListener('blur', (e) => {
 	}
 });
 
+
 document.assignEnrollForm.addEventListener('submit', (e) => {
+	const check = document.querySelector("#check");
+	
+	if(!check.checked){
+		e.preventDefault();
+		alert("유의사항을 확인하고 체크 부탁드립니다.");
+		return;
+	}
 	const frm = document.assignEnrollForm;
 	const resNo = frm.resNo.value;
 	const assignPrice = parseInt(frm.assignPrice.value);
 	
-	const check = confirm(`-------------------------------
+	const checkConfirm = confirm(`-------------------------------
 예약번호 : \${resNo}
 양도금액 : \${assignPrice.toLocaleString('ko-KR')}원
 -------------------------------
 양도 등록하시겠습니까?`);
 		
-	if(!check) {
+	if(!checkConfirm) {
 		e.preventDefault();
 		return false;
 	}
 });
 
-
+//화면 로드시 스크롤 이동
+$(document).ready(function () {
+	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
+});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

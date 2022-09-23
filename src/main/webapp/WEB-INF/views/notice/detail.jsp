@@ -20,9 +20,12 @@
 </style>
 <main>
 	<div class="container">
+	<h2 class="text-center fw-bold pt-5">공지사항</h2>
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5">
-			<button class="btn btn-outline-dark" type="button" id="update">수정 <i class="fa-solid fa-wrench"></i></button>
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<button class="btn btn-outline-dark" type="button" id="update" onclick="location.href ='${pageContext.request.contextPath}/notice/update.do?noticeNo=${notice.noticeNo}';">수정 <i class="fa-solid fa-wrench"></i></button>
 			<button class="btn btn-outline-dark" type="button" id="delete">삭제 <i class="fa-solid fa-xmark"></i></button>
+	</sec:authorize>
 			<button class="btn btn-outline-dark" type="button" onclick="location.href='${pageContext.request.contextPath}/notice/list';">목록으로 <i class="fa-solid fa-list"></i></button>
 		</div>
 	<hr />
@@ -39,6 +42,9 @@
 					<c:forEach items="${notice.photos}" var="photo">	
 						<img src ="${pageContext.request.contextPath}/resources/upload/notice/${photo.noticeRenamedFilename}" class="img-fluid border rounded-3 shadow-lg mb-4" width="700" height="500">
 					</c:forEach>
+				</c:if>
+				<c:if test="${empty notice.photos}">
+					<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" alt="" />
 				</c:if>
 			</div>
 		  </div>
@@ -61,6 +67,7 @@
 	</div>
 </main>
 	<script>
+	<sec:authorize access="isAuthenticated()">
 		const headers = {};
         headers['${_csrf.headerName}'] = '${_csrf.token}';
         
@@ -98,9 +105,9 @@
 						headers,
 						data : {couponCode, userId},
 						method : "POST",
-						success(response){
-							console.log(response);
-							alert(response.resultMessage);
+						success(map){
+							console.log(map);
+							alert(map.resultMessage);
 						},
 						error : console.log
 					});
@@ -109,17 +116,14 @@
 			},
 			error : console.log
 		});
-		
-		// 수정
-		document.querySelector("#update").addEventListener('click', (e) => {
-			location.href = "${pageContext.request.contextPath}/notice/update.do?noticeNo=${notice.noticeNo}";
-		});
-		// 삭제
+	</sec:authorize>
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
 		document.querySelector("#delete").addEventListener('click', (e) => {
 			const result = confirm("정말 삭제하시겠습니까?");
 			if(result == true){
 				location.href = "${pageContext.request.contextPath}/notice/delete.do?noticeNo=${notice.noticeNo}";
 			}
 		});
+	</sec:authorize>
 	</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

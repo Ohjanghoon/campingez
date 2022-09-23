@@ -10,6 +10,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,7 +53,7 @@ public class ReviewController {
 	@GetMapping("/reviewList.do")
 	public void reviewList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
-		int limit = 5;
+		int limit = 6;
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		
@@ -60,7 +63,7 @@ public class ReviewController {
 		
 		int totalContent = reviewService.getTotalContentByAllReviewList(param);
 		String uri = request.getRequestURI();
-		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, uri);
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
 		model.addAttribute("pagebar", pagebar);
 		
 		List<CampZone> campZoneList = adminService.findAllCampZoneList();
@@ -70,7 +73,7 @@ public class ReviewController {
 	@GetMapping("/reviewListBySearchType.do")
 	public String reviewList(@RequestParam(defaultValue = "1") int cPage, @RequestParam String searchType, @RequestParam(required = false) String campZoneType, Model model, HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
-		int limit = 5;
+		int limit = 4;
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		param.put("campZoneType", campZoneType);
@@ -91,7 +94,7 @@ public class ReviewController {
 		log.debug("totalContent = {}", totalContent);
 		
 		String uri = request.getRequestURI();
-		String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, uri);
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
 		model.addAttribute("pagebar", pagebar);
 		log.debug("pagebar = {}", pagebar);
 		
@@ -102,9 +105,9 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/reviewDetail.do")
-	public void reviewDetail(@RequestParam int revId, Model model) {
+	public ResponseEntity<?> reviewDetail(@RequestParam int revId) {
 		Review review = reviewService.findOneReviewById(revId);
-		model.addAttribute("review", review);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(review);
 	}
 	
 	@GetMapping("/reviewForm.do")

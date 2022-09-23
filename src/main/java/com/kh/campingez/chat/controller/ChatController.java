@@ -49,9 +49,10 @@ public class ChatController {
 			log.debug("chatroomId = {}", chatroomId);
 			// chatuser insert 2행
 			List<ChatUser> chatUserList = Arrays.asList(
-					new ChatUser(chatroomId, user.getUserId(), trade.getTradeNo()),
-					new ChatUser(chatroomId, "seller", trade.getTradeNo()));
+					new ChatUser(chatroomId, user.getUserId()),
+					new ChatUser(chatroomId, "seller"));
 			chatService.insertChatUsers(chatUserList);
+			log.debug("chatUserList = {}", chatUserList);
 		}
 		else {
 			// 재입장

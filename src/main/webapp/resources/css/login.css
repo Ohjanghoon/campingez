@@ -6,14 +6,7 @@
   box-sizing: border-box;
 }
 
-body{
-    font-family: 'Poppins', sans-serif;
-    overflow: hidden;
-}
-
 .login-container{
-    width: 100vw;
-    height: 100vh;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap :7rem;
@@ -141,16 +134,15 @@ form{
   margin-bottom: 4px;
 }
 
-a{
+.find{
   display: block;
-  text-align: right;
   text-decoration: none;
   color: #999;
   font-size: 0.9rem;
   transition: .3s;
 }
 
-a:hover{
+.find:hover{
   color: #495C83;
 }
 

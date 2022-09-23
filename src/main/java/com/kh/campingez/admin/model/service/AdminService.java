@@ -4,13 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.campingez.admin.model.dto.Stats;
+import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.report.dto.Report;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.user.model.dto.User;
 
 public interface AdminService {
@@ -63,7 +67,7 @@ public interface AdminService {
 
 	int deleteCampPhotoByPhotoNo(int photoNo);
 
-	List<Camp> findAllCampList();
+	List<CampZone> findAllCampList();
 
 	int insertDailyVisit(String userId);
 
@@ -94,5 +98,47 @@ public interface AdminService {
 	List<User> selectNotBlackListByKeyword(Map<String, Object> param);
 
 	int getTotalContentNotBlackListByKeyword(Map<String, Object> param);
+
+	Camp selectCampByCampId(String campId);
+
+	int insertCamp(Map<String, Object> param);
+
+	int deleteCampByCampId(String campId);
+
+	List<CampZone> findCampByZoneCode(String zoneCode);
+
+	List<Assignment> findAllAssignmentList(Map<String, Object> param);
+
+	int getAssignmentTotalContent();
+
+	List<Assignment> findAssignmentListBySelectType(Map<String, Object> param);
+
+	int getAssignmentBySelectTypeTotalContent(Map<String, Object> param);
+
+	List<Assignment> findAllExpireAssignmentList(Map<String, Object> param);
+
+	int getExpireAssignmentTotalContent();
+
+	List<Trade> findAllTradeReportList(Map<String, Object> param);
+
+	int getTradeReportTotalContent();
+
+	int updateReportAction(String commNo);
+
+	int updateReportActionAndIsDelete(Map<String, Object> param);
+
+	List<Report> findAllUserReportTotal(Map<String, Object> param);
+
+	int getUserReportTotalContent();
+
+	int updateCancelWarningToUser(String userId);
+
+	List<Coupon> findAllIngCouponList(Map<String, Object> param);
+
+	List<Coupon> findAllExpireCouponList(Map<String, Object> param);
+
+	int getIngCouponTotalContent();
+
+	int getExpireCouponTotalContent();
 
 }

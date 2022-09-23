@@ -3,15 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 <style>
-.btn-primary{
- 	background-color:  #A8A4CE !important;
- 	border-color:  #A8A4CE !important;
-}
 .btn-outline-secondary{
 	border-color: #A8A4CE !important;
 	color: #A8A4CE !important;
@@ -305,9 +300,11 @@
 					<div class="card-body">
 					    <h5 class="card-title">\${review.reservation.userId}</h5>
 					    <p class="card-text">\${review.revContent}</p>
+					    
 					    <p class="card-text"><small class="text-muted">\${review.revEnrollDate}</small></p>
 					</div>
 				`;
+			
 				document.querySelector("#moveToAllReview").addEventListener('click', (e) => {
 						const url = `${pageContext.request.contextPath}/review/reviewList.do`;
 						const name = "AllReview"; // window의 이름으로 사용;

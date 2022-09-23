@@ -1,88 +1,125 @@
 @charset "UTF-8";
 
-	#mypage{
-	 display: flex;
-	 flex-direction: column;
-	 align-items: center;
-	}
-	.outter-div {
-	  width : 800px;
-	}
-	.inner-div {
-		  margin-top: 20px;
-		  border : 1px solid #7985b5;
-	}
-	.content{
-		width: 100px;
-	    white-space: nowrap;
-	    overflow: hidden;
-	    text-overflow: ellipsis;
-	}
-	#myTradeList{
-		margin-top : 50px;
-		margin-bottom : 50px;
-		
-	}
-	#myReservationList{
-		margin-top : 50px;
-		margin-bottom : 50px;
-		
-	}
-	#myAssignmentList{
-		margin-top : 50px;
-		margin-bottom : 50px;
-		
-	}
-	#titleLeft{
-		float: left;
-		margin-bottom : 30px;
-	}
-	#titleRight{
-		float: right;
-		margin-bottom : 30px;
-	}
-	.parent{
-	    width: 90%;
-	    margin: 10px auto;
-	    display: flex;
-	    justify-content : center;
-	    border: 1px solid #c6b5e1;
-	    background-color : #c6b5e140;
-	    border-radius: 10px 30px 50px 70px;
-	}
-	
-	#first {
-	    flex:2;
-	    width:60%;
-	    box-sizing: border-box;
-	    margin-left : 30px;
-	    display: flex;
-	}
-	
-	#second{
-	    flex:1;
-	    margin: 0px 5%;
-	    width:20%;
-	    box-sizing: border-box;
-	    margin-top: 30px;
-	}
-	
-	#third{
-	    flex:1;
-	    width:20%;
-	    box-sizing: border-box;
-	    margin-top: 30px;
-	    margin-right : 30px;
-	}
-	#first-2{
-		display: flex;
-		padding-top : 10px;
-	}
-	.button-parent{
-	    width: 40%;
-	    margin: 215px auto;
-	    display: flex;
-	    position: absolute;
-	    justify-content: space-around;
-	}
-	
+#mypage {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.outter-div {
+	width: 800px;
+}
+
+.inner-div {
+	margin-top: 20px;
+	border: 1px solid #7985b5;
+}
+
+.content {
+	width: 100px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#myTradeList {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+#myReservationList {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+#myAssignmentList {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+#titleLeft {
+	float: left;
+	margin-bottom: 30px;
+}
+
+#titleRight {
+	float: right;
+	margin-bottom: 30px;
+}
+
+.parent {
+	width: 90%;
+	margin: 10px auto;
+	display: flex;
+	justify-content: center;
+	border: 1px solid #c6b5e1;
+	background-color: #c6b5e140;
+	border-radius: 10px 30px 50px 70px;
+}
+
+#first {
+	flex: 2;
+	width: 60%;
+	box-sizing: border-box;
+	margin-left: 30px;
+	display: flex;
+}
+
+#second {
+	flex: 1;
+	margin: 0px 5%;
+	width: 20%;
+	box-sizing: border-box;
+	margin-top: 30px;
+}
+
+#third {
+	flex: 1;
+	width: 20%;
+	box-sizing: border-box;
+	margin-top: 30px;
+	margin-right: 30px;
+}
+
+#first-2 {
+	display: flex;
+	padding-top: 10px;
+}
+
+.button-parent {
+	width: 40%;
+	margin: 215px auto;
+	display: flex;
+	position: absolute;
+	justify-content: space-around;
+}
+
+
+.table-striped { 
+	--bs-table-striped-bg: #c6b5e140 !important;
+}
+
+.table-hover { 
+	--bs-table-hover-bg: #dacfed!important;
+}
+#tradeTable{
+	border-collapse : collapse !important;
+	text-align: center; 
+	border-color: #00000000 !important;
+	--bs-table-bg: #f8f4fb!important;
+}
+.table-light{
+	--bs-table-bg: #f8f4fb !important;
+}
+#tradeTable > tbody > tr:last-child > td:first-child {
+	border-bottom-left-radius : 30px !important;
+}
+#tradeTable > tbody > tr:last-child > td:last-child {
+	border-bottom-right-radius : 30px !important;
+}
+#tradeTable > thead > tr > th:first-child {
+	border-top-left-radius : 30px !important;
+}
+#tradeTable > thead > tr > th:last-child {
+	border-top-right-radius : 30px !important;
+}

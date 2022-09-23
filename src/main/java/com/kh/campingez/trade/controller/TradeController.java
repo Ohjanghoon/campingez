@@ -3,7 +3,6 @@ package com.kh.campingez.trade.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -31,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.common.CampingEzUtils;
+import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.dto.TradeLike;
 import com.kh.campingez.trade.model.dto.TradePhoto;
@@ -74,13 +75,23 @@ public class TradeController {
  		// 게시글 상세보기 쿼리
  		Trade trade = tradeService.selectTradeByNo(no);
  		model.addAttribute("trade", trade);
+ 		String userId = principal != "anonymousUser" ? ((User)principal).getUserId() : null;
+ 		Map<String, Object> param = new HashMap<>();
+ 		param.put("no", no);
+ 		param.put("userId", userId);
+ 		String reportUserId = tradeService.getUserReportTrade(param);
+ 		log.debug("reportUserId = {}", reportUserId);
+ 		model.addAttribute("reportUserId", reportUserId);
+ 		
+ 		List<Category> categoryList = tradeService.getReportCategory();
+ 		model.addAttribute("categoryList", categoryList);
  		
  		TradeLike tl = new TradeLike();
 
  		// 로그인 한 아이디 확인(좋아요 구분용)
  		if(principal != "anonymousUser") {
  		User user = (User) principal;
- 		String userId = user.getUserId();	
+ 		userId = user.getUserId();	
  		
  		model.addAttribute("user", user);
  		
@@ -357,5 +368,13 @@ public class TradeController {
 		
 		return "redirect:/trade/tradeView.do?no=" + no;
 	}
+	
+	@GetMapping("/selectCurrentTrade")
+	public ResponseEntity<?> selectCurrentTrade(){
+		List<Trade> list = tradeService.selectCurrentTrade();
+		log.debug("list = {}", list);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(list);
+	}
+	
 	
 }

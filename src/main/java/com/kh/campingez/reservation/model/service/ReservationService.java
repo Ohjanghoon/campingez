@@ -15,4 +15,6 @@ public interface ReservationService {
 
 	Reservation insertReservation(Reservation reservation);
 
+	List<Reservation> findReservationByName(Map<Object, String> param);
+
 }

@@ -38,7 +38,7 @@ tr > td {
     width: 150px;
     margin-right: 5px;
 }
-#selectKeywordGroup {
+#selectKeywordGroup, #insertInputGroup {
 	width:300px;
 }
 .searchBtn {
@@ -49,20 +49,25 @@ tr > td {
 	background-color: #A8A4CE;
     color: white;
 }
-#updateBtn, [name=updateBtn], [name=yellowCardBtn]{
+#updateBtn, [name=updateBtn], [name=yellowCardBtn], #deleteBtn, #noProblemBtn, [name=cancelBtn] {
 	height: 35px;
     width: 50px;
-   	background-color: #A8A4CE;
-    color: white;
-    border:none;
+   	border: 1px solid #A8A4CE;
+    color: #A8A4CE;
+    background-color: white;
 }
-#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover {
-	background-color: #c8b6e269;
-    border: 1px solid lightgray;
-    color:black;
+#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover, #deleteBtn:hover, #noProblemBtn:hover, [name=cancelBtn]:hover {
+	background-color: #A8A4CE;
+    color:white;
 }
-#user-list-tbl, #reservation-tbl {
+#user-list-tbl, #reservation-tbl, .select-camp-wrap {
 	margin-top: 30px;
+}
+#camp-list-tbl, .camp-insert-wrap {
+	margin-top: 60px;
+}
+#camp-list-tbl tr:last-child {
+	border-bottom: 2px solid black;
 }
 .input-date {
 	width: 370px
@@ -99,7 +104,10 @@ tr > td {
 					    </h2>
 					    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
 					      <div class="accordion-body">
-					      	<a href="${pageContext.request.contextPath}/admin/reservationList.do">예약관리</a>
+					      	<a href="${pageContext.request.contextPath}/admin/reservationList.do">예약현황</a>
+					      </div>
+					      <div class="accordion-body">
+					      	<a href="${pageContext.request.contextPath}/admin/assignmentList.do">양도현황</a>
 					      </div>
 					    </div>
 					  </div>
@@ -125,6 +133,9 @@ tr > td {
 					      </button>
 					    </h2>
 					    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+					      <div class="accordion-body">
+					      	<a href="${pageContext.request.contextPath}/admin/reportList.do">신고관리</a>
+					      </div>
 					      <div class="accordion-body">
 					      	<a href="${pageContext.request.contextPath}/admin/inquireList.do">1:1문의 답변</a>
 					      </div>
@@ -159,6 +170,9 @@ tr > td {
 					      </div>
 					      <div class="accordion-body">
 					      	<a href="${pageContext.request.contextPath}/admin/monthlySales.do">월별 매출 조회</a>
+					      </div>
+					      <div class="accordion-body">
+					      	<a href="${pageContext.request.contextPath}/admin/statsCouponDown.do">쿠폰 이용 조회</a>
 					      </div>
 					    </div>
 					  </div>

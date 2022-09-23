@@ -108,12 +108,12 @@ public class CouponController {
 		
 		if(userCoupon != null) {
 			map.put("resultMessage", "이미 발급받은 쿠폰입니다.");
-			return ResponseEntity.ok().body(map);
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(map);
 		}
 		
 		int result = couponService.couponDownload(param);
 		map.put("resultMessage", "쿠폰을 발급받았습니다.");
-		return ResponseEntity.ok().body(map);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(map);
 	}
 	
 }

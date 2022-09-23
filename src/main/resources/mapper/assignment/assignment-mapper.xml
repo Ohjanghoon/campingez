@@ -7,14 +7,30 @@
   <select id="selectAssignmentList" resultMap="assignmentListMap">
   	select
 	    *
-	from 
-	    assignment a
-	    join reservation r using(res_no, user_id)
-	    left join camp_photo cp on substr(res_no, 0, 2) = cp.zone_code
+	from (
+		select
+			row_number() over(order by assign_date desc) rnum,
+			ass.*
+		from(
+	        select
+	            *
+	        from
+	            assignment a
+	            join reservation r using(res_no, user_id)
+	            left join camp_photo cp on substr(res_no, 0, 2) = cp.zone_code
+	        <where>
+        		res_checkin - 1 > current_date
+        		and
+        		assign_state != '양도완료'
+        		<if test="zoneSelect != null and zoneSelect != ''">
+        		and
+        		zone_code = #{zoneSelect}
+        		</if>
+	        </where>
+		) ass
+	)
 	where
-		res_checkin - 1 > current_date
-	order by
-		assign_date desc
+	    rnum between #{start} and #{end}
   </select>
   
   <resultMap type="assignment" id="assignmentListMap">
@@ -28,6 +44,7 @@
   	<result column="assign_like_count" property="assignLikeCount"/>
   	<result column="assign_state" property="assignState"/>
   	<result column="assign_transfer" property="assignTransfer"/>
+  	<result column="assign_apply_date" property="assignApplyDate"/>
   	<association property="reservation" javaType="reservation">
   		<result column="camp_id" property="campId"/>
   		<result column="res_price" property="resPrice"/>
@@ -35,12 +52,30 @@
   		<result column="res_checkout" property="resCheckout"/>
   	</association>
   	<collection property="campPhotos" ofType="campPhoto">
-  		<id column="" property="" />
+  		<id column="zone_photo_no" property="zonePhotoNo" />
   		<result column="zone_code" property="zoneCode"/>
   		<result column="original_filename" property="originalFilename"/>
   		<result column="renamed_filename" property="renamedFilename"/>
   	</collection>
   </resultMap>
+  
+  <select id="getTotalContent" resultType="_int" parameterType="string">
+	select
+		count(*)
+	from
+		assignment join reservation r
+		using(res_no, user_id)
+	<where>
+		res_checkin - 1 > current_date
+		and
+		assign_state != '양도완료'
+		<if test="zoneSelect != '' and zoneSelect != null">
+   		and
+   		substr(res_no, 0, 2) = #{zoneSelect}
+   		</if>
+	</where>
+  </select>
+  
   
   <select id="assignmentDetail" resultMap="assignmentListMap">
   	select
@@ -50,7 +85,70 @@
 	    left join camp_photo cp on substr(a.res_no, 0, 2) = cp.zone_code
 	    join reservation r using(res_no, user_id)
 	where 
-		assign_no = #{assign_no}
-	for update
+		assign_no = #{assignNo}
   </select>
+  
+  <insert id="insertAssignmentApply">
+  	<selectKey resultType="string" keyProperty="resNo" order="AFTER">
+  		select
+  			res_no
+  		from (
+  			select
+  				row_number() over(order by res_date desc) rnum,
+  				r.*
+  			from reservation r )
+  		where
+  			rnum = 1
+  	</selectKey>
+  	insert into reservation
+  	values(
+  		#{campId}||seq_reservation_res_no.nextval,
+  	 	#{campId},
+  	 	#{userId},
+  	 	#{resUsername},
+  	 	#{resPhone},
+  	 	#{resPerson},
+  	 	#{resPrice},
+  	 	default,
+  	 	#{resCheckin},
+  	 	#{resCheckout},
+  	 	#{resCarNo},
+  	 	#{resRequest},
+  	 	'양도결제대기',
+  	 	#{resPayment})
+  </insert>
+  
+  <update id="updateAssignmentApply">
+  	update reservation
+  	set
+  		res_username = #{resUsername},
+		res_phone = #{resPhone},
+		res_person = #{resPerson},
+		res_car_no = #{resCarNo},
+		res_request = #{resRequest},
+		res_payment = #{resPayment}
+	where
+		res_no = #{resNo}
+  </update>
+  
+  <update id="updateAssignmetLimitTime">
+  	update assignment
+  	set
+  		assign_state = '양도대기',
+  		assign_transfer = null,
+  		assign_apply_date = null
+  	where
+  		assign_state = '양도중'
+  		and
+  		assign_apply_date +10/24/60 <![CDATA[ < ]]> current_date 
+  </update>
+  
+  <delete id="deleteAssignResLimitTime">
+  	delete from
+  		reservation
+  	where
+  		res_state like '%결제대기'
+  		and
+  		res_date +10/24/60 <![CDATA[ < ]]> current_date
+  </delete>
 </mapper>

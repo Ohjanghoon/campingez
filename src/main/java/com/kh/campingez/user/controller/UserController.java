@@ -1,11 +1,11 @@
 package com.kh.campingez.user.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +14,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -73,7 +74,7 @@ public class UserController {
 			redirectAttr.addFlashAttribute("msg", "회원가입 완료!");
 			return "redirect:/";
 		} catch (Exception e) {
-			log.error("회원 등룍 오류 : " + e.getMessage(), e);
+			log.error("회원 등록 오류 : " + e.getMessage(), e);
 			throw e;
 		}
 	}
@@ -105,8 +106,22 @@ public class UserController {
 	};
 
 	@GetMapping("/userLogin.do")
-	public void userLogin() {
-
+	public void userLogin(@RequestHeader("Referer") String referer, Model model, HttpSession session) {
+		log.debug("referer = {}", referer);
+//		SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+//		log.debug("세이브 = {}", savedRequest);
+		if(referer.contains("/userLogin.do")) {
+			referer = "/";
+		}
+		if(referer.contains("/userEnroll.do")) {
+			referer = "/";
+		}
+		if(referer.contains("/userPasswordUpdate.do")) {
+			referer = "/";
+		}
+		
+		model.addAttribute("loginRedirect", referer);
+		session.setAttribute("loginRedirect", referer);
 	}
 
 //	@PostMapping("/userLoginSuccess.do")
@@ -252,5 +267,21 @@ public class UserController {
 		int notReadCount = alarmService.getNotReadCount(userId);
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.body(notReadCount);
+	}
+	
+	@PostMapping("/insertReport.do")
+	public String insertReport(@RequestParam String reportType, @RequestParam String reportContent, @RequestParam String commNo, @RequestParam String userId, HttpServletRequest request, RedirectAttributes redirectAttr) {
+		log.debug("userId = {}", userId);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("reportType", reportType);
+		param.put("reportContent", reportContent);
+		param.put("commNo", commNo);
+		param.put("userId", userId);
+		
+		int result = userService.insertReport(param);
+		redirectAttr.addFlashAttribute("msg", "신고가 접수되었습니다.");
+		
+		return "redirect:" + request.getHeader("Referer");
 	}
 }

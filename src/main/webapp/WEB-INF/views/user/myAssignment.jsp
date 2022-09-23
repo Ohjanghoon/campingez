@@ -20,9 +20,13 @@
 </head>
 <body>
 <div class="container" id="myAssignmentList">
-<h3>양도목록</h3>
-	<table class="table">
-		<thead>
+<h3 id="titleLeft">
+	<img style="margin-right:20px;" src="${pageContext.request.contextPath}/resources/images/mypage/assign.png" width="50px">
+	양도목록
+</h3>
+	<table class="table table-striped table-hover" id="tradeTable">
+		<thead style=" line-height: 46px;" class="table-light">
+		<tr>
 			<th scope="col">양도번호</th>
 			<th scope="col">사용자 아이디</th>
 			<th scope="col">예약번호</th>
@@ -31,11 +35,12 @@
 			<th scope="col">양도가격</th>
 			<th scope="col">마감일자</th>
 			<th scope="col">좋아요</th>
-			<th scope="col">양도상태</th> 
+			<th scope="col">양도상태</th>
+		</tr> 
 		</thead>
 		<tbody id="assignTbody">
 			<c:forEach items="${assignList}" var="assign" varStatus="vs" >
-				<tr onclick="location.href='${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=${assign.assignNo}'" data-no="${assign.assignNo}">
+				<tr style=" line-height: 46px; cursor:pointer;" onclick="location.href='${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=${assign.assignNo}'" data-no="${assign.assignNo}">
 					<td>${assign.assignNo}</td>
 					<td>${assign.userId}</td>
 					<td>${assign.resNo}</td>
@@ -94,8 +99,6 @@ function assignmentPaingAjax(cPage){
             var results = response.assignList;
             var str = "";
             for(var i = 0; i < results.length; i++){
-            	var months = results[i].assignDate[1] < 10 ? '0' + results[i].assignDate[1] : results[i].assignDate[1];
-            	var days = results[i].assignDate[2] < 10 ? '0' + results[i].assignDate[2] : results[i].assignDate[2];
             	str += 	`<tr onclick="location.href='${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=`+results[i].assignNo+`'" data-no="'+results[i].assignNo+'">`+
 								'<td>'+results[i].assignNo+'</td>'+
 								'<td>'+results[i].userId+'</td>'+
@@ -112,11 +115,11 @@ function assignmentPaingAjax(cPage){
 								'</td>'+
 								'<td>'+results[i].assignPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원</td>'+
 								'<td>'+
-									results[i].assignDate[0]+'-' + months + '-' + days +
+								results[i].assignDate.substr(0,10)+
 								'</td>'+
 								'<td>'+results[i].assignLikeCount+'</td>'+
 								'<td>'+results[i].assignState+'</td>'+
-						'</tr>';            	
+						'</tr>';     
             }
 			$("#assignTbody").append(str); 
 		},

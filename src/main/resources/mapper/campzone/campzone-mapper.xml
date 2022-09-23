@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.campingez.admin.model.dao.AdminDao">
+	<select id="findAllCampList" resultMap="campMap">
+		select 
+		    z.*,
+		    c.camp_id,
+		    c.zone_code camp_zone_code
+		from 
+		    camp_zone z left join camp c 
+		        on z.zone_code = c.zone_code
+		order by
+			z.zone_code, length(c.camp_id), c.camp_id
+	</select>
+	
+	<select id="findCampByZoneCode" resultMap="campMap">
+		select 
+		    z.*,
+		    c.camp_id,
+		    c.zone_code camp_zone_code
+		from 
+		    camp_zone z left join camp c 
+		        on z.zone_code = c.zone_code
+		where
+			z.zone_code = #{zoneCode}
+		order by
+			z.zone_code, length(c.camp_id), c.camp_id	
+	</select>
+	
+	<resultMap type="campZone" id="campMap">
+		<id column="zone_code" property="zoneCode"/>
+		<result column="zone_name" property="zoneName"/>
+		<result column="zone_info" property="zoneInfo"/>
+		<result column="zone_maximum" property="zoneMaximum"/>
+		<result column="zone_price" property="zonePrice"/>
+		<collection property="campList" ofType="camp">
+			<id column="camp_id" property="campId"/>
+			<result column="camp_zone_code" property="zoneCode"/>
+		</collection>
+	</resultMap>
+</mapper>	

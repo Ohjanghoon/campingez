@@ -23,7 +23,7 @@
 					</select>
 					<div class="input-group" id="selectKeywordGroup">
 						<input type="text" id="selectKeyword" class="form-control" />
-					    <button class="btn searchBtn" type="button" id="searchBtn">검색</button>
+					    <button class="btn searchBtn" type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
 					</div>
 				</div>
 				<table id="user-list-tbl" class="table text-center">
@@ -48,7 +48,7 @@
 							<c:forEach items="${userList}" var="user" varStatus="vs">
 								<tr>
 									<td scope="row">${vs.count}</td>
-									<td scope="row">${user.userId}</td>
+									<td scope="row" id="userId">${user.userId}</td>
 									<td scope="row">${user.userName}</td>
 									<td scope="row">${user.email}</td>
 									<td scope="row">${user.phone}</td>
@@ -56,7 +56,18 @@
 									<td scope="row" id="yellowCardCount">${user.yellowCard}</td>
 									<td scope="row">${user.point}</td>
 									<td scope="row">
-										권한?
+										<select name="auth" id="auth" data-user-id="${user.userId}">
+										<c:forEach items="${user.authorityList}" var="auth" varStatus="vs">
+											<c:if test="${auth.auth == 'ROLE_ADMIN'}">
+												<option value="ROLE_ADMIN" selected>관리자</option>
+												<option value="ROLE_USER">일반</option>
+											</c:if>
+											<c:if test="${auth.auth == 'ROLE_USER' && vs.count < 2}">
+												<option value="ROLE_ADMIN">관리자</option>
+												<option value="ROLE_USER" selected>일반</option>
+											</c:if>
+										</c:forEach>
+										</select>
 									</td>
 									<td scope="row">${user.enrollType}</td>
 									<td scope="row">
@@ -84,9 +95,17 @@
 	</section>
 </main>
 <script>
-document.querySelectorAll("[name=updateBtn]").forEach((btn) => {
-	btn.addEventListener('click', (e) => {
+document.querySelectorAll("#auth").forEach((select) => {
+	select.addEventListener('change', (e) => {
+		const userId = e.target.dataset.userId;
+		const changeAuth = e.target.selectedOptions[0].innerHTML; 
+		const changeAuthVal = e.target.value;
 		
+		if(confirm(`[\${userId}]님의 권한을 '\${changeAuth}회원'으로 변경하시겠습니까?`)) {
+			console.log(123);
+		} else {
+			
+		}
 	});
 });
 

@@ -20,6 +20,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <main>
 	<div class="container">
+	<h2 class="text-center fw-bold pt-5">이벤트 등록</h2>
+	<hr />
 		<form name="noticeEnrollFrm" action="${pageContext.request.contextPath}/notice/enrollNotice.do"
 			method="post" enctype="multipart/form-data">
 			<sec:csrfInput/>

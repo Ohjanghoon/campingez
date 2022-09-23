@@ -179,12 +179,28 @@ public class UserInfoController {
 	 * !!!!!!!!!!!!!!!!자기 문의글 보기!!!!!!!!!!!!!!!!!!!!!
 	 */
 	@GetMapping("/inquireList.do")
-	public ModelAndView inquireList(Authentication authentication ,Model model, ModelAndView mav) {
+	public ModelAndView inquireList(@RequestParam(defaultValue = "1") int cPage, Authentication authentication ,Model model, ModelAndView mav,HttpServletRequest request) {
+		int limit = 3;
+		Map<String, Object> param = new HashMap<>();
+		param.put("cPage", cPage);
+		param.put("limit", limit);
+		
 		User principal = (User)authentication.getPrincipal();
-		List<Inquire> list = userInfoService.selectInquireList(principal);
+		List<Inquire> list = userInfoService.selectInquireList(param, principal);
 		log.debug("list = {}", list);
+		
+		//2. pagebar 처리
+		int totalInquire = userInfoService.getTotalInquire(principal);
+		log.debug("totalContent = {}", totalInquire);
+	
+		String url = request.getRequestURI();
+		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalInquire, url);
+		model.addAttribute("pagebar", pagebar);
+		
 		model.addAttribute("inquireList", list);
 		model.addAttribute("prePageName", "mypage");
+		model.addAttribute("cPage", cPage);
+		model.addAttribute("limit", limit);
 		mav.setViewName("inquire/inquireList");
 		return mav;
 	}
@@ -218,7 +234,7 @@ public class UserInfoController {
 	 * !!!!!!!!!!!!!!!!예약글 ajax!!!!!!!!!!!!!!!!!!!!! 
 	 */
 	@PostMapping("/myReservation.do")
-	public ResponseEntity<Map<String, Object>> reservationAjax(@RequestParam(defaultValue = "1") int cPage, Authentication authentication ,
+	public ModelAndView reservationAjax(@RequestParam(defaultValue = "1") int cPage, Authentication authentication ,
 											Model model, ModelAndView mav, HttpServletRequest request) {
 		Map<String, Object> param = new HashMap<>();
 		int limit = 6;
@@ -235,10 +251,10 @@ public class UserInfoController {
 		log.debug("pagebar = {}", pagebar);
 		
 
-		Map<String , Object> resultMap = new HashMap<>(); 
-		resultMap.put("pagebar", pagebar);
-		resultMap.put("reservationList", list);
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(resultMap);
+		model.addAttribute("pagebar", pagebar);
+		model.addAttribute("reservationList", list);
+		mav.setViewName("user/myReservationAjax");
+		return mav;
 	}
 	
 	
@@ -394,5 +410,18 @@ public class UserInfoController {
 		resultMap.put("pagebar", pagebar);
 		resultMap.put("result", result);
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(resultMap);
+	}
+	
+	/**
+	 * !!!!!!!!!!!!!!!!내 예약상세 보기 !!!!!!!!!!!!!!!!!!!!! 
+	 */
+	@GetMapping("/resDetail.do")
+	public ModelAndView resDetail(Authentication authentication, ModelAndView mav, Model model, @RequestParam String resNo) {
+		
+		Reservation res = userInfoService.selectReservationDetail(resNo);
+		model.addAttribute("res",res);
+		model.addAttribute("resNo",resNo);
+		mav.setViewName("user/reservationDetail");
+		return mav;		
 	}
 }

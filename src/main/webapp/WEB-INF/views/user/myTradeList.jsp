@@ -20,11 +20,15 @@
 <body>
 <div class="container" id="myTradeList">
 	<div>
-	<h3 id="titleLeft">중고물품 거래목록</h3>
+	<h3 id="titleLeft">
+		<img style="margin-right:20px;" src="${pageContext.request.contextPath}/resources/images/mypage/trade.png" width="50px">
+		중고물품 거래목록
+	</h3>
 	<button id="titleRight" type="button" onclick="location.href='${pageContext.request.contextPath}/trade/tradeList.do';" class="btn btn-outline-dark">게시판 바로가기</button>
 	</div>
-	<table class="table">
-		<thead>
+	<table class="table table-striped table-hover" id="tradeTable">
+		<thead style=" line-height: 46px;" class="table-light">
+			<tr>
 			<th scope="col">No</th>
 			<th scope="col">거래번호</th>
 			<th scope="col">유저 아이디</th>
@@ -37,10 +41,11 @@
 			<th scope="col">좋아요</th>
 			<th scope="col">작성일</th>
 			<th scope="col">조회수</th>
+			</tr>
 		</thead>
 		<tbody id="tradeTbody">
 			<c:forEach items="${result}" var="trade" varStatus="vs">
-				<tr onclick="location.href='${pageContext.request.contextPath}/trade/tradeView.do?no=${trade.tradeNo}'" data-no="${trade.tradeNo}">
+				<tr style=" line-height: 46px; cursor:pointer;" onclick="location.href='${pageContext.request.contextPath}/trade/tradeView.do?no=${trade.tradeNo}'" data-no="${trade.tradeNo}">
 					<td>${vs.count}</td>
 					<td>${trade.tradeNo}</td>
 					<td>${trade.userId}</td>
@@ -57,7 +62,7 @@
 					<td>${trade.likeCount}</td>
 					<td>
 						<fmt:parseDate value="${trade.tradeDate}" pattern="yyyy-MM-dd" var="resDate" />
-						<fmt:formatDate value="${resDate}" pattern="yyyy/MM/dd" />
+						<fmt:formatDate value="${resDate}" pattern="yyyy-MM-dd" />
 					</td>
 					<td>${trade.readCount}</td>
 				</tr>

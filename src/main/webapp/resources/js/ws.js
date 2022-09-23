@@ -15,14 +15,13 @@ stompClient.connect({}, (frame) => {
 		const {alarm, notReadCount} = JSON.parse(body);
 		const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
 		const [yy, MM, dd, HH, mm, ss] = alrDatetime;
-	
+		const targetUrl = alrUrl == null ? '#' : `http://${location.host}/campingez${alrUrl}`;
 	
 		let html;
 		const notReadCountSpan = document.querySelector("#notReadCount");
 		notReadCountSpan.innerHTML = notReadCount;
 		
 		const date = `${yy}/${MM}/${dd} ${HH}:${mm}:${ss}`;
-		console.log(date);
 		const alrDate = beforeTime(date);
 		
 		document.querySelectorAll("#alarm").forEach((li) => {
@@ -33,8 +32,8 @@ stompClient.connect({}, (frame) => {
 		
 		if(!alrReadDatetime) {
 			html = `
-			<a href="http://${location.host}/campingez${alrUrl}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
-				<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+			<a href="${targetUrl}" id="alarmLink" >
+				<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
 					<span id="badge-wrap">
 						<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 					</span>
@@ -49,8 +48,8 @@ stompClient.connect({}, (frame) => {
 			`;							
 		} else {
 			html = `
-			<a href="http://${location.host}/campingez${alrUrl}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
-				<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
+			<a href="${targetUrl}" id="alarmLink" >
+				<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
 					<span id="badge-wrap"></span>
 					<div id="alarm-content-wrap">
 						<div id="alr-msg">${alrMessage}</div>
@@ -63,13 +62,15 @@ stompClient.connect({}, (frame) => {
 			`;														
 		}
 		ul.insertAdjacentHTML('afterbegin', html);
-
+		$('.alarmList').tooltip();
+		
 		const newAlarm = document.querySelector("#new-alarm");
 		newAlarm.classList.remove('visually-hidden');
 		
-		document.querySelectorAll("#alarm").forEach((li) => {
+		document.querySelectorAll("#alarmLink").forEach((li) => {
 			li.addEventListener('click', (e) => {
-				const alrId = e.target.parentElement.dataset.alrId;
+				const alrId = e.target.offsetParent.dataset.alrId;
+				console.log(alrId);
 				if(alrId == undefined) return;
 					const token = $("meta[name='_csrf']").attr("content");
 					const header = $("meta[name='_csrf_header']").attr("content");
@@ -82,7 +83,8 @@ stompClient.connect({}, (frame) => {
 					data : {alrId:alrId},
 					method : "POST",
 					success(response) {
-						
+						$('.alarmList').tooltip('hide');
+						getAlarmList(userId);
 					},
 					error : console.log
 				});

@@ -17,6 +17,7 @@ import com.kh.campingez.alarm.model.dto.AlarmType;
 import com.kh.campingez.inquire.model.dao.InquireDao;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.trade.model.dto.Trade;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,7 +50,7 @@ public class AlarmServiceImpl implements AlarmService {
 						.alrType(AlarmType.INQUIRE)
 						.alrMessage(msg)
 						.alrUrl((String)param.get("location")).build();
-		int result = alarmDao.inquireAnswerAlarm(alarm);
+		int result = alarmDao.insertAlarmWithContentId(alarm);
 		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
 		int notReadCount = alarmDao.getNotReadCount(inq.getInqWriter());
 		
@@ -94,7 +95,7 @@ public class AlarmServiceImpl implements AlarmService {
 					.alrType(AlarmType.REPORT)
 					.alrMessage(msg)
 					.alrUrl((String)param.get("location")).build();
-		int result = alarmDao.warnToUserAlarm(alarm);
+		int result = alarmDao.insertAlarmWithoutContentId(alarm);
 		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
 		int notReadCount = alarmDao.getNotReadCount(targetUserId);
 		log.debug("alarm = {}", alarm);
@@ -104,6 +105,86 @@ public class AlarmServiceImpl implements AlarmService {
 		
 		simpMessagingTemplate.convertAndSend("/app/notice/" + targetUserId, map);
 		
+		return result;
+	}
+	
+	@Override
+	public int cancelWarningToUserAlarm(String userId) {
+		String msg = "[경고취소] 문의 주신 내용 반영하여 경고 취소처리 되셨습니다.🙂";
+		
+		AlarmEntity alarm = (AlarmEntity)Alarm.builder()
+						.targetUserId(userId)
+						.alrType(AlarmType.REPORT)
+						.alrMessage(msg).build();
+		int result = alarmDao.insertAlarmWithoutContentIdAndUrl(alarm);
+		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
+		int notReadCount = alarmDao.getNotReadCount(userId);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("alarm", alarm);
+		map.put("notReadCount", notReadCount);
+		
+		simpMessagingTemplate.convertAndSend("/app/notice/" + userId, map);
+		
+		return result;
+	}
+	
+	@Override
+	public int commReportAlarm(Map<String, Object> param) {
+		String type = (String)param.get("type");
+		String commNo = (String)param.get("commNo");
+		
+		Trade trade = null;
+		String title = null;
+		String commWriter = null;
+		// 중고거래인 경우
+		if(String.valueOf('T').equals(type)) {
+			trade = adminDao.findTradeByTradeNo(commNo);
+			title = trade.getTradeTitle();
+			commWriter = trade.getUserId();
+		}
+		// 커뮤니티인 경우
+		else {
+			
+		}
+		
+		// 게시글 작성자 알림
+		String writerMsg = "[신고] '" + title + "' 게시글이 3회 이상 신고되어 삭제처리 되었습니다.";
+		// 신고자 알림
+		String reportUserMsg = "[신고조치] 신고해주신 '" + title + "' 게시글에 대한 조치를 취했습니다.🙂";
+		
+		// 신고자 리스트 조회
+		List<String> reportUserList = adminDao.findReportUserListByCommNo(commNo);
+		
+		// 알림 테이블 추가
+		// 게시글 작성자 알림
+		AlarmEntity commWriterAlarm = (AlarmEntity)Alarm.builder()
+							.targetUserId(commWriter)
+							.alrContentId(commNo)
+							.alrType(AlarmType.REPORT)
+							.alrMessage(writerMsg).build();
+		int result = alarmDao.insertAlarmWithoutContentIdAndUrl(commWriterAlarm);
+		commWriterAlarm = alarmDao.selectAlarmByAlrId(commWriterAlarm.getAlrId());
+		int commWriternotReadCount = alarmDao.getNotReadCount(commWriter);
+		Map<String, Object> writerMap = new HashMap<>();
+		writerMap.put("alarm", commWriterAlarm);
+		writerMap.put("notReadCount", commWriternotReadCount);
+		simpMessagingTemplate.convertAndSend("/app/notice/" + commWriter, writerMap);
+		
+		// 신고자 알림
+		for(String user : reportUserList) {
+			AlarmEntity reportUserAlarm = (AlarmEntity)Alarm.builder()
+									.targetUserId(user)
+									.alrType(AlarmType.REPORT)
+									.alrMessage(reportUserMsg).build();
+			result = alarmDao.insertAlarmWithoutContentIdAndUrl(reportUserAlarm);
+			reportUserAlarm = alarmDao.selectAlarmByAlrId(reportUserAlarm.getAlrId());
+			int reportUserNotReadCount = alarmDao.getNotReadCount(user);
+			Map<String, Object> reportUserMap = new HashMap<>();
+			reportUserMap.put("alarm", reportUserAlarm);
+			reportUserMap.put("notReadCount", reportUserNotReadCount);
+			simpMessagingTemplate.convertAndSend("/app/notice/" + user, reportUserMap);
+		}
 		return result;
 	}
 }

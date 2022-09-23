@@ -19,6 +19,8 @@
 </style>
 <main>
 	<div class="container">
+	<h2 class="text-center fw-bold pt-5">공지사항 등록</h2>
+	<hr />
 		<form name="noticeEnrollFrm" action="${pageContext.request.contextPath}/notice/enrollNotice.do"
 			method="post" enctype="multipart/form-data">
 			<sec:csrfInput/>
@@ -58,7 +60,7 @@
 			  <input class="form-control" type="file" name="upFile" id="upFile2" multiple>
 			</div>
 			<div class="d-grid gap-2 col-6 mx-auto p-3">
-			  <button class="btn btn-outline-dark" type="button">등록</button>
+			  <button class="btn btn-outline-dark" type="submit">등록</button>
 			</div>
 		</form>
 	</div>

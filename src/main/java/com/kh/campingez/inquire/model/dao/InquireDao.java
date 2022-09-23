@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.session.RowBounds;
 
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.inquire.model.dto.InquireEntity;
@@ -14,7 +15,7 @@ import com.kh.campingez.inquire.model.dto.InquireEntity;
 @Mapper
 public interface InquireDao {
 
-	List<Inquire> selectInquireList();
+	List<Inquire> selectInquireList(RowBounds rowBounds);
 
 	Inquire selectInquire(String inqNo);
 

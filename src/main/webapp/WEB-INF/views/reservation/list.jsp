@@ -12,14 +12,10 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-<style>
-.btn-primary{
- 	background-color: #A8A4CE !important;
- 	border-color: #A8A4CE !important;
-}
-</style>
 <main>
 	<div class="container">
+		<h2 class="text-center fw-bold pt-5">예약페이지</h2>
+		<hr />
 		<div class="container px-4 py-5" id="hanging-icons">
 	    <h3 class="pb-2 border-bottom"><i class="fa-solid fa-campground"></i> 예약전 필독사항</h3>
 	    <div class="row g-4 py-5 row-cols-1 row-cols-lg-1">
@@ -237,7 +233,7 @@
 			</div>
 			<div class="container col-xxl-8 px-4 py-5" id="calendar"></div>
 		</div>
-		<img src="${pageContext.request.contextPath}/resources/images/reservation/campMap2.png" alt="" style="width:100%;height:63%;"/>
+		<img src="${pageContext.request.contextPath}/resources/images/reservation/campMap2.png" alt="" style="width:100%;height:68%;"/>
 		<!-- <div id="map" style="width:100%;height:350px;"></div> -->
 		
 		<div class="pt-5 pb-5" id="list"></div>
@@ -263,6 +259,15 @@
             defaultDate: new Date(),
 
             select: function(info) {
+            	var today = new Date();
+            	var year = today.getFullYear();
+            	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+            	var day = ('0' + today.getDate()).slice(-2);
+            	var dateString = year + '-' + month  + '-' + day;
+          		if(info.startStr < dateString){
+          			alert("입실일이 과거에요. ㅠ_ㅠ");
+          			return;
+          		}
              	const date = confirm("입실일 : " + info.startStr + '\n퇴실일 : ' + (info.endStr) + " 로 예약 하시겠습니까?");
              	if(date == true){
              		let checkin = info.startStr;
@@ -307,7 +312,9 @@
             				            <h6 class="my-0">선택한 구역</h6>
             				            <small class="text-muted" id="zone"></small>
             				          </div>
-            				          <span class="text-muted" id="zonePrice"></span>
+            				          <div>
+            				          <span class="text-muted">₩</span><span class="text-muted" id="zonePrice"></span>
+            				          </div>
             				        </li>
             				        <li class="list-group-item d-flex justify-content-between bg-light">
             				          <div class="text-danger">
@@ -512,8 +519,8 @@
             					let minuscoupon = (couponList.value.split('@'))[0];
     						
     							let price = Number(document.querySelector("#zonePrice").innerHTML);
-                				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
-                				document.querySelector("#Rprice").innerHTML = resPrice;	
+                				let resPrice = ((price-(price*(minuscoupon/100)))-minuspoint).toLocaleString('ko-KR');
+                				document.querySelector("#Rprice").innerHTML = `₩`+resPrice;
             				});
             				
             				couponList.addEventListener("blur", (e) => {
@@ -522,8 +529,8 @@
             					let minuscoupon = (couponList.value.split('@'))[0];
     						
     							let price = Number(document.querySelector("#zonePrice").innerHTML);
-                				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
-                				document.querySelector("#Rprice").innerHTML = resPrice;	
+                				let resPrice = ((price-(price*(minuscoupon/100)))-minuspoint).toLocaleString('ko-KR');
+                				document.querySelector("#Rprice").innerHTML = `₩`+resPrice;	
             				});
             				
             			
@@ -537,16 +544,16 @@
             						success(response){
             							console.log(response);
             							const zonePrice = response.zonePrice;
-            							document.querySelector("#zonePrice").innerHTML = `\${zonePrice}`;
+            							document.querySelector("#zonePrice").innerHTML = `\${zonePrice}`
             							document.querySelector("#zone").innerHTML = `\${campId}`;            						
 
             							let minuspoint = document.querySelector("#Rpoint").value;
             							let minuscoupon = (couponList.value.split('@'))[0];
             						
             							let price = Number(document.querySelector("#zonePrice").innerHTML);
-                        				let resPrice = (price-(price*(minuscoupon/100)))-minuspoint;
+                        				let resPrice = ((price-(price*(minuscoupon/100)))-minuspoint).toLocaleString('ko-KR');
             							
-                        				document.querySelector("#Rprice").innerHTML = resPrice;
+                        				document.querySelector("#Rprice").innerHTML = `₩`+resPrice;
                         				
                         				document.querySelector("#doPay").addEventListener('click', (e) => {
                         					const couponCode = couponList.value;
@@ -555,7 +562,6 @@
                         					const resPhone = document.querySelector("#Rphone").value;
                         					const resCarNo = document.querySelector("#Rcar").value;
                         					const resRequest = document.querySelector("#Rrequest").value;
-                        					const resPrice = document.querySelector("#Rprice").value;
                         					const resPerson = document.querySelector("#Rperson").value;
                         					const resPayment = document.querySelector("#Rpayment").value;
                         					
@@ -590,6 +596,7 @@
         calendar.render();
 	});
 	
+
 	/* var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
         center: new kakao.maps.LatLng(37.29377, 127.66580), // 지도의 중심좌표

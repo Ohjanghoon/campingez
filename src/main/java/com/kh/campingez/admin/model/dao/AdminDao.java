@@ -13,13 +13,17 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.kh.campingez.admin.model.dto.Stats;
 import com.kh.campingez.alarm.model.dto.Alarm;
+import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.report.dto.Report;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.user.model.dto.User;
 
 @Mapper
@@ -42,6 +46,9 @@ public interface AdminDao {
 	
 	@Update("update ez_user set yellowcard = yellowcard + 1 where user_id = #{userId}")
 	int updateWarningToUser(String userId);
+	
+	@Update("update ez_user set yellowcard = yellowcard - 1 where user_id = #{userId}")
+	int updateCancelWarningToUser(String userId);
 	
 	@Select("select * from ez_user where ${selectType} like '%' || #{selectKeyword} || '%' order by enroll_date desc")
 	List<User> selectUserByKeyword(RowBounds rowBounds, Map<String, Object> param);
@@ -124,8 +131,7 @@ public interface AdminDao {
 	@Delete("delete from camp_photo where zone_photo_no = #{photoNo}")
 	int deleteCampPhotoByPhotoNo(int photoNo);
 	
-	@Select("select * from camp order by camp_id")
-	List<Camp> findAllCampList();
+	List<CampZone> findAllCampList();
 	
 	@Insert("insert into stats_daily_visit values(#{userId}, default)")
 	int insertDailyVisit(String userId);
@@ -165,5 +171,70 @@ public interface AdminDao {
 	
 	@Select("select nvl(sum(res_price), 0) total_price from reservation where res_state = '예약완료' and extract(year from res_date) = #{year}")
 	int getYearTotalSalesPrice(Map<String, Object> param);
+	
+	@Select("select * from camp where camp_id = #{campId}")
+	Camp selectCampByCampId(String campId);
+	
+	@Insert("insert into camp values (#{campId}, #{zoneCode})")
+	int insertCamp(Map<String, Object> param);
+	
+	@Delete("delete from camp where camp_id = #{campId}")
+	int deleteCampByCampId(String campId);
 
+	List<CampZone> findCampByZoneCode(String zoneCode);
+	
+	List<Assignment> findAllAssignmentList(RowBounds rowBounds);
+	
+	@Select("select count(*) from  assignment a left join reservation r on a.res_no = r.res_no where res_checkin > current_date")
+	int getAssignmentTotalContent();
+
+	List<Assignment> findAssignmentListBySelectType(Map<String, Object> param, RowBounds rowBound);
+	
+	@Select("select count(*) from  assignment a left join reservation r on a.res_no = r.res_no where res_checkin > current_date and assign_state = #{selectType}")
+	int getAssignmentBySelectTypeTotalContent(Map<String, Object> param);
+
+	List<Assignment> findAllExpireAssignmentList(RowBounds rowBounds);
+	
+	@Select("select count(*) from  assignment a left join reservation r on a.res_no = r.res_no where res_checkin <= current_date")
+	int getExpireAssignmentTotalContent();
+	
+	List<Trade> findAllTradeReportList(RowBounds rowBounds);
+	
+	@Select("select count(*) from ( select r.*, count(*) over(partition by r.comm_no) as report_count from report r where substr(r.comm_no, 1, 1) = 'T') a where report_count >= 2")
+	int getTradeReportTotalContent();
+	
+	@Update("update report set report_action = 'Y' where comm_no = #{commNo}")
+	int updateReportAction(String commNo);
+
+	int updateIsDelete(String type);
+
+	int updateIsDelete(Map<String, Object> param);
+	
+	Object selectCommByNo(Map<String, Object> param);
+	
+	@Select("select * from trade where trade_no = #{tradeNo}")
+	Trade findTradeByTradeNo(String tradeNo);
+	
+	@Select("select user_id from report where comm_no = #{commNo}")
+	List<String> findReportUserListByCommNo(String commNo);
+
+	List<Report> findAllUserReportTotal(RowBounds rowBounds);
+	
+	@Select("select count(*) from ( select count(*) from report r left join trade t on r.comm_no = t.trade_no where substr(r.comm_no, 1, 1) = 'T' group by t.user_id) a")
+	int getUserReportTotalContent();
+	
+	@Select("select * from coupon where coupon_endday >= current_date")
+	List<Coupon> findAllIngCouponList(Map<String, Object> param);
+	
+	@Select("select * from coupon where coupon_endday < current_date")
+	List<Coupon> findAllExpireCouponList(Map<String, Object> param);
+
+	@Select("select count(*) from coupon where coupon_endday >= current_date")
+	int getIngCouponTotalContent();
+	
+	@Select("select count(*) from coupon where coupon_endday < current_date")
+	int getExpireCouponTotalContent();
+	
+	
+	
 }

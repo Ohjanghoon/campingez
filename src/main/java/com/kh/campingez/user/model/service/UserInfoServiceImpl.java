@@ -32,8 +32,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return userInfoDao.profileDelete(user);
 	}
 	@Override
-	public List<Inquire> selectInquireList(User user) {
-		return userInfoDao.selectInquireList(user);
+	public List<Inquire> selectInquireList(Map<String, Object> param,User user) {
+		return userInfoDao.selectInquireList(getRowBounds(param),user);
 	}
 	@Override
 	public List<Reservation> selectReservationList(Map<String, Object> param,User user) {
@@ -92,5 +92,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public int getTotalLike(User user) {
 		return userInfoDao.getTotalLike(user);
+	}
+	
+	@Override
+	public Reservation selectReservationDetail(String resNo) {
+		return userInfoDao.selectReservationDetail(resNo);
+	}
+	@Override
+	public int getTotalInquire(User user) {
+		return  userInfoDao.getTotalInquire(user);
 	}
 }

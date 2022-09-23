@@ -16,13 +16,17 @@ import com.kh.campingez.alarm.model.dao.AlarmDao;
 import com.kh.campingez.alarm.model.dto.Alarm;
 import com.kh.campingez.alarm.model.dto.AlarmType;
 import com.kh.campingez.alarm.model.service.AlarmService;
+import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.report.dto.Report;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.user.model.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -71,6 +75,11 @@ public class AdminServiceImpl implements AdminService {
 	public int updateWarningToUser(Map<String, Object> param) {
 		String userId = (String)param.get("userId");		
 		return adminDao.updateWarningToUser(userId);
+	}
+	
+	@Override
+	public int updateCancelWarningToUser(String userId) {
+		return adminDao.updateCancelWarningToUser(userId);
 	}
 	
 	@Override
@@ -213,7 +222,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public List<Camp> findAllCampList() {
+	public List<CampZone> findAllCampList() {
 		return adminDao.findAllCampList();
 	}
 	
@@ -260,6 +269,110 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int getYearTotalSalesPrice(Map<String, Object> param) {
 		return adminDao.getYearTotalSalesPrice(param);
+	}
+
+	@Override
+	public Camp selectCampByCampId(String campId) {
+		return adminDao.selectCampByCampId(campId);
+	}
+	
+	@Override
+	public int insertCamp(Map<String, Object> param) {
+		return adminDao.insertCamp(param);
+	}
+	
+	@Override
+	public int deleteCampByCampId(String campId) {
+		return adminDao.deleteCampByCampId(campId);
+	}
+	
+	@Override
+	public List<CampZone> findCampByZoneCode(String zoneCode) {
+		return adminDao.findCampByZoneCode(zoneCode);
+	}
+	
+	@Override
+	public List<Assignment> findAllAssignmentList(Map<String, Object> param) {
+		return adminDao.findAllAssignmentList(getRowBounds(param));
+	}
+	
+	@Override
+	public int getAssignmentTotalContent() {
+		return adminDao.getAssignmentTotalContent();
+	}
+	
+	@Override
+	public List<Assignment> findAssignmentListBySelectType(Map<String, Object> param) {
+		RowBounds rowBound = getRowBounds(param);
+		return adminDao.findAssignmentListBySelectType(param, rowBound);
+	}
+	
+	@Override
+	public int getAssignmentBySelectTypeTotalContent(Map<String, Object> param) {
+		return adminDao.getAssignmentBySelectTypeTotalContent(param);
+	}
+	
+	@Override
+	public List<Assignment> findAllExpireAssignmentList(Map<String, Object> param) {
+		return adminDao.findAllExpireAssignmentList(getRowBounds(param));
+	}
+	
+	@Override
+	public int getExpireAssignmentTotalContent() {
+		return adminDao.getExpireAssignmentTotalContent();
+	}
+	
+	@Override
+	public List<Trade> findAllTradeReportList(Map<String, Object> param) {
+		return adminDao.findAllTradeReportList(getRowBounds(param));
+	}
+	
+	@Override
+	public int getTradeReportTotalContent() {
+		return adminDao.getTradeReportTotalContent();
+	}
+	
+	@Override
+	public int updateReportAction(String commNo) {
+		return adminDao.updateReportAction(commNo);
+	}
+	
+	@Override
+	public int updateReportActionAndIsDelete(Map<String, Object> param) {
+		int result = adminDao.updateIsDelete(param);
+		result = adminDao.updateReportAction((String)param.get("commNo"));
+		
+		return result;
+	}
+	
+	@Override
+	public List<Report> findAllUserReportTotal(Map<String, Object> param) {
+		return adminDao.findAllUserReportTotal(getRowBounds(param));
+	}
+	
+	@Override
+	public int getUserReportTotalContent() {
+		return adminDao.getUserReportTotalContent();
+	}
+	
+	@Override
+	public List<Coupon> findAllIngCouponList(Map<String, Object> param) {
+		return adminDao.findAllIngCouponList(param);
+	}
+	
+	@Override
+	public List<Coupon> findAllExpireCouponList(Map<String, Object> param) {
+		return adminDao.findAllExpireCouponList(param);
+	}
+	
+	@Override
+	public int getIngCouponTotalContent() {
+		return adminDao.getIngCouponTotalContent();
+	}
+	
+	@Override
+	public int getExpireCouponTotalContent() {
+		return adminDao.getExpireCouponTotalContent();
 	}
 	
 	private RowBounds getRowBounds(Map<String, Object> param) {

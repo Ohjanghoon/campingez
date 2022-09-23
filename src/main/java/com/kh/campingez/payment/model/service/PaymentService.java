@@ -4,4 +4,6 @@ public interface PaymentService {
 
 	int updateReservation(String resNo);
 
+	int updateAssignReservation(String resNo, String assignNo);
+
 }

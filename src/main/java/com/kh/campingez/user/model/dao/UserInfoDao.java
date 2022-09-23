@@ -30,7 +30,7 @@ public interface UserInfoDao {
 	int profileDelete(User user);
 	
 	
-	List<Inquire> selectInquireList(User user);
+	List<Inquire> selectInquireList(RowBounds rowBounds, User user);
 
 	
 	List<Reservation> selectReservationList(RowBounds rowBounds, User user);
@@ -67,5 +67,11 @@ public interface UserInfoDao {
 
 	@Select("select count(*) from trade t inner join trade_like tr on t.trade_no = tr.trade_no where tr.user_id = #{userId}")
 	int getTotalLike(User user);
+
+	@Select("select * from reservation where res_no = #{resNo}")
+	Reservation selectReservationDetail(String resNo);
+
+	@Select("select count(*) from inquire where inq_writer = #{userId}")
+	int getTotalInquire(User user);
 
 }
