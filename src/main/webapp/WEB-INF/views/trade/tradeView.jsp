@@ -129,6 +129,7 @@
 										(${trade.tradeQuality}급 : ${trade.tradeQuality eq 'S' ? '상태 좋음' : trade.tradeQuality eq 'A' ? '상태 양호' : '아쉬운 상태'})
 									</div>
 									<h1 class="display-5 fw-bolder">${trade.tradeTitle}</h1>
+									<p>판매자 ${trade.userId}</p>
 									<div class="fs-5 mb-5">
 										<span><fmt:formatNumber type="number"
 												value="${trade.tradePrice}" />원</span>
@@ -160,9 +161,10 @@
 								</div>
 							</div>
 						</div>
-						<sec:authorize access="isAuthenticated()"> 
+						<sec:authorize access="isAuthenticated()">
+							<sec:authentication property="principal.userName" var="loginUser"/> 
 	                        <div class="d-flex" style="margin-top:20px; height:38px;">
-                            <c:if test="${not empty user.userId}">
+                            <c:if test="${loginUser eq trade.userId}">
                             <c:if test="${trade.tradeSuccess eq '거래 대기중'}">
                             <button class="btn btn-outline-success flex-shrink-0" type="button" onclick="updateSuccess();" style="margin-right:10px;">
                                 <i class="bi-cart-fill me-1"></i>

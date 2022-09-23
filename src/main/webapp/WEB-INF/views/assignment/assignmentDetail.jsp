@@ -39,6 +39,16 @@
 	text-indent : 1.1rem;
 	vertical-align : middle;
 }
+#assignmentComplete {
+	position: relative;
+}
+#assignmentComplete> img {
+	opacity: 0.5;
+	width: 60%;
+	position : absolute;
+	right : -130px;
+	bottom : -80px;	
+}
 #btn_top{
     width: 30px; 
     height: 30px;
@@ -63,10 +73,11 @@
 </sec:authorize>		
 <div class="container w-75 top">
 	<!-- 양도 글 -->
+	
 	<div class="mx-auto mt-5">
 		<strong class="fs-3"><i class="fa-solid fa-campground"></i> 양도글</strong>
 		<hr />
-		<table class="my-4 mx-auto table" id="assignBoard">
+		<table class="my-4 mx-auto table content" id="assignBoard">
 			<tr>
 				<th><span>제목</span></th>
 				<td>${assign.assignTitle}</td>
@@ -81,10 +92,13 @@
 			</tr>
 		</table>
 	</div>
+	<div id="assignmentComplete">
+		
+	</div>
 	
 	<!-- 양도 취소 버튼 영역 -->
 	<div class="text-end">
-		<c:if test="${loginUser eq assign.userId }">
+		<c:if test="${loginUser eq assign.userId and assign.assignState eq '양도대기'}">
 			<button type="button" class="btn btn-outline-dark" id="btn-assign-delete"
 				onclick="deleteClick()">양도취소</button>
 		</c:if>
@@ -282,7 +296,7 @@ const deleteClick = () => {
 	const assignState = '${assign.assignState}';
 	
 	if("양도대기" !== assignState){
-		alert("양도중인 예약은 취소 불가능합니다.");
+		alert("양도대기인 상태만 취소 가능합니다.");
 		return;
 	}
 	const headers = {};
@@ -316,6 +330,17 @@ const deleteClick = () => {
 //화면 로드시 스크롤 이동
 $(document).ready(function () {
 	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
+	
+	// 양도완료여부 확인
+	const success = '${assign.assignState}';
+	if(success == '양도완료') {
+		const comp = document.querySelector("#assignmentComplete").innerHTML = `
+			<img src="${pageContext.request.contextPath}/resources/images/assignmentComplete.png" alt="" />
+			<div class="text-end">
+				<span>양수자 ${assign.assignTransfer}</span>
+			</div>
+		`;
+	}
 });
 
 //스크롤 제어
