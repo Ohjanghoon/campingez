@@ -492,7 +492,7 @@ const beforeTime = (alarmDate) => {
 					<div class="carousel-caption text-start">
 						<h2>캠핑이지 오픈이벤트</h2>
 						<p>회원가입을 하신 모든 분들께 쿠폰을 드립니다.<br>저희 캠핑이지 회원이 되어주셔서 감사합니다.</p>
-						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/notice/detail.do?noticeNo=N149">쿠폰 받으러 가기</a></p>
+						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/notice/detail.do?noticeNo=N170">쿠폰 받으러 가기</a></p>
 					</div>
 				</div>
 			</div>
@@ -590,9 +590,6 @@ const beforeTime = (alarmDate) => {
       </div>
       <div class="anw">
         <span>This is third answer.</span>
-      </div>
-      <div class="que">
-        <span>This is first question.</span>
       </div>
       <div class="que">
         <span>This is first question.</span>
