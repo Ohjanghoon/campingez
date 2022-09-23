@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.campingez.community.model.dao.CommunityDao">
+<select id="selectCommList" resultMap="commListMap">
+select
+      *
+from
+      community
+where
+      comm_isdelete = 'N'
+
+
+</select>
+<resultMap type="community" id="commListMap">
+   <id column="comm_no" property="commNo"/>
+   <result column="user_id" property="userId"/>
+   <result column="category_id" property="categoryId" />
+   <result column="comm_title" property="commTitle" />
+   <result column="comm_content" property="commContent" />
+   <result column="comm_date" property="commDate" />
+   <result column="comm_read_count" property="readCount" />
+   <result column="comm_report_count" property="reportCount" />
+   <result column="comm_isdelete" property="isDelete" />
+   <result column="comm_like_count" property="likeCount" />
+   <collection property="photos" ofType="CommunityPhoto">
+         <id column="comm_photo_no" property="commPhotoNo" />
+         <result column="comm_no" property="cmNo"/>
+         <result column="original_filename" property="originalFilename"/>
+         <result column="renamed_filename" property="renamedFilename"/>
+   </collection>
+</resultMap>
+
+  
+  <select id="selectCommByNo" resultMap="commViewMap">
+select
+      *
+from
+      community
+where
+      comm_no = #{commNo}
+
+
+</select>
+<resultMap type="community" id="commViewMap">
+   <id column="comm_no" property="commNo"/>
+   <result column="user_id" property="userId"/>
+   <result column="category_id" property="categoryId" />
+   <result column="comm_title" property="commTitle" />
+   <result column="comm_content" property="commContent" />
+   <result column="comm_date" property="commDate" />
+   <result column="comm_read_count" property="readCount" />
+   <result column="comm_report_count" property="reportCount" />
+   <result column="comm_isDelete" property="isDelete" />
+   <result column="comm_like_count" property="likeCount" />
+   <collection property="photos" ofType="CommunityPhoto">
+         <id column="comm_photo_no" property="commPhotoNo" />
+         <result column="comm_no" property="cmNo"/>
+         <result column="original_filename" property="originalFilename"/>
+         <result column="renamed_filename" property="renamedFilename"/>
+   </collection>
+</resultMap>
+
+  <select  id="selectCommentList" resultMap="commentList">
+select  
+	m.comment_no, 
+	c.comm_no as comment_comm_no, 
+	m.user_id, 
+	m.comment_content, 
+	m.comment_date, 
+	m.comment_level, 
+	m.comment_ref 
+from 
+	comm_comment m join community c 
+	on c.comm_no = m.comm_no 
+where 
+	c.comm_no = #{commNo} start with comment_level = 1 
+	connect by prior m.comment_no = comment_ref 
+order siblings by 
+	c.comm_no asc
+
+</select>
+<resultMap type="communityComment" id="commentList">
+   <id column="comment_no" property="commentNo"/>
+   <result column="comm_no" property="commentCommNo"/>
+   <result column="user_id" property="userId"/>
+   <result column="comment_content" property="commentContent" />
+   <result column="comment_date" property="commentDate" />
+   <result column="comment_level" property="commentLevel" />
+   <result column="comment_ref" property="commentRef" />
+
+</resultMap>
+  
+  
+</mapper>
