@@ -155,7 +155,7 @@ window.onload = () => {
       <div class="container px-4 py-5" id="custom-cards">
         <h2 class="pb-2 border-bottom">캠핑이지 중고거래 <a href="${pageContext.request.contextPath}/trade/tradeList.do"><span class="text-muted" style="font-size: small;">이동하기 &raquo;</sapn></a></h2>
     
-        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5" id="tradeCard">
+        <div class="row row-cols-1 row-cols-lg-3 align-items-center g-4 py-5" id="tradeCard">
         </div>
         
       </div>
@@ -179,18 +179,18 @@ window.onload = () => {
 						const { renamedFilename } = list.photos[0];
 						tradeCards.innerHTML += `
 							<div class="col">
-							<div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('${pageContext.request.contextPath}/resources/upload/trade/\${renamedFilename}'); ">
-				            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-				                <h2 class="pt-5 mt-5 mb-5 display-9 lh-1 fw-bold">\${list.tradeTitle}</h2>
+							<div class="card card-cover h-10 text-white bg-dark rounded-5 shadow-lg" style="background-image: url('${pageContext.request.contextPath}/resources/upload/trade/\${renamedFilename}'); ">
+				            <div class="d-flex flex-column h-10 p-5 pb-3">
+				                <h2 class="pt-5 mt-5 mb-5 display-9 lh-1  text-wihte text-shadow-1">\${list.tradeTitle}</h2>
 				                <ul class="d-flex list-unstyled mt-auto">
 				                  <li class="me-auto">
 				                    <img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo.png" width="32" height="32" class="rounded-circle border border-white">
 				                  </li>
-				                  <li class="d-flex align-items-center me-3">
+				                  <li class="d-flex align-items-center me-3 text-black text-shadow-1">
 				                    <i class="fa-solid fa-heart"></i>&nbsp;
 				                    <small>\${list.likeCount}</small>
 				                  </li>
-				                  <li class="d-flex align-items-center">
+				                  <li class="d-flex align-items-center text-black text-shadow-1">
 				                   	₩&nbsp;
 				                    <small>\${list.tradePrice}</small>
 				                  </li>
