@@ -39,7 +39,24 @@
 	text-indent : 1.1rem;
 	vertical-align : middle;
 }
-
+#btn_top{
+    width: 30px; 
+    height: 30px;
+    border: 1px solid #A8A4CE; 
+    color: #A8A4CE;
+    cursor: pointer;
+    position: fixed; bottom: 30%; right: 5%;
+    z-index : 2;
+}
+#btn_bottom {
+	width: 30px; 
+    height: 30px;
+    border: 1px solid #A8A4CE; 
+    color: #A8A4CE;
+    cursor: pointer;
+    position: fixed; bottom: 26%; right: 5%;
+    z-index : 2;
+}
 </style>
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal.username" var="loginUser"/>
@@ -113,33 +130,51 @@
 		</table>
 	</div>
 	
-	<div class="img-wrapper w-75 my-5 mx-auto row text-center">
-		<p><strong class="fs-5">캠핑장 사진</strong></p>
+	<div class="img-wrapper w-75 my-5 mx-auto row">
+		<p><strong class="fs-4"><i class="fa-solid fa-image"></i> 캠핑장 사진</strong></p>
+		<hr />
 	  	<c:forEach items="${photos}" var="photo" varStatus="vs">
 			<div class="my-2">
 				<img class="w-100" src="${pageContext.request.contextPath}/resources/upload/campPhoto/${photo.renamedFilename}" alt="" />
 			</div>
 	  	</c:forEach>
 	  	
-	  	<p class="mt-5"><strong class="fs-5">캠핑장 정보</strong></p>
-	  	<div class="zoneInfo row d-flex justify-content-center">
+	  	<p class="mt-5"><strong class="fs-4"><i class="fa-solid fa-campground"></i> 캠핑장 정보</strong></p>
+	  	<hr />
+	  	<div class="zoneInfo row ">
 	  		
 	  	</div>
+	  	<p class="mt-5"><strong class="fs-4"><i class="fa-solid fa-house-circle-exclamation"></i> 예약전 필독사항</strong></p>
+	  	<hr />
+        <div>
+          <h5><i class="fa-regular fa-square-check"></i> 캠핑장 운영안내</h5>
+          <strong>※ 캠핑장 내 캠핑카 및 카라반 등 차량진입 불가.</strong><small> (인근 주차장 이용)</small><br />
+          <strong>- 이용인원 : 1사이트 당 6명까지 이용가능</strong><br />
+          <strong>※ 미승인자 무단이용시 즉시 퇴실조치 되오니, 방역수칙 및 사용인원 초과에 유의해주시기 바랍니다.</strong><br />
+          <strong>※ 화재 예방과 관련하여 캠핑장 이용 시, 불에 타고 남은 재는 확실히 소화하여 재수거함에 버리시기를 바랍니다.</strong>
+        </div>
+		<div class="col d-flex align-items-start">
+		  <div>
+		    <h5><i class="fa-regular fa-square-check"></i> 예약 시 유의사항</h5>
+		    <strong>※ 예약자와 입실자가 동일해아만합니다.</strong><br />
+		    <strong>※ 입실시에 관리자가 신분증 제시를 요청 할 수 있으며, 응하지 않을 시 입실이 제한될 수 있습니다.</strong>
+		  </div>
+		</div>
 	</div>
 	<div class=" d-flex justify-content-center">
-		<button type="button" class="w-100 my-2 py-2 btn btn-outline-dark" id="btn-readmore">더보기▼</button>
+		<button type="button" class="w-100 my-2 py-2 btn btn-outline-primary" id="btn-readmore">더보기 ▼</button>
 	</div>
 	
 	<div class="mx-auto my-4">
 		<strong class="fs-3"><i class="fa-solid fa-house-circle-exclamation"></i> 양도거래 시 유의사항</strong>
-		<div class="card p-3">
+		<div class="card p-3 mt-3">
 			<ul>
 				<li class="my-2">
-					<strong># 반드시 캠핑장의 공지사항/유의사항 등을 숙지하시길 바랍니다. 캠핑장에 입실하여 발생되는 사고 및 분쟁에 대하여 캠핑이지는 책임사유가 없음을 알려 드립니다.
+					<strong>※ 반드시 캠핑장의 공지사항/유의사항 등을 숙지하시길 바랍니다. 캠핑장에 입실하여 발생되는 사고 및 분쟁에 대하여 캠핑이지는 책임사유가 없음을 알려 드립니다.
 	(예 : 반려견 입장 불가/최대인원 제한/입,퇴실시간 준수 등)</strong>
 				</li>
 				<li class="my-2">
-					<strong># 양도자의 사기거래로 인하여 캠핑장에 입실을 못 하시는 경우, 해당여부를 파악하여 예약양도결제금액에 한하여 전액취소처리가 가능합니다.</strong>
+					<strong>※ 양도자의 사기거래로 인하여 캠핑장에 입실을 못 하시는 경우, 해당여부를 파악하여 예약양도결제금액에 한하여 전액취소처리가 가능합니다.</strong>
 				</li>
 			</ul>
 		</div>
@@ -160,8 +195,11 @@
 						onclick="applyClick()">해당 예약 양도받기</button>
 				</c:if>
 			</c:if>
-		
 	</form:form>
+	</div>
+	<div>
+		<button type="button" id="btn_top" onclick="scrollToTop();">▲</button>
+		<button type="button" id="btn_bottom" onclick="scrollToBottom();">▼</button>
 	</div>
 </div>
 	
@@ -191,11 +229,11 @@ $(document).ready(function(){
 		});
 		
 		const text = e.target;
-	    if(text.textContent === "더보기▼"){
-	      text.innerHTML = "접기▲";
+	    if(text.textContent === "더보기 ▼"){
+	      text.innerHTML = "접기 ▲";
 	      zoneInfos.innerHTML = "";
 	    } else {
-	      text.innerHTML = "더보기▼";
+	      text.innerHTML = "더보기 ▼";
 	    }
 		$(".img-wrapper").toggle();
 	});
@@ -279,5 +317,13 @@ const deleteClick = () => {
 $(document).ready(function () {
 	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
 });
+
+//스크롤 제어
+const scrollToTop = () => {
+	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
+};
+const scrollToBottom = () => {
+	window.scrollTo(0, document.body.scrollHeight);
+}
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.campingez.alarm.model.service.AlarmService;
 import com.kh.campingez.payment.model.service.PaymentService;
-import com.kh.campingez.reservation.model.dto.Reservation;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +20,9 @@ public class PaymentController {
 
 	@Autowired
 	PaymentService paymentService;
+	
+	@Autowired
+	AlarmService alarmService;
 	
 	@GetMapping("/payment.do")
 	public void payment() {}
@@ -35,7 +38,10 @@ public class PaymentController {
 		int result = 0;
 		switch(resState) {
 			case "결제대기" : result = paymentService.updateReservation(resNo); break; 
-			case "양도결제대기" : result = paymentService.updateAssignReservation(resNo, assignNo); break;
+			case "양도결제대기" : 
+				result = paymentService.updateAssignReservation(resNo, assignNo); 
+				alarmService.assignSuccessAlarm(assignNo);
+				break;
 		}
 		
 		
