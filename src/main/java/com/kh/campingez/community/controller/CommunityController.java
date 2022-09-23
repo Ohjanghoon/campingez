@@ -18,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,11 +27,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.campingez.common.CampingEzUtils;
+import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.community.model.dto.Community;
 import com.kh.campingez.community.model.dto.CommunityComment;
 import com.kh.campingez.community.model.dto.CommunityLike;
 import com.kh.campingez.community.model.dto.CommunityPhoto;
 import com.kh.campingez.community.model.service.CommunityService;
+import com.kh.campingez.trade.model.service.TradeService;
 import com.kh.campingez.user.model.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,9 @@ public class CommunityController {
    
    @Autowired
    ServletContext application;
+   
+   @Autowired
+   TradeService tradeService;
    
    @GetMapping("/communityList.do")
    public void communityList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
@@ -84,19 +88,29 @@ public class CommunityController {
        Community community = communityService.selectCommByNo(no);
        model.addAttribute("community", community);
        log.debug("community = {}", community);
+       // 해당 회원이 신고했는지 안했는 지 여부 검사
+       String userId = principal != "anonymousUser" ? ((User)principal).getUserId() : null;
+       Map<String, Object> param = new HashMap<>();
+       param.put("no", no);
+       param.put("userId", userId);
+       String reportUserId = communityService.getUserReportComm(param);
+       model.addAttribute("reportUserId", reportUserId);
        
        // 댓글보기
        List<CommunityComment> commentlist = communityService.selectCommentList(no);
        log.debug("commentlist = {}", commentlist);
 	   model.addAttribute("commentlist", commentlist);
-      
+	   
+	   // 카테고리 리스트 가져오기
+		List<Category> categoryList = tradeService.getReportCategory();
+		model.addAttribute("categoryList", categoryList);
              
        CommunityLike cl = new CommunityLike();
 
        // 로그인 한 아이디 확인(좋아요 구분용)
        if(principal != "anonymousUser") {
        User user = (User) principal;
-       String userId = user.getUserId();   
+       userId = user.getUserId();   
        
        model.addAttribute("user", user);
        
