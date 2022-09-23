@@ -4,6 +4,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CampingEzUtils {
 	public static String getPagebar(int cPage, int limit, int totalContent, String url) {
 		StringBuffer pagebar = new StringBuffer();
@@ -45,6 +48,7 @@ public class CampingEzUtils {
 	public static String getPagebar2(int cPage, int limit, int totalContent, String url) {
 		StringBuffer pagebar = new StringBuffer();
 		url += "?cPage="; // spring/board/boardList.do?cPage=
+		totalContent = totalContent == 0 ? 1 : totalContent;
 		
 		final int pagebarSize = 5;
 		final int totalPage = (int) Math.ceil((double) totalContent / limit);

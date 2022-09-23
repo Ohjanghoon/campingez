@@ -71,6 +71,40 @@
 							</c:if>
 						</tbody>
 					</table>
+					<nav class="pagebar">
+						${tradePagebar}
+					</nav>
+					
+					<h2>중고거래 신고 내역 - 회원 별 누적 신고</h2>
+					<table class="table text-center">
+						<thead>
+							<tr>
+								<th>회원아이디</th>
+								<th>누적신고수</th>
+								<th>블랙리스트여부</th>
+								<th>비고</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:if test="${not empty userReportTotal}">
+								<c:forEach items="${userReportTotal}" var="report">
+									<tr>
+										<td>${report.commUserId}</td>
+										<td>${report.totalReport}회</td>
+										<td>${report.isBlacklist == null ? '' : report.isBlacklist}</td>
+										<td>
+											<button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/blackList.do'">경고하러가기</button>
+										</td>
+									</tr>
+								</c:forEach>
+							</c:if>
+							<c:if test="${empty userReportTotal}">
+								<tr>
+									<td colspan="3">조회된 신고 내역이 없습니다.</td>
+								</tr>
+							</c:if>
+						</tbody>
+					</table>
 					<form:form name="updateFrm" method="POST">
 						<input type="hidden" name="commNo" />
 						<input type="hidden" name="type" />

@@ -3,3 +3,6 @@
 
 
 #upload-img{width:300px; height:300px;}
+.translate-middle {
+	transform: translate(-280%,-100%)!important;
+}

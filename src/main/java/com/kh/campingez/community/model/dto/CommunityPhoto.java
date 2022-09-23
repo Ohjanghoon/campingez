@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class CommunityPhoto {
 			
 		private int commPhotoNo;
-		private String commNo;
+		private String cmNo;
 		@NonNull
 		private String originalFilename;
 		@NonNull

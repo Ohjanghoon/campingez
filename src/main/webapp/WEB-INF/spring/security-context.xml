@@ -26,6 +26,7 @@
 		<intercept-url pattern="/inquire/inquireForm.do" access="isAuthenticated()"/>
 		<intercept-url pattern="/trade/tradeList.do" access="permitAll"/>
 		<intercept-url pattern="/chat/**" access="permitAll"/>
+		<intercept-url pattern="/echo/**" access="permitAll"/>
 		<intercept-url pattern="/notice/enrollEvent.do" access="hasRole('ROLE_ADMIN')"/>
 		<intercept-url pattern="/notice/enrollNotice.do" access="hasRole('ROLE_ADMIN')"/>
 		<intercept-url pattern="/notice/update.do" access="hasRole('ROLE_ADMIN')"/>

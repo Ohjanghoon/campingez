@@ -19,27 +19,47 @@
 	<ul class="list-group list-group-flush" id="data"></ul>
 </div>
 
-<script>
-document.querySelector("#sendBtn").addEventListener('click', () => {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+//const ws = new SockJS(`http://${location.host}${pageContext.request.contextPath}/echo`);
+
+console.log("Zz")
+const ws = new SockJS(`http://localhost:9090${pageContext.request.contextPath}/echo`);
+const stompClient = Stomp.over(ws);
+
+stompClient.connect({}, (frame) => {
+	console.log("connect : ", frame);
+});
+/* 
+ws.addEventListener('open', (e) => console.log("open : ", e));
+ws.addEventListener('error', (e) => console.log("error : ", e));
+ws.addEventListener('close', (e) => console.log("close : ", e));
+ws.addEventListener('message', (e) => {
+	console.log("message : ", e);
+	const container = dpcument.querySelector("#data");
+	data.insertAdjacentHTML('beforeend', `<li class="list-group-iten">\${e.data}</li>)
+});
+ */
+ document.querySelector("#sendBtn").addEventListener('click', () => {
 	const msg = document.querySelector("#msg").value;
 	if(!msg) return
 	
 	const payload = {
-			chatroomId : '${chatroomId}',
-			memberId : '<sec:authentication property="principal.username"/>',
-			tradeNo : localStroage.getItem("tradeNo"),
+			chatroomId : '${chatroomId}', /* (from) */
+			memberId : '<sec:authentication property="principal.username"/>', /* (to) */
 			msg,
 			time : Date.now()
 	};
 	
 	stompClient.send(`/app/chat/${chatroomId}`, {}, JSON.stringify(payload));
-	document.querySelector("#msg").value; = "";
+	document.querySelector("#msg").value = "";
 	
 	
 });
 
 setTimeout(() => {	
-	stomClient.subscribe(`app/chat/${chatroomId}`, (message) => {
+	stompClient.subscribe(`app/chat/${chatroomId}`, (message) => {
 		console.log(`/app/chat/${chatroomId} : `, message);
 		const {userId, msg, time} = JSON.parse(message.body);
 		const html = `
@@ -48,6 +68,6 @@ setTimeout(() => {
 		const wrapper = document.querySelector("#data");
 		wrapper.insertAdjacentHTML('beforeend', html);
 	});
-}, 500);
+}, 500); 
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

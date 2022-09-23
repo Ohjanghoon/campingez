@@ -69,7 +69,7 @@
 }
 </style>
 <header class="py-2 top">
-	<div class="container px-4 px-lg-5 mt-5">
+	<div class="px-4 px-lg-5 mt-5">
 		<h1 class="display-4 text-center fw-bolder">양도</h1>
 		<hr />
 	</div>
@@ -322,18 +322,19 @@ const assignStateChange = (assignState) => {
 	case "양도중" : return `<strong class="assignState"><i class="fa-solid fa-hourglass-half"></i>&nbsp;\${assignState}</strong>`; 
 	}
 };
+//화면 로드시 스크롤 이동
+$(document).ready(function () {
+	$('html, body, .assign-container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
+});
 
 // 스크롤 제어
 const scrollToTop = () => {
-	$('html, body').animate({scrollTop: $('#top').offset().top - 135}, 'fast');
+	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
 };
 const scrollToBottom = () => {
 	window.scrollTo(0, document.body.scrollHeight);
 }
 
-//화면 로드시 스크롤 이동
-$(document).ready(function () {
-	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
-});
+
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

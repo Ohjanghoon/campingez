@@ -199,6 +199,8 @@ public class UserInfoController {
 		
 		model.addAttribute("inquireList", list);
 		model.addAttribute("prePageName", "mypage");
+		model.addAttribute("cPage", cPage);
+		model.addAttribute("limit", limit);
 		mav.setViewName("inquire/inquireList");
 		return mav;
 	}

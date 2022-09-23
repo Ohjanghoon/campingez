@@ -11,12 +11,13 @@
 </jsp:include>
 			<div class="content-wrap">
 				<div class="assign-ing-wrap">
-					<h2>양도 현황</h2>
+					<h2>양도 현황 - ${totalContent}건</h2>
 					<div class="select-wrap d-flex">
 						<select id="selectType" class="form-select">
 							<option value="" selected>전체</option>
 							<option value="양도중">양도중</option>
 							<option value="양도대기">양도대기</option>
+							<option value="양도완료">양도완료</option>
 						</select>
 					</div>
 					<table class="table text-center" id="tbl-assign-list">

@@ -21,6 +21,7 @@ import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
+import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.report.dto.Report;
@@ -74,6 +75,11 @@ public class AdminServiceImpl implements AdminService {
 	public int updateWarningToUser(Map<String, Object> param) {
 		String userId = (String)param.get("userId");		
 		return adminDao.updateWarningToUser(userId);
+	}
+	
+	@Override
+	public int updateCancelWarningToUser(String userId) {
+		return adminDao.updateCancelWarningToUser(userId);
 	}
 	
 	@Override
@@ -337,6 +343,36 @@ public class AdminServiceImpl implements AdminService {
 		result = adminDao.updateReportAction((String)param.get("commNo"));
 		
 		return result;
+	}
+	
+	@Override
+	public List<Report> findAllUserReportTotal(Map<String, Object> param) {
+		return adminDao.findAllUserReportTotal(getRowBounds(param));
+	}
+	
+	@Override
+	public int getUserReportTotalContent() {
+		return adminDao.getUserReportTotalContent();
+	}
+	
+	@Override
+	public List<Coupon> findAllIngCouponList(Map<String, Object> param) {
+		return adminDao.findAllIngCouponList(param);
+	}
+	
+	@Override
+	public List<Coupon> findAllExpireCouponList(Map<String, Object> param) {
+		return adminDao.findAllExpireCouponList(param);
+	}
+	
+	@Override
+	public int getIngCouponTotalContent() {
+		return adminDao.getIngCouponTotalContent();
+	}
+	
+	@Override
+	public int getExpireCouponTotalContent() {
+		return adminDao.getExpireCouponTotalContent();
 	}
 	
 	private RowBounds getRowBounds(Map<String, Object> param) {

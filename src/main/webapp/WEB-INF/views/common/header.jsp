@@ -33,7 +33,7 @@
 	padding:0;
 	margin:0;
 }
-a {
+.link-dark{
 	text-decoration: none;
 	color: black;
 }
@@ -244,8 +244,6 @@ const beforeTime = (alarmDate) => {
 						console.dir(e.target);
 						console.log(alrId);
 						if(alrId == undefined) return;
-						
-						$('.alarmList').tooltip('hide');
 						
 						const headers = {};
 						headers['${_csrf.headerName}'] = '${_csrf.token}';

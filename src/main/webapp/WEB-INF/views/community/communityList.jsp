@@ -1,67 +1,80 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="커뮤니티게시판" name="title" />
+   <jsp:param value="커뮤니티게시판" name="title" />
 </jsp:include>
 
+<sec:authentication property="principal" var="loginMember" scope="page" />
+
+
+<header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder" onclick="location.href='${pageContext.request.contextPath}/trade/tradeList.do';" style="cursor:pointer;">자유게시판</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">당신의 글을 작성하세요!</p>
+                </div>
+            </div>
+        </header>
+
+
+
 <section id="community-container" class="container">
-	<input type="button" value="글쓰기"
-		onclick="location.href='${pageContext.request.contextPath}/community/communityEnroll.do?'" />
-		<c:if test="${empty list}">
-			<p>등록된게시글이 없습니다.</p>
-		</c:if>
-		
-	
+      <c:if test="${empty list}">
+         <p>등록된게시글이 없습니다.</p>
+      </c:if>
+      
+   
 
 
-	<table id="tbl-trade">
-		<c:if test="${not empty list}">
-			<c:forEach items="${list}" var="comm">
-				<thead>
-				<tr>
-					<th>번호</th>
-					<th>작성자</th>
-					<th colspan="3">제목</th>
-					<th colspan="5">작성일</th>
-					<th colspan="3">조회수</th>
-					<th colspan="3">신고수</th>
-					<th colspan="3">삭제여부</th>
-					<th colspan="3">좋아요수</th>
-					</tr>
-				</thead>
-				
-				<tbody>
-				<tr>
-					<td>${comm.commNo}</td>
-					<td>${comm.userId}</td>
-					<td colspan="3"><input type="button" name="commTitle" id="commTitle" value="${comm.commTitle}"
-						onclick="location.href='${pageContext.request.contextPath}/community/communityView.do?no=${comm.commNo}'"/></td>
-					<td colspan="5">
-						
-						<fmt:parseDate value="${comm.commDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="commDate"/>
-			    		<fmt:formatDate value="${commDate}" pattern="yy-MM-dd HH:mm"/>
-			    		</td>
-					<td colspan="3">${comm.readCount}</td>
-					<td colspan="3">${comm.reportCount}</td>
-					<td colspan="3">${comm.isDelete}</td>
-					<td colspan="3">${comm.likeCount}</td>
-				</tr>
-				</tbody>
-				
+   <table class="table table-hover" style="margin-top:30px;">
+	<thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col" colspan="10">제목</th>
+      <th scope="col">작성자</th>
+      <th scope="col">조회수</th>
+      <th scope="col">신고수</th>
+      <th scope="col">좋아요</th>
+      <th scope="col">작성일</th>
 
-			</c:forEach>
-		</c:if>
-	</table>
-	
-	<nav>
- 		 ${pagebar}
- 		 
-	</nav>
-	
+    </tr>
+  </thead> 
+     <c:if test="${not empty list}">
+         <c:forEach items="${list}" var="comm">
+  <tbody>
+    <tr onclick="location.href='${pageContext.request.contextPath}/community/communityView.do?no=${comm.commNo}';" style="cursor:pointer;">
+      <th scope="row">${comm.commNo}</th>
+      <td colspan="10" style="width:40%;">${comm.commTitle}</td>
+      <td>${comm.userId}</td>
+      <td style="width:7%;"><img src="${pageContext.request.contextPath}/resources/images/eye.png" style="width:30px;heigh:30px;" />
+      ${comm.readCount}</td>
+      <td style="width:7%;"><img src="${pageContext.request.contextPath}/resources/images/siren.png" style="width:15px;heigh:15px;" />
+      ${comm.reportCount}</td>
+      <td style="width:7%;"><img id="heart" src="${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png" style="width:15px; heigh:15px;" />
+      ${comm.likeCount}</td>
+      <td><fmt:parseDate value="${comm.commDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="commDate"/>
+          <fmt:formatDate value="${commDate}" pattern="yy-MM-dd HH:mm"/></td>
+	</tr>
+  </tbody>
+
+         </c:forEach>
+      </c:if>
+</table>
+      <sec:authorize access="isAuthenticated()"> 
+   		<input type="button" value="글쓰기"  class="btn btn-outline-dark flex-shrink-0"
+     	 onclick="location.href='${pageContext.request.contextPath}/community/communityEnroll.do?'" />
+      </sec:authorize>
+      
+   <div style="text-align:center;">
+        ${pagebar}
+        
+   </div>
+   
 </section>
 <script>
 
