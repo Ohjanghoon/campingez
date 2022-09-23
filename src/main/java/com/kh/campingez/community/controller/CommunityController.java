@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,6 +72,34 @@ public class CommunityController {
       String url = request.getRequestURI(); // /spring/board/boardList.do
       String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
       model.addAttribute("pagebar", pagebar);
+   }
+   
+   @GetMapping("/communityFind.do")
+   public String communityFind(@RequestParam String searchType, @RequestParam String categoryType, @RequestParam String searchKeyword,
+		   @RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+	   log.debug("categoryType = {}", categoryType);
+	   log.debug("searchType = {}", searchType);
+	   log.debug("searchKeyword = {}", searchKeyword);
+	   
+	   Map<String, Integer> param = new HashMap<>();
+      int limit = 10;
+      param.put("cPage", cPage);
+      param.put("limit", limit);
+      List<Community> list = communityService.communityFind(param, categoryType, searchType, searchKeyword);
+      log.debug("list = {}", list);
+      model.addAttribute("list", list);
+      model.addAttribute("categoryType", categoryType);
+      model.addAttribute("searchType", searchType);
+      model.addAttribute("searchKeyword", searchKeyword);
+      
+      //페이지
+      int totalContent = communityService.getFindTotalContent(categoryType, searchType, searchKeyword);
+      log.debug("totalContent = {}", totalContent);
+      String url = request.getRequestURI(); // /spring/board/boardList.do
+      String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
+      model.addAttribute("pagebar", pagebar);
+      
+      return "community/communityFindList";
    }
    
    @GetMapping("/communityView.do")
