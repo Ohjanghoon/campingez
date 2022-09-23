@@ -7,7 +7,6 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래게시판" name="title" />
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trade/tradeList.css" />
 <sec:authentication property="principal" var="loginMember" scope="page" />
 
 <!-- Header-->
@@ -87,11 +86,15 @@ $(document).ready(function(){
 					else {
 					html += '<div class="badge bg-success text-white position-absolute" style="top: 0.5rem; right: 0.5rem">complete</div>';
 					}
+					
 					for(var photo of item.photos){
 						html += '<img src = "${pageContext.request.contextPath}/resources/upload/trade/'
 						html += photo.renamedFilename
 						html += '"style="width:100%; height:100%;"/>'
+						break;
 					}
+						
+					
 					html += '<div class="card-body p-4">';
 					html += '<div class="text-center">';
 					html += '<h5 class="fw-bolder">'

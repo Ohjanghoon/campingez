@@ -105,10 +105,10 @@
 						    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
 						  </ol>
 						  <div class="carousel-inner">
-  	                       <c:forEach items="${trade.photos}" var="photo">			
+  	                       <c:forEach items="${trade.photos}" var="photo">		
 						    <div class="carousel-item active">
-								<img class="card-img-top mb-5 mb-md-0 d-block w-100" src ="${pageContext.request.contextPath}/resources/upload/trade/${photo.renamedFilename}" id="upload-img">	
-						    </div>
+								<img class="card-img-top mb-5 mb-md-0 d-block w-100" src ="${pageContext.request.contextPath}/resources/upload/trade/${photo.renamedFilename}" id="upload-img" alt="First slide">	
+						    </div>  	          
 						   </c:forEach>	
 						  </div>
 						  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -170,7 +170,11 @@
                             </button>
                             </c:if>
                             <button class="btn btn-outline-danger flex-shrink-0" type="button" onclick="deleteTrade();">
+
+                                <i class="bi-cart-fill me-1"></i>
+
                                 <i class="fa-solid fa-trash-can"></i>
+
                                 상품 삭제
                             </button>
                             <button class="btn btn-outline-primary flex-shrink-0" type="button" onclick="location.href='${pageContext.request.contextPath}/trade/tradeUpdate.do?no=${trade.tradeNo}';" style="margin-left:10px;">
