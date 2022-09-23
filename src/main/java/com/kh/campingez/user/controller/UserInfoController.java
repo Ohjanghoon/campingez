@@ -180,7 +180,7 @@ public class UserInfoController {
 	 */
 	@GetMapping("/inquireList.do")
 	public ModelAndView inquireList(@RequestParam(defaultValue = "1") int cPage, Authentication authentication ,Model model, ModelAndView mav,HttpServletRequest request) {
-		int limit = 3;
+		int limit = 5;
 		Map<String, Object> param = new HashMap<>();
 		param.put("cPage", cPage);
 		param.put("limit", limit);
