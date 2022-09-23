@@ -10,7 +10,7 @@
 </jsp:include>
 
 <div class="input-group mb-3">
-  <input type="text" id="msg" class="form-control" placeholder="판매자에게 보내는 Message">
+  <input type="text" id="msg" class="form-control" placeholder="판매자(${tradeId})에게 보내는 Message">
   <div class="input-group-append" style="padding: 0px;">
     <button id="sendBtn" class="btn btn-outline-secondary" type="button">Send</button>
   </div>
@@ -47,12 +47,15 @@ ws.addEventListener('message', (e) => {
 	
 	const payload = {
 			chatroomId : '${chatroomId}', /* (from) */
-			memberId : '<sec:authentication property="principal.username"/>', /* (to) */
+			userId : '<sec:authentication property="principal.username"/>', /* (to) */
+			tradeNo : '${tradeId}',
 			msg,
 			time : Date.now()
 	};
-	
-	stompClient.send(`/app/chat/${chatroomId}`, {}, JSON.stringify(payload));
+
+	//stompClient.send(`/app/chat/${chatroomId}`, {}, JSON.stringify(payload));
+
+	stompClient.send(JSON.stringify(payload));
 	document.querySelector("#msg").value = "";
 	
 	

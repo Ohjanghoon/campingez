@@ -83,14 +83,15 @@
 	<task:annotation-driven scheduler="jobScheduler" />	
 	<beans:bean id="echoHandler" class="com.kh.campingez.ws.controller.EchoHandler"></beans:bean>
 	<!-- ecohHandler 등록 -->
-	<websocket:handlers>
+	<websocket:handlers allowed-origins="*">
 		<websocket:mapping handler="echoHandler" path="/echo"/>
+		
 			<websocket:handshake-interceptors>
-				<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+				<beans:bean class="com.kh.campingez.ws.controller.WebSocketHandShakeInterceptor" />
 			</websocket:handshake-interceptors>
 		<websocket:sockjs/>
 	</websocket:handlers>
-
+	
 	
 	
 </beans:beans>
