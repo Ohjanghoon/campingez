@@ -5,13 +5,18 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-
+import com.kh.campingez.chat.model.dto.ChatLog;
 import com.kh.campingez.chat.model.dto.ChatUser;
 import com.kh.campingez.chat.model.service.ChatService;
 import com.kh.campingez.trade.model.dto.Trade;
@@ -32,7 +37,7 @@ public class ChatController {
 	TradeService tradeService;
 	
 	@GetMapping("/chat")
-	public void chat(Authentication auth, Model model, Trade trade) {
+	public void chat(@RequestParam String tradeId,Authentication auth, Model model, Trade trade) {
 		// 0. 중고거래 번호 확인
 		
 		
@@ -60,6 +65,7 @@ public class ChatController {
 		}
 		
 		model.addAttribute("chatroomId", chatroomId);
+		model.addAttribute("tradeId", tradeId);	//판매자ID
 		
 	}
 

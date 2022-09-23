@@ -51,7 +51,7 @@ public interface TradeDao {
 	@Delete("delete from trade where trade_no = #{tradeNo}")
 	int deleteTrade(String no);
 	
-	@Update("update trade set trade_read_count = ${readCount} + 1 where trade_no = #{tradeNo}")
+	@Update("update trade set trade_read_count = #{readCount} + 1 where trade_no = #{tradeNo}")
 	int updateReadCount(Trade trade);
 
 	@Select("select count(like_check) from trade_like where trade_no = #{likeTradeNo} and user_id = #{likeUserId}")
