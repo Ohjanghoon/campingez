@@ -104,6 +104,18 @@ public class UserController {
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(result);
 
 	};
+	
+	@GetMapping("/userPhoneCheck.do")
+	public ResponseEntity<?> userPhoneCheck(@RequestParam String phone) {
+		User result = userService.checkPhone(phone);
+		
+		if(result == null) {
+			return ResponseEntity.ok().body("zero");
+		}
+		
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(result);
+		
+	};
 
 	@GetMapping("/userLogin.do")
 	public void userLogin(@RequestHeader("Referer") String referer, Model model, HttpSession session) {

@@ -51,7 +51,7 @@
           <th>아이디<sup>*</sup></th>
           <td>
             <div id="userId-container">
-              <input type="text" class="form-control" placeholder="아이디(4글자이상)" name="userId" id="userId" required
+              <input type="text" class="form-control" placeholder="영문자/숫자 포함 6글자이상" name="userId" id="userId" required
                 oninput="checkId()">
                <input type="hidden" name="idCheckVal" id="idCheckVal" value="0"/>
             </div>
@@ -64,7 +64,15 @@
         </tr><tr><th>&nbsp;</th></tr>
         <tr>
           <th>이름<sup>*</sup></th>
-          <td><input type="text" class="form-control" name="userName" id="userName" value="" required></td>
+          <td><input type="text" class="form-control" name="userName" id="userName" placeholder="한글 2글자 이상" value="" required
+          		oninput="checkName()">
+          	  <input type="hidden" name="nameCheckVal" id="nameCheckVal" value="0" />		
+          </td>
+          <td>
+          	<div>
+              <span id="msguserName" class="msg"></span>
+            </div>
+          </td>
         </tr><tr><th>&nbsp;</th></tr>
         <tr>
           <th>비밀번호<sup>*</sup></th>
@@ -112,7 +120,13 @@
         <tr>
           <th>휴대폰<sup>*</sup></th>
           <td><input type="tel" class="form-control" placeholder="(-없이)01012345678" name="phone" id="phone"
-              maxlength="11" value="" required></td>
+              maxlength="11" value="" required>
+              <input type="hidden" name="phoneCheckVal" id="phoneCheckVal" value="0" /></td>
+              <td>
+          	<div>
+              <span id="msguserPhone" class="msg"></span>
+            </div>
+          </td>
         </tr><tr><th>&nbsp;</th></tr>
         <tr>
           <th>성별</th>
@@ -461,27 +475,39 @@ function emailCK () {
 document.userEnrollFrm.addEventListener('submit', (e) => {
 	const mailCheckVal = document.querySelector('#mailCheckVal').value;
 	const idCheckVal = document.querySelector('#idCheckVal').value;
+	const nameCheckVal = document.querySelector('#nameCheckVal').value;
+	const phoneCheckVal = document.querySelector('#phoneCheckVal').value;
 	
 	e.preventDefault(); // 제출방지
 	if(idCheckVal == 1){
-		if(password.value == passwordCheck.value){
-			if(mailCheckVal == 0){
-				alert('메일 인증이 필요합니다.');
-				return false;
+		if(nameCheckVal == 1){
+			if(password.value == passwordCheck.value){
+				if(mailCheckVal == 0){
+					alert('메일 인증이 필요합니다.');
+					return false;
+				}
+				else{
+					if(phoneCheckVal == 1){
+						const total = $("input[name=default-check]").length
+						const checked = $("input[name=default-check]:checked").length;
+						if(total == checked) {
+							document.userEnrollFrm.submit();
+						} else {
+							alert("필수 이용약관을 동의해주세요.");
+							return;
+						}
+					}
+					else{
+						alert('휴대폰 번호를 다시 입력해주세요.')
+					}
+				}
 			}
 			else{
-				const total = $("input[name=default-check]").length
-				const checked = $("input[name=default-check]:checked").length;
-				if(total == checked) {
-					document.userEnrollFrm.submit();
-				} else {
-					alert("필수 이용약관을 동의해주세요.");
-					return;
-				}
+				alert('비밀번호를 다시 입력해주세요.');
 			}
 		}
 		else{
-			alert('비밀번호를 다시 입력해주세요.');
+			alert('이름을 다시 입력해주세요.');
 		}
 	}
 	else{
@@ -516,7 +542,7 @@ $('#mail-Check-Btn').click(function() {
 });
 
 //인증번호 비교
-$(".mail-check-input").blur(function(){
+$(".mail-check-input").on('input', function(){
 	const inputCode = document.querySelector('.mail-check-input').value; 
 	const checkResult = document.querySelector('#mail-check-warn'); 
 	const mailCheckVal = document.querySelector('#mailCheckVal').value;
@@ -533,9 +559,27 @@ $(".mail-check-input").blur(function(){
         checkResult.innerHTML = "인증번호를 다시 확인해주세요."
         checkResult.classList.remove("correct");
         checkResult.classList.add("incorrect");
+        document.querySelector('#mailCheckVal').value = "0";
         return false;
     }    
 });
+
+function checkName(){
+	const userName = document.querySelector('#userName').value;
+	var reg = /^[가-힣]{2,}$/;
+	
+	if(!reg.test(userName)){
+		$("#msguserName").html('이름을 다시 입력해주세요.');
+		$("#msguserName").css("color", 'red');
+		document.querySelector('#nameCheckVal').value = "0";
+	}
+	else{
+		$("#msguserName").html('');
+		document.querySelector('#nameCheckVal').value = "1";
+	}
+	
+	
+};
 
 
 const availableCheck = (input, result, msg) => {
@@ -549,6 +593,7 @@ const availableCheck = (input, result, msg) => {
 
 function checkId(){
 	let userId = document.querySelector('#userId').value;
+	var reg = /^[a-z\d]{6,10}$/
 	
 	const headers = {};
 	headers['${_csrf.headerName}'] = '${_csrf.token}';
@@ -560,7 +605,12 @@ function checkId(){
 		method : "GET",
 		success(response){
 			//console.log(response);
-			if(response != 0 || userId.length < 4){	
+			if(response != 0){	
+				$("#msguserId").html('중복된 아이디입니다.');
+				$("#msguserId").css("color", 'red');
+				document.querySelector('#idCheckVal').value = "0";
+			}	
+			else if(!reg.test(userId)){	
 				$("#msguserId").html('사용할 수 없는 아이디입니다');
 				$("#msguserId").css("color", 'red');
 				document.querySelector('#idCheckVal').value = "0";
@@ -568,7 +618,7 @@ function checkId(){
 			else if(userId == '' || userId.length == 0){
 				document.querySelector('#msguserId').innerHTML = '';
 			}
-			else if(response == 0) {
+			else if(response == 0 && reg.test(userId)) {
 				$("#msguserId").html('사용가능한 아이디입니다');
 				$("#msguserId").css("color", 'blue');
 				document.querySelector('#idCheckVal').value = "1";
@@ -579,6 +629,38 @@ function checkId(){
 		
 	});
 };
+
+$("#phone").on('input', function(){
+	var reg = /[0-9]{11}$/;
+	let phone = document.querySelector('#phone').value;
+	
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+	if(reg.test(phone)){
+		$.ajax({
+			headers,
+			url : `${pageContext.request.contextPath}/user/userPhoneCheck.do`,
+			data : {phone},
+			method : "GET",
+			success(response){
+				//console.log(response);
+				 if(response != "zero"){
+					$("#msguserPhone").html('사용불가능한 번호입니다.');
+					$("#msguserPhone").css("color", 'red');
+					document.querySelector('#phone').focus();
+					document.querySelector('#phoneCheckVal').value = "0";
+				}
+				else if(response == "zero"){
+					$("#msguserPhone").html('');
+					document.querySelector('#phoneCheckVal').value = "1";
+				}
+			},
+			error : console.log
+			
+		});
+	}
+});
 
 function passwordCK () {
 	var reg =  /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
