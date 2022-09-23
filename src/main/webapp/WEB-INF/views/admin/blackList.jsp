@@ -94,7 +94,7 @@
 										<td scope="row">${black.phone}</td>
 										<td scope="row">${black.point}</td>
 										<td scope="row">
-											<button type="button" name="updateBtn" id="${black.userId}">해제</button>
+											<button type="button" name="updateBtn" id="${black.userId}" onclick="updateUser(this)">해제</button>
 										</td>
 									</tr>
 								</c:forEach>
@@ -117,19 +117,10 @@
 <script>
 const updateUser = (button) => {
 	const userId = button.id;
-	const tr = button.parentElement.parentElement;
 	
-	$.ajax({
-		url : `${pageContext.request.contextPath}/admin/updateUserList`,
-		data : {userId},
-		method : "GET",
-		success(response) {
-			console.log(response);
-			const {yellowCard} = response;
-			tr.querySelector("#yellowCardCount").innerHTML = yellowCard; 
-		},
-		error : console.log
-	});
+	if(confirm(`[\${userId}]에 대한 '블랙리스트 해지'를 정말 하시겠습니까?`)) {
+		cancelYellowCard(userId, true);
+	}
 }
 
 const warningToUser = (e) => {
@@ -168,21 +159,25 @@ const cancelWarningToUser = (e) => {
 		alert("경고 횟수가 없는 회원입니다.");
 		return;
 	} else if(confirm(`[\${userId}]님의 경고를 정말 취소하시겠습니까?`)) {
-		const headers = {};
-		headers['${_csrf.headerName}'] = '${_csrf.token}';
-		
-		$.ajax({
-			url : `${pageContext.request.contextPath}/admin/cancelWarning.do`,
-			headers,
-			data : {userId},
-			method : "POST",
-			success(response) {
-				location.reload();
-			},
-			error : console.log
-		});
+		cancelYellowCard(userId, false);
 	}
 }
+
+const cancelYellowCard = (userId, isBlack) => {
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/admin/cancelWarning.do`,
+		headers,
+		data : {userId, isBlack},
+		method : "POST",
+		success(response) {
+			location.reload();
+		},
+		error : console.log
+	});
+};
 
 document.querySelector("#selectType").addEventListener('change', (e) => {
 	if(!e.target.value) {

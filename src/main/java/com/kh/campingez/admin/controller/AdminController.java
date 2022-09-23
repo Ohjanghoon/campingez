@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,9 +116,9 @@ public class AdminController {
 	}
 	
 	@PostMapping("/cancelWarning.do")
-	public ResponseEntity<?> cancelWarning(@RequestParam String userId) {
+	public ResponseEntity<?> cancelWarning(@RequestParam String userId, @RequestParam boolean isBlack) {
 		int result = adminService.updateCancelWarningToUser(userId);
-		result = alarmService.cancelWarningToUserAlarm(userId);
+		result = alarmService.cancelWarningToUserAlarm(userId, isBlack);
 		
 		return ResponseEntity.ok().build();
 	}
@@ -601,6 +602,18 @@ public class AdminController {
 		int expireCouponTotalContent = adminService.getExpireCouponTotalContent();
 		String expirePagebar = CampingEzUtils.getPagebar2(cPage, limit, expireCouponTotalContent, uri);
 		model.addAttribute("expirePagebar", expirePagebar);
+	}
+	
+	@PostMapping("/updateUserRole.do")
+	public ResponseEntity<?> updateUserRole(@RequestParam String userId, @RequestParam String changeAuth) {
+		log.debug("userId = {}, changeAuth = {}", userId, changeAuth);
+		Map<String, Object> param = new HashMap<>();
+		param.put("userId", userId);
+		param.put("changeAuth", changeAuth);
+		
+		int result = adminService.updateUserRole(param);
+		
+		return ResponseEntity.ok().build();
 	}
 	
 	private Date addMonth(Date date, int months) {

@@ -20,7 +20,7 @@ public interface AlarmService {
 
 	int commReportAlarm(Map<String, Object> param);
 
-	int cancelWarningToUserAlarm(String userId);
+	int cancelWarningToUserAlarm(String userId, boolean isBlack);
 
 	void assignSuccessAlarm(String assignNo);
 
