@@ -66,6 +66,25 @@
 	padding: 0px 10px;
 	color: black;
 }
+#pwd-show {
+	border: none;
+    background-color: white;
+    z-index: 999;
+    cursor: pointer;
+}
+}
+#pwd-show > img {
+    width: 30px;
+    height: 30px;
+}
+.show-wrap {
+	height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 14px;
+    cursor: pointer;
+}
 </style>
 
 <div class="login-container" style="height: 700px;">
@@ -94,9 +113,14 @@
           <div class="i">
             <i class="fas fa-lock"></i>
           </div>
-          <div class="div">
+		  <div class="div">
             <h5>Password</h5>
             <input type="password" name="password" required class="input">
+			<div class="show-wrap">
+	           <button type="button" id="pwd-show">
+	           	<img src="${pageContext.request.contextPath}/resources/images/eye_visible_icon.png" />
+	           </button>
+			</div>
           </div>
         </div>
         <div style="text-align: right;">
@@ -149,6 +173,16 @@
 <script>
 const inputs = document.querySelectorAll(".input");
 
+// 비밀번호 활성화
+document.querySelector("#pwd-show").addEventListener('click', (e) => {
+	const pwd = document.querySelector("[name=password]");
+	
+	if(pwd.type == 'password') {
+		pwd.type = 'text';
+	} else {
+		pwd.type = 'password';
+	}
+});
 
 function addcl() {
   let parent = this.parentNode.parentNode;

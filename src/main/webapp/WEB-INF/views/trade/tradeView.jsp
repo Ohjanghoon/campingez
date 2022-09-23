@@ -8,7 +8,6 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래 상세보기" name="title" />
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trade/view.css" />
 <sec:authentication property="principal" var="loginMember" scope="page" />
 <style>
 .content-wrap {

@@ -34,7 +34,7 @@ form{
   width: 360px;
 }
 
-.login-content img{
+.img > img{
     height: 100px;
 }
 
