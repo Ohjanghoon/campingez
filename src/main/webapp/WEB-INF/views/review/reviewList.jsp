@@ -92,9 +92,10 @@ const renderStart = (score, revId) => {
 						</p>
 						<sec:authorize access="isAuthenticated()">
 							<sec:authentication property="principal.username" var="loginUser"/>
-							<sec:authorize access="hasRole('ROLE_ADMIN') or ${loginUser eq review.reservation.userId}" />
-							<button class="btn btn-primary" id="update-btn" onclick="location.href ='${pageContext.request.contextPath}/review/reviewForm.do?resNo=${review.resNo}';">수정</button>
-							<button class="btn btn-danger" id="delete-btn" onclick="location.href ='${pageContext.request.contextPath}/review/deleteReview.do?resNo=${review.resNo}';">삭제</button>
+							<sec:authorize access="hasRole('ROLE_ADMIN') or ${loginUser eq review.reservation.userId}">
+								<button class="btn btn-primary" id="update-btn" onclick="location.href ='${pageContext.request.contextPath}/review/reviewForm.do?resNo=${review.resNo}';">수정</button>
+								<button class="btn btn-danger" id="delete-btn" onclick="location.href ='${pageContext.request.contextPath}/review/deleteReview.do?resNo=${review.resNo}';">삭제</button>
+							</sec:authorize>
 						</sec:authorize>
 					</div>
 				</div>
