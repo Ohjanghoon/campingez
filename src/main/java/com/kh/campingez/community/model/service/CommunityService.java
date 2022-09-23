@@ -42,5 +42,4 @@ public interface CommunityService {
    int deleteComment(CommunityComment cc);
 
 
-
 }
