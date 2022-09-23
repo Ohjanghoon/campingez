@@ -590,9 +590,6 @@ const beforeTime = (alarmDate) => {
       <div class="que">
         <span>This is first question.</span>
       </div>
-      <div class="que">
-        <span>This is first question.</span>
-      </div>
     </div>
   </div>
 </div>

@@ -38,4 +38,7 @@ public interface UserDao {
 	@Insert("insert into report values(seq_report_no.nextval, #{commNo}, #{userId}, #{reportContent}, default, #{reportType}, default)")
 	int insertReport(Map<String, Object> param);
 
+	@Select("select * from ez_user where phone = #{phone}")
+	User checkPhone(String phone);
+
 }
