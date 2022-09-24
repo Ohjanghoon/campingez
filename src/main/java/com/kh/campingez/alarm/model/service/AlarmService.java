@@ -27,4 +27,6 @@ public interface AlarmService {
 
 	void commEnrollAlarm(CommunityComment cc);
 
+	int deleteAlarm(int alrId);
+
 }

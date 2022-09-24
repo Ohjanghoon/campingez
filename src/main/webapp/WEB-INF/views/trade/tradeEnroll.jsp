@@ -51,6 +51,7 @@
 }
 </style>
 <section id="trade-container" class="container">
+	<sec:authentication property="principal.username" var="loginUser"/>
 	<div class="trade-header">
 		<h2>중고거래 작성</h2>
 	</div>
@@ -90,13 +91,14 @@
 			<br/><br/>
 			건전한 게시판 문화를 위해 노력해주세요.🙂	
 		</div>
-		<textarea id="summernote" name="editordata" required></textarea>
+		<textarea id="summernote" name="tradeContent" required></textarea>
 		<div class="mb-3">
 		  <input class="form-control" type="file" id="upFile" accept="image/*" name="upFile" multiple>
 		</div>
 		<div class="btn-wrap d-flex justify-content-center">
 			<button type="button" class="btn btn-primary" id="enroll-btn">등록</button>
 		</div>
+		<input type="hidden" name="userId" value="${loginUser}"/>
 	</form:form>
 </section>
 <script>
