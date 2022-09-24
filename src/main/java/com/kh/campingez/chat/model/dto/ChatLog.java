@@ -19,7 +19,6 @@ public class ChatLog {
 		private long no;
 		private String chatroomId;
 		private String userId;
-		private String tradeNo;
 		private String msg;
 		private long time;
 		

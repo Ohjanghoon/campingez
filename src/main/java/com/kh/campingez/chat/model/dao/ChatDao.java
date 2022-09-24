@@ -1,7 +1,10 @@
 package com.kh.campingez.chat.model.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.kh.campingez.chat.model.dto.ChatLog;
@@ -10,16 +13,21 @@ import com.kh.campingez.chat.model.dto.ChatUser;
 @Mapper
 public interface ChatDao {
 	
-	@Select("select * from chat_user where user_id = #{userId}")
-	ChatUser findChatUserByUserId(String userId);
+	// 여기 쿼리를 sql에서 진행해보는데 아무것도 나올수가 없는 구조같은데, where절 and이후를 지워봐도 진행이 안되서.. 아이디어 공유 부탁드립니다.
+	@Select("select * from chat_user c join chat_user t using(chatroom_id) where c.user_id = #{userId} and t.user_id = #{chatTargetId}")
+	ChatUser findChatUserByUserId(@Param("userId")String userId, @Param("chatTargetId") String chatTargetId);
 	
-	@Insert("insert into chat_user values(#{chatroomId}, #{userId}, #{tradeNo} , 0, default, default)")
-	int insertChatUser(ChatUser chatUser);
+	@Insert("insert into chat_user values(#{chatroomId}, #{userId}, 0, default, default)")
+	void insertChatUser(ChatUser chatUser);
 	
-	@Insert("insert into chat_log values(seq_chat_log_no.nextmal, #{chatroomId}, #{userId}, #{msg}, #[time}")
+	@Insert("insert into chat_log values(seq_chat_log_no.nextval, #{chatroomId}, #{userId}, #{msg}, #{time})")
 	int insertChatLog(ChatLog chatLog);
 	
-	@Select("select * from chat_user c join trade t on c.trade_no = t.trade_no where t.user_id = #{userId}")
-	ChatUser findSellerByUserId(String userId);
+	
+	@Select("select * from chat_log where chatroom_id = #{chatroomId} order by chat_no")
+	List<ChatLog> findChatLogByChatroomId(String chatroomId);
+	
+	@Select("select tar.* from chat_user c join chat_user tar on c.chatroom_id = tar.chatroom_id where c.user_id = #{userId} and tar.user_id != #{userId}")
+	List<ChatUser> findMyChat(String userId);
 
 }

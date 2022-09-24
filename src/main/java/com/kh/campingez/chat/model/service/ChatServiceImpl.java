@@ -18,14 +18,14 @@ public class ChatServiceImpl implements ChatService {
 	ChatDao chatDao;
 
 	@Override
-	public ChatUser findChatUserByUserId(String userId) {
-		return chatDao.findChatUserByUserId(userId);
+	public ChatUser findChatUserByUserId(String userId, String chatTargetId) {
+		return chatDao.findChatUserByUserId(userId, chatTargetId);
 	}
 
 	@Override
 	public void insertChatUsers(List<ChatUser> chatUserList) {
 		for(ChatUser chatUser : chatUserList) {
-			int result = chatDao.insertChatUser(chatUser);
+			chatDao.insertChatUser(chatUser);
 		}
 		
 	}
@@ -36,8 +36,13 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public ChatUser findSellerByUserId(String userId) {
-		return chatDao.findSellerByUserId(userId);
+	public List<ChatLog> findChatLogByChatroomId(String chatroomId) {
+		return chatDao.findChatLogByChatroomId(chatroomId);
+	}
+
+	@Override
+	public List<ChatUser> findMyChat(String userId) {
+		return chatDao.findMyChat(userId);
 	}
 	
 	
