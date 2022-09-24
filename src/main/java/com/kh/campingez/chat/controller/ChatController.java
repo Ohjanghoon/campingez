@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -93,9 +97,7 @@ public class ChatController {
 		return sb.toString();
 	}
 
-
-
-	@GetMapping("/chatList.do")
+	@GetMapping("/myChatList.do")
 	public void chatList(Authentication auth, Model model) {
 		User user = (User) auth.getPrincipal();
 		String userId = user.getUserId();
@@ -104,5 +106,17 @@ public class ChatController {
 		
 		model.addAttribute("chatUsers", chatUsers);
 		
+	}
+	
+	@GetMapping("/enterChatroom.do")
+	public ResponseEntity<?> enterChatroom (@RequestParam String chatroomId) {
+		List<ChatLog> chatLogs = new ArrayList<>();
+		log.debug("chatroomId = {}",chatroomId);
+		chatLogs = chatService.findChatLogByChatroomId(chatroomId);
+		log.debug("chatLogs = {}", chatLogs);
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.body(chatLogs);
 	}
 }
