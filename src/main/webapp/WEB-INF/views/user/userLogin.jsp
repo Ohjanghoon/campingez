@@ -88,7 +88,7 @@
 </style>
 
 <div class="login-container" style="height: 700px;">
-    <div class="img">
+    <div class="loginImg">
       <img src="${pageContext.request.contextPath}/resources/images/loginCamping.png" style="border-radius: 10%;"/>
     </div>
     <div class="login-content">
