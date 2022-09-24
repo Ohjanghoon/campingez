@@ -33,7 +33,7 @@
 	padding:0;
 	margin:0;
 }
-a {
+a, a:hover {
 	text-decoration: none;
 	color: black;
 }
@@ -44,7 +44,7 @@ a {
 .header-layer {
 	display: none;
 	border: 1px solid black;
-	width: 400px;
+	width: 500px;
     overflow: auto;
     position: absolute;
     text-align: left;
@@ -60,8 +60,15 @@ a {
 	padding: 0;
 }
 #alarm {
-	padding: 5px 5px;
+	padding: 5px 0;
     height: 50px;
+    border: none;
+    width: 460px;
+}
+.alarm-wrap {
+	border-bottom: 1px solid lightgray;
+	display:flex;
+	justify-content: space-evenly;
 }
 #alarm-content-wrap {
 	width:92%;
@@ -96,6 +103,7 @@ a {
     display: flex;
     align-items: center;
     padding: 10px;
+    border-bottom: 1px solid lightgray;
 }
 .tooltip-inner {
 	font-size:13px;
@@ -117,6 +125,19 @@ a {
 .translate-middle{
 	transform: translate(-280%,-100%)!important;
 }
+#delete-alarm-btn {
+	border: none;
+    width: 100%;
+}
+.no-read:hover {
+	background-color: #e2e3e5;
+}
+.read {
+	background-color: #e2e3e5;
+}
+.delete-btn {
+	background-color: transparent;
+}
 </style>
 <script>
 //스크롤 배경색 변경
@@ -132,7 +153,6 @@ $(window).scroll(function() {
 });
 
 const beforeTime = (alarmDate) => {
-	console.log(alarmDate);
 	  const millis = new Date().getTime() - new Date(alarmDate).getTime();
 	  const seconds = Math.floor(millis / 1000);
 	  
@@ -168,6 +188,27 @@ const beforeTime = (alarmDate) => {
 	<script>
 	const userId = "<sec:authentication property='principal.username'/>";
 	
+	const deleteAlarm = (e) => {
+		const alrId = e.dataset.alrId;
+		if(!alrId) return;
+		
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/user/deleteAlarm.do",
+			data : {alrId},
+			headers,
+			type : "POST",
+			content : "application/json",
+			success(response) {
+				$('.alarmList').tooltip('hide');
+				getAlarmList(userId);
+			},
+			error : console.log
+		});
+	}
+	
 	const getAlarmList = (userId) => {
 		const div = document.querySelector(".header-layer");
 		$.ajax({
@@ -199,10 +240,11 @@ const beforeTime = (alarmDate) => {
 	
 						if(!alrReadDatetime) {
 							html += `
+							<div class="alarm-wrap no-read">
 								<a href="\${targetUrl}" id="alarmLink" >
-									<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+									<li data-alr-id=\${alrId} id="alarm"  class="d-flex justify-content-between align-items-center alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
 										<span id="badge-wrap">
-											<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
+												<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 										</span>
 										<div id="alarm-content-wrap">
 											<div id="alr-msg">\${alrMessage}</div>
@@ -212,11 +254,16 @@ const beforeTime = (alarmDate) => {
 										</div>
 									</li>
 								</a>
+								<button type="button" id="delete-alarm-btn" class="delete-btn" data-alr-id="\${alrId}" onclick="deleteAlarm(this);">
+									<i class="fa-solid fa-xmark"></i>
+								</button>
+							</div>
 							`;							
 						} else {
 							html += `
+							<div class="alarm-wrap read">
 								<a href="\${targetUrl}" id="alarmLink">
-									<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+									<li data-alr-id=\${alrId} id="alarm" class="d-flex justify-content-between align-items-center alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
 										<span id="badge-wrap"></span>
 										<div id="alarm-content-wrap">
 											<div id="alr-msg">\${alrMessage}</div>
@@ -226,8 +273,12 @@ const beforeTime = (alarmDate) => {
 										</div>
 									</li>
 								</a>
+								<button type="button" id="delete-alarm-btn" class="delete-btn" data-alr-id="\${alrId}" onclick="deleteAlarm(this);">
+									<i class="fa-solid fa-xmark"></i>
+								</button>
+							</div>
 							`;														
-						}
+ 						}
 					});
 				};
 				html += `
@@ -235,7 +286,6 @@ const beforeTime = (alarmDate) => {
 				`;
 				div.insertAdjacentHTML('beforeend', html);
 				$('.alarmList').tooltip();
-				
 				
 				document.querySelectorAll("#alarm-date").forEach((span) => {
 					const alarmDate = span.innerHTML;

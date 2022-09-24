@@ -33,33 +33,43 @@ stompClient.connect({}, (frame) => {
 		
 		if(!alrReadDatetime) {
 			html = `
-			<a href="${targetUrl}" id="alarmLink" >
-				<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
-					<span id="badge-wrap">
-						<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
-					</span>
-					<div id="alarm-content-wrap">
-						<div id="alr-msg">${alrMessage}</div>
-						<span id="alarm-date-wrap">
-							<span id="alarm-date">${alrDate}</span>
+			<div class="alarm-wrap no-read">
+				<a href="${targetUrl}" id="alarmLink" >
+					<li data-alr-id=${alrId} id="alarm" class="d-flex justify-content-between align-items-center alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
+						<span id="badge-wrap">
+							<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 						</span>
-					</div>
-				</li>
-			</a>
+						<div id="alarm-content-wrap">
+							<div id="alr-msg">${alrMessage}</div>
+							<span id="alarm-date-wrap">
+								<span id="alarm-date">${alrDate}</span>
+							</span>
+						</div>
+					</li>
+				</a>
+				<button type="button" id="delete-alarm-btn" class="delete-btn" data-alr-id="${alrId}" onclick="deleteAlarm(this);">
+					<i class="fa-solid fa-xmark"></i>
+				</button>
+			</div>
 			`;							
 		} else {
 			html = `
-			<a href="${targetUrl}" id="alarmLink" >
-				<li data-alr-id=${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
-					<span id="badge-wrap"></span>
-					<div id="alarm-content-wrap">
-						<div id="alr-msg">${alrMessage}</div>
-						<span id="alarm-date-wrap">
-							<span id="alarm-date">${alrDate}</span>
-						</span>
-					</div>
-				</li>
-			</a>
+			<div class="alarm-wrap read">
+				<a href="${targetUrl}" id="alarmLink" >
+					<li data-alr-id=${alrId} id="alarm" class="d-flex justify-content-between align-items-center alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="${alrMessage}">
+						<span id="badge-wrap"></span>
+						<div id="alarm-content-wrap">
+							<div id="alr-msg">${alrMessage}</div>
+							<span id="alarm-date-wrap">
+								<span id="alarm-date">${alrDate}</span>
+							</span>
+						</div>
+					</li>
+				</a>
+				<button type="button" id="delete-alarm-btn" class="delete-btn" data-alr-id="${alrId}" onclick="deleteAlarm(this);">
+					<i class="fa-solid fa-xmark"></i>
+				</button>
+			</div>
 			`;														
 		}
 		ul.insertAdjacentHTML('afterbegin', html);

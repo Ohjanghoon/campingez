@@ -296,4 +296,9 @@ public class AlarmServiceImpl implements AlarmService {
 		map.put("notReadCount", notReadCount);
 		simpMessagingTemplate.convertAndSend("/app/notice/" + targetUserId, map);
 	}
+	
+	 @Override
+	public int deleteAlarm(int alrId) {
+		return alarmDao.deleteAlarm(alrId);
+	}
 }

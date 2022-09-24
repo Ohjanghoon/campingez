@@ -161,7 +161,7 @@
 							</div>
 						</div>
 						<sec:authorize access="isAuthenticated()">
-							<sec:authentication property="principal.userName" var="loginUser"/> 
+							<sec:authentication property="principal.username" var="loginUser"/> 
 	                        <div class="d-flex" style="margin-top:20px; height:38px;">
                             <c:if test="${loginUser eq trade.userId}">
                             <c:if test="${trade.tradeSuccess eq '거래 대기중'}">
