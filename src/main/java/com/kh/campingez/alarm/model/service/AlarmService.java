@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.campingez.alarm.model.dto.Alarm;
+import com.kh.campingez.community.model.dto.CommunityComment;
 import com.kh.campingez.inquire.model.dto.Answer;
 
 public interface AlarmService {
@@ -23,5 +24,7 @@ public interface AlarmService {
 	int cancelWarningToUserAlarm(String userId, boolean isBlack);
 
 	void assignSuccessAlarm(String assignNo);
+
+	void commEnrollAlarm(CommunityComment cc);
 
 }

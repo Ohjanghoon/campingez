@@ -84,5 +84,8 @@ public interface CommunityDao {
 
    @Select("select count(*) from community where comm_isdelete = 'N' and category_id = #{categoryType} and ${searchType} like '%' || #{searchKeyword} || '%'")
    int getFindTotalContent(@Param("categoryType")String categoryType, @Param("searchType")String searchType, @Param("searchKeyword")String searchKeyword);
+
+   @Select("select * from comm_comment where comment_no = #{commentRef}")
+   CommunityComment getCommentByCommentNo(String commentRef);
    
 }
