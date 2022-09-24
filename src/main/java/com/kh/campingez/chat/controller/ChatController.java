@@ -1,25 +1,21 @@
 package com.kh.campingez.chat.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.campingez.chat.model.dto.ChatLog;
 import com.kh.campingez.chat.model.dto.ChatUser;
 import com.kh.campingez.chat.model.service.ChatService;
-import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.service.TradeService;
 import com.kh.campingez.user.model.dto.User;
 
@@ -33,39 +29,43 @@ public class ChatController {
 	@Autowired
 	ChatService chatService;
 	
-	@Autowired
-	TradeService tradeService;
 	
-	@GetMapping("/chat")
-	public void chat(@RequestParam String tradeId,Authentication auth, Model model, Trade trade) {
-		// 0. 중고거래 번호 확인
-		
-		
+	@GetMapping("/chat.do")
+	public void chat(@RequestParam("chatTargetId") String chatTargetId, Authentication auth, Model model) {
+
 		// 1. 채팅방 유무 조회
 		User user = (User) auth.getPrincipal();
-		ChatUser chatUser = chatService.findChatUserByUserId(user.getUserId());
-		ChatUser seller = chatService.findSellerByUserId(trade.getUserId());
+		String userId = user.getUserId();
+		log.debug("userId = {}", userId);
+		log.debug("chatTargetId = {}", chatTargetId);
+		
+		// null 이 나오는 상황!! dao 쿼리문제 같은데 조금 헷갈려요 ㅠㅠ
+		ChatUser chatUser = chatService.findChatUserByUserId(userId, chatTargetId);
 		log.debug("chatUser = {}", chatUser);
 		
+		
 		String chatroomId = null;
-		if(chatUser == null && seller == null) {
+		List<ChatLog> chatLogs = new ArrayList<>();
+		
+		if(chatUser == null) {
 			// 처음
 			chatroomId = generateChatroomId();
 			log.debug("chatroomId = {}", chatroomId);
 			// chatuser insert 2행
 			List<ChatUser> chatUserList = Arrays.asList(
-					new ChatUser(chatroomId, user.getUserId()),
-					new ChatUser(chatroomId, "seller"));
+					new ChatUser(chatroomId, userId),
+					new ChatUser(chatroomId, chatTargetId));
 			chatService.insertChatUsers(chatUserList);
-			log.debug("chatUserList = {}", chatUserList);
 		}
 		else {
 			// 재입장
 			chatroomId = chatUser.getChatroomId();
+			chatLogs = chatService.findChatLogByChatroomId(chatroomId);
+			log.debug("chatLogs = {}", chatLogs);
 		}
 		
 		model.addAttribute("chatroomId", chatroomId);
-		model.addAttribute("tradeId", tradeId);	//판매자ID
+		model.addAttribute("chatLogs", chatLogs);	//판매자ID
 		
 	}
 
@@ -93,4 +93,16 @@ public class ChatController {
 		return sb.toString();
 	}
 
+
+
+	@GetMapping("/chatList.do")
+	public void chatList(Authentication auth, Model model) {
+		User user = (User) auth.getPrincipal();
+		String userId = user.getUserId();
+		
+		List<ChatUser> chatUsers = chatService.findMyChat(userId);
+		
+		model.addAttribute("chatUsers", chatUsers);
+		
+	}
 }

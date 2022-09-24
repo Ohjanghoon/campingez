@@ -153,11 +153,23 @@
 										<i class="fa-solid fa-land-mine-on"></i> 신고하기
 									</button>
 								</div>
-								<div class="chat-wrap">
+								<%-- <div class="chat-wrap">
 									<button id="chatBtn" class="btn btn-outline-dark flex-shrink-0" onclick="location.href='${pageContext.request.contextPath}/chat/chat.do';" type="button">
 										<i class="fa-regular fa-comment-dots"></i> 판매자와 대화하기
 									</button>
+								</div> --%>
+								
+								<div class="chat-wrap">
+									<form:form method="GET"
+										name="chatForm"
+										action="${pageContext.request.contextPath}/chat/chat.do">
+										<input id="chatBtn" class="btn btn-outline-dark flex-shrink-0" type="hidden" name="chatTargetId" value="${trade.userId}" />
+										<button type="submit">판매자와 채팅하기</button>
+									</form:form>	   
+								
 								</div>
+								
+								
 							</div>
 						</div>
 						<sec:authorize access="isAuthenticated()">
