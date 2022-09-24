@@ -281,4 +281,10 @@ public class UserController {
 		
 		return "redirect:" + request.getHeader("Referer");
 	}
+	
+	@PostMapping("/deleteAlarm.do")
+	public ResponseEntity<?> deleteAlarm(@RequestParam int alrId) {
+		int result = alarmService.deleteAlarm(alrId);
+		return ResponseEntity.ok().body(result);
+	}
 }

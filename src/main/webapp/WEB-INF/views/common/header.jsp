@@ -15,7 +15,7 @@
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <title>안녕하세요. 캠핑이지입니다.</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -33,7 +33,7 @@
 	padding:0;
 	margin:0;
 }
-a {
+a, a:hover {
 	text-decoration: none;
 	color: black;
 }
@@ -44,7 +44,7 @@ a {
 .header-layer {
 	display: none;
 	border: 1px solid black;
-	width: 400px;
+	width: 500px;
     overflow: auto;
     position: absolute;
     text-align: left;
@@ -60,8 +60,15 @@ a {
 	padding: 0;
 }
 #alarm {
-	padding: 5px 5px;
+	padding: 5px 0;
     height: 50px;
+    border: none;
+    width: 460px;
+}
+.alarm-wrap {
+	border-bottom: 1px solid lightgray;
+	display:flex;
+	justify-content: space-evenly;
 }
 #alarm-content-wrap {
 	width:92%;
@@ -96,6 +103,7 @@ a {
     display: flex;
     align-items: center;
     padding: 10px;
+    border-bottom: 1px solid lightgray;
 }
 .tooltip-inner {
 	font-size:13px;
@@ -117,6 +125,19 @@ a {
 .translate-middle{
 	transform: translate(-280%,-100%)!important;
 }
+#delete-alarm-btn {
+	border: none;
+    width: 100%;
+}
+.no-read:hover {
+	background-color: #e2e3e5;
+}
+.read {
+	background-color: #e2e3e5;
+}
+.delete-btn {
+	background-color: transparent;
+}
 </style>
 <script>
 //스크롤 배경색 변경
@@ -132,7 +153,6 @@ $(window).scroll(function() {
 });
 
 const beforeTime = (alarmDate) => {
-	console.log(alarmDate);
 	  const millis = new Date().getTime() - new Date(alarmDate).getTime();
 	  const seconds = Math.floor(millis / 1000);
 	  
@@ -168,6 +188,27 @@ const beforeTime = (alarmDate) => {
 	<script>
 	const userId = "<sec:authentication property='principal.username'/>";
 	
+	const deleteAlarm = (e) => {
+		const alrId = e.dataset.alrId;
+		if(!alrId) return;
+		
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/user/deleteAlarm.do",
+			data : {alrId},
+			headers,
+			type : "POST",
+			content : "application/json",
+			success(response) {
+				$('.alarmList').tooltip('hide');
+				getAlarmList(userId);
+			},
+			error : console.log
+		});
+	}
+	
 	const getAlarmList = (userId) => {
 		const div = document.querySelector(".header-layer");
 		$.ajax({
@@ -199,10 +240,11 @@ const beforeTime = (alarmDate) => {
 	
 						if(!alrReadDatetime) {
 							html += `
+							<div class="alarm-wrap no-read">
 								<a href="\${targetUrl}" id="alarmLink" >
-									<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+									<li data-alr-id=\${alrId} id="alarm"  class="d-flex justify-content-between align-items-center alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
 										<span id="badge-wrap">
-											<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
+												<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 										</span>
 										<div id="alarm-content-wrap">
 											<div id="alr-msg">\${alrMessage}</div>
@@ -212,11 +254,16 @@ const beforeTime = (alarmDate) => {
 										</div>
 									</li>
 								</a>
+								<button type="button" id="delete-alarm-btn" class="delete-btn" data-alr-id="\${alrId}" onclick="deleteAlarm(this);">
+									<i class="fa-solid fa-xmark"></i>
+								</button>
+							</div>
 							`;							
 						} else {
 							html += `
+							<div class="alarm-wrap read">
 								<a href="\${targetUrl}" id="alarmLink">
-									<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+									<li data-alr-id=\${alrId} id="alarm" class="d-flex justify-content-between align-items-center alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
 										<span id="badge-wrap"></span>
 										<div id="alarm-content-wrap">
 											<div id="alr-msg">\${alrMessage}</div>
@@ -226,8 +273,12 @@ const beforeTime = (alarmDate) => {
 										</div>
 									</li>
 								</a>
+								<button type="button" id="delete-alarm-btn" class="delete-btn" data-alr-id="\${alrId}" onclick="deleteAlarm(this);">
+									<i class="fa-solid fa-xmark"></i>
+								</button>
+							</div>
 							`;														
-						}
+ 						}
 					});
 				};
 				html += `
@@ -235,7 +286,6 @@ const beforeTime = (alarmDate) => {
 				`;
 				div.insertAdjacentHTML('beforeend', html);
 				$('.alarmList').tooltip();
-				
 				
 				document.querySelectorAll("#alarm-date").forEach((span) => {
 					const alarmDate = span.innerHTML;
@@ -371,7 +421,7 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">공지사항</button>
 					<div class="collapse" id="home-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/notice/list"class="link-dark rounded p-4">공지사항</a></li>
+							<li><a href="${pageContext.request.contextPath}/notice/list"class="link-dark rounded p-2 m-3">공지사항</a></li>
 						</ul>
 					</div>
 				</li>
@@ -384,8 +434,8 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">예약 & 양도</button>
 					<div class="collapse" id="dashboard-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li class="mb-3"><a href="${pageContext.request.contextPath}/reservation/intro.do" class="link-dark rounded p-4">예약</a></li>
-							<li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do" class="link-dark rounded p-4">양도</a></li>
+							<li class="mb-3"><a href="${pageContext.request.contextPath}/reservation/intro.do" class="link-dark rounded p-2 m-3">예약</a></li>
+							<li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do" class="link-dark rounded p-2 m-3">양도</a></li>
 						</ul>
 					</div>
 				</li>
@@ -398,8 +448,8 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">커뮤니티</button>
 					<div class="collapse" id="orders-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li class="mb-3"><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-4">중고거래</a></li>
-							<li><a href="${pageContext.request.contextPath}/community/communityList.do" class="link-dark rounded p-4">팁/자유게시판</a></li>
+							<li class="mb-3"><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-2 m-3">중고거래</a></li>
+							<li><a href="${pageContext.request.contextPath}/community/communityList.do" class="link-dark rounded p-2 m-3">팁/자유게시판</a></li>
 						</ul>
 					</div>
 				</li>
@@ -412,7 +462,7 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">1:1 문의</button>
 					<div class="collapse" id="market-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/inquire/inquireList.do" class="link-dark rounded p-4">1:1 문의</a></li>
+							<li><a href="${pageContext.request.contextPath}/inquire/inquireList.do" class="link-dark rounded p-2 m-3">1:1 문의</a></li>
 						</ul>
 					</div>
 				</li>
@@ -425,7 +475,7 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">리뷰</button>
 					<div class="collapse" id="pass-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/review/reviewList.do" class="link-dark rounded p-4">리뷰</a></li>
+							<li><a href="${pageContext.request.contextPath}/review/reviewList.do" class="link-dark rounded p-2 m-3">리뷰</a></li>
 						</ul>
 					</div>
 				</li>
@@ -438,7 +488,7 @@ const beforeTime = (alarmDate) => {
 							aria-expanded="false">관리자</button>
 						<div class="collapse" id="account-collapse">
 							<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-								<li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-4">관리자페이지</a></li>
+								<li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-2 m-3">관리자페이지</a></li>
 							</ul>
 						</div>
 					</li>

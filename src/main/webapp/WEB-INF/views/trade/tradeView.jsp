@@ -8,7 +8,6 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래 상세보기" name="title" />
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trade/view.css" />
 <sec:authentication property="principal" var="loginMember" scope="page" />
 <style>
 .content-wrap {
@@ -174,7 +173,7 @@
 							</div>
 						</div>
 						<sec:authorize access="isAuthenticated()">
-							<sec:authentication property="principal.userName" var="loginUser"/> 
+							<sec:authentication property="principal.username" var="loginUser"/> 
 	                        <div class="d-flex" style="margin-top:20px; height:38px;">
                             <c:if test="${loginUser eq trade.userId}">
                             <c:if test="${trade.tradeSuccess eq '거래 대기중'}">

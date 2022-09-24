@@ -13,7 +13,7 @@
     padding: 0 2rem;
 }
 
-.img{
+.loginImg{
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -26,7 +26,7 @@
   text-align: center;
 }
 
-.img img{
+.loginImg img{
   width: 500px;
 }
 
@@ -34,8 +34,8 @@ form{
   width: 360px;
 }
 
-.login-content img{
-    height: 100px;
+.loginImg > img{
+    height: 300px;
 }
 
 .login-content h2{
@@ -184,7 +184,7 @@ form{
         margin: 8px 0;
   }
 
-  .img img{
+  .loginImg img{
     width: 400px;
   }
 }
@@ -194,7 +194,7 @@ form{
     grid-template-columns: 1fr;
   }
 
-  .img{
+  .loginImg{
     display: none;
   }
 

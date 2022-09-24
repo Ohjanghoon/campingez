@@ -18,6 +18,8 @@ import com.kh.campingez.assignment.model.dao.AssignmentDao;
 import com.kh.campingez.assignment.model.dto.Assignment;
 import com.kh.campingez.community.model.dao.CommunityDao;
 import com.kh.campingez.community.model.dto.Community;
+import com.kh.campingez.community.model.dto.CommunityComment;
+import com.kh.campingez.community.model.service.CommunityService;
 import com.kh.campingez.inquire.model.dao.InquireDao;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
@@ -51,6 +53,7 @@ public class AlarmServiceImpl implements AlarmService {
 	
 	@Autowired
 	TradeDao tradeDao;
+	
 	
 	@Override
 	public int inquireAnswerAlarm(Map<String, Object> param) {
@@ -233,5 +236,69 @@ public class AlarmServiceImpl implements AlarmService {
 		map.put("notReadCount", notReadCount);
 		
 		simpMessagingTemplate.convertAndSend("/app/notice/" + alarm.getTargetUserId(), map);
+	}
+	
+	@Override
+	public void commEnrollAlarm(CommunityComment cc) {
+		String msg = null;
+		String location = "/community/communityView.do?no=" + cc.getCommentCommNo();
+		AlarmEntity alarm = null;
+		String targetUserId = null;
+		String commentWriter = cc.getUserId(); // 댓글작성자
+		int notReadCount = 0;
+		
+		// 댓글이 달린 경우 (게시글 작성자에게 알림)
+		if(cc.getCommentLevel() == 1) {
+			// 게시글 작성자 조회
+			Community community = communityDao.selectCommByNo(cc.getCommentCommNo());
+			targetUserId = community.getUserId(); // 게시글 작성자
+			
+			// 댓글 작성자가 게시글 작성자인지 검사(게시글 작성자라면 return)
+			if(targetUserId.equals(commentWriter)) {
+				return;
+			} else {
+				msg = "[댓글] "  + commentWriter + "님이 '" + community.getCommTitle() + "' 게시글에 댓글을 달았습니다.";
+				alarm = (AlarmEntity)Alarm.builder()
+						.userId(commentWriter)
+						.targetUserId(targetUserId)
+						.alrContentId(cc.getCommentCommNo())
+						.alrType(AlarmType.COMMAND)
+						.alrMessage(msg)
+						.alrUrl(location).build();
+			}
+		}
+		// 대댓글이 달린 경우 (댓글 작성자에게 알림)
+		else {
+			// 댓글 작성자 조회
+			CommunityComment comment = communityDao.getCommentByCommentNo(cc.getCommentRef());
+			targetUserId = comment.getUserId(); // 댓글 작성자(1레벨)
+			
+			// 대댓글 작성자가 댓글 작성자인지 검사(댓글 작성자라면 return)
+			if(targetUserId.equals(commentWriter)) {
+				return;
+			} else {
+				msg = "[댓글] " + commentWriter + "님이 회원님의 댓글에 답글을 남겼습니다.";
+				alarm = (AlarmEntity)Alarm.builder()
+						.userId(commentWriter)
+						.targetUserId(targetUserId)
+						.alrContentId(cc.getCommentCommNo())
+						.alrType(AlarmType.COMMAND)
+						.alrMessage(msg)
+						.alrUrl(location).build();
+			}
+		}
+		alarmDao.insertAlarmWithContentId(alarm);
+		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
+		notReadCount = alarmDao.getNotReadCount(targetUserId);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("alarm", alarm);
+		map.put("notReadCount", notReadCount);
+		simpMessagingTemplate.convertAndSend("/app/notice/" + targetUserId, map);
+	}
+	
+	 @Override
+	public int deleteAlarm(int alrId) {
+		return alarmDao.deleteAlarm(alrId);
 	}
 }

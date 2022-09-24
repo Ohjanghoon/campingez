@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.campingez.alarm.model.service.AlarmService;
 import com.kh.campingez.common.CampingEzUtils;
 import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.community.model.dto.Community;
@@ -54,6 +55,9 @@ public class CommunityController {
    
    @Autowired
    TradeService tradeService;
+   
+   @Autowired
+   AlarmService alarmService;
    
    @GetMapping("/communityList.do")
    public void communityList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
@@ -361,7 +365,10 @@ public class CommunityController {
        public String commentEnroll(CommunityComment cc, HttpServletRequest request,
 					    		   @RequestParam String cContent,
 					    		   @RequestParam String commNo) {
-    	// 로그인 정보
+    	   log.debug("CommunityComment = {}", cc);
+    	   log.debug("cContent = {}, commNo = {}", cContent, commNo);
+    	   
+    	   // 로그인 정보
            SecurityContext securityContext = SecurityContextHolder.getContext();
             Authentication authentication = securityContext.getAuthentication();
             Object principal = authentication.getPrincipal();
@@ -376,6 +383,9 @@ public class CommunityController {
             cc.setCommentCommNo(commNo);
             
             communityService.insertComment(cc);
+            
+            // 댓글 알림
+            alarmService.commEnrollAlarm(cc); 
             
             return "redirect:/community/communityView.do?no=" + commNo;
        }
