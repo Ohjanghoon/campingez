@@ -8,6 +8,8 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래 상세보기" name="title" />
 </jsp:include>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal.username" var="loginUser" scope="page" />
 </sec:authorize>
@@ -99,29 +101,14 @@
             <div class="container px-4 px-lg-5 my-5 d-flex justify-content-center">
                 <div class="row gx-4 gx-lg-5 align-items-center content">
                     <div class="col-md-6 photo-wrap">
-                    	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-						  <ol class="carousel-indicators">
-						    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-						    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-						    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-						  </ol>
-						  <div class="carousel-inner">
-  	                       <c:forEach items="${trade.photos}" var="photo">		
-						    <div class="carousel-item active">
-								<img class="card-img-top mb-5 mb-md-0 d-block w-100" src ="${pageContext.request.contextPath}/resources/upload/trade/${photo.renamedFilename}" id="upload-img" alt="First slide">	
-						    </div>  	          
-						   </c:forEach>	
-						  </div>
-						  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-						    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						    <span class="sr-only">Previous</span>
-						  </a>
-						  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-						    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-						    <span class="sr-only">Next</span>
-						  </a>
-						</div>	
-                    </div>
+						<div class="img-wrapper">
+							<c:forEach items="${trade.photos}" var="photo">		
+								<div>
+									<img class="w-100" src="${pageContext.request.contextPath}/resources/upload/trade/${photo.renamedFilename}"/>
+								</div>
+							</c:forEach>
+						</div>
+					</div>
                     <div class="col-md-6 content-wrapper">
 						<div class="card">
 							<div class="content-wrap">
@@ -241,6 +228,21 @@
 			</div>
         </form:form>
 <script>
+// 이미지 슬라이더 슬릭
+const slider = $('.img-wrapper');
+const slickOptions = {
+		infinite: true,
+		autoplay: true,
+	    autoplaySpeed: 2000,
+	    cssEase: 'linear',
+	    prevArrow : false,
+	    nextArrow : false
+};	
+
+$(document).ready(function(){
+	slider.not('.slick-initialized').slick(slickOptions);
+});
+
 // 신고 content 글자수
 document.querySelector("#report-content").addEventListener('input', (e) => {
 	const count = document.querySelector("#text-count");
