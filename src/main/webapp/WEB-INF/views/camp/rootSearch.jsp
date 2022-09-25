@@ -64,8 +64,8 @@ window.onload = () => {
 
 		<div class="buttonWrapper" style="float: left; margin-left: 70px;">
 			<button id="research" style="display: none;" onclick="research()" class="btn">다시검색하기</button>
-			<div id="xyCode" style="display: inline;">
-				<input type="text" class="text_custom" id="fullAddr" name="fullAddr" value="홍대">
+			<div id="xyCode" style="display: inline; position: relative;">
+				<input type="text" class="text_custom" id="fullAddr" name="fullAddr" placeholder="ex) 강남역">
 				<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="btn_select1" style="cursor: pointer;">
 				<!-- <button type id="btn_select1" class="btn btn-outline-secondary">적용하기</button> -->
 				<button id="btn_select2" onclick="lineDisplay()" class="btn">경로보기</button>

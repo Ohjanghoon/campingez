@@ -687,7 +687,7 @@ passwordCheck.addEventListener('input', (e) => {
 	var reg =  /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
 	
 	if (password.value !== passwordCheck.value) {
-		availableCheck(msgPassword, "fail", "실패");
+		availableCheck(msgPassword, "fail", "비밀번호가 일치하지않습니다.");
 		//availableCheck(msgPasswordCheck, "fail", "다시입력하세요");
 		//passwordCheck.focus();
 		//passwordCheck.value ="";
