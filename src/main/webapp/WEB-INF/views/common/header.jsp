@@ -512,7 +512,7 @@ const beforeTime = (alarmDate) => {
 					<div class="collapse" id="orders-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
 							<li class="mb-3"><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-2 m-3">중고거래</a></li>
-							<li><a href="${pageContext.request.contextPath}/community/communityList.do" class="link-dark rounded p-2 m-3">팁/자유게시판</a></li>
+							<li><a href="${pageContext.request.contextPath}/community/communityListFree.do" class="link-dark rounded p-2 m-3">팁/자유게시판</a></li>
 						</ul>
 					</div>
 				</li>

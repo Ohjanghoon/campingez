@@ -23,12 +23,21 @@ public class CommunityServiceImpl implements CommunityService {
    CommunityDao communityDao;
 
    @Override
-   public List<Community> selectCommList(Map<String, Integer> param) {
+   public List<Community> selectCommListFree(Map<String, Integer> param) {
       int limit = param.get("limit");
       int offset = (param.get("cPage") - 1) * limit;
       RowBounds rowBounds = new RowBounds(offset, limit);
-      return communityDao.selectCommList(rowBounds);
+      return communityDao.selectCommListFree(rowBounds);
       
+   }
+   
+   @Override
+   public List<Community> selectCommListHoney(Map<String, Integer> param) {
+	   int limit = param.get("limit");
+	   int offset = (param.get("cPage") - 1) * limit;
+	   RowBounds rowBounds = new RowBounds(offset, limit);
+	   return communityDao.selectCommListHoney(rowBounds);
+	   
    }
    
    @Override

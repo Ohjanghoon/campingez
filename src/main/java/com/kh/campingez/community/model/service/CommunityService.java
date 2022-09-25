@@ -11,7 +11,9 @@ import com.kh.campingez.community.model.dto.CommunityPhoto;
 
 public interface CommunityService {
 
-   List<Community> selectCommList(Map<String, Integer> param);
+   List<Community> selectCommListFree(Map<String, Integer> param);
+   
+   List<Community> selectCommListHoney(Map<String, Integer> param);
 
    int getTotalContentFree();
    

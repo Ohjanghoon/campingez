@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.campingez.community.model.dao.CommunityDao">
-<select id="selectCommList" resultMap="commListMap">
+<select id="selectCommListFree" resultMap="commListMap">
 select
       c.*,
       (select count(*) from report where c.comm_no = comm_no) comm_report_count,
@@ -11,7 +11,19 @@ select
 from
       community c
 where
-      comm_isdelete = 'N'
+      comm_isdelete = 'N' and category_id = 'com1'
+order by
+	  comm_date desc
+</select>
+<select id="selectCommListHoney" resultMap="commListMap">
+select
+      c.*,
+      (select count(*) from report where c.comm_no = comm_no) comm_report_count,
+      (select category_name from category_list where c.category_id = category_id) category_name 
+from
+      community c
+where
+      comm_isdelete = 'N' and category_id = 'com2'
 order by
 	  comm_date desc
 </select>
