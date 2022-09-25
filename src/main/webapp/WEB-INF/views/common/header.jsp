@@ -566,8 +566,7 @@ const beforeTime = (alarmDate) => {
 						id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
 						<img src="${pageContext.request.contextPath}/resources/images/user.jpeg" alt="" width="32" height="32" class="rounded-circle me-2">
 						 <strong>
-							 <sec:authentication property="principal.username" /> 
-							 <sec:authentication property="authorities" />님, 안녕하세요!
+							 <sec:authentication property="principal.username" /> 님, 안녕하세요!
 						 </strong>
 					</a>
 					<ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
