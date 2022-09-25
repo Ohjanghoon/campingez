@@ -10,25 +10,91 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
+<div id="my_modal">
+<%@ include file="/WEB-INF/views/user/authentication.jsp" %>
+</div>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/mypage/mypage.css" />
+<style>	
+/* 모달창 */
+   #my_modal {
+        display: none;
+        width: 700px;
+        height:700px;  
+        border-radius: 3px;
+    }
+
+</style>
 <script>
-	function popup() {
-		var url = "${pageContext.request.contextPath}/userInfo/popupAuthentication.do";
+ 	function popup() {
+		/* var url = "${pageContext.request.contextPath}/userInfo/popupAuthentication.do";
 		var name = "info authentication";
 		var option = "width = 700, height = 700, top = 150, left = 600, location = no"
-		window.open(url, name, option);
-	}
+		window.open(url, name, option); */
+
+ 	    modal('my_modal');
+	} 
 	function inquire() {
 		document.getElementById('inquire').submit();
 	}
 	function trade() {
 		document.getElementById('trade').submit();
 	}
+	
+	//화면 호출 시 인증 화면 가져와서 #modal에 append (ajax)
+
+	//모달창 열고 닫기
+     function modal(id) {
+        var zIndex = 9999;
+        var modal = document.getElementById(id);
+
+        // 모달 div 뒤에 희끄무레한 레이어
+        var bg = document.createElement('div');
+        bg.setStyle({
+            position: 'fixed',
+            zIndex: zIndex,
+            left: '0px',
+            top: '0px',
+            width: '100%',
+            overflow: 'auto',
+            // 레이어 색갈은 여기서 바꾸면 됨
+             backgroundColor: 'rgba(0,0,0,0.4)'
+        });
+        document.body.append(bg);
+
+        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+        modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+            bg.remove();
+            modal.style.display = 'none';
+        });
+
+        modal.setStyle({
+            position: 'fixed',
+            display: 'block',
+
+            // 시꺼먼 레이어 보다 한칸 위에 보이기
+            zIndex: zIndex + 1,
+
+            // div center 정렬
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            msTransform: 'translate(-50%, -50%)',
+            webkitTransform: 'translate(-50%, -50%)'
+        });
+    }
+
+    // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
+    Element.prototype.setStyle = function(styles) {
+        for (var k in styles) this.style[k] = styles[k];
+        return this;
+    };
+
 </script>
 <body>
 	<div class="container">
