@@ -21,6 +21,7 @@ import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
+import com.kh.campingez.community.model.dto.Community;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
@@ -375,10 +376,45 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.getExpireCouponTotalContent();
 	}
 	
+	@Override
+	public int updateUserRole(Map<String, Object> param) {
+		String changeAuth = (String)param.get("changeAuth");
+		
+		int result = 0;
+		if("ROLE_ADMIN".equals(changeAuth)) {
+			result = adminDao.insertUserRoleToAdmin(param);
+		} else {
+			result = adminDao.deleteUserRoleToAdmin(param);
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public List<Community> findAllCommReportList(Map<String, Object> param) {
+		return adminDao.findAllCommReportList(getRowBounds(param));
+	}
+	
+	@Override
+	public List<Report> findAllCommUserReportTotal(Map<String, Object> param) {
+		return adminDao.findAllCommUserReportTotal(param);
+	}
+	
+	@Override
+	public int getCommReportTotalContent() {
+		return adminDao.getCommReportTotalContent();
+	}
+	
+	@Override
+	public int getCommUserReportTotalContent() {
+		return adminDao.getCommUserReportTotalContent();
+	}
+	
 	private RowBounds getRowBounds(Map<String, Object> param) {
 		int limit = (int)param.get("limit");
 		int offset = ((int)param.get("cPage") - 1) * limit;
 		
 		return new RowBounds(offset, limit);
 	}
+	
 }

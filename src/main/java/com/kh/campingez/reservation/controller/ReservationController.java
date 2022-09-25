@@ -132,7 +132,12 @@ public class ReservationController {
 		log.debug("campZone = {}", campZone);
 		Review review = reviewService.bestReviewByCampzone(campZone);
 		log.debug("review = {}", review);
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(review);
+		if(review == null ) {
+			return ResponseEntity.ok().body("review no");
+		}
+		else {
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(review);
+		}
 	}
 	
 //	@GetMapping("/campZoneDayCount")

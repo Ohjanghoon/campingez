@@ -65,6 +65,9 @@ public interface AssignmentDao {
 	@Delete("delete from assignment where assign_no = #{assignNo} and assign_state = '양도대기'")
 	int deleteAssignment(String assignNo);
 
+	@Select("select * from assignment where assign_no = #{assignNo}")
+	Assignment selectOneAssignment(String assignNo);
+
 
 
 	

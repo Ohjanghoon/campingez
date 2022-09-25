@@ -9,12 +9,14 @@ import lombok.NonNull;
 
 public interface ChatService {
 
-	ChatUser findChatUserByUserId(String userId);
+	ChatUser findChatUserByUserId(String userId, String chatTargetId);
 
 	void insertChatUsers(List<ChatUser> chatUserList);
 
 	int insertChatLog(ChatLog chatLog);
 
-	ChatUser findSellerByUserId(String userId);
+	List<ChatLog> findChatLogByChatroomId(String chatroomId);
+
+	List<ChatUser> findMyChat(String userId);
 
 }

@@ -12,13 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,12 +29,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.campingez.alarm.model.service.AlarmService;
 import com.kh.campingez.common.CampingEzUtils;
+import com.kh.campingez.common.category.mode.dto.Category;
 import com.kh.campingez.community.model.dto.Community;
 import com.kh.campingez.community.model.dto.CommunityComment;
 import com.kh.campingez.community.model.dto.CommunityLike;
 import com.kh.campingez.community.model.dto.CommunityPhoto;
 import com.kh.campingez.community.model.service.CommunityService;
+import com.kh.campingez.trade.model.service.TradeService;
 import com.kh.campingez.user.model.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +52,12 @@ public class CommunityController {
    
    @Autowired
    ServletContext application;
+   
+   @Autowired
+   TradeService tradeService;
+   
+   @Autowired
+   AlarmService alarmService;
    
    @GetMapping("/communityList.do")
    public void communityList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
@@ -67,6 +78,34 @@ public class CommunityController {
       model.addAttribute("pagebar", pagebar);
    }
    
+   @GetMapping("/communityFind.do")
+   public String communityFind(@RequestParam String searchType, @RequestParam String categoryType, @RequestParam String searchKeyword,
+		   @RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+	   log.debug("categoryType = {}", categoryType);
+	   log.debug("searchType = {}", searchType);
+	   log.debug("searchKeyword = {}", searchKeyword);
+	   
+	   Map<String, Integer> param = new HashMap<>();
+      int limit = 10;
+      param.put("cPage", cPage);
+      param.put("limit", limit);
+      List<Community> list = communityService.communityFind(param, categoryType, searchType, searchKeyword);
+      log.debug("list = {}", list);
+      model.addAttribute("list", list);
+      model.addAttribute("categoryType", categoryType);
+      model.addAttribute("searchType", searchType);
+      model.addAttribute("searchKeyword", searchKeyword);
+      
+      //페이지
+      int totalContent = communityService.getFindTotalContent(categoryType, searchType, searchKeyword);
+      log.debug("totalContent = {}", totalContent);
+      String url = request.getRequestURI(); // /spring/board/boardList.do
+      String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
+      model.addAttribute("pagebar", pagebar);
+      
+      return "community/communityFindList";
+   }
+   
    @GetMapping("/communityView.do")
    public ModelAndView communityView(
          @RequestParam String no, Model model,
@@ -84,19 +123,29 @@ public class CommunityController {
        Community community = communityService.selectCommByNo(no);
        model.addAttribute("community", community);
        log.debug("community = {}", community);
+       // 해당 회원이 신고했는지 안했는 지 여부 검사
+       String userId = principal != "anonymousUser" ? ((User)principal).getUserId() : null;
+       Map<String, Object> param = new HashMap<>();
+       param.put("no", no);
+       param.put("userId", userId);
+       String reportUserId = communityService.getUserReportComm(param);
+       model.addAttribute("reportUserId", reportUserId);
        
        // 댓글보기
        List<CommunityComment> commentlist = communityService.selectCommentList(no);
        log.debug("commentlist = {}", commentlist);
 	   model.addAttribute("commentlist", commentlist);
-      
+	   
+	   // 카테고리 리스트 가져오기
+		List<Category> categoryList = tradeService.getReportCategory();
+		model.addAttribute("categoryList", categoryList);
              
        CommunityLike cl = new CommunityLike();
 
        // 로그인 한 아이디 확인(좋아요 구분용)
        if(principal != "anonymousUser") {
        User user = (User) principal;
-       String userId = user.getUserId();   
+       userId = user.getUserId();   
        
        model.addAttribute("user", user);
        
@@ -316,7 +365,10 @@ public class CommunityController {
        public String commentEnroll(CommunityComment cc, HttpServletRequest request,
 					    		   @RequestParam String cContent,
 					    		   @RequestParam String commNo) {
-    	// 로그인 정보
+    	   log.debug("CommunityComment = {}", cc);
+    	   log.debug("cContent = {}, commNo = {}", cContent, commNo);
+    	   
+    	   // 로그인 정보
            SecurityContext securityContext = SecurityContextHolder.getContext();
             Authentication authentication = securityContext.getAuthentication();
             Object principal = authentication.getPrincipal();
@@ -331,6 +383,9 @@ public class CommunityController {
             cc.setCommentCommNo(commNo);
             
             communityService.insertComment(cc);
+            
+            // 댓글 알림
+            alarmService.commEnrollAlarm(cc); 
             
             return "redirect:/community/communityView.do?no=" + commNo;
        }

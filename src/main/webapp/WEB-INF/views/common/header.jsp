@@ -15,7 +15,7 @@
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <title>안녕하세요. 캠핑이지입니다.</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -33,6 +33,10 @@
 	padding:0;
 	margin:0;
 }
+a, a:hover {
+	text-decoration: none;
+	color: black;
+}
 .link-dark{
 	text-decoration: none;
 	color: black;
@@ -40,7 +44,7 @@
 .header-layer {
 	display: none;
 	border: 1px solid black;
-	width: 400px;
+	width: 500px;
     overflow: auto;
     position: absolute;
     text-align: left;
@@ -56,8 +60,15 @@
 	padding: 0;
 }
 #alarm {
-	padding: 5px 5px;
+	padding: 5px 0;
     height: 50px;
+    border: none;
+    width: 460px;
+}
+.alarm-wrap {
+	border-bottom: 1px solid lightgray;
+	display:flex;
+	justify-content: space-evenly;
 }
 #alarm-content-wrap {
 	width:92%;
@@ -91,7 +102,9 @@
     height: 50px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 10px;
+    border-bottom: 1px solid lightgray;
 }
 .tooltip-inner {
 	font-size:13px;
@@ -112,6 +125,26 @@
 }
 .translate-middle{
 	transform: translate(-280%,-100%)!important;
+}
+#delete-alarm-btn {
+	border: none;
+    width: 100%;
+}
+.no-read:hover {
+	background-color: #e2e3e5;
+}
+.read {
+	background-color: #e2e3e5;
+}
+.delete-btn {
+	background-color: transparent;
+}
+.all-read-wrap {
+	padding: 0 10px;
+	cursor: pointer;
+}
+.all-delete-wrap {
+	cursor: pointer;
 }
 </style>
 <script>
@@ -163,6 +196,68 @@ const beforeTime = (alarmDate) => {
 	<script>
 	const userId = "<sec:authentication property='principal.username'/>";
 	
+	const deleteAlarm = (e) => {
+		const alrId = e.dataset.alrId;
+		if(!alrId) return;
+		
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/user/deleteAlarm.do",
+			data : {alrId},
+			headers,
+			type : "POST",
+			content : "application/json",
+			success(response) {
+				$('.alarmList').tooltip('hide');
+				getAlarmList(userId);
+			},
+			error : console.log
+		});
+	}
+	
+	const allReadAlarm = (e) => {
+		if(!userId) return;
+		
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/user/allReadAlarm.do",
+			data : {userId},
+			type : "POST",
+			headers,
+			content : "application/json",
+			success(response) {
+				$('.alarmList').tooltip('hide');
+				getAlarmList(userId);
+			},
+			error : console.log
+		});
+		
+	}
+	
+	const allDeleteAlarm = (e) => {
+		if(!userId) return;
+		
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/user/allDeleteAlarm.do",
+			data : {userId},
+			type : "POST",
+			headers,
+			content : "application/json",
+			success(response) {
+				$('.alarmList').tooltip('hide');
+				getAlarmList(userId);
+			},
+			error : console.log
+		});
+	}
+	
 	const getAlarmList = (userId) => {
 		const div = document.querySelector(".header-layer");
 		$.ajax({
@@ -175,9 +270,19 @@ const beforeTime = (alarmDate) => {
 				div.innerHTML = '';
 				
 				let html = `
-				<span id="notReadCount-wrap">
-					새소식 &nbsp;<div id="notReadCount">\${notReadCount}</div>
-				</span>
+				<div id="notReadCount-wrap">
+					<div class="new-wrap d-flex">
+						새소식 &nbsp;<div id="notReadCount">\${notReadCount}</div>
+					</div>
+					<div class="option-wrap d-flex">
+						<div class="all-read-wrap" onclick="allReadAlarm(this);">
+							모두읽음
+						</div>
+						<div class="all-delete-wrap" onclick="allDeleteAlarm(this);">
+							모두삭제
+						</div>
+					</div>
+				</div>
 				<ul id="alarm-list" class="list-group">
 				`;
 				
@@ -194,10 +299,11 @@ const beforeTime = (alarmDate) => {
 	
 						if(!alrReadDatetime) {
 							html += `
+							<div class="alarm-wrap no-read">
 								<a href="\${targetUrl}" id="alarmLink" >
-									<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+									<li data-alr-id=\${alrId} id="alarm"  class="d-flex justify-content-between align-items-center alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
 										<span id="badge-wrap">
-											<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
+												<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 										</span>
 										<div id="alarm-content-wrap">
 											<div id="alr-msg">\${alrMessage}</div>
@@ -207,11 +313,16 @@ const beforeTime = (alarmDate) => {
 										</div>
 									</li>
 								</a>
+								<button type="button" id="delete-alarm-btn" class="delete-btn" data-alr-id="\${alrId}" onclick="deleteAlarm(this);">
+									<i class="fa-solid fa-xmark"></i>
+								</button>
+							</div>
 							`;							
 						} else {
 							html += `
+							<div class="alarm-wrap read">
 								<a href="\${targetUrl}" id="alarmLink">
-									<li data-alr-id=\${alrId} id="alarm" class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+									<li data-alr-id=\${alrId} id="alarm" class="d-flex justify-content-between align-items-center alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
 										<span id="badge-wrap"></span>
 										<div id="alarm-content-wrap">
 											<div id="alr-msg">\${alrMessage}</div>
@@ -221,8 +332,12 @@ const beforeTime = (alarmDate) => {
 										</div>
 									</li>
 								</a>
+								<button type="button" id="delete-alarm-btn" class="delete-btn" data-alr-id="\${alrId}" onclick="deleteAlarm(this);">
+									<i class="fa-solid fa-xmark"></i>
+								</button>
+							</div>
 							`;														
-						}
+ 						}
 					});
 				};
 				html += `
@@ -230,7 +345,6 @@ const beforeTime = (alarmDate) => {
 				`;
 				div.insertAdjacentHTML('beforeend', html);
 				$('.alarmList').tooltip();
-				
 				
 				document.querySelectorAll("#alarm-date").forEach((span) => {
 					const alarmDate = span.innerHTML;
@@ -366,7 +480,7 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">공지사항</button>
 					<div class="collapse" id="home-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/notice/list"class="link-dark rounded p-4">공지사항</a></li>
+							<li><a href="${pageContext.request.contextPath}/notice/list"class="link-dark rounded p-2 m-3">공지사항</a></li>
 						</ul>
 					</div>
 				</li>
@@ -379,8 +493,8 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">예약 & 양도</button>
 					<div class="collapse" id="dashboard-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li class="mb-3"><a href="${pageContext.request.contextPath}/reservation/intro.do" class="link-dark rounded p-4">예약</a></li>
-							<li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do" class="link-dark rounded p-4">양도</a></li>
+							<li class="mb-3"><a href="${pageContext.request.contextPath}/reservation/intro.do" class="link-dark rounded p-2 m-3">예약</a></li>
+							<li><a href="${pageContext.request.contextPath}/assignment/assignmentList.do" class="link-dark rounded p-2 m-3">양도</a></li>
 						</ul>
 					</div>
 				</li>
@@ -393,7 +507,8 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">커뮤니티</button>
 					<div class="collapse" id="orders-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-4">중고거래</a></li>
+							<li class="mb-3"><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-2 m-3">중고거래</a></li>
+							<li><a href="${pageContext.request.contextPath}/community/communityList.do" class="link-dark rounded p-2 m-3">팁/자유게시판</a></li>
 						</ul>
 					</div>
 				</li>
@@ -406,7 +521,7 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">1:1 문의</button>
 					<div class="collapse" id="market-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/inquire/inquireList.do" class="link-dark rounded p-4">1:1 문의</a></li>
+							<li><a href="${pageContext.request.contextPath}/inquire/inquireList.do" class="link-dark rounded p-2 m-3">1:1 문의</a></li>
 						</ul>
 					</div>
 				</li>
@@ -419,7 +534,7 @@ const beforeTime = (alarmDate) => {
 						aria-expanded="false">리뷰</button>
 					<div class="collapse" id="pass-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-							<li><a href="${pageContext.request.contextPath}/review/reviewList.do" class="link-dark rounded p-4">리뷰</a></li>
+							<li><a href="${pageContext.request.contextPath}/review/reviewList.do" class="link-dark rounded p-2 m-3">리뷰</a></li>
 						</ul>
 					</div>
 				</li>
@@ -432,7 +547,7 @@ const beforeTime = (alarmDate) => {
 							aria-expanded="false">관리자</button>
 						<div class="collapse" id="account-collapse">
 							<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
-								<li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-4">관리자페이지</a></li>
+								<li><a href="${pageContext.request.contextPath}/admin/reservationList.do" class="link-dark rounded p-2 m-3">관리자페이지</a></li>
 							</ul>
 						</div>
 					</li>
@@ -459,6 +574,7 @@ const beforeTime = (alarmDate) => {
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myPage.do">내정보</a></li>
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myReservation.do">예약 & 리뷰</a></li>
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myLikeList.do">찜 목록</a></li>
+						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/chat/myChatList.do">채팅 목록</a></li>
 						<li><hr class="dropdown-divider"></li>
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userEnroll.do">로그아웃</a></li>
 					</ul>
@@ -488,7 +604,7 @@ const beforeTime = (alarmDate) => {
 					<div class="carousel-caption text-start">
 						<h2>캠핑이지 오픈이벤트</h2>
 						<p>회원가입을 하신 모든 분들께 쿠폰을 드립니다.<br>저희 캠핑이지 회원이 되어주셔서 감사합니다.</p>
-						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/notice/detail.do?noticeNo=N149">쿠폰 받으러 가기</a></p>
+						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/notice/detail.do?noticeNo=N170">쿠폰 받으러 가기</a></p>
 					</div>
 				</div>
 			</div>
@@ -576,22 +692,35 @@ const beforeTime = (alarmDate) => {
         </span><br />
       </div>
       <div class="que">
-        <span>This is second question.</span>
+        <span>주차요금은 어떻게 되나요?</span>
       </div>
       <div class="anw">
-        <span>This is second answer.</span>
+        <span>
+	        <ul>
+	        	<li>주차요금은 무료입니다. 오토캠핑장 이용시 1사이트 당 1대의 주차가 가능하며, 그 외 캠핑장 이용시 별도의 주차장에 주차하시면 됩니다.</li>
+	        </ul>
+        </span>
       </div>
       <div class="que">
-        <span>This is third question.</span>
+        <span>전기는 사용량은 제한이 있습니까?</span>
       </div>
       <div class="anw">
-        <span>This is third answer.</span>
+        <span>
+        	<ul>
+	        	<li>사이트 당 600W까지 사용이 가능합니다.</li>
+	        	<li>사용제품의 전력량을 확인해주시고, 과도한 출력의 전기제품 사용을 자제해주시기 바랍니다.</li>
+        	</ul>
+        </span>
       </div>
       <div class="que">
-        <span>This is first question.</span>
+        <span>입퇴실 시간은 언제인가요?</span>
       </div>
-      <div class="que">
-        <span>This is first question.</span>
+        <div class="anw">
+        <span>
+        	<ul>
+        		<li>입실은 오후 2시 이후 가능하며 퇴실은 사용 종료일 정오 12시 입니다.</li>
+        	</ul>
+       </span>
       </div>
     </div>
   </div>

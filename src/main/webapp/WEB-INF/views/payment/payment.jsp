@@ -45,6 +45,8 @@
 	window.onload = () => {
 		console.log("${payMethod}");
 		const merchantCustomId = "${payRes.resNo}_" + new Date().getTime();
+		console.log(merchantCustomId);
+		
 		var IMP = window.IMP; // 생략가능
 		
 		IMP.init('imp63276768');  // 가맹점 식별 코드

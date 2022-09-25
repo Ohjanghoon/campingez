@@ -11,6 +11,8 @@
 	from
     	ez_user u join authority a
        		on u.user_id = a.user_id
+   order by
+        enroll_date desc
   </select>
   
   <select id="findAllBlackList" resultMap="userMap">
@@ -170,7 +172,7 @@
 	        substr(r.comm_no, 1, 1) = 'T'
 	) a
 	where
-	    report_count >= 2 and report_action = 'N'
+	    report_count >= 3 and report_action = 'N'
 	order by
 	    report_no desc
 	</select>  
@@ -241,6 +243,28 @@
 		    2
 	</select>
 	
+	<select id="findAllCommUserReportTotal" resultMap="reportMap">
+		select
+		    a.*,
+		    case when
+		        (select yellowcard from ez_user where a.comm_user_id = user_id) >= 3
+		    then '블랙리스트' end is_blacklist
+		from (
+		    select
+		       c.user_id comm_user_id,
+		       count(*) total_report
+		    from
+		        report r left join community c
+		            on r.comm_no = c.comm_no
+		    where
+		        substr(r.comm_no, 1, 1) = 'C'
+		    group by
+		        c.user_id
+		) a
+		order by
+		    2	
+	</select>
+	
 	<resultMap type="report" id="reportMap">
 		<id column="report_no" property="reportNo"/>
 		<result column="comm_no" property="commNo"/>
@@ -252,5 +276,58 @@
 		<result column="comm_user_id" property="commUserId"/>
 		<result column="total_report" property="totalReport"/>
 		<result column="is_blacklist" property="isBlacklist"/>
+	</resultMap>
+	
+	<select id="findAllCommReportList" resultMap="commReportMap">
+	select
+	    *
+	from (
+	    select
+	        r.*,
+            c.comm_no community_comm_no,
+            c.user_id comm_user_id,
+            c.category_id,
+            c.comm_title,
+            c.comm_content,
+            c.comm_date,
+            c.comm_read_count,
+            c.comm_report_count,
+            c.comm_isdelete,
+            c.comm_like_count,
+	        count(*) over(partition by r.comm_no) as report_count,
+	        (select category_name from category_list where r.report_type = category_id) category_name
+	    from
+	        report r left join community c
+	            on r.comm_no = c.comm_no
+	    where
+	        substr(r.comm_no, 1, 1) = 'C'
+	) a
+	where
+	    report_count >= 3 and report_action = 'N'
+	order by
+	    report_no desc
+	</select>
+	
+	<resultMap type="community" id="commReportMap">
+		<id column="community_comm_no" property="commNo"/>
+	    <result column="comm_user_id" property="userId"/>
+	    <result column="category_id" property="categoryId" />
+	    <result column="comm_title" property="commTitle" />
+	    <result column="comm_content" property="commContent" />
+	    <result column="comm_date" property="commDate" />
+	    <result column="comm_read_count" property="readCount" />
+	    <result column="comm_report_count" property="reportCount" />
+	    <result column="comm_isdelete" property="isDelete" />
+	    <result column="comm_like_count" property="likeCount" />
+		<collection property="reportList" ofType="report">
+			<id column="report_no" property="reportNo"/>
+			<result column="comm_no" property="commNo"/>
+			<result column="user_id" property="userId"/>
+			<result column="report_content" property="reportContent"/>
+			<result column="report_date" property="reportDate"/>
+			<result column="report_type" property="reportType"/>
+			<result column="report_action" property="reportAction"/>
+			<result column="category_name" property="categoryName"/>
+		</collection>		
 	</resultMap>
 </mapper>

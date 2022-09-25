@@ -9,6 +9,7 @@ import com.kh.campingez.campzone.model.dto.Camp;
 import com.kh.campingez.campzone.model.dto.CampPhoto;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.category.mode.dto.Category;
+import com.kh.campingez.community.model.dto.Community;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
@@ -140,5 +141,15 @@ public interface AdminService {
 	int getIngCouponTotalContent();
 
 	int getExpireCouponTotalContent();
+
+	int updateUserRole(Map<String, Object> param);
+
+	List<Community> findAllCommReportList(Map<String, Object> param);
+
+	List<Report> findAllCommUserReportTotal(Map<String, Object> param);
+
+	int getCommReportTotalContent();
+
+	int getCommUserReportTotalContent();
 
 }

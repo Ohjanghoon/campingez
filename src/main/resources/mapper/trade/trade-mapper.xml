@@ -11,6 +11,8 @@ from
 		on t.trade_no = p.trade_no
 where
 	t.trade_isdelete = 'N'
+order by
+	t.trade_date desc
 
 </select>
 <resultMap type="trade" id="tradeListMap">
@@ -105,15 +107,17 @@ where
 		category_id = #{categoryId}
 		and
 		trade_isdelete = 'N'
-
+order by
+		t.trade_date desc
 
 </select>
 
 <select id="selectCurrentTrade" resultMap="tradeListMap">
 	select 
-			* 
+		* 
 	from 
-			(select * from trade where rownum &lt;= 3 order by trade_date desc) join trade_photo using(trade_no)
+		(select * from (select * from trade order by trade_date desc) where rownum &lt;= 3) join trade_photo using (trade_no)
+	
 </select>
 
 </mapper>

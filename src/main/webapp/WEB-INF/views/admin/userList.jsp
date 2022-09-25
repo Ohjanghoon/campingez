@@ -38,9 +38,7 @@
 							<th scope="col">경고</th>
 							<th scope="col">포인트</th>
 							<th scope="col">권한</th>
-							<th scope="col">가입타입</th>
 							<th scope="col">가입일</th>
-							<th scope="col">관리</th>
 						</tr>
 					</thead>
 					<tbody class="table-group-divider">
@@ -69,13 +67,9 @@
 										</c:forEach>
 										</select>
 									</td>
-									<td scope="row">${user.enrollType}</td>
 									<td scope="row">
 										<fmt:parseDate value="${user.enrollDate}" var="enrollDate" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
 										<fmt:formatDate value="${enrollDate}" pattern="yyyy/MM/dd"/>
-									</td>
-									<td scope="row">
-										<button type="button" name="updateBtn" id="${user.userId}">수정</button>
 									</td>
 								</tr>
 							</c:forEach>
@@ -95,16 +89,32 @@
 	</section>
 </main>
 <script>
+const updateUser = (button) => {
+	console.log(button.id);
+};
+
 document.querySelectorAll("#auth").forEach((select) => {
 	select.addEventListener('change', (e) => {
 		const userId = e.target.dataset.userId;
 		const changeAuth = e.target.selectedOptions[0].innerHTML; 
 		const changeAuthVal = e.target.value;
-		
+
 		if(confirm(`[\${userId}]님의 권한을 '\${changeAuth}회원'으로 변경하시겠습니까?`)) {
-			console.log(123);
-		} else {
+			const headers = {};
+			headers['${_csrf.headerName}'] = '${_csrf.token}';
 			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/admin/updateUserRole.do",
+				data : {userId, changeAuth:changeAuthVal},
+				headers,
+				method : "POST",
+				success(response) {
+					e.target.selected = true;
+				},
+				error : console.log
+			});
+		} else {
+			e.target.querySelector("[selected]").selected = true;
 		}
 	});
 });

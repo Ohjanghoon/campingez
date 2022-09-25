@@ -14,7 +14,7 @@
 		<form name="couponFrm" action="${pageContext.request.contextPath}/coupon/insertCoupon.do" method="post">
 			<sec:csrfInput/>
 			<div class="form-floating m-5">
-			  <input type="text" class="form-control" id="couponName">
+			  <input type="text" class="form-control" id="couponName" name="couponName">
 			  <label for="couponName">쿠폰명</label>
 			</div>
 			<div class="m-5">
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			<div class="d-grid gap-2 col-6 mx-auto p-3">
-			  <button class="btn btn-outline-dark" type="button">등록</button>
+			  <button class="btn btn-outline-dark" type="submit">등록</button>
 			</div>
 		</form>
 		</div>

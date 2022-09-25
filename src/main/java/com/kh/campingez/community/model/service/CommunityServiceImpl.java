@@ -30,11 +30,26 @@ public class CommunityServiceImpl implements CommunityService {
       return communityDao.selectCommList(rowBounds);
       
    }
+   
+   @Override
+	public List<Community> communityFind(Map<String, Integer> param, String categoryType, String searchType,
+			String searchKeyword) {
+	   	  int limit = param.get("limit");
+	      int offset = (param.get("cPage") - 1) * limit;
+	      RowBounds rowBounds = new RowBounds(offset, limit);
+	      return communityDao.communityFind(rowBounds, categoryType, searchType, searchKeyword);
+	      
+	}
 
    @Override
    public int getTotalContent() {
       return communityDao.getTotalContext();
    }
+   
+   @Override
+	public int getFindTotalContent(String categoryType, String searchType, String searchKeyword) {
+	   return communityDao.getFindTotalContent(categoryType, searchType, searchKeyword);
+	}
 
    @Override
    public Community selectCommByNo(String no) {
@@ -143,7 +158,11 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.deleteComment(cc);
 		
 	}
-
+	
+	@Override
+	public String getUserReportComm(Map<String, Object> param) {
+		return communityDao.getUserReportComm(param);
+	}
 	
 	
    

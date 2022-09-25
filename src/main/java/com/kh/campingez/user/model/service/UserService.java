@@ -24,4 +24,6 @@ public interface UserService {
 
 	int insertReport(Map<String, Object> param);
 
+	User checkPhone(String phone);
+
 }

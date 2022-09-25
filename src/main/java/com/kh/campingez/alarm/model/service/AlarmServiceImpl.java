@@ -14,9 +14,16 @@ import com.kh.campingez.alarm.model.dao.AlarmDao;
 import com.kh.campingez.alarm.model.dto.Alarm;
 import com.kh.campingez.alarm.model.dto.AlarmEntity;
 import com.kh.campingez.alarm.model.dto.AlarmType;
+import com.kh.campingez.assignment.model.dao.AssignmentDao;
+import com.kh.campingez.assignment.model.dto.Assignment;
+import com.kh.campingez.community.model.dao.CommunityDao;
+import com.kh.campingez.community.model.dto.Community;
+import com.kh.campingez.community.model.dto.CommunityComment;
+import com.kh.campingez.community.model.service.CommunityService;
 import com.kh.campingez.inquire.model.dao.InquireDao;
 import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.inquire.model.dto.Inquire;
+import com.kh.campingez.trade.model.dao.TradeDao;
 import com.kh.campingez.trade.model.dto.Trade;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +44,16 @@ public class AlarmServiceImpl implements AlarmService {
 	
 	@Autowired
 	SimpMessagingTemplate simpMessagingTemplate;
+	
+	@Autowired
+	AssignmentDao assignmentDao;
+	
+	@Autowired
+	CommunityDao communityDao;
+	
+	@Autowired
+	TradeDao tradeDao;
+	
 	
 	@Override
 	public int inquireAnswerAlarm(Map<String, Object> param) {
@@ -109,8 +126,13 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 	
 	@Override
-	public int cancelWarningToUserAlarm(String userId) {
-		String msg = "[경고취소] 문의 주신 내용 반영하여 경고 취소처리 되셨습니다.🙂";
+	public int cancelWarningToUserAlarm(String userId, boolean isBlack) {
+		String msg = null;
+		if(isBlack) {
+			msg = "[블랙리스트 해지] 문의 주신 내용 반영하여 블랙리스트 해지처리 하였습니다.🙂";
+		} else {
+			msg = "[경고취소] 문의 주신 내용 반영하여 경고 취소처리 되셨습니다.🙂";			
+		}
 		
 		AlarmEntity alarm = (AlarmEntity)Alarm.builder()
 						.targetUserId(userId)
@@ -135,17 +157,20 @@ public class AlarmServiceImpl implements AlarmService {
 		String commNo = (String)param.get("commNo");
 		
 		Trade trade = null;
+		Community community = null;
 		String title = null;
 		String commWriter = null;
 		// 중고거래인 경우
 		if(String.valueOf('T').equals(type)) {
-			trade = adminDao.findTradeByTradeNo(commNo);
+			trade = tradeDao.selectTradeByNo(commNo);
 			title = trade.getTradeTitle();
 			commWriter = trade.getUserId();
 		}
 		// 커뮤니티인 경우
 		else {
-			
+			community = communityDao.selectCommByNo(commNo);
+			title = community.getCommTitle();
+			commWriter = community.getUserId();
 		}
 		
 		// 게시글 작성자 알림
@@ -186,5 +211,104 @@ public class AlarmServiceImpl implements AlarmService {
 			simpMessagingTemplate.convertAndSend("/app/notice/" + user, reportUserMap);
 		}
 		return result;
+	}
+	
+	@Override
+	public void assignSuccessAlarm(String assignNo) {
+		Assignment assignment = assignmentDao.selectOneAssignment(assignNo);
+		
+		String msg = "[양도완료] '" + assignment.getAssignTitle() + "' 게시글에 대한 양도가 완료되었습니다.";
+		String location = "/assignment/assignmentDetail.do?assignNo=" + assignNo;
+		
+		AlarmEntity alarm = (AlarmEntity)Alarm.builder()
+				.targetUserId(assignment.getUserId())
+				.alrContentId(assignment.getAssignNo())
+				.alrType(AlarmType.INQUIRE)
+				.alrMessage(msg)
+				.alrUrl(location).build();
+		
+		int result = alarmDao.insertAlarmWithContentId(alarm);
+		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
+		int notReadCount = alarmDao.getNotReadCount(assignment.getUserId());
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("alarm", alarm);
+		map.put("notReadCount", notReadCount);
+		
+		simpMessagingTemplate.convertAndSend("/app/notice/" + alarm.getTargetUserId(), map);
+	}
+	
+	@Override
+	public void commEnrollAlarm(CommunityComment cc) {
+		String msg = null;
+		String location = "/community/communityView.do?no=" + cc.getCommentCommNo();
+		AlarmEntity alarm = null;
+		String targetUserId = null;
+		String commentWriter = cc.getUserId(); // 댓글작성자
+		int notReadCount = 0;
+		
+		// 댓글이 달린 경우 (게시글 작성자에게 알림)
+		if(cc.getCommentLevel() == 1) {
+			// 게시글 작성자 조회
+			Community community = communityDao.selectCommByNo(cc.getCommentCommNo());
+			targetUserId = community.getUserId(); // 게시글 작성자
+			
+			// 댓글 작성자가 게시글 작성자인지 검사(게시글 작성자라면 return)
+			if(targetUserId.equals(commentWriter)) {
+				return;
+			} else {
+				msg = "[댓글] "  + commentWriter + "님이 '" + community.getCommTitle() + "' 게시글에 댓글을 달았습니다.";
+				alarm = (AlarmEntity)Alarm.builder()
+						.userId(commentWriter)
+						.targetUserId(targetUserId)
+						.alrContentId(cc.getCommentCommNo())
+						.alrType(AlarmType.COMMAND)
+						.alrMessage(msg)
+						.alrUrl(location).build();
+			}
+		}
+		// 대댓글이 달린 경우 (댓글 작성자에게 알림)
+		else {
+			// 댓글 작성자 조회
+			CommunityComment comment = communityDao.getCommentByCommentNo(cc.getCommentRef());
+			targetUserId = comment.getUserId(); // 댓글 작성자(1레벨)
+			
+			// 대댓글 작성자가 댓글 작성자인지 검사(댓글 작성자라면 return)
+			if(targetUserId.equals(commentWriter)) {
+				return;
+			} else {
+				msg = "[댓글] " + commentWriter + "님이 회원님의 댓글에 답글을 남겼습니다.";
+				alarm = (AlarmEntity)Alarm.builder()
+						.userId(commentWriter)
+						.targetUserId(targetUserId)
+						.alrContentId(cc.getCommentCommNo())
+						.alrType(AlarmType.COMMAND)
+						.alrMessage(msg)
+						.alrUrl(location).build();
+			}
+		}
+		alarmDao.insertAlarmWithContentId(alarm);
+		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
+		notReadCount = alarmDao.getNotReadCount(targetUserId);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("alarm", alarm);
+		map.put("notReadCount", notReadCount);
+		simpMessagingTemplate.convertAndSend("/app/notice/" + targetUserId, map);
+	}
+	
+	 @Override
+	public int deleteAlarm(int alrId) {
+		return alarmDao.deleteAlarm(alrId);
+	}
+	 
+	@Override
+	public int allReadAlarm(String userId) {
+		return alarmDao.allReadAlarm(userId);
+	}
+	
+	@Override
+	public int allDeleteAlarm(String userId) {
+		return alarmDao.allDeleteAlarm(userId);
 	}
 }

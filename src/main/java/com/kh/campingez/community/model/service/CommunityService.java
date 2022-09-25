@@ -41,6 +41,11 @@ public interface CommunityService {
 
    int deleteComment(CommunityComment cc);
 
+   String getUserReportComm(Map<String, Object> param);
 
+   List<Community> communityFind(Map<String, Integer> param, String categoryType, String searchType, String searchKeyword);
+
+   int getFindTotalContent(String categoryType, String searchType, String searchKeyword);
+	
 
 }

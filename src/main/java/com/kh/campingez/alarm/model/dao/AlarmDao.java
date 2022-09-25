@@ -2,6 +2,7 @@ package com.kh.campingez.alarm.model.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
@@ -37,5 +38,14 @@ public interface AlarmDao {
 	@Insert("insert into alarm values(seq_alarm_alr_id.nextval, null, #{targetUserId}, null, #{alrType}, #{alrMessage}, null, default, null)")
 	@SelectKey(statement = "select seq_alarm_alr_id.currval from dual", before = false, resultType = Integer.class, keyProperty = "alrId")
 	int insertAlarmWithoutContentIdAndUrl(AlarmEntity reportUserAlarm);
+	
+	@Delete("delete from alarm where alr_id = #{alrId}")
+	int deleteAlarm(int alrId);
+	
+	@Update("update alarm set alr_read_datetime = sysdate where target_user_id = #{userId} and alr_read_datetime is null")
+	int allReadAlarm(String userId);
+	
+	@Delete("delete from alarm where target_user_id = #{userId}")
+	int allDeleteAlarm(String userId);
 
 }

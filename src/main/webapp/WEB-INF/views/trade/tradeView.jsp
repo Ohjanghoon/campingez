@@ -8,7 +8,6 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래 상세보기" name="title" />
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trade/view.css" />
 <sec:authentication property="principal" var="loginMember" scope="page" />
 <style>
 .content-wrap {
@@ -129,6 +128,7 @@
 										(${trade.tradeQuality}급 : ${trade.tradeQuality eq 'S' ? '상태 좋음' : trade.tradeQuality eq 'A' ? '상태 양호' : '아쉬운 상태'})
 									</div>
 									<h1 class="display-5 fw-bolder">${trade.tradeTitle}</h1>
+									<p>판매자 ${trade.userId}</p>
 									<div class="fs-5 mb-5">
 										<span><fmt:formatNumber type="number"
 												value="${trade.tradePrice}" />원</span>
@@ -153,16 +153,29 @@
 										<i class="fa-solid fa-land-mine-on"></i> 신고하기
 									</button>
 								</div>
-								<div class="chat-wrap">
+								<%-- <div class="chat-wrap">
 									<button id="chatBtn" class="btn btn-outline-dark flex-shrink-0" onclick="location.href='${pageContext.request.contextPath}/chat/chat.do';" type="button">
 										<i class="fa-regular fa-comment-dots"></i> 판매자와 대화하기
 									</button>
+								</div> --%>
+								
+								<div class="chat-wrap">
+									<form:form method="GET"
+										name="chatForm"
+										action="${pageContext.request.contextPath}/chat/chat.do">
+										<input id="chatBtn" class="btn btn-outline-dark flex-shrink-0" type="hidden" name="chatTargetId" value="${trade.userId}" />
+										<button type="submit">판매자와 채팅하기</button>
+									</form:form>	   
+								
 								</div>
+								
+								
 							</div>
 						</div>
-						<sec:authorize access="isAuthenticated()"> 
+						<sec:authorize access="isAuthenticated()">
+							<sec:authentication property="principal.username" var="loginUser"/> 
 	                        <div class="d-flex" style="margin-top:20px; height:38px;">
-                            <c:if test="${not empty user.userId}">
+                            <c:if test="${loginUser eq trade.userId}">
                             <c:if test="${trade.tradeSuccess eq '거래 대기중'}">
                             <button class="btn btn-outline-success flex-shrink-0" type="button" onclick="updateSuccess();" style="margin-right:10px;">
                                 <i class="bi-cart-fill me-1"></i>

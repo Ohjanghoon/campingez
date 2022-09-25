@@ -1,10 +1,12 @@
 package com.kh.campingez.community.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
@@ -74,5 +76,16 @@ public interface CommunityDao {
    @Delete("delete from comm_comment where comment_no = #{commentNo}")
    int deleteComment(CommunityComment cc);
    
+   @Select("select (select user_id from report where comm_no = c.comm_no and user_id = #{userId}) report_user_id from community c where comm_no = #{no}")
+   String getUserReportComm(Map<String, Object> param);
 
+   @Select("select * from community where comm_isdelete = 'N' and category_id = #{categoryType} and ${searchType} like '%' || #{searchKeyword} || '%'")
+   List<Community> communityFind(RowBounds rowBounds, @Param("categoryType")String categoryType, @Param("searchType")String searchType, @Param("searchKeyword")String searchKeyword);
+
+   @Select("select count(*) from community where comm_isdelete = 'N' and category_id = #{categoryType} and ${searchType} like '%' || #{searchKeyword} || '%'")
+   int getFindTotalContent(@Param("categoryType")String categoryType, @Param("searchType")String searchType, @Param("searchKeyword")String searchKeyword);
+
+   @Select("select * from comm_comment where comment_no = #{commentRef}")
+   CommunityComment getCommentByCommentNo(String commentRef);
+   
 }
