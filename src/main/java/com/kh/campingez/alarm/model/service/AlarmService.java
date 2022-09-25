@@ -29,4 +29,8 @@ public interface AlarmService {
 
 	int deleteAlarm(int alrId);
 
+	int allReadAlarm(String userId);
+
+	int allDeleteAlarm(String userId);
+
 }

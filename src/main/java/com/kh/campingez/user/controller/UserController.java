@@ -287,4 +287,16 @@ public class UserController {
 		int result = alarmService.deleteAlarm(alrId);
 		return ResponseEntity.ok().body(result);
 	}
+	
+	@PostMapping("/allReadAlarm.do")
+	public ResponseEntity<?> allReadAlarm(@RequestParam String userId) {
+		int result = alarmService.allReadAlarm(userId);
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@PostMapping("/allDeleteAlarm.do")
+	public ResponseEntity<?> allDeleteAlarm(@RequestParam String userId) {
+		int result = alarmService.allDeleteAlarm(userId);
+		return ResponseEntity.ok().body(result);
+	}
 }

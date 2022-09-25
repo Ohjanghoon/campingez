@@ -301,4 +301,14 @@ public class AlarmServiceImpl implements AlarmService {
 	public int deleteAlarm(int alrId) {
 		return alarmDao.deleteAlarm(alrId);
 	}
+	 
+	@Override
+	public int allReadAlarm(String userId) {
+		return alarmDao.allReadAlarm(userId);
+	}
+	
+	@Override
+	public int allDeleteAlarm(String userId) {
+		return alarmDao.allDeleteAlarm(userId);
+	}
 }
