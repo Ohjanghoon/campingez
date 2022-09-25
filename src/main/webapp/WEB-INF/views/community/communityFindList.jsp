@@ -8,18 +8,11 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
    <jsp:param value="커뮤니티게시판" name="title" />
 </jsp:include>
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/community.css" />
 <sec:authentication property="principal" var="loginMember" scope="page" />
-<style>
-	#inputButton{
-		height: 30px;
-	    line-height: 0px;
-	    position: relative;
-	    bottom: 2.5px;
-    }
-</style>
 
-<header class="bg-dark py-5">
+
+<!-- <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder" style="cursor:pointer;">자유게시판</h1>
@@ -27,7 +20,7 @@
                 </div>
             </div>
         </header>
-
+ -->
 
 <div class="panel">
 			<div class="form-inline" style="display:flex; justify-content : center; margin:50px;">
@@ -38,8 +31,12 @@
 
 <div style="text-align: center;">
 	<span>
-		<c:if test="${categoryType eq 'com1'}" >자유게시판</c:if>
-		<c:if test="${categoryType eq 'com2'}" >꿀팁게시판</c:if>
+		<c:if test="${categoryType eq 'com1'}" >
+			<span class="strong">자유게시판</span>
+		</c:if>
+		<c:if test="${categoryType eq 'com2'}" >
+			<span class="strong">꿀팁게시판</span>
+		</c:if>
 		 : "${searchKeyword}"
 		(<c:if test="${searchType eq 'comm_title'}">제목</c:if><c:if test="${searchType eq 'comm_content'}">내용</c:if>)에 대한 검색 결과입니다.
 	</span>
@@ -47,76 +44,95 @@
 
 <div id="free">
 <section id="community-container" class="container">
-      
-
-   <table class="table table-hover" style="margin-top:30px;">
-	<thead>
-    <tr>
-      <th scope="col"></th>
-      <th scope="col" colspan="10">제목</th>
-      <th scope="col">작성자</th>
-      <th scope="col">조회수</th>
-      <th scope="col">신고수</th>
-      <th scope="col">좋아요</th>
-      <th scope="col">작성일</th>
-
-    </tr>
-  </thead>
-	  <tbody>
-     <c:if test="${not empty list}">
-         <c:forEach items="${list}" var="comm">
-         <div id="contentArea">
-	    <tr onclick="location.href='${pageContext.request.contextPath}/community/communityView.do?no=${comm.commNo}';" style="cursor:pointer;">
-	      <th scope="row">${comm.commNo}</th>
-	      <td colspan="10" style="width:40%;">${comm.commTitle}</td>
-	      <td>${comm.userId}</td>
-	      <td style="width:7%;"><img src="${pageContext.request.contextPath}/resources/images/eye.png" style="width:30px;heigh:30px;" />
-	      ${comm.readCount}</td>
-	      <td style="width:7%;"><img src="${pageContext.request.contextPath}/resources/images/siren.png" style="width:15px;heigh:15px;" />
-	      ${comm.reportCount}</td>
-	      <td style="width:7%;"><img id="heart" src="${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png" style="width:15px; heigh:15px;" />
-	      ${comm.likeCount}</td>
-	      <td><fmt:parseDate value="${comm.commDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="commDate"/>
-	          <fmt:formatDate value="${commDate}" pattern="yy-MM-dd HH:mm"/></td>
-		</tr>
-         </div>
-         </c:forEach>
+      <c:if test="${empty list}">
+         <table class="table search-list-tbl">
+         	<thead>
+				 <tr>
+				      <th scope="col">분류</th>
+				      <th scope="col" colspan="10" class="title">제목</th>
+				      <th scope="col">작성자</th>
+				      <th scope="col">조회수</th>
+				      <th scope="col">신고수</th>
+				      <th scope="col">좋아요</th>
+				      <th scope="col">작성일</th>
+			    </tr>
+         	</thead>
+         	<tbody>
+         		<tr>
+         			<td colspan="17" scope="row" class="not-list">등록된 게시글이 없습니다.</td>
+         		</tr>
+         	</tbody>
+         </table>
       </c:if>
-		<c:if test="${empty list}">
-			<div id="contentArea">
-				<tr>
-					<td colspan="17" style="text-align: center; line-height: 50px;">
-						<span>검색된 게시물이 없습니다.</span>
-					</td>
+      <c:if test="${not empty list}">
+		   <table class="table table-hover search-list-tbl" style="margin-top:30px;">
+			<thead>
+		    <tr>
+		      <th scope="col">분류</th>
+		      <th scope="col" colspan="10" class="title">제목</th>
+		      <th scope="col">작성자</th>
+		      <th scope="col">조회수</th>
+		      <th scope="col">신고수</th>
+		      <th scope="col">좋아요</th>
+		      <th scope="col">작성일</th>
+		    </tr>
+		  </thead>
+			  <tbody>
+		         <c:forEach items="${list}" var="comm">
+		         <div id="contentArea">
+			    <tr onclick="location.href='${pageContext.request.contextPath}/community/communityView.do?no=${comm.commNo}';" style="cursor:pointer;">
+			      <td scope="row">
+			      	<span class="badge category-name-badge ${param.categoryType == 'com1' ? 'free-badge' : 'honey-badge'}">${comm.categoryName}</span>
+			      </td>
+			      <td colspan="10" style="width:40%;" class="title">${comm.commTitle}</td>
+			      <td>${comm.userId}</td>
+			      <td style="width:7%;"><img src="${pageContext.request.contextPath}/resources/images/eye.png" style="width:30px;heigh:30px;" />
+			      ${comm.readCount}</td>
+			      <td style="width:7%;"><img src="${pageContext.request.contextPath}/resources/images/siren.png" style="width:15px;heigh:15px;" />
+			      ${comm.reportCount}</td>
+			      <td style="width:7%;"><img id="heart" src="${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png" style="width:15px; heigh:15px;" />
+			      ${comm.likeCount}</td>
+			      <td><fmt:parseDate value="${comm.commDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="commDate"/>
+			          <fmt:formatDate value="${commDate}" pattern="yy-MM-dd HH:mm"/></td>
 				</tr>
-			</div>
-     	</c:if>
-	  </tbody>
-</table>
+		         </div>
+		         </c:forEach>
+			  </tbody>
+		</table>
+      </c:if>
       <sec:authorize access="isAuthenticated()"> 
    		<input type="button" value="글쓰기"  class="btn btn-outline-dark flex-shrink-0"
      	 onclick="location.href='${pageContext.request.contextPath}/community/communityEnroll.do?'" />
       </sec:authorize>
       
-   <div style="text-align:center;">
-        ${pagebar}
-        
-   </div>
-   <div id="search-container" style="text-align: center;">
-		<div id="select">
-			<form action="${pageContext.request.contextPath}/community/communityFind.do" method="get">
-				<select class="form-select-sm p-1 m-1" aria-label="Default select example" id='selCategory' name="categoryType">
-					<option value='com1'>자유게시판</option>
-					<option value='com2'>꿀팁게시판</option>
-				</select>
-				<select class="form-select-sm p-1 m-1" aria-label="Default select example" id='selSearchOption' name="searchType">
-					<option value='comm_title'>제목</option>
-					<option value='comm_content'>내용</option>
-				</select>
-				<input id="inputKeyword" type="text" name="searchKeyword"/>
-				<input id="inputButton" class="btn btn-outline-secondary" type="submit" value="검색" />
-			</form>
-		</div>
+	<c:if test="${not empty list}">
+	   <nav style="text-align:center;">
+	        ${pagebar}
+	   </nav>
+	</c:if>
+   <div id="search-container">
+		<form action="${pageContext.request.contextPath}/community/communityFind.do" method="get">
+			<div id="select">
+				<div class="selCategory-wrap">
+					<select class="form-select selCategory" id='selCategory' name="categoryType">
+						<option value='com1' ${param.categoryType == 'com1' ? 'selected' : ''}>자유게시판</option>
+						<option value='com2' ${param.categoryType == 'com2' ? 'selected' : ''}>꿀팁게시판</option>
+					</select>
+				</div>
+				<div class="selSearchOption-wrap">
+					<select class="form-select selSearchOption" id='selSearchOption' name="searchType">
+						<option value='comm_title' ${param.searchType == 'comm_title' ? 'selected' : ''}>제목</option>
+						<option value='comm_content' ${param.searchType == 'comm_content' ? 'selected' : ''}>내용</option>
+					</select>
+				</div>
+				<div class="searchKeyword-wrap">
+					<input type="text" class="form-control searchKeyword" name="searchKeyword" value="${param.searchKeyword}"/>
+				</div>
+				<div class="btn-wrap">
+					<button type="submit" class="btn btn-outline-primary" id="search-btn">검색</button>
+				</div>
+			</div>
+		</form>
 	</div>
 </section>
 </div>

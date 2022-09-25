@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.campingez.chat.model.dao.ChatDao">
+  
+  <select id="findMyChat" resultMap="recentChatListMap">
+  	select
+	    tar.*,
+	    cl.chat_msg,
+	    chat_time
+	from
+	    chat_user c
+	    join chat_user tar on c.chatroom_id = tar.chatroom_id
+	    left join (
+	        select
+	        	*
+        	from (
+	            select 
+	                cl.*,
+	                row_number() over(partition by chatroom_id order by chat_no desc) rnum
+	            from
+	                chat_log cl )
+            where
+                rnum =1
+	    ) cl on c.chatroom_id = cl.chatroom_id
+	where
+	    c.user_id = #{userId}
+	    and
+	    tar.user_id != #{userId}
+	    and
+	    c.deleted_at is null
+	order by
+	    c.created_at desc,
+		chat_time desc
+  </select>
+  
+  <resultMap type="chatUser" id="recentChatListMap">
+  	<id column="chatroom_id" property="chatroomId"/>
+  	<result column="user_id" property="userId" />
+  	<result column="last_check" property="lastCheck" />
+  	<result column="created_at" property="createdAt" />
+  	<result column="deleted_at" property="deletedAt" />
+  	<association property="chatLog" javaType="chatLog">
+	  	<result column="chat_msg" property="chatMsg" />
+	  	<result column="chat_time" property="chatTime" />
+  	</association>
+  </resultMap>
+</mapper>

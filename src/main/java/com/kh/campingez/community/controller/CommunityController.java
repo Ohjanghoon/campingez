@@ -104,7 +104,7 @@ public class CommunityController {
       int totalContent = communityService.getFindTotalContent(categoryType, searchType, searchKeyword);
       log.debug("totalContent = {}", totalContent);
       String url = request.getRequestURI(); // /spring/board/boardList.do
-      String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
+      String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, url);
       model.addAttribute("pagebar", pagebar);
       
       return "community/communityFindList";

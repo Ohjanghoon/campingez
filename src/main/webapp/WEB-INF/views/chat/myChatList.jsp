@@ -14,8 +14,12 @@
 	list-style : none;
 	padding : 0;
 }
+.chatUserProfile {
+	cursor : pointer;
+}
 .chatUserId {
 	cursor : pointer;
+	width : 90%;
 }
 .userMsg {
 	background-color: #7A86B6;
@@ -29,6 +33,10 @@
 	background-color : #7A86B6 !important;
 	color : white;
 }
+.fa-circle-user {
+	color : #C8B6E2;
+	scale : 1.7;
+}
 </style>
 <sec:authentication property="principal.username" var="loginUser" />
 <div class="container my-5">
@@ -37,9 +45,10 @@
 		<table class="table" id="chatList">
 			<thead>
 				<tr class="text-center">
-					<th colspan="2">채팅목록</th>
+					<th colspan="3" class="py-2">채팅목록</th>
 				</tr>
 			</thead>
+			<tbody>
 			<c:if test="${empty chatUsers}">
 				<tr>
 					<td class="text-center p-3">현재 채팅가능한 채팅방이 없습니다.</td>
@@ -47,21 +56,26 @@
 			</c:if>
 			<c:if test="${not empty chatUsers}">
 			<c:forEach items="${chatUsers}" var="chatUser">
-				<tr
-					data-chatTargetId="${chatUser.userId}"
-					data-chatroomId="${chatUser.chatroomId}">
-					<th class="px-3 w-100 chatUserId" onclick="enterChatroom(event)">
-						${chatUser.userId}
-					</th>
-					<td class="text-end align-center">
-						<button type="button" class="btn" style="border: none;"
-							onclick="deleteChatroom('${chatUser.chatroomId}')" data-chatroomId="${chatUser.chatroomId}">
+				<tr data-chatroomid="${chatUser.chatroomId}">
+					<td class="align-middle chatUserProfile" onclick="enterChatroom('${chatUser.chatroomId}')">
+						<i class="fa-solid fa-circle-user"></i>
+					</td>
+					<td class="px-3 chatUserId"
+						onclick="enterChatroom('${chatUser.chatroomId}')">
+						<strong>${chatUser.userId}</strong>
+						<br />
+						<small>${chatUser.chatLog.chatMsg}</small>
+					</td>
+					<td class="text-end align-middle" onclick="deleteChatroom('${chatUser.chatroomId}')" >
+						<button type="button" class="btn p-auto" style="border: none;"
+							data-chatroomId="${chatUser.chatroomId}">
 							<i class="fa-solid fa-xmark"></i>
 						</button>
 					</td>
 				</tr>
 			</c:forEach>
 			</c:if>
+			</tbody>
 		</table>
 		</div>
 		<div class="col-lg-8 card py-2" style="height: 80vh;">
@@ -80,14 +94,11 @@ $(document).ready(function () {
 	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
 });
 
-
-
 //채팅방 입장시
-const enterChatroom = (e) => {
-	const tr = e.target.parentElement;
-	console.log(tr);
-	const chatroomId = tr.dataset.chatroomid;
-	console.log(chatroomId);
+const enterChatroom = (chatroomId) => {
+	//const tr = e.target.parentElement;
+	//const chatroomId = tr.dataset.chatroomid;
+	//console.log(chatroomId);
 	const chatLog = document.querySelector("#chatLog");
 	
 	chatLog.innerHTML = "";
@@ -120,11 +131,11 @@ const enterChatroom = (e) => {
 						<ul class="list-unstyled list-group d-flex align-items-start" >
 							<li class="list-item w-50 mt-2 mb-1"><strong>\${userId}</strong></li>
 							<li class="list-item"><span class="card targetMsg p-2">\${chatMsg}</span></li>
-							<li class="list-item w-50"><small>\${date}</small></li>
+							<li class="list-item w-50" focus();><small>\${date}</small></li>
 						</ul>
 					`;
 				}
-				
+
 				chatLog.insertAdjacentHTML('beforeend', html);
 				
 			});
@@ -134,11 +145,19 @@ const enterChatroom = (e) => {
 			btnArea.innerHTML += `
 				<input type="text" id="msg" class="form-control" placeholder="Message">
 
-			<div class="input-group-append" style="padding: 0px;">
+				<div class="input-group-append" style="padding: 0px;">
 				  <button id="sendBtn" class="btn btn-outline-secondary" type="button"
 				  	onclick="sendMsg('\${chatroomId}')"><i class="fa-solid fa-paper-plane"></i> Send</button>
 				</div>
 			`;
+			chatLog.scrollTop = chatLog.scrollHeight;
+			
+			document.querySelector("#msg").addEventListener('keyup', (e) => {
+				
+				if(e.key === 'Enter'){
+					sendMsg(`\${chatroomId}`);
+				}
+			});
 		},
 		error : console.log,
 		complete() {
@@ -146,7 +165,7 @@ const enterChatroom = (e) => {
 			stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
 				const {"content-type" : contentType} = message.headers;
 				if(!contentType) return;
-				
+					
 				console.log(`/app/chat/\${chatroomId} : `, message);
 
 				const chatLog = document.querySelector("#chatLog");	
@@ -175,11 +194,58 @@ const enterChatroom = (e) => {
 				}
 				
 				chatLog.insertAdjacentHTML('beforeend', html);
+				
+				chatLog.scrollTop = chatLog.scrollHeight;
+				
 			});	
 		}
 	});
 	
 };
+
+setTimeout(() => {
+	stompClient.subscribe(`/app/chat/myChatList`, (message) => {
+		console.log(`/app/chat/myChatList : `, message);
+		
+		const {chatroomId, userId, chatMsg} = JSON.parse(message.body);
+		
+		let tr = document.querySelector(`tr[data-chatroomid = "\${chatroomId}"]`);
+		if(tr) {
+			tr.querySelector("small").innerHTML = chatMsg;
+		}
+		else {
+			//신규채팅방인 경우
+			tr = document.createElement("tr");
+			tr.dataset.chatroomid = chatroomId;
+			
+			let html = `
+				<td class="align-middle chatUserProfile" onclick="enterChatroom('\${chatroomId}')">
+					<i class="fa-solid fa-circle-user"></i>
+				</td>
+				<td class="px-3 chatUserId"
+					onclick="enterChatroom('\${chatroomId}')">
+					<strong>\${userId}</strong>
+					<br />
+					<small>\${chatMsg}</small>
+				</td>
+				<td class="text-end align-middle" onclick="deleteChatroom('\${chatroomId}')" >
+					<button type="button" class="btn p-auto" style="border: none;"
+						data-chatroomId="\${chatroomId}">
+						<i class="fa-solid fa-xmark"></i>
+					</button>
+				</td>
+			`;
+			
+			tr.insertAdjacentHTML("afterbegin", html);
+			
+		}
+		
+		//끌어올리기
+		const tbody = document.querySelector("#chatList tbody");
+		tbody.insertAdjacentElement('afterbegin', tr);
+	});
+		
+}, 500);
 
 // 메세지 전송 버튼 클릭시
 const sendMsg = (chatroomId) => {
@@ -224,7 +290,9 @@ const deleteChatroom = (chatroomId) => {
 						chatTime : Date.now()
 					};
 					
-					stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+				stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+				
+				location.reload();
 			},
 			error : console.log
 			

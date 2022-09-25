@@ -8,7 +8,13 @@
 	<jsp:param value="중고거래게시판" name="title" />
 </jsp:include>
 <sec:authentication property="principal" var="loginMember" scope="page" />
-
+<style>
+.selected {
+	background-color : #212529;
+	color: white;
+	border:none;
+}
+</style>
 <!-- Header-->
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
@@ -19,18 +25,14 @@
                 </div>
             </div>
         </header>
-
-		
-		
-		
 		<div class="panel">
 			<div class="form-inline" style="display:flex; justify-content : center; margin:50px;">
 			<br />
-				<input class="btn btn-outline-dark mt-auto" type="button" value="텐트/타프" style="margin-right:30px;"/>
-				<input class="btn btn-outline-dark mt-auto" type="button" value="캠핑 테이블 가구" style="margin-right:30px;"/>
-				<input class="btn btn-outline-dark mt-auto" type="button" value="캠핑용 조리도구" style="margin-right:30px;"/>
-				<input class="btn btn-outline-dark mt-auto" type="button" value="기타 캠핑용품" style="margin-right:30px;"/>
-				<input class="btn btn-outline-dark mt-auto" type="button" value="전체 상품 보기" >
+				<input class="btn btn-outline-dark mt-auto category" type="button" value="텐트/타프" style="margin-right:30px;"/>
+				<input class="btn btn-outline-dark mt-auto category" type="button" value="캠핑 테이블 가구" style="margin-right:30px;"/>
+				<input class="btn btn-outline-dark mt-auto category" type="button" value="캠핑용 조리도구" style="margin-right:30px;"/>
+				<input class="btn btn-outline-dark mt-auto category" type="button" value="기타 캠핑용품" style="margin-right:30px;"/>
+				<input class="btn btn-outline-dark mt-auto category" type="button" value="전체 상품 보기" >
 			</div>
 		</div>	
 
@@ -61,13 +63,14 @@
 const headers = {};
 headers['${_csrf.headerName}'] = '${_csrf.token}';
 $(document).ready(function(){
-	function selectTrade(value){
+	function selectTrade(value, cPage){
 		$.ajax({
 	        url : "${pageContext.request.contextPath}/trade/align.do",
 	        type : "GET",
 	        headers,
 	        data : {
-	           categoryId : value
+	           categoryId : value,
+	           cPage
 	        },
 	        success(data){
 				
@@ -119,21 +122,49 @@ $(document).ready(function(){
 				$('#pagebar').html(data.pagebar)
 	 			//const url = "${pageContext.request.contextPath}/trade/tradeList.do?category=" + value;
 				//location.replace(url); 
+				
+				// 페이지 이동
+				document.querySelectorAll(".paging").forEach((span) => {
+					span.addEventListener('click', (e) => {
+						const pageNo = e.target.id.substring(4);
+						selectTrade(value, pageNo);
+						
+						const buttons = document.querySelectorAll(".category");
+						for(let i = 0; i < buttons.length; i++) {
+							if(buttons[i].classList.contains('selected')) {
+								selectCategory(buttons[i].value);
+							}
+						}
+					});
+				});
 	        },
 	        error : console.log
 	    });
 	} 
 	
-	selectTrade('all');
-	 
-	$(".panel").on('click', (e) => {
-	    var value = e.target.value == "텐트/타프" ? "tra1" : (e.target.value == "캠핑 테이블 가구" ? "tra2" : (e.target.value == "캠핑용 조리도구") ? "tra3" : (e.target.value == "기타 캠핑용품") ? "tra4" : "all") ;
-	    selectTrade(value);
+	selectTrade('all', 1);
+	
+	// 카테고리 선택 처리
+	const selectCategory = (value) => {		
+		const buttons = document.querySelectorAll(".category");
+		for(let i = 0; i < buttons.length; i++) {
+			if(buttons[i].value == value) {
+				buttons[i].classList.add('selected');
+			} else {
+				buttons[i].classList.remove('selected');
+			}
+		}
+	};
+	
+	document.querySelectorAll(".category").forEach((btn) => {
+		btn.addEventListener('click', (e) => {
+			const value = btn.value == "텐트/타프" ? "tra1" : (btn.value == "캠핑 테이블 가구" ? "tra2" : (btn.value == "캠핑용 조리도구") ? "tra3" : (btn.value == "기타 캠핑용품") ? "tra4" : "all") ;
+
+			selectTrade(value);
+		    selectCategory(btn.value);
+		})
 	});
 });
-
-
-
 </script>
                         
 
