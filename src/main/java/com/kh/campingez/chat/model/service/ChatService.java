@@ -19,4 +19,6 @@ public interface ChatService {
 
 	List<ChatUser> findMyChat(String userId);
 
+	int deleteChatroom(ChatUser chatUser);
+
 }
