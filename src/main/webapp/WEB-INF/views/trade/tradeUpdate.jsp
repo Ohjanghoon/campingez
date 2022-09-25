@@ -80,7 +80,7 @@
 	  		<input type="text" class="form-control" id="title" placeholder="게시글 제목" name="tradeTitle" value="${trade.tradeTitle}" required>
 	  		<label for="title" class="trade-font-color">게시글 제목</label>
  			<div class="form-floating price-wrap">
-			  <input type="text" class="form-control" id="price" placeholder="\ 판매가격" name="tradePrice" value="${trade.tradePrice}" required> 
+			  <input type="text" class="form-control" id="price" placeholder="\ 판매가격" name="tradePrice" value="<fmt:formatNumber value="${trade.tradePrice}" pattern="#,###"/>" required> 
 			  <label for="price" class="trade-font-color">\ 판매가격</label>
 			</div>	
 		</div>	
@@ -116,6 +116,51 @@ $(document).ready(function() {
 		  placeholder: '중고거래 게시판에 올릴 게시글 내용을 작성해주세요.'
           
 	});
+});
+
+document.querySelector("#price").addEventListener('keyup', (e) => {
+ 	let value = e.target.value;
+	value = Number(value.replaceAll(",", ''));
+	if(isNaN(value)) {
+		e.target.value = 0;
+	} else {
+		const formatVal = value.toLocaleString('ko-KR');
+		e.target.value = formatVal; 
+	}
+});
+
+document.querySelector("#enroll-btn").addEventListener('click', (e) => {
+	const upFile = document.querySelector("#upFile");
+	const tradeQuality = document.querySelector("#tradeQuality");
+	const content = document.querySelector("#summernote");
+	const title = document.querySelector("#title");
+	let price = document.querySelector("#price");
+	const delFileTotal = $("input[name=delFile]").length
+	const delFileChecked = $("input[name=delFile]:checked").length;
+
+	if(upFile.files.length < 1 && (delFileTotal == delFileChecked)) {
+		alert("반드시 하나 이상의 사진을 등록해주세요.");
+		upFile.focus();
+		return;
+	} else if(!tradeQuality.value) {
+		alert("상품 상태를 반드시 선택해주세요.");
+		tradeQuality.focus();
+		return;
+	} else if(!content.value) {
+		alert("반드시 게시글 내용을 입력해주세요.");
+		content.focus();
+		return;
+	} else if(!title.value) {
+		alert("반드시 게시글 제목을 입력해주세요.");
+		title.focus();
+		return;
+	} else if(!price.value || price.value == 0) {
+		alert("반드시 물품 가격을 입력해주세요.");
+		price.focus();
+		return;
+	}
+	price.value = Number(price.value.replaceAll(',',''));
+	document.tradeUpdateFrm.submit();
 });
 </script>
 
