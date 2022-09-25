@@ -14,13 +14,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.campingez.chat.model.dto.ChatLog;
 import com.kh.campingez.chat.model.dto.ChatUser;
 import com.kh.campingez.chat.model.service.ChatService;
-import com.kh.campingez.trade.model.service.TradeService;
 import com.kh.campingez.user.model.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class ChatController {
 	
 	
 	@GetMapping("/chat.do")
-	public void chat(@RequestParam("chatTargetId") String chatTargetId, Authentication auth, Model model) {
+	public String chat(@RequestParam("chatTargetId") String chatTargetId, Authentication auth, Model model) {
 
 		// 1. 채팅방 유무 조회
 		User user = (User) auth.getPrincipal();
@@ -71,6 +71,7 @@ public class ChatController {
 		model.addAttribute("chatroomId", chatroomId);
 		model.addAttribute("chatLogs", chatLogs);	//판매자ID
 		
+		return "redirect:/chat/myChatList.do";
 	}
 
 	private String generateChatroomId() {
@@ -118,5 +119,15 @@ public class ChatController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.body(chatLogs);
+	}
+	
+	@PostMapping("/chatroomDelete.do")
+	public ResponseEntity<?> deleteChatroom(ChatUser chatUser){
+		
+		log.debug("chatUser = {}", chatUser);
+		
+		int result = chatService.deleteChatroom(chatUser);
+		
+		return ResponseEntity.ok(result);
 	}
 }

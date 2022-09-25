@@ -124,7 +124,7 @@
           </div>
         </div>
         <div style="text-align: right;">
-	        <a href="#" class="find" id="btnModal" style="display: inline;">Forgot Id?</a><br />
+	        <span class="find" id="btnModal" style="display: inline; cursor: pointer;">Forgot Id?</span><br />
 	        <a href="${pageContext.request.contextPath}/user/userFindPassword.do" class="find" style="display: inline;">Forgot Password?</a>
         </div>
 		<div>
@@ -243,6 +243,7 @@ inputs.forEach(input => {
 	const modal = document.getElementById("modal")
     function modalOn() {
         modal.style.display = "flex";
+        document.querySelector('#pwd-show').style.zIndex = "0";
         $('body').css("overflow", "hidden");
     }
     function isModalOn() {
@@ -250,6 +251,7 @@ inputs.forEach(input => {
     }
     function modalOff() {
         modal.style.display = "none"
+        document.querySelector('#pwd-show').style.zIndex = "999";
         $('body').css("overflow-y", "scroll");
     }
     const btnModal = document.getElementById("btnModal")

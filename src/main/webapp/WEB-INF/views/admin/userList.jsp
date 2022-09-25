@@ -93,49 +93,33 @@ const updateUser = (button) => {
 	console.log(button.id);
 };
 
-document.querySelectorAll("#auth").forEach((select) => {
-	select.addEventListener('change', (e) => {
-		const userId = e.target.dataset.userId;
-		const changeAuth = e.target.selectedOptions[0].innerHTML; 
-		const changeAuthVal = e.target.value;
-
-		if(confirm(`[\${userId}]님의 권한을 '\${changeAuth}회원'으로 변경하시겠습니까?`)) {
-			const headers = {};
-			headers['${_csrf.headerName}'] = '${_csrf.token}';
-			
-			$.ajax({
-				url : "${pageContext.request.contextPath}/admin/updateUserRole.do",
-				data : {userId, changeAuth:changeAuthVal},
-				headers,
-				method : "POST",
-				success(response) {
-					e.target.selected = true;
-				},
-				error : console.log
-			});
-		} else {
-			e.target.querySelector("[selected]").selected = true;
-		}
-	});
-});
-
-document.querySelector("#selectType").addEventListener('change', (e) => {
-	if(!e.target.value) {
-		location.reload();
+function clickPaging() {
+	var id = this.id;
+	var page = id.substring(4);
+	if(page == 0){
+		page = -1;
 	}
+	userListAjax(page);
+	console.log(page);
+}
+
+const pagings = document.querySelectorAll(".paging");
+
+pagings.forEach(paging => {
+	paging.addEventListener("click", clickPaging);
 });
 
-document.querySelector("#searchBtn").addEventListener('click', (e) => {
+function userListAjax(cPage) {
 	const selectType = document.querySelector("#selectType").value;
 	const selectKeyword = document.querySelector("#selectKeyword").value;
 	
-	if(!selectKeyword) {
+ 	if(!selectKeyword) {
 		alert("검색어를 선택해주세요.");
 		return;
-	}
+	} 
 	
 	$.ajax({
-		url : `${pageContext.request.contextPath}/admin/selectUser.do?selectType=\${selectType}&selectKeyword=\${selectKeyword}`,
+		url : `${pageContext.request.contextPath}/admin/selectUser.do?selectType=\${selectType}&selectKeyword=\${selectKeyword}&cPage=`+cPage,
 		method : "GET",
 		success(response) {
 			console.log(response);
@@ -181,9 +165,52 @@ document.querySelector("#searchBtn").addEventListener('click', (e) => {
 				</tr>
 				`;
 			};
+			const pagings = document.querySelectorAll(".paging");
+
+			pagings.forEach(paging => {
+				paging.addEventListener("click", clickPaging);
+			});
 		},
 		error : console.log
 	});
+	
+}
+
+document.querySelectorAll("#auth").forEach((select) => {
+	select.addEventListener('change', (e) => {
+		const userId = e.target.dataset.userId;
+		const changeAuth = e.target.selectedOptions[0].innerHTML; 
+		const changeAuthVal = e.target.value;
+
+		if(confirm(`[\${userId}]님의 권한을 '\${changeAuth}회원'으로 변경하시겠습니까?`)) {
+			const headers = {};
+			headers['${_csrf.headerName}'] = '${_csrf.token}';
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/admin/updateUserRole.do",
+				data : {userId, changeAuth:changeAuthVal},
+				headers,
+				method : "POST",
+				success(response) {
+					e.target.selected = true;
+				},
+				error : console.log
+			});
+		} else {
+			e.target.querySelector("[selected]").selected = true;
+		}
+	});
 });
+
+document.querySelector("#selectType").addEventListener('change', (e) => {
+	if(!e.target.value) {
+		location.reload();
+	}
+});
+
+document.querySelector("#searchBtn").addEventListener('click', (e) => {
+	userListAjax(1);
+});
+
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
