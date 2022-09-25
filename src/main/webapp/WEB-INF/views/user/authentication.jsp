@@ -8,15 +8,16 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
-<html>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/popup.css" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<style>
+    .modal_close_btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+</style>
 	<div id="con">
 		<div id="login">
 			<div id="login_form">
@@ -52,11 +53,11 @@
 						<button id="updateConfirm" type="button" class="btn btn-outline-dark">Sign in</button>
 					</div>
 				</form>
+ 				<a class="modal_close_btn"><img src="${pageContext.request.contextPath}/resources/images/mypage/modalclose.png"
+					 width="30px"></a>
 			</div>
 		</div>
 	</div>
-</body>
-
 <script>
 function confirmUpdate(){
 	$.ajax({
@@ -69,8 +70,7 @@ function confirmUpdate(){
 		success(response){
 			console.log(response.msg);
 			if(response.msg == "success"){
-				  window.opener.location.href= "${pageContext.request.contextPath}/userInfo/userInfo.do";
-				  window.close();
+				  window.location.href= "${pageContext.request.contextPath}/userInfo/userInfo.do";
 			}else{
 				getImage();
 				document.querySelector('#answer').value = "";
@@ -136,4 +136,3 @@ function audioPlayer(objUrl){
 
 </script>
 
-</html>
