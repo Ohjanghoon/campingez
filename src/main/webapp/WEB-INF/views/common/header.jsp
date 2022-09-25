@@ -102,6 +102,7 @@ a, a:hover {
     height: 50px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 10px;
     border-bottom: 1px solid lightgray;
 }
@@ -137,6 +138,13 @@ a, a:hover {
 }
 .delete-btn {
 	background-color: transparent;
+}
+.all-read-wrap {
+	padding: 0 10px;
+	cursor: pointer;
+}
+.all-delete-wrap {
+	cursor: pointer;
 }
 </style>
 <script>
@@ -209,6 +217,47 @@ const beforeTime = (alarmDate) => {
 		});
 	}
 	
+	const allReadAlarm = (e) => {
+		if(!userId) return;
+		
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/user/allReadAlarm.do",
+			data : {userId},
+			type : "POST",
+			headers,
+			content : "application/json",
+			success(response) {
+				$('.alarmList').tooltip('hide');
+				getAlarmList(userId);
+			},
+			error : console.log
+		});
+		
+	}
+	
+	const allDeleteAlarm = (e) => {
+		if(!userId) return;
+		
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/user/allDeleteAlarm.do",
+			data : {userId},
+			type : "POST",
+			headers,
+			content : "application/json",
+			success(response) {
+				$('.alarmList').tooltip('hide');
+				getAlarmList(userId);
+			},
+			error : console.log
+		});
+	}
+	
 	const getAlarmList = (userId) => {
 		const div = document.querySelector(".header-layer");
 		$.ajax({
@@ -221,9 +270,19 @@ const beforeTime = (alarmDate) => {
 				div.innerHTML = '';
 				
 				let html = `
-				<span id="notReadCount-wrap">
-					새소식 &nbsp;<div id="notReadCount">\${notReadCount}</div>
-				</span>
+				<div id="notReadCount-wrap">
+					<div class="new-wrap d-flex">
+						새소식 &nbsp;<div id="notReadCount">\${notReadCount}</div>
+					</div>
+					<div class="option-wrap d-flex">
+						<div class="all-read-wrap" onclick="allReadAlarm(this);">
+							모두읽음
+						</div>
+						<div class="all-delete-wrap" onclick="allDeleteAlarm(this);">
+							모두삭제
+						</div>
+					</div>
+				</div>
 				<ul id="alarm-list" class="list-group">
 				`;
 				

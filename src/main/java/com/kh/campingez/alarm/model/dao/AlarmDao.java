@@ -41,5 +41,11 @@ public interface AlarmDao {
 	
 	@Delete("delete from alarm where alr_id = #{alrId}")
 	int deleteAlarm(int alrId);
+	
+	@Update("update alarm set alr_read_datetime = sysdate where target_user_id = #{userId} and alr_read_datetime is null")
+	int allReadAlarm(String userId);
+	
+	@Delete("delete from alarm where target_user_id = #{userId}")
+	int allDeleteAlarm(String userId);
 
 }
