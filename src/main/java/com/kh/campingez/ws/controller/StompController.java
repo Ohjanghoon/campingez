@@ -36,7 +36,7 @@ public class StompController {
 	}
 	
 	@MessageMapping("/chat/{chatroomId}")
-	@SendTo({"/app/chat/{chatroomId}", "/app/admin/chatList"})
+	@SendTo({"/app/chat/{chatroomId}", "/app/chat/myChatList"})
 	public ChatLog chatlog(@RequestBody ChatLog chatLog) {
 		log.debug("chatLog = {}", chatLog);
 		
