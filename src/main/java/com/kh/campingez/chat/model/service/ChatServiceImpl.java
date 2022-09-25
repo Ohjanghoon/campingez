@@ -45,5 +45,8 @@ public class ChatServiceImpl implements ChatService {
 		return chatDao.findMyChat(userId);
 	}
 	
-	
+	@Override
+	public int deleteChatroom(ChatUser chatUser) {
+		return chatDao.deleteChatroom(chatUser);
+	}
 }

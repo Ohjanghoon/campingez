@@ -36,7 +36,7 @@ const renderStart = (score, revId) => {
 					</c:forEach>
 				</select>
 			
-				<select name="searchType" id="searchType" onchange="enrollFrm()" class="form-select-sm p-1 m-1" aria-label="Default select example">
+				<select name="searchType" id="searchType" onchange="searchTypeFrm();" class="form-select-sm p-1 m-1" aria-label="Default select example">
 					<option value="rev_enroll_date" ${param.searchType eq 'rev_enroll_date' ? 'selected' : ''}>최신순</option>
 					<option value="rev_score" ${param.searchType eq 'rev_score' ? 'selected' : ''}>평점순</option>
 					<option value="rev_photo_no" ${param.searchType eq 'rev_photo_no' ? 'selected' : ''}>사진리뷰</option>
