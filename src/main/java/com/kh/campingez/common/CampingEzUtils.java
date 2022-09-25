@@ -47,7 +47,7 @@ public class CampingEzUtils {
 	
 	public static String getPagebar2(int cPage, int limit, int totalContent, String url) {
 		StringBuffer pagebar = new StringBuffer();
-		url += "?cPage="; // spring/board/boardList.do?cPage=
+		url += url.contains("?") ? "&cPage=" : "?cPage="; // spring/board/boardList.do?cPage=
 		totalContent = totalContent == 0 ? 1 : totalContent;
 		
 		final int pagebarSize = 5;

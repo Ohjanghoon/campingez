@@ -14,10 +14,6 @@ a {
 	text-decoration: none;
 	color: black;
 }
-.accordion {
-	width:220px;
-	margin-right: 15px;
-}
 #adminNav {
 	display:flex;
 	justify-content: space-evenly;
@@ -34,7 +30,7 @@ tr > td {
 	vertical-align: middle;
 	height: 70px;
 }
-#selectType, #searchType, #inquireType {
+#selectType, #searchType, #inquireType, .selectType {
     width: 150px;
     margin-right: 5px;
 }
@@ -49,14 +45,14 @@ tr > td {
 	background-color: #A8A4CE;
     color: white;
 }
-#updateBtn, [name=updateBtn], [name=yellowCardBtn], #deleteBtn, #noProblemBtn, [name=cancelBtn] {
+#updateBtn, [name=updateBtn], [name=yellowCardBtn], #deleteBtn, #noProblemBtn, [name=cancelBtn], #update-btn, #delete-btn, #insert-btn {
 	height: 35px;
     width: 50px;
    	border: 1px solid #A8A4CE;
     color: #A8A4CE;
     background-color: white;
 }
-#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover, #deleteBtn:hover, #noProblemBtn:hover, [name=cancelBtn]:hover {
+#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover, #deleteBtn:hover, #noProblemBtn:hover, [name=cancelBtn]:hover, #update-btn:hover, #delete-btn:hover, #insert-btn:hover {
 	background-color: #A8A4CE;
     color:white;
 }
@@ -77,7 +73,7 @@ tr > td {
 }
 .content-wrap {
     width: 100%;
-    margin: 0 20px;
+    margin: 30px 20px;
 }
 .black-list-wrap {
 	margin-top: 50px;
@@ -88,6 +84,68 @@ tr > td {
 }
 .strong{
 	font-weight: bold;
+}
+.camp-name-wrap, .camp-num-wrap {
+	display: flex;
+    justify-content: space-between;
+}
+.zone-wrap, .num-wrap {
+	width: 49%;
+}
+.zone-wrap {
+	margin-top: 20px;
+}
+.check-btn {
+	margin: 0 15px;
+	border: 1px solid lightgray;
+    width: 100px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: darkslategray;
+}
+.check-btn:hover, .btn-check:checked + label {
+	border:none;
+	background-color: gray;
+	color:white;
+}
+.option-wrap, .camp-num-wrap {
+	margin: 20px 0;
+}
+.btn-wrap {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.admin-nav-wrap {
+	width:220px;
+	margin-right: 15px;
+	margin-top: 30px;
+    border: 1px solid lightgray;
+}
+.collapse-four {
+	border-bottom: 1px solid lightgray;
+}
+.tbl-camp-zone {
+	border-top: 1px solid gray;
+}
+.tbl-login-count {
+    margin: 40px 0 20px 0;
+}
+.count-wrap {
+	margin-top: 20px;
+	display: flex;
+}
+#totalCount-wrap {
+	padding-right: 20px;
+    border-right: 1px solid gray;
+}
+#totalCountByDate-wrap {
+	padding-left: 20px;
+}
+#myChart {
+	margin: 30px 0;
 }
 </style>
 <script>
@@ -100,7 +158,7 @@ $(document).ready(function () {
 		<div class="container" id="adminNav">
 			<div class="nav-wrap">
 				<nav>
-					<div class="accordion accordion-flush" id=accordionExample>
+					<div class="accordion accordion-flush admin-nav-wrap" id=accordionExample>
 					  <div class="accordion-item">
 					    <h2 class="accordion-header" id="headingOne">
 					      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -151,7 +209,7 @@ $(document).ready(function () {
 					  </div>
 					  <div class="accordion-item">
 					    <h2 class="accordion-header" id="headingFour">
-					      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+					      <button class="accordion-button collapsed collapse-four" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
 					        캠핑장관리
 					      </button>
 					    </h2>

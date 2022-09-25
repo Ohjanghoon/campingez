@@ -14,18 +14,20 @@
 			<div class="content-wrap">
 				<h2>월별 매출 통계</h2>
 				<div id="search-bar">
-					<select name="year" id="year">
+					<select class="form-select selectType" aria-label="Default select example" name="year" id="year">
 						<option value="2022">2022</option>
 						<option value="2023">2023</option>
 						<option value="2024">2024</option>
 						<option value="2025">2025</option>
 					</select>
 				</div>
-				<div>
-					총 매출 총액 : <span id="totalPrice"></span>
-				</div>
-				<div>
-					<span id="selectYear"></span>년도 매출 총액 : <span id="yearTotalPrice"></span>
+				<div class="count-wrap">
+					<div id="totalCount-wrap">
+						총 매출 총액 : <span id="totalPrice" class="strong"></span>
+					</div>
+					<div id="totalCountByDate-wrap">
+						<span id="selectYear"></span>년도 매출 총액 : <span id="yearTotalPrice" class="strong"></span>
+					</div>
 				</div>
 				<canvas id="myChart" width="1024" height="500"></canvas>
 				<div id="sale-chart-wrap"></div>
