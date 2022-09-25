@@ -8,18 +8,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
-public class ChatUser {
-	@NonNull
-	private String chatroomId;
-	@NonNull
-	private String userId;
-	private long lastCheck;
-	private LocalDateTime createdAt;
-	private LocalDateTime deletedAt;
+@ToString(callSuper = true)
+public class ChatUser extends ChatUserEntity{
+	
+	private ChatLog chatLog;
+
+	
+	public ChatUser(@NonNull String chatroomId, @NonNull String userId, long lastCheck, LocalDateTime createdAt,
+			LocalDateTime deletedAt) {
+		super(chatroomId, userId, lastCheck, createdAt, deletedAt);
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public ChatUser(@NonNull String chatroomId, @NonNull String userId) {
+		super(chatroomId, userId);
+		// TODO Auto-generated constructor stub
+	}
+
+	
 }

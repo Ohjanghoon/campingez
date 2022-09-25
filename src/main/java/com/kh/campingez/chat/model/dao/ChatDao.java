@@ -28,7 +28,6 @@ public interface ChatDao {
 	@Select("select * from chat_log where chatroom_id = #{chatroomId} order by chat_no")
 	List<ChatLog> findChatLogByChatroomId(String chatroomId);
 	
-	@Select("select tar.* from chat_user c join chat_user tar on c.chatroom_id = tar.chatroom_id where c.user_id = #{userId} and tar.user_id != #{userId} and c.deleted_at is null")
 	List<ChatUser> findMyChat(String userId);
 
 	@Delete("update chat_user set deleted_at = current_date where chatroom_id = #{chatroomId} and user_id = #{userId}")
