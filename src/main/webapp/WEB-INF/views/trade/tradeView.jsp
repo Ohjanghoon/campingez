@@ -8,7 +8,9 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="중고거래 상세보기" name="title" />
 </jsp:include>
-<sec:authentication property="principal" var="loginMember" scope="page" />
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal.username" var="loginUser" scope="page" />
+</sec:authorize>
 <style>
 .content-wrap {
 	background-size: contain;
@@ -160,20 +162,22 @@
 								</div> --%>
 								
 								<div class="chat-wrap">
+									<c:if test="${loginUser ne trade.userId}">
 									<form:form method="GET"
 										name="chatForm"
 										action="${pageContext.request.contextPath}/chat/chat.do">
-										<input id="chatBtn" class="btn btn-outline-dark flex-shrink-0" type="hidden" name="chatTargetId" value="${trade.userId}" />
-										<button type="submit">판매자와 채팅하기</button>
+										<input type="hidden" name="chatTargetId" value="${trade.userId}" />
+										<button type="submit" id="chatBtn" class="btn btn-outline-dark flex-shrink-0">
+											<i class="fa-solid fa-paper-plane"></i> 판매자와 채팅하기
+										</button>
 									</form:form>	   
+									</c:if>
 								
 								</div>
 								
 								
 							</div>
 						</div>
-						<sec:authorize access="isAuthenticated()">
-							<sec:authentication property="principal.username" var="loginUser"/> 
 	                        <div class="d-flex" style="margin-top:20px; height:38px;">
                             <c:if test="${loginUser eq trade.userId}">
                             <c:if test="${trade.tradeSuccess eq '거래 대기중'}">
@@ -196,7 +200,6 @@
                             </button>
                             </c:if>
 						</div>
-						</sec:authorize>
                     </div>
                 </div>
             </div>
