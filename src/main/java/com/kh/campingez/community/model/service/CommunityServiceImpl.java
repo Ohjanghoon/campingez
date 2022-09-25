@@ -42,8 +42,13 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
    @Override
-   public int getTotalContent() {
-      return communityDao.getTotalContext();
+   public int getTotalContentFree() {
+      return communityDao.getTotalContentFree();
+   }
+   
+   @Override
+   public int getTotalContentHoney() {
+	   return communityDao.getTotalContentHoney();
    }
    
    @Override

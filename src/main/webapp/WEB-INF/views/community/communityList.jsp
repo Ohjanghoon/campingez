@@ -10,7 +10,14 @@
 </jsp:include>
 
 <sec:authentication property="principal" var="loginMember" scope="page" />
-
+<style>
+	#inputButton{
+		height: 30px;
+	    line-height: 0px;
+	    position: relative;
+	    bottom: 2.5px;
+    }
+</style>
 
 <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
@@ -80,22 +87,22 @@
       </sec:authorize>
       
    <div style="text-align:center;">
-        ${pagebar}
+        ${pagebarFree}
         
    </div>
    <div id="search-container" style="text-align: center;">
 		<div id="select">
 			<form action="${pageContext.request.contextPath}/community/communityFind.do" method="get">
-				<select id='selCategory' name="categoryType">
+				<select class="form-select-sm p-1 m-1" aria-label="Default select example" id='selCategory' name="categoryType">
 					<option value='com1'>자유게시판</option>
 					<option value='com2'>꿀팁게시판</option>
 				</select>
-				<select id='selSearchOption' name="searchType">
+				<select class="form-select-sm p-1 m-1" aria-label="Default select example" id='selSearchOption' name="searchType">
 					<option value='comm_title'>제목</option>
 					<option value='comm_content'>내용</option>
 				</select>
-				<input type="text" name="searchKeyword"/>
-				<input type="submit" value="검색" />
+				<input id="inputKeyword" type="text" name="searchKeyword"/>
+				<input id="inputButton" class="btn btn-outline-secondary" type="submit" value="검색" />
 			</form>
 		</div>
 	</div>
@@ -157,22 +164,22 @@
       </sec:authorize>
       
    <div style="text-align:center;">
-        ${pagebar}
+        ${pagebarHoney}
         
    </div>
    <div id="search-container" style="text-align: center;">
 		<div id="select">
 			<form action="${pageContext.request.contextPath}/community/communityFind.do" method="get">
-				<select id='selCategory' name="categoryType">
+				<select class="form-select-sm p-1 m-1" aria-label="Default select example" id='selCategory' name="categoryType">
 					<option value='com1'>자유게시판</option>
 					<option value='com2'>꿀팁게시판</option>
 				</select>
-				<select id='selSearchOption' name="searchType">
+				<select class="form-select-sm p-1 m-1" aria-label="Default select example" id='selSearchOption' name="searchType">
 					<option value='comm_title'>제목</option>
 					<option value='comm_content'>내용</option>
 				</select>
-				<input type="text" name="searchKeyword"/>
-				<input type="submit" value="검색" />
+				<input id="inputKeyword" type="text" name="searchKeyword"/>
+				<input id="inputButton" class="btn btn-outline-secondary" type="submit" value="검색" />
 			</form>
 		</div>
 	</div>

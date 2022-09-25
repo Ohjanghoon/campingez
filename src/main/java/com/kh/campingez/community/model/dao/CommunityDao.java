@@ -23,8 +23,11 @@ public interface CommunityDao {
 //   @Select("select * from community")
    List<Community> selectCommList(RowBounds rowBounds);
    
-   @Select("select count(*) from community")
-   int getTotalContext();
+   @Select("select count(*) from community where comm_isdelete = 'N' and category_id = 'com1'")
+   int getTotalContentFree();
+   
+   @Select("select count(*) from community where comm_isdelete = 'N' and category_id = 'com2'")
+   int getTotalContentHoney();
    
 //   @Select("select * from community where comm_no = #{commNo}")
    Community selectCommByNo(String no);

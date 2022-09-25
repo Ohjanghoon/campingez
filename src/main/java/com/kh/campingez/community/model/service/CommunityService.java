@@ -13,7 +13,9 @@ public interface CommunityService {
 
    List<Community> selectCommList(Map<String, Integer> param);
 
-   int getTotalContent();
+   int getTotalContentFree();
+   
+   int getTotalContentHoney();
 
    Community selectCommByNo(String no);
 

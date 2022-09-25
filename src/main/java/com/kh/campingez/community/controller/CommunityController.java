@@ -71,11 +71,15 @@ public class CommunityController {
       model.addAttribute("list", list);
       
       // 2. pagebar영역
-      int totalContent = communityService.getTotalContent();
-      log.debug("totalContent = {}", totalContent);
+      int totalContentFree = communityService.getTotalContentFree();
+      int totalContentHoney = communityService.getTotalContentHoney();
+      log.debug("totalContentFree = {}", totalContentFree);
+      log.debug("totalContentHoney = {}", totalContentHoney);
       String url = request.getRequestURI(); // /spring/board/boardList.do
-      String pagebar = CampingEzUtils.getPagebar(cPage, limit, totalContent, url);
-      model.addAttribute("pagebar", pagebar);
+      String pagebarFree = CampingEzUtils.getPagebar2(cPage, limit, totalContentFree, url);
+      String pagebarHoney = CampingEzUtils.getPagebar2(cPage, limit, totalContentHoney, url);
+      model.addAttribute("pagebarFree", pagebarFree);
+      model.addAttribute("pagebarHoney", pagebarHoney);
    }
    
    @GetMapping("/communityFind.do")
