@@ -65,7 +65,7 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	<nav>
+	<nav id="nav">
 		${pagebar}
 	</nav>	
 </div>
@@ -89,6 +89,7 @@ pagings.forEach(paging => {
 
 function assignmentPaingAjax(cPage){
 	$("#assignTbody").empty();
+	$("#nav").empty();
 	const headers = {};
 	headers['${_csrf.headerName}'] = '${_csrf.token}';
 	$.ajax({
@@ -99,7 +100,7 @@ function assignmentPaingAjax(cPage){
             var results = response.assignList;
             var str = "";
             for(var i = 0; i < results.length; i++){
-            	str += 	`<tr onclick="location.href='${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=`+results[i].assignNo+`'" data-no="'+results[i].assignNo+'">`+
+            	str += 	`<tr style=" line-height: 46px; cursor:pointer;" onclick="location.href='${pageContext.request.contextPath}/assignment/assignmentDetail.do?assignNo=`+results[i].assignNo+`'" data-no="'+results[i].assignNo+'">`+
 								'<td>'+results[i].assignNo+'</td>'+
 								'<td>'+results[i].userId+'</td>'+
 								'<td>'+results[i].resNo+'</td>'+
@@ -121,7 +122,14 @@ function assignmentPaingAjax(cPage){
 								'<td>'+results[i].assignState+'</td>'+
 						'</tr>';     
             }
-			$("#assignTbody").append(str); 
+			$("#assignTbody").append(str);
+			$("#nav").append(response.pagebar);
+			const pagings = document.querySelectorAll(".paging");
+
+			pagings.forEach(paging => {
+				paging.addEventListener("click", clickPaging);
+			});
+
 		},
 		error:console.log
 	});

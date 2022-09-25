@@ -244,6 +244,12 @@
  </form:form>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 <script>
+	<sec:authentication property="principal.yellowCard" var="yC"/>
+	<sec:authorize access="${yC} >= 3">
+		alert("당신은 블랙리스트입니다.");
+		history.back();
+	</sec:authorize>
+
 	// 달력
 	document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -511,10 +517,14 @@
                                 `;
                                 couponList.innerHTML += option;
                              });
-            				    				
+            				   				
        						
             				document.querySelector("#Rpoint").addEventListener("blur", (e) => {
-            					document.querySelector("#usepoint").innerHTML = e.target.value; 
+            					if(e.target.value > <sec:authentication property='principal.point' />){
+            						e.target.value = <sec:authentication property='principal.point' />;
+            					}
+                				 
+            					document.querySelector("#usepoint").innerHTML = e.target.value;             						
             					let minuspoint = document.querySelector("#Rpoint").value;
             					let minuscoupon = (couponList.value.split('@'))[0];
     						

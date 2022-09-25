@@ -115,6 +115,86 @@
 	</section>
 </main>
 <script>
+function clickPaging() {
+	var id = this.id;
+	var page = id.substring(4);
+	if(page == 0){
+		page = -1;
+	}
+	blackListAjax(page);
+	console.log(page);
+}
+
+const pagings = document.querySelectorAll(".paging");
+
+pagings.forEach(paging => {
+	paging.addEventListener("click", clickPaging);
+});
+
+function blackListAjax(cPage) {
+	const selectType = document.querySelector("#selectType").value;
+	const selectKeyword = document.querySelector("#selectKeyword").value;
+	
+	if(!selectKeyword) {
+		alert("검색어를 입력해주세요.");
+		return;
+	}
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/admin/selectUserNotBlackList.do?selectType=\${selectType}&selectKeyword=\${selectKeyword}&cPage=`+cPage,
+		method : "GET",
+		success(response) {
+			console.log(response);
+			const {userList, pagebar} = response;
+			
+			const tbody = document.querySelector("#tbl-user-list tbody");
+			tbody.innerHTML = '';
+			const nav = document.querySelector("#notBlackPagebar");
+			nav.innerHTML = pagebar;
+			
+			if(userList.length == 0) {
+				tbody.innerHTML = `
+				<tr>
+					<td colspan="7" scope="row">조회된 회원 목록이 없습니다.</td>
+				</tr>
+				`;
+				return;
+			}
+			
+			for(let i = 0; i < userList.length; i++) {
+				const {userId, userName, phone, yellowCard} = userList[i];
+
+				tbody.innerHTML += `
+				<tr>
+					<td scope="row">\${i+1}</td>
+					<td scope="row">\${userId}</td>
+					<td scope="row">\${userName}</td>
+					<td scope="row">\${phone}</td>
+					<td scope="row">\${yellowCard}</td>
+					<td scope="row">
+						<select id="yellowCardType">
+							<option value="" selected disabled>사유를 선택하세요.</option>
+							<option value="violation">이용수칙위반</option>
+							<option value="noshow">노쇼</option>
+						</select>
+					</td>
+					<td scope="row">
+						<button type="button" name="yellowCardBtn" id="\${userId}" onclick="warningToUser(event)">경고</button>
+					</td>
+				</tr>
+				`;
+			};
+			const pagings = document.querySelectorAll(".paging");
+
+			pagings.forEach(paging => {
+				paging.addEventListener("click", clickPaging);
+			});
+		},
+		error : console.log
+	});
+
+}
+
 const updateUser = (button) => {
 	const userId = button.id;
 	
@@ -186,61 +266,7 @@ document.querySelector("#selectType").addEventListener('change', (e) => {
 });
 
 document.querySelector("#searchBtn").addEventListener('click', (e) => {
-	const selectType = document.querySelector("#selectType").value;
-	const selectKeyword = document.querySelector("#selectKeyword").value;
-	
-	if(!selectKeyword) {
-		alert("검색어를 입력해주세요.");
-		return;
-	}
-	
-	$.ajax({
-		url : `${pageContext.request.contextPath}/admin/selectUserNotBlackList.do?selectType=\${selectType}&selectKeyword=\${selectKeyword}`,
-		method : "GET",
-		success(response) {
-			console.log(response);
-			const {userList, pagebar} = response;
-			
-			const tbody = document.querySelector("#tbl-user-list tbody");
-			tbody.innerHTML = '';
-			const nav = document.querySelector("#notBlackPagebar");
-			nav.innerHTML = pagebar;
-			
-			if(userList.length == 0) {
-				tbody.innerHTML = `
-				<tr>
-					<td colspan="7" scope="row">조회된 회원 목록이 없습니다.</td>
-				</tr>
-				`;
-				return;
-			}
-			
-			for(let i = 0; i < userList.length; i++) {
-				const {userId, userName, phone, yellowCard} = userList[i];
-
-				tbody.innerHTML += `
-				<tr>
-					<td scope="row">\${i+1}</td>
-					<td scope="row">\${userId}</td>
-					<td scope="row">\${userName}</td>
-					<td scope="row">\${phone}</td>
-					<td scope="row">\${yellowCard}</td>
-					<td scope="row">
-						<select id="yellowCardType">
-							<option value="" selected disabled>사유를 선택하세요.</option>
-							<option value="violation">이용수칙위반</option>
-							<option value="noshow">노쇼</option>
-						</select>
-					</td>
-					<td scope="row">
-						<button type="button" name="yellowCardBtn" id="\${userId}" onclick="warningToUser(event)">경고</button>
-					</td>
-				</tr>
-				`;
-			};
-		},
-		error : console.log
-	});
+	blackListAjax(1);
 });
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

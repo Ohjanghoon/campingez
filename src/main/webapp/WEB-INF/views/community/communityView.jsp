@@ -262,6 +262,13 @@ $(document).ready(function () {
     }
 
     $(".heart").on("click", function () {
+    	
+    	const userId = "${user.userId}";
+    	if(!userId) {
+    		alert("로그인 후 이용 가능합니다.");
+    		location.href = "${pageContext.request.contextPath}/user/userLogin.do";
+    		return;
+    	}
 
         var that = $(".heart");
 

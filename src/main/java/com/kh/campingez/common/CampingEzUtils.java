@@ -12,25 +12,30 @@ public class CampingEzUtils {
 		StringBuffer pagebar = new StringBuffer();
 		url += url.contains("?") ? "&cPage=" : "?cPage=";
 		
-		final int pagebarSize = 10;
+		final int pagebarSize = 5;
 		final int totalPage = (int)Math.ceil((double)totalContent / limit);
 		final int pagebarStart = ((cPage - 1) / pagebarSize) * pagebarSize + 1;
 		final int pagebarEnd = pagebarStart + pagebarSize - 1;
 		int pageNo = pagebarStart;
 		
-		pagebar.append("<ul>\n");
+		pagebar.append("<ul class=\"pagination justify-content-center\">\n");
 		
 		if(cPage == 1) {
 	
 		} else {
-			pagebar.append("<span class='paging' id='page"+ (pageNo - 1) + "'>이전</span>\n");
+			pagebar.append("<li class=\"page-item\">\n"
+							+ "     <a class=\"page-link paging\" id='page"+ (pageNo - 1) + "' aria-label=\"Previous\">\n"
+							+ "     <span aria-hidden=\"true\">&laquo;</span>\n"
+							+ "		<span class='sr-only'>Previous</span>\n"
+							+ "     </a>\n"
+							+ "     </li>");
 		}
 		
 		while(pageNo <= pagebarEnd && pageNo <= totalPage) {
 			if(pageNo == cPage) {
-				pagebar.append("<span class='paging' id='page" + pageNo + "'>" + pageNo + "</span>\n");
+				pagebar.append("<li class=\"page-item active\"><a class='page-link paging' id='page" + pageNo + "'>" + pageNo + "</a></li>\n");
 			} else {
-				pagebar.append("<span class='paging' id='page" + pageNo + "'>" + pageNo + "</span>\n");
+				pagebar.append("<li class=\"page-item\"><a class='page-link paging' id='page" + pageNo + "'>" + pageNo + "</a></li>\n");
 			}
 			pageNo++;
 		}
@@ -38,7 +43,13 @@ public class CampingEzUtils {
 		if(pageNo > totalPage) {
 			
 		} else {
-			pagebar.append("<span class='paging' id='page" + pageNo + "'>다음</span>\n");
+			pagebar.append("<li class=\"page-item\">\n"
+					+ "      <a class=\"page-link paging\" id='page" + pageNo + "' aria-label=\"Next\">\n"
+					+ "      <span aria-hidden=\"true\">&raquo;</span>\n"
+					+ "  	 <span class='sr-only'>Next</span>\n"
+					+ "      </a>\n"
+					+ "      </li>\n"
+					);
 		}
 		pagebar.append("</ul>");
 		
@@ -47,7 +58,7 @@ public class CampingEzUtils {
 	
 	public static String getPagebar2(int cPage, int limit, int totalContent, String url) {
 		StringBuffer pagebar = new StringBuffer();
-		url += "?cPage="; // spring/board/boardList.do?cPage=
+		url += url.contains("?") ? "&cPage=" : "?cPage="; // spring/board/boardList.do?cPage=
 		totalContent = totalContent == 0 ? 1 : totalContent;
 		
 		final int pagebarSize = 5;

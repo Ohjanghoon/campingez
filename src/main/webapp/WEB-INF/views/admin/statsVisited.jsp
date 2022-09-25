@@ -15,14 +15,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 			<div class="content-wrap">
 				<h2>날짜별 로그인 회원 통계</h2>
-				<div id="search-bar-wrap">
-					<select name="year" id="year">
+				<div id="search-bar-wrap" class="d-flex">
+					<select class="form-select selectType" aria-label="Default select example" name="year" id="year">
 						<option value="2022">2022</option>
 						<option value="2023">2023</option>
 						<option value="2024">2024</option>
 						<option value="2025">2025</option>
 					</select>
-					<select name="month" id="month">
+					<select class="form-select selectType" aria-label="Default select example" name="month" id="month">
 						<option value="1">1</option>
 						<option value="2">2</option>
 						<option value="3">3</option>
@@ -37,13 +37,15 @@
 						<option value="12">12</option>
 					</select>
 				</div>
-				<div id="totalCount-wrap">
-					총 로그인 수 : <span id="totalCount"></span>
+				<div class="count-wrap">
+					<div id="totalCount-wrap">
+						TOTAL <span id="totalCount" class="strong"></span>회
+					</div>
+					<div id="totalCountByDate-wrap">
+						<span id="total-month"></span>월 <span id="totalCountByDate" class="strong"></span>회
+					</div>	
 				</div>
-				<div id="totalCountByDate-wrap">
-					조회한 달 로그인 수 : <span id="totalCountByDate"></span>
-				</div>
-				<canvas id="myChart" width="1000" height="500"></canvas>
+				<canvas id="myChart" width="1024" height="500"></canvas>
 				<div id="tbl-wrap"></div>
 			</div>
 		</div>
@@ -60,11 +62,13 @@ const graphRender = (response) => {
 	const totalWrap = document.querySelector("#totalCount");
 	const totalByDateWrap = document.querySelector("#totalCountByDate");
 	const monthVal = document.querySelector("#month").value;
+	const totalMonthWrap = document.querySelector("#total-month");
 	
 	const {year, month:mon, visitedList, totalCount, totalCountByDate} = response;
 	const month = mon < 10 ? '0' + mon : mon;
-	totalWrap.innerHTML = totalCount;
-	totalByDateWrap.innerHTML = totalCountByDate;
+	totalWrap.innerHTML = totalCount.toLocaleString('ko-KR');
+	totalByDateWrap.innerHTML = totalCountByDate.toLocaleString('ko-KR');
+	totalMonthWrap.innerHTML = month;
 	
 	document.querySelectorAll("option").forEach((opt) => {
 		if(opt.value == year || opt.value == mon) {
@@ -168,11 +172,11 @@ const graphRender = (response) => {
 							const wrapper = document.querySelector("#tbl-wrap");
 							wrapper.innerHTML = '';
 							let tbl = `
-							<table>
+							<table class="table text-center tbl-login-count">
 								<thead>
 									<tr>
-										<th>회원아이디</th>
-										<th>로그인횟수</th>
+										<th scope="col">회원아이디</th>
+										<th scope="col">로그인횟수</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -182,8 +186,8 @@ const graphRender = (response) => {
 									const {userId, visitDateCount} = data;
 									tbl += `
 									<tr>
-										<td>\${userId}</td>
-										<td>\${visitDateCount}번 방문</td>
+										<td scope="row">\${userId}</td>
+										<td scope="row">\${visitDateCount.toLocaleString('ko-KR')}번 방문</td>
 									</tr>
 									`;
 								});	

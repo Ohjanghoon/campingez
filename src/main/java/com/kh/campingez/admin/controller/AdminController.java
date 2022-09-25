@@ -291,7 +291,8 @@ public class AdminController {
 		model.addAttribute("reservationList", reservationList);
 		
 		int totalContent = adminService.getReservationListTotalContent(param);
-		String uri = request.getRequestURI();
+		String uri = request.getRequestURI() + "?searchType=" + searchType + "&startDate=" + startDate + "&endDate=" + endDate;
+		log.debug("uri = {}", uri);
 		String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, uri);
 		model.addAttribute("pagebar", pagebar);
 		
