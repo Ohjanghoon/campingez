@@ -146,6 +146,10 @@ a, a:hover {
 .all-delete-wrap {
 	cursor: pointer;
 }
+#notReadCount {
+	font-weight: bold;
+	color: #495C83;
+}
 </style>
 <script>
 //스크롤 배경색 변경

@@ -511,10 +511,14 @@
                                 `;
                                 couponList.innerHTML += option;
                              });
-            				    				
+            				   				
        						
             				document.querySelector("#Rpoint").addEventListener("blur", (e) => {
-            					document.querySelector("#usepoint").innerHTML = e.target.value; 
+            					if(e.target.value > <sec:authentication property='principal.point' />){
+            						e.target.value = <sec:authentication property='principal.point' />;
+            					}
+                				 
+            					document.querySelector("#usepoint").innerHTML = e.target.value;             						
             					let minuspoint = document.querySelector("#Rpoint").value;
             					let minuscoupon = (couponList.value.split('@'))[0];
     						

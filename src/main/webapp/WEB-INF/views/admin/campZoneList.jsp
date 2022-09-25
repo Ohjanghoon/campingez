@@ -9,14 +9,25 @@
 <jsp:include page="/WEB-INF/views/admin/admin.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-<section>
+<style>
+.table-wrap {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.zone-wrap {
+	width: 450px;
+	margin-bottom: 25px;
+}
+</style>
 			<div class="content-wrap">
 				<h2>캠핑 구역 리스트</h2>
 				
 				<div class="table-wrap">
 					<c:forEach items="${campZoneList}" var="zone">
-						<h3>${zone.zoneCode} - ${zone.zoneName}</h3>
-							<table class="table text-center table-hover">
+						<div class="zone-wrap">
+							<h3>${zone.zoneCode} - ${zone.zoneName}</h3>
+							<table class="table text-center table-hover tbl-camp-zone">
 									<tr>
 										<th>구역코드</th>
 										<td>${zone.zoneCode}</td>
@@ -29,7 +40,7 @@
 										<th>구역정보</th>
 										<td>
 											<c:forEach items="${zone.zoneInfo}" var="info" varStatus="vs">
-												${info}${not vs.last ? ", " : ""} ${vs.count % 2 == 0 ? '<br/>' : ""}
+												${info}${not vs.last ? ", " : ""} ${vs.count % 4 == 0 ? '<br/>' : ""}
 											</c:forEach>
 										</td>
 									</tr>
@@ -51,6 +62,7 @@
 										</td>
 									</tr>
 							</table>
+						</div>
 					</c:forEach>
 				</div>
 				<form:form name="updateOrDeleteFrm">

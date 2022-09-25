@@ -11,27 +11,27 @@
 </jsp:include>
 			<div class="content-wrap">
 				<h2>기존 구역 리스트</h2>
-				<table>
+				<table class="table text-center">
 					<thead>
 						<tr>
-							<th>No</th>
-							<th>구역번호</th>
-							<th>구역이름</th>
+							<th scope="col">No</th>
+							<th scope="col">구역번호</th>
+							<th scope="col">구역이름</th>
 						</tr>
 					</thead>
 					<tbody>
 				<c:if test="${not empty campZoneList}">
 					<c:forEach items="${campZoneList}" var="zone" varStatus="vs">
 						<tr>
-							<td>${vs.count}</td>
-							<td id="zoneCode">${zone.zoneCode}</td>
-							<td>${zone.zoneName}</td>
+							<td scope="row">${vs.count}</td>
+							<td id="zoneCode" scope="row">${zone.zoneCode}</td>
+							<td scope="row">${zone.zoneName}</td>
 						</tr>
 					</c:forEach>
 				</c:if>
 				<c:if test="${empty campZoneList}">
 					<tr>
-						<td colspan="3">등록된 구역 정보가 없습니다.</td>
+						<td colspan="3" scope="row">등록된 구역 정보가 없습니다.</td>
 					</tr>
 				</c:if>
 					</tbody>
@@ -39,38 +39,70 @@
 				
 				<h2>캠프 구역 추가</h2>
 				<form:form action="${pageContext.request.contextPath}/admin/insertCampZone.do" method="POST" name="insertCampZoneFrm" enctype="multipart/form-data">
-					<input type="text" name="zoneCode" placeholder="구역코드 ex)ZA" pattern="[A-Za-z]+" value="Z" required/>
-					<input type="text" name="zoneName" placeholder="구역이름" required />
-					<br />
-					
-					<input type="checkbox" name="zoneInfo" id="zoneInfo1" value="매점"/>
-					<label for="zoneInfo1">매점</label>
-					<input type="checkbox" name="zoneInfo" id="zoneInfo2" value="장작판매"/>
-					<label for="zoneInfo2">장작판매</label>
-					<input type="checkbox" name="zoneInfo" id="zoneInfo3" value="샤워시설"/>
-					<label for="zoneInfo3">샤워시설</label>
-					<input type="checkbox" name="zoneInfo" id="zoneInfo4" value="전기"/>
-					<label for="zoneInfo3">전기</label>
-					<input type="checkbox" name="zoneInfo" id="zoneInfo5" value="와이파이"/>
-					<label for="zoneInfo5">와이파이</label>
-					<input type="checkbox" name="zoneInfo" id="zoneInfo6" value="반려동물"/>
-					<label for="zoneInfo6">반려동물</label>
-					<input type="checkbox" name="zoneInfo" id="zoneInfo7" value="수영장"/>
-					<label for="zoneInfo7">수영장</label>
-					<input type="checkbox" name="zoneInfo" id="zoneInfo8" value="어린이놀이터"/>
-					<label for="zoneInfo8">어린이놀이터</label>
-					<input type="checkbox" name="zoneInfo" id="zoneInfo9" value="노래방"/>
-					<label for="zoneInfo9">노래방</label>
-					<input type="checkbox" name="zoneInfo" id="zoneInfo10" value="온수제공"/>
-					<label for="zoneInfo10">온수제공</label>
-					
-					<br />	
-					<input type="number" name="zoneMaximum" placeholder="허용인원" min="1" value="1" required />
-					<input type="number" name="zonePrice" placeholder="구역가격" step="1000" value="0" required />
-					<br />
-					<label for="upFile1">파일을 선택하세요</label>
-					<input type="file" name="upFile" id="upFile1" />
-					<button type="button" id="insert-btn">등록</button>
+					<div class="camp-name-wrap">
+						<div class="form-floating zone-wrap">
+							<input type="text" name="zoneCode" id="zoneCode" placeholder="구역코드 ex)ZA" pattern="[A-Za-z]+" class="form-control" value="Z" required/>
+							<label for="zoneCode">구역코드 ex)ZA</label>
+						</div>
+						<div class="form-floating zone-wrap">					
+							<input type="text" name="zoneName" id="zoneName" class="form-control" placeholder="구역이름" required />
+							<label for="zoneName">구역이름</label>
+						</div>
+					</div>
+					<div class="option-wrap">
+						<div class="option-header">
+							<div class="strong">* 옵션선택</div>
+						</div>
+						<div class="option-check-wrap">
+							<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo1" value="매점" autocomplete="off"/>
+								<label class="check-btn" for="zoneInfo1">매점</label>
+							
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo2" value="장작판매" autocomplete="off"/>
+								<label class="check-btn" for="zoneInfo2">장작판매</label>
+		
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo3" value="샤워시설" autocomplete="off"/>
+								<label class="check-btn" for="zoneInfo3">샤워시설</label>
+							
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo4" value="전기" autocomplete="off"/>
+								<label class="check-btn" for="zoneInfo3">전기</label>
+		
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo5" value="와이파이"/>
+								<label class="check-btn" for="zoneInfo5">와이파이</label>
+		
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo6" value="반려동물"/>
+								<label class="check-btn" for="zoneInfo6">반려동물</label>
+		
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo7" value="수영장"/>
+								<label class="check-btn" for="zoneInfo7">수영장</label>
+		
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo8" value="어린이놀이터"/>
+								<label class="check-btn" for="zoneInfo8">어린이놀이터</label>
+		
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo9" value="노래방"/>
+								<label class="check-btn" for="zoneInfo9">노래방</label>
+		
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo10" value="온수제공"/>
+								<label class="check-btn" for="zoneInfo10">온수제공</label>
+							</div>
+						</div>	
+					</div>
+					<div class="camp-num-wrap">
+						<div class="form-floating num-wrap">					
+							<input type="number" name="zoneMaximum" id="zoneMaximum" placeholder="허용인원" class="form-control" min="1" value="1" required />
+							<label for="zoneMaximum">허용인원</label>
+						</div>					
+						<div class="form-floating num-wrap">					
+							<input type="text" name="zonePrice" id="zonePrice" placeholder="구역가격" class="form-control" value="0" required />
+							<label for="zonePrice">구역가격</label>
+						</div>	
+					</div>				
+					<div class="mb-3">
+						<input type="file" class="form-control" name="upFile" id="upFile1" />
+					</div>
+					<div class="btn-wrap">
+						<button type="button" id="insert-btn">등록</button>
+					</div>
 				</form:form>
 			</div>
 		</div>
@@ -89,16 +121,37 @@ document.querySelector("#insert-btn").addEventListener('click', (e) => {
 			return;
 		}
 	}
+	document.querySelector("#zonePrice").value = Number(document.querySelector("#zonePrice").value.replaceAll(',',''));
 	frm.submit();
 });
 
-document.querySelector("[name=zoneCode]").addEventListener('keyup', (e) => {
+//필수 기본값 제공
+document.querySelector("[name=zoneCode]").addEventListener('input', (e) => {
+	const defaultValue = 'Z';
+	const regex = new RegExp(`^\${defaultValue}`, "g");
 	const value = e.target.value;
 	
-	if(/[^a-zA-Z+]/g.test(value)) {
-		e.target.value = value.replace(/[^a-zA-Z+]/g, ''); 
-	} else {		
-		e.target.value = value.toUpperCase();
+	if(!regex.test(value)) {
+		e.target.value = defaultValue;
+	} else {
+		if(/[^a-zA-Z+]/g.test(value)) {
+			e.target.value = value.replace(/[^a-zA-Z0-9+]/g, '');
+		} else {		
+			e.target.value = value.toUpperCase();
+		}
+	}
+});
+
+document.querySelector("#zonePrice").addEventListener('keyup', (e) => {
+	let value = e.target.value;
+	console.log(value);
+	value = Number(value.replaceAll(",", ''));
+	console.log(value);
+	if(isNaN(value)) {
+		e.target.value = 0;
+	} else {
+		const formatVal = value.toLocaleString('ko-KR');
+		e.target.value = formatVal; 
 	}
 });
 </script>
