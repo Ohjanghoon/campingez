@@ -59,23 +59,42 @@ public class CommunityController {
    @Autowired
    AlarmService alarmService;
    
-   @GetMapping("/communityList.do")
-   public void communityList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+   @GetMapping("/communityListFree.do")
+   public void communityListFree(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
       // 1. content영역
       Map<String, Integer> param = new HashMap<>();
       int limit = 10;
       param.put("cPage", cPage);
       param.put("limit", limit);
-      List<Community> list = communityService.selectCommList(param);
-      log.debug("list = {}", list);
-      model.addAttribute("list", list);
+      List<Community> listFree = communityService.selectCommListFree(param);
+      log.debug("listFree = {}", listFree);
+      model.addAttribute("listFree", listFree);
       
       // 2. pagebar영역
-      int totalContent = communityService.getTotalContent();
-      log.debug("totalContent = {}", totalContent);
+      int totalContentFree = communityService.getTotalContentFree();
+      log.debug("totalContentFree = {}", totalContentFree);
       String url = request.getRequestURI(); // /spring/board/boardList.do
-      String pagebar = CampingEzUtils.getPagebar2(cPage, limit, totalContent, url);
-      model.addAttribute("pagebar", pagebar);
+      String pagebarFree = CampingEzUtils.getPagebar2(cPage, limit, totalContentFree, url);
+      model.addAttribute("pagebarFree", pagebarFree);
+   }
+   
+   @GetMapping("/communityListHoney.do")
+   public void communityListHoney(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+	   // 1. content영역
+	   Map<String, Integer> param = new HashMap<>();
+	   int limit = 10;
+	   param.put("cPage", cPage);
+	   param.put("limit", limit);
+	   List<Community> listHoney = communityService.selectCommListHoney(param);
+	   log.debug("listHoney = {}", listHoney);
+	   model.addAttribute("listHoney", listHoney);
+	   
+	   // 2. pagebar영역
+	   int totalContentHoney = communityService.getTotalContentHoney();
+	   log.debug("totalContentHoney = {}", totalContentHoney);
+	   String url = request.getRequestURI(); // /spring/board/boardList.do
+	   String pagebarHoney = CampingEzUtils.getPagebar2(cPage, limit, totalContentHoney, url);
+	   model.addAttribute("pagebarHoney", pagebarHoney);
    }
    
    @GetMapping("/communityFind.do")

@@ -25,7 +25,7 @@
 <div class="panel">
 			<div class="form-inline" style="display:flex; justify-content : center; margin:50px;">
 			<br />
-				<input class="btn btn-outline-dark mt-auto" id="freeBoard" onclick="location.href='${pageContext.request.contextPath}/community/communityList.do'" type="button" value="게시판으로" style="margin-right:30px;"/>
+				<input class="btn btn-outline-dark mt-auto" id="freeBoard" onclick="location.href='${pageContext.request.contextPath}/community/communityListFree.do'" type="button" value="게시판으로" style="margin-right:30px;"/>
 			</div>
 		</div>	
 

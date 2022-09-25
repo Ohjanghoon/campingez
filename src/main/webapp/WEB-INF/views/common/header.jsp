@@ -512,7 +512,7 @@ const beforeTime = (alarmDate) => {
 					<div class="collapse" id="orders-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
 							<li class="mb-3"><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-2 m-3">중고거래</a></li>
-							<li><a href="${pageContext.request.contextPath}/community/communityList.do" class="link-dark rounded p-2 m-3">팁/자유게시판</a></li>
+							<li><a href="${pageContext.request.contextPath}/community/communityListFree.do" class="link-dark rounded p-2 m-3">팁/자유게시판</a></li>
 						</ul>
 					</div>
 				</li>
@@ -688,9 +688,8 @@ const beforeTime = (alarmDate) => {
       <div class="anw">
         <span>
         <ul>
-        	<li>21시부터 08시 사이에는 오토캠핑장 자동차 출입을 삼가시기 바랍니다.</li>
-        	<li>오토캠핑장 내 차량은 5km 이내로 서행하여야 하며, 잔디밭 출입이나 세차행위는 금합니다.</li>
-        	<li><img src="${pageContext.request.contextPath}/resources/images/chatbot/NoCar.png" alt="" /></li>
+        	<li>21시부터 08시 사이에는 오토캠핑장 자동차 출입을 삼가시기 바랍니다. 오토캠핑장 내 차량은 5km 이내로 서행하여야 하며, 잔디밭 출입이나 세차행위는 금합니다.</li>
+        	<img src="${pageContext.request.contextPath}/resources/images/chatbot/NoCar.png" alt="" />
         </ul>
         </span><br />
       </div>
