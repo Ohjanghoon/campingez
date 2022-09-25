@@ -57,7 +57,7 @@
 			<c:if test="${not empty chatUsers}">
 			<c:forEach items="${chatUsers}" var="chatUser">
 				<tr data-chatroomid="${chatUser.chatroomId}">
-					<td class="align-middle chatUserProfile" onclick="enterChatroom(${chatUser.chatroomId})">
+					<td class="align-middle chatUserProfile" onclick="enterChatroom('${chatUser.chatroomId}')">
 						<i class="fa-solid fa-circle-user"></i>
 					</td>
 					<td class="px-3 chatUserId"
@@ -66,7 +66,7 @@
 						<br />
 						<small>${chatUser.chatLog.chatMsg}</small>
 					</td>
-					<td class="text-end align-middle" onclick="deleteChatroom(${chatUser.chatroomId})" >
+					<td class="text-end align-middle" onclick="deleteChatroom('${chatUser.chatroomId}')" >
 						<button type="button" class="btn p-auto" style="border: none;"
 							data-chatroomId="${chatUser.chatroomId}">
 							<i class="fa-solid fa-xmark"></i>
@@ -188,37 +188,7 @@ const enterChatroom = (chatroomId) => {
 				
 				chatLog.insertAdjacentHTML('beforeend', html);
 				
-				let tr = document.querySelector(`tr[data-chatroomid = "\${chatroomId}"]`);
-				if(tr) {
-					tr.querySelector("small").innerHTML = chatMsg;
-				}
-				else {
-					//신규채팅방인 경우
-					tr = document.createElement("tr");
-					tr.dataset.chatroomid = chatroomId;
-					
-					tr.innerHTML = `
-						<td class="align-middle chatUserProfile" onclick="enterChatroom('${chatUser.chatroomId}')">
-							<i class="fa-solid fa-circle-user"></i>
-						</td>
-						<td class="px-3 chatUserId"
-							onclick="enterChatroom('\${chatroomId}')">
-							<strong>${chatUser.userId}</strong>
-							<br />
-							<small>${chatUser.chatLog.chatMsg}</small>
-						</td>
-						<td class="text-end align-middle" onclick="deleteChatroom('\${chatroomId}')" >
-							<button type="button" class="btn p-auto" style="border: none;"
-								data-chatroomId="\${chatroomId}">
-								<i class="fa-solid fa-xmark"></i>
-							</button>
-						</td>
-					`;
-				}
 				
-				//끌어올리기
-				const tbody = document.querySelector("#chatList tbody");
-				tbody.insertAdjacentElement('afterbegin', tr);
 				
 			});	
 		}
@@ -226,7 +196,49 @@ const enterChatroom = (chatroomId) => {
 	
 };
 
-	
+setTimeout(() => {
+	stompClient.subscribe(`/app/chat/myChatList`, (message) => {
+		console.log(`/app/chat/myChatList : `, message);
+		
+		const {chatroomId, userId, chatMsg} = JSON.parse(message.body);
+		
+		let tr = document.querySelector(`tr[data-chatroomid = "\${chatroomId}"]`);
+		if(tr) {
+			tr.querySelector("small").innerHTML = chatMsg;
+		}
+		else {
+			//신규채팅방인 경우
+			tr = document.createElement("tr");
+			tr.dataset.chatroomid = chatroomId;
+			
+			let html = `
+				<td class="align-middle chatUserProfile" onclick="enterChatroom('\${chatroomId}')">
+					<i class="fa-solid fa-circle-user"></i>
+				</td>
+				<td class="px-3 chatUserId"
+					onclick="enterChatroom('\${chatroomId}')">
+					<strong>\${userId}</strong>
+					<br />
+					<small>\${chatMsg}</small>
+				</td>
+				<td class="text-end align-middle" onclick="deleteChatroom('\${chatroomId}')" >
+					<button type="button" class="btn p-auto" style="border: none;"
+						data-chatroomId="\${chatroomId}">
+						<i class="fa-solid fa-xmark"></i>
+					</button>
+				</td>
+			`;
+			
+			tr.insertAdjacentHTML("afterbegin", html);
+			
+		}
+		
+		//끌어올리기
+		const tbody = document.querySelector("#chatList tbody");
+		tbody.insertAdjacentElement('afterbegin', tr);
+	});
+		
+}, 500);
 
 // 메세지 전송 버튼 클릭시
 const sendMsg = (chatroomId) => {
@@ -271,7 +283,9 @@ const deleteChatroom = (chatroomId) => {
 						chatTime : Date.now()
 					};
 					
-					stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+				stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+				
+				location.reload();
 			},
 			error : console.log
 			
