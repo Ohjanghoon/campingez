@@ -64,4 +64,24 @@
 		</div>
 	</c:forEach>	
 </div>
+	<nav id="nav">
+		${pagebar}
+	</nav>
+	
+<script>
+function clickPaging() {
+	var id = this.id;
+	var page = id.substring(4);
+	if(page == 0){
+		page = -1;
+	}
+	reservationPaingAjax(page);
+	console.log(page);
+}
 
+var pagings = document.querySelectorAll(".paging");
+
+pagings.forEach(paging => {
+	paging.addEventListener("click", clickPaging);
+});
+</script>
