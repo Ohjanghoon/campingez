@@ -5,13 +5,15 @@
 <mapper namespace="com.kh.campingez.community.model.dao.CommunityDao">
 <select id="selectCommList" resultMap="commListMap">
 select
-      *
+      c.*,
+      (select count(*) from report where c.comm_no = comm_no) comm_report_count,
+      (select category_name from category_list where c.category_id = category_id) category_name 
 from
-      community
+      community c
 where
       comm_isdelete = 'N'
-
-
+order by
+	  comm_date desc
 </select>
 <resultMap type="community" id="commListMap">
    <id column="comm_no" property="commNo"/>
@@ -24,6 +26,7 @@ where
    <result column="comm_report_count" property="reportCount" />
    <result column="comm_isdelete" property="isDelete" />
    <result column="comm_like_count" property="likeCount" />
+   <result column="category_name" property="categoryName" />
    <collection property="photos" ofType="CommunityPhoto">
          <id column="comm_photo_no" property="commPhotoNo" />
          <result column="comm_no" property="cmNo"/>
@@ -35,9 +38,11 @@ where
   
   <select id="selectCommByNo" resultMap="commViewMap">
 select
-      *
+      c.*,
+      (select count(*) from report where c.comm_no = comm_no) comm_report_count,
+      (select category_name from category_list where c.category_id = category_id) category_name 
 from
-      community
+      community c
 where
       comm_no = #{commNo}
 
@@ -54,6 +59,7 @@ where
    <result column="comm_report_count" property="reportCount" />
    <result column="comm_isDelete" property="isDelete" />
    <result column="comm_like_count" property="likeCount" />
+   <result column="category_name" property="categoryName" />
    <collection property="photos" ofType="CommunityPhoto">
          <id column="comm_photo_no" property="commPhotoNo" />
          <result column="comm_no" property="cmNo"/>
