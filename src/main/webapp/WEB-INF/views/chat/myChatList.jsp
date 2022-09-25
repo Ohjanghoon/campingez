@@ -94,8 +94,6 @@ $(document).ready(function () {
 	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
 });
 
-
-
 //채팅방 입장시
 const enterChatroom = (chatroomId) => {
 	//const tr = e.target.parentElement;
@@ -156,46 +154,53 @@ const enterChatroom = (chatroomId) => {
 		},
 		error : console.log,
 		complete() {
-			subscribeChat(chatroomId);
 			
+			stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
+				const {"content-type" : contentType} = message.headers;
+				if(!contentType) return;
+				
+				console.log(`/app/chat/\${chatroomId} : `, message);
+
+				const chatLog = document.querySelector("#chatLog");	
+				
+				const {userId, chatMsg, chatTime} = JSON.parse(message.body);
+				//const date = new Date(chatTime).toLocaleTimeString();
+				const date = moment(chatTime).format("YY.MM.D HH:mm");
+				console.log(date);
+				let html = "";
+				if("${loginUser}" === userId) {
+					html += `
+						<ul class="list-unstyled list-group d-flex align-items-end">
+							<li class="list-item mt-2"><span class="card userMsg p-2" title="">\${chatMsg}</span></li>
+							<li class="list-item w-50 text-end"><small>\${date}</small></li>
+						</ul>
+					`;
+				}
+				else {
+					html += `
+						<ul class="list-unstyled list-group d-flex align-items-start" >
+							<li class="list-item w-50 mt-2 mb-1"><strong>\${userId}</strong></li>
+							<li class="list-item"><span class="card targetMsg p-2">\${chatMsg}</span></li>
+							<li class="list-item w-50"><small>\${date}</small></li>
+						</ul>
+					`;
+				}
+				
+				chatLog.insertAdjacentHTML('beforeend', html);
+				
+				
+				
+			});	
 		}
 	});
 	
 };
 
-const subscribeChat = (chatroomId) => {
-	stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
-		const {"content-type" : contentType} = message.headers;
-		if(!contentType) return;
+setTimeout(() => {
+	stompClient.subscribe(`/app/chat/myChatList`, (message) => {
+		console.log(`/app/chat/myChatList : `, message);
 		
-		console.log(`/app/chat/\${chatroomId} : `, message);
-
-		const chatLog = document.querySelector("#chatLog");	
-		
-		const {userId, chatMsg, chatTime} = JSON.parse(message.body);
-		//const date = new Date(chatTime).toLocaleTimeString();
-		const date = moment(chatTime).format("YY.MM.D HH:mm");
-		console.log(date);
-		let html = "";
-		if("${loginUser}" === userId) {
-			html += `
-				<ul class="list-unstyled list-group d-flex align-items-end">
-					<li class="list-item mt-2"><span class="card userMsg p-2" title="">\${chatMsg}</span></li>
-					<li class="list-item w-50 text-end"><small>\${date}</small></li>
-				</ul>
-			`;
-		}
-		else {
-			html += `
-				<ul class="list-unstyled list-group d-flex align-items-start" >
-					<li class="list-item w-50 mt-2 mb-1"><strong>\${userId}</strong></li>
-					<li class="list-item"><span class="card targetMsg p-2">\${chatMsg}</span></li>
-					<li class="list-item w-50"><small>\${date}</small></li>
-				</ul>
-			`;
-		}
-		
-		chatLog.insertAdjacentHTML('beforeend', html);
+		const {chatroomId, userId, chatMsg} = JSON.parse(message.body);
 		
 		let tr = document.querySelector(`tr[data-chatroomid = "\${chatroomId}"]`);
 		if(tr) {
@@ -206,15 +211,15 @@ const subscribeChat = (chatroomId) => {
 			tr = document.createElement("tr");
 			tr.dataset.chatroomid = chatroomId;
 			
-			tr.innerHTML = `
-				<td class="align-middle chatUserProfile" onclick="enterChatroom('${chatUser.chatroomId}')">
+			let html = `
+				<td class="align-middle chatUserProfile" onclick="enterChatroom('\${chatroomId}')">
 					<i class="fa-solid fa-circle-user"></i>
 				</td>
 				<td class="px-3 chatUserId"
 					onclick="enterChatroom('\${chatroomId}')">
-					<strong>${chatUser.userId}</strong>
+					<strong>\${userId}</strong>
 					<br />
-					<small>${chatUser.chatLog.chatMsg}</small>
+					<small>\${chatMsg}</small>
 				</td>
 				<td class="text-end align-middle" onclick="deleteChatroom('\${chatroomId}')" >
 					<button type="button" class="btn p-auto" style="border: none;"
@@ -223,14 +228,17 @@ const subscribeChat = (chatroomId) => {
 					</button>
 				</td>
 			`;
+			
+			tr.insertAdjacentHTML("afterbegin", html);
+			
 		}
 		
 		//끌어올리기
 		const tbody = document.querySelector("#chatList tbody");
-		tbody.insertAdjacentElement('afterbegin', td.parentElement);
+		tbody.insertAdjacentElement('afterbegin', tr);
+	});
 		
-	});	
-};
+}, 500);
 
 // 메세지 전송 버튼 클릭시
 const sendMsg = (chatroomId) => {
@@ -275,7 +283,9 @@ const deleteChatroom = (chatroomId) => {
 						chatTime : Date.now()
 					};
 					
-					stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+				stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+				
+				location.reload();
 			},
 			error : console.log
 			

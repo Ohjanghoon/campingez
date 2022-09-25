@@ -12,7 +12,7 @@
 	from
 	    chat_user c
 	    join chat_user tar on c.chatroom_id = tar.chatroom_id
-	    join (
+	    left join (
 	        select
 	        	*
         	from (
@@ -31,7 +31,8 @@
 	    and
 	    c.deleted_at is null
 	order by
-		chat_time desc
+		chat_time desc,
+	    c.created_at desc
   </select>
   
   <resultMap type="chatUser" id="recentChatListMap">

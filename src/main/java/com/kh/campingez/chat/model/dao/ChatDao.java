@@ -15,7 +15,7 @@ import com.kh.campingez.chat.model.dto.ChatUser;
 public interface ChatDao {
 	
 	// 여기 쿼리를 sql에서 진행해보는데 아무것도 나올수가 없는 구조같은데, where절 and이후를 지워봐도 진행이 안되서.. 아이디어 공유 부탁드립니다.
-	@Select("select * from chat_user c join chat_user t using(chatroom_id) where c.user_id = #{userId} and t.user_id = #{chatTargetId} and c.deleted_at is null")
+	@Select("select * from chat_user c join chat_user t using(chatroom_id) where c.user_id = #{userId} and t.user_id = #{chatTargetId} and c.deleted_at is null and t.deleted_at is null")
 	ChatUser findChatUserByUserId(@Param("userId")String userId, @Param("chatTargetId") String chatTargetId);
 	
 	@Insert("insert into chat_user values(#{chatroomId}, #{userId}, 0, default, default)")
