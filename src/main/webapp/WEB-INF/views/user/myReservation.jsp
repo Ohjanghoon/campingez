@@ -27,9 +27,7 @@
 <div id="resList">
 	
 </div>
-	<nav>
-		${pagebar}
-	</nav>
+
 </div>
 </body>
 <script>
@@ -38,21 +36,7 @@ window.onload = function() {
 };
 
 
-function clickPaging() {
-	var id = this.id;
-	var page = id.substring(4);
-	if(page == 0){
-		page = -1;
-	}
-	reservationPaingAjax(page);
-	console.log(page);
-}
 
-const pagings = document.querySelectorAll(".paging");
-
-pagings.forEach(paging => {
-	paging.addEventListener("click", clickPaging);
-});
 
 function reservationPaingAjax(cPage){
 	$("#resList").empty();

@@ -69,7 +69,7 @@
 			</c:forEach>
 		</tbody>
 	</table>	
-	<nav>
+	<nav id="nav">
 		${pagebar}
 	</nav>
 </div>
@@ -94,6 +94,7 @@ pagings.forEach(paging => {
 
 function tradePaingAjax(cPage){
 	$("#tradeTbody").empty();
+	$("#nav").empty();
 	const headers = {};
 	headers['${_csrf.headerName}'] = '${_csrf.token}';
 	$.ajax({
@@ -106,7 +107,7 @@ function tradePaingAjax(cPage){
             for(var i = 0; i < results.length; i++){
             	var months = results[i].tradeDate[1] < 10 ? '0' + results[i].tradeDate[1] : results[i].tradeDate[1];
             	var days = results[i].tradeDate[2] < 10 ? '0' + results[i].tradeDate[2] : results[i].tradeDate[2];
-            	str += 	`<tr onclick="location.href='${pageContext.request.contextPath}/trade/tradeView.do?no=`+results[i].tradeNo+`'" data-no="'+results[i].tradeNo+'">`+
+            	str += 	`<tr  style=" line-height: 46px; cursor:pointer;" onclick="location.href='${pageContext.request.contextPath}/trade/tradeView.do?no=`+results[i].tradeNo+`'" data-no="'+results[i].tradeNo+'">`+
 								'<td>'+ (i+1) +'</td>'+
 								'<td>'+results[i].tradeNo+'</td>'+
 								'<td>'+results[i].userId+'</td>'+
@@ -128,6 +129,14 @@ function tradePaingAjax(cPage){
 						'</tr>';            	
             }
 			$("#tradeTbody").append(str); 
+			$("#nav").append(response.pagebar);
+
+			const pagings = document.querySelectorAll(".paging");
+
+			pagings.forEach(paging => {
+				paging.addEventListener("click", clickPaging);
+			});
+
 		},
 		error:console.log
 	});
