@@ -46,7 +46,7 @@
 						</div>
 						<div class="form-floating zone-wrap">					
 							<input type="text" name="zoneName" id="zoneName" class="form-control" placeholder="구역이름" required />
-							<label for="zoneName">구역이름</label>
+							<label for="zoneName" class="zoneName-label">구역이름</label>
 						</div>
 					</div>
 					<div class="option-wrap">

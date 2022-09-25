@@ -147,6 +147,9 @@ tr > td {
 #myChart {
 	margin: 30px 0;
 }
+.zoneName-label {
+	color: gray;
+}
 </style>
 <script>
 $(document).ready(function () {
