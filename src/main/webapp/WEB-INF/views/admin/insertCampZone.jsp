@@ -46,7 +46,7 @@
 						</div>
 						<div class="form-floating zone-wrap">					
 							<input type="text" name="zoneName" id="zoneName" class="form-control" placeholder="구역이름" required />
-							<label for="zoneName">구역이름</label>
+							<label for="zoneName" class="zoneName-label">구역이름</label>
 						</div>
 					</div>
 					<div class="option-wrap">
@@ -65,7 +65,7 @@
 								<label class="check-btn" for="zoneInfo3">샤워시설</label>
 							
 								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo4" value="전기" autocomplete="off"/>
-								<label class="check-btn" for="zoneInfo3">전기</label>
+								<label class="check-btn" for="zoneInfo4">전기</label>
 		
 								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo5" value="와이파이"/>
 								<label class="check-btn" for="zoneInfo5">와이파이</label>
@@ -89,8 +89,8 @@
 					</div>
 					<div class="camp-num-wrap">
 						<div class="form-floating num-wrap">					
-							<input type="number" name="zoneMaximum" id="zoneMaximum" placeholder="허용인원" class="form-control" min="1" value="1" required />
-							<label for="zoneMaximum">허용인원</label>
+							<input type="number" name="zoneMaximum" id="zoneMaximum" placeholder="최대인원" class="form-control" min="1" value="1" required />
+							<label for="zoneMaximum">최대인원</label>
 						</div>					
 						<div class="form-floating num-wrap">					
 							<input type="text" name="zonePrice" id="zonePrice" placeholder="구역가격" class="form-control" value="0" required />

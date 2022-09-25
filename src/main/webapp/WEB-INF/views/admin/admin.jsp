@@ -45,16 +45,19 @@ tr > td {
 	background-color: #A8A4CE;
     color: white;
 }
-#updateBtn, [name=updateBtn], [name=yellowCardBtn], #deleteBtn, #noProblemBtn, [name=cancelBtn], #update-btn, #delete-btn, #insert-btn {
+#updateBtn, [name=updateBtn], [name=yellowCardBtn], #deleteBtn, #noProblemBtn, [name=cancelBtn], #update-btn, #delete-btn, .report-btn, #insert-btn {
 	height: 35px;
     width: 50px;
    	border: 1px solid #A8A4CE;
     color: #A8A4CE;
     background-color: white;
 }
-#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover, #deleteBtn:hover, #noProblemBtn:hover, [name=cancelBtn]:hover, #update-btn:hover, #delete-btn:hover, #insert-btn:hover {
+#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover, #deleteBtn:hover, #noProblemBtn:hover, [name=cancelBtn]:hover, #update-btn:hover, .report-btn:hover, #delete-btn:hover, #insert-btn:hover {
 	background-color: #A8A4CE;
     color:white;
+}
+.report-btn {
+	width: 100px;
 }
 #user-list-tbl, #reservation-tbl, .select-camp-wrap {
 	margin-top: 30px;
@@ -146,6 +149,9 @@ tr > td {
 }
 #myChart {
 	margin: 30px 0;
+}
+.zoneName-label {
+	color: gray;
 }
 </style>
 <script>

@@ -45,8 +45,8 @@
 												<fmt:formatDate value="${reportDate}" pattern="yy/MM/dd"/>
 											</td>
 											<td scope="row" rowspan="${fn:length(comm.reportList)}">
-												<button type="button" id="deleteBtn" data-comm-no="${comm.commNo}" onclick="deleteComm(event);">삭제처리</button>
-												<button type="button" id="noProblemBtn" data-comm-no="${comm.commNo}" onclick="noProblemUpdate(event);">문제없음</button>
+												<button type="button" id="deleteBtn" class="report-btn" data-comm-no="${comm.commNo}" onclick="deleteComm(event);">삭제처리</button>
+												<button type="button" id="noProblemBtn" class="report-btn" data-comm-no="${comm.commNo}" onclick="noProblemUpdate(event);">문제없음</button>
 											</td>
 										</c:if>
 										<c:if test="${not vs.first}">
@@ -93,7 +93,7 @@
 										<td>${report.totalReport}회</td>
 										<td>${report.isBlacklist == null ? '' : report.isBlacklist}</td>
 										<td>
-											<button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/blackList.do'">경고하러가기</button>
+											<button type="button" class="report-btn" onclick="location.href='${pageContext.request.contextPath}/admin/blackList.do'">경고하러가기</button>
 										</td>
 									</tr>
 								</c:forEach>
