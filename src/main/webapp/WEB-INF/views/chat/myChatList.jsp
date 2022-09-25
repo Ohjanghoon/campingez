@@ -57,7 +57,7 @@
 			<c:if test="${not empty chatUsers}">
 			<c:forEach items="${chatUsers}" var="chatUser">
 				<tr data-chatroomid="${chatUser.chatroomId}">
-					<td class="align-middle chatUserProfile" onclick="enterChatroom('${chatUser.chatroomId}')">
+					<td class="align-middle chatUserProfile" onclick="enterChatroom(${chatUser.chatroomId})">
 						<i class="fa-solid fa-circle-user"></i>
 					</td>
 					<td class="px-3 chatUserId"
@@ -66,7 +66,7 @@
 						<br />
 						<small>${chatUser.chatLog.chatMsg}</small>
 					</td>
-					<td class="text-end align-middle" onclick="deleteChatroom('${chatUser.chatroomId}')" >
+					<td class="text-end align-middle" onclick="deleteChatroom(${chatUser.chatroomId})" >
 						<button type="button" class="btn p-auto" style="border: none;"
 							data-chatroomId="${chatUser.chatroomId}">
 							<i class="fa-solid fa-xmark"></i>
@@ -93,8 +93,6 @@
 $(document).ready(function () {
 	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
 });
-
-
 
 //채팅방 입장시
 const enterChatroom = (chatroomId) => {
@@ -156,81 +154,79 @@ const enterChatroom = (chatroomId) => {
 		},
 		error : console.log,
 		complete() {
-			subscribeChat(chatroomId);
 			
+			stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
+				const {"content-type" : contentType} = message.headers;
+				if(!contentType) return;
+				
+				console.log(`/app/chat/\${chatroomId} : `, message);
+
+				const chatLog = document.querySelector("#chatLog");	
+				
+				const {userId, chatMsg, chatTime} = JSON.parse(message.body);
+				//const date = new Date(chatTime).toLocaleTimeString();
+				const date = moment(chatTime).format("YY.MM.D HH:mm");
+				console.log(date);
+				let html = "";
+				if("${loginUser}" === userId) {
+					html += `
+						<ul class="list-unstyled list-group d-flex align-items-end">
+							<li class="list-item mt-2"><span class="card userMsg p-2" title="">\${chatMsg}</span></li>
+							<li class="list-item w-50 text-end"><small>\${date}</small></li>
+						</ul>
+					`;
+				}
+				else {
+					html += `
+						<ul class="list-unstyled list-group d-flex align-items-start" >
+							<li class="list-item w-50 mt-2 mb-1"><strong>\${userId}</strong></li>
+							<li class="list-item"><span class="card targetMsg p-2">\${chatMsg}</span></li>
+							<li class="list-item w-50"><small>\${date}</small></li>
+						</ul>
+					`;
+				}
+				
+				chatLog.insertAdjacentHTML('beforeend', html);
+				
+				let tr = document.querySelector(`tr[data-chatroomid = "\${chatroomId}"]`);
+				if(tr) {
+					tr.querySelector("small").innerHTML = chatMsg;
+				}
+				else {
+					//신규채팅방인 경우
+					tr = document.createElement("tr");
+					tr.dataset.chatroomid = chatroomId;
+					
+					tr.innerHTML = `
+						<td class="align-middle chatUserProfile" onclick="enterChatroom('${chatUser.chatroomId}')">
+							<i class="fa-solid fa-circle-user"></i>
+						</td>
+						<td class="px-3 chatUserId"
+							onclick="enterChatroom('\${chatroomId}')">
+							<strong>${chatUser.userId}</strong>
+							<br />
+							<small>${chatUser.chatLog.chatMsg}</small>
+						</td>
+						<td class="text-end align-middle" onclick="deleteChatroom('\${chatroomId}')" >
+							<button type="button" class="btn p-auto" style="border: none;"
+								data-chatroomId="\${chatroomId}">
+								<i class="fa-solid fa-xmark"></i>
+							</button>
+						</td>
+					`;
+				}
+				
+				//끌어올리기
+				const tbody = document.querySelector("#chatList tbody");
+				tbody.insertAdjacentElement('afterbegin', tr);
+				
+			});	
 		}
 	});
 	
 };
 
-const subscribeChat = (chatroomId) => {
-	stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
-		const {"content-type" : contentType} = message.headers;
-		if(!contentType) return;
-		
-		console.log(`/app/chat/\${chatroomId} : `, message);
-
-		const chatLog = document.querySelector("#chatLog");	
-		
-		const {userId, chatMsg, chatTime} = JSON.parse(message.body);
-		//const date = new Date(chatTime).toLocaleTimeString();
-		const date = moment(chatTime).format("YY.MM.D HH:mm");
-		console.log(date);
-		let html = "";
-		if("${loginUser}" === userId) {
-			html += `
-				<ul class="list-unstyled list-group d-flex align-items-end">
-					<li class="list-item mt-2"><span class="card userMsg p-2" title="">\${chatMsg}</span></li>
-					<li class="list-item w-50 text-end"><small>\${date}</small></li>
-				</ul>
-			`;
-		}
-		else {
-			html += `
-				<ul class="list-unstyled list-group d-flex align-items-start" >
-					<li class="list-item w-50 mt-2 mb-1"><strong>\${userId}</strong></li>
-					<li class="list-item"><span class="card targetMsg p-2">\${chatMsg}</span></li>
-					<li class="list-item w-50"><small>\${date}</small></li>
-				</ul>
-			`;
-		}
-		
-		chatLog.insertAdjacentHTML('beforeend', html);
-		
-		let tr = document.querySelector(`tr[data-chatroomid = "\${chatroomId}"]`);
-		if(tr) {
-			tr.querySelector("small").innerHTML = chatMsg;
-		}
-		else {
-			//신규채팅방인 경우
-			tr = document.createElement("tr");
-			tr.dataset.chatroomid = chatroomId;
-			
-			tr.innerHTML = `
-				<td class="align-middle chatUserProfile" onclick="enterChatroom('${chatUser.chatroomId}')">
-					<i class="fa-solid fa-circle-user"></i>
-				</td>
-				<td class="px-3 chatUserId"
-					onclick="enterChatroom('\${chatroomId}')">
-					<strong>${chatUser.userId}</strong>
-					<br />
-					<small>${chatUser.chatLog.chatMsg}</small>
-				</td>
-				<td class="text-end align-middle" onclick="deleteChatroom('\${chatroomId}')" >
-					<button type="button" class="btn p-auto" style="border: none;"
-						data-chatroomId="\${chatroomId}">
-						<i class="fa-solid fa-xmark"></i>
-					</button>
-				</td>
-			`;
-		}
-		
-		//끌어올리기
-		const tbody = document.querySelector("#chatList tbody");
-		tbody.insertAdjacentElement('afterbegin', td.parentElement);
-		
-	});	
-};
+	
 
 // 메세지 전송 버튼 클릭시
 const sendMsg = (chatroomId) => {
