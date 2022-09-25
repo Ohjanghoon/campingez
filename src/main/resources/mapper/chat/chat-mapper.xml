@@ -31,8 +31,8 @@
 	    and
 	    c.deleted_at is null
 	order by
-		chat_time desc,
-	    c.created_at desc
+	    c.created_at desc,
+		chat_time desc
   </select>
   
   <resultMap type="chatUser" id="recentChatListMap">

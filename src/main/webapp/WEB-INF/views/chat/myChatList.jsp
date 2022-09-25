@@ -135,7 +135,7 @@ const enterChatroom = (chatroomId) => {
 						</ul>
 					`;
 				}
-				
+
 				chatLog.insertAdjacentHTML('beforeend', html);
 				
 			});
@@ -150,7 +150,14 @@ const enterChatroom = (chatroomId) => {
 				  	onclick="sendMsg('\${chatroomId}')"><i class="fa-solid fa-paper-plane"></i> Send</button>
 				</div>
 			`;
+			chatLog.scrollTop = chatLog.scrollHeight;
 			
+			document.querySelector("#msg").addEventListener('keyup', (e) => {
+				
+				if(e.key === 'Enter'){
+					sendMsg(`\${chatroomId}`);
+				}
+			});
 		},
 		error : console.log,
 		complete() {
@@ -158,7 +165,7 @@ const enterChatroom = (chatroomId) => {
 			stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
 				const {"content-type" : contentType} = message.headers;
 				if(!contentType) return;
-				
+					
 				console.log(`/app/chat/\${chatroomId} : `, message);
 
 				const chatLog = document.querySelector("#chatLog");	
@@ -188,7 +195,7 @@ const enterChatroom = (chatroomId) => {
 				
 				chatLog.insertAdjacentHTML('beforeend', html);
 				
-				
+				chatLog.scrollTop = chatLog.scrollHeight;
 				
 			});	
 		}
