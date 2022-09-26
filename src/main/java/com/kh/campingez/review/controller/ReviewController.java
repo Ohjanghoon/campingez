@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
@@ -19,19 +21,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.kh.campingez.admin.model.service.AdminService;
 import com.kh.campingez.campzone.model.dto.CampZone;
 import com.kh.campingez.common.CampingEzUtils;
-import com.kh.campingez.inquire.model.dto.Answer;
 import com.kh.campingez.review.model.dto.Review;
 import com.kh.campingez.review.model.dto.ReviewEntity;
 import com.kh.campingez.review.model.dto.ReviewPhoto;
 import com.kh.campingez.review.model.service.ReviewService;
+import com.kh.campingez.user.model.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,6 +51,9 @@ public class ReviewController {
 	
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	UserService userService;
 	
 	@GetMapping("/reviewList.do")
 	public void reviewList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
@@ -128,7 +133,7 @@ public class ReviewController {
 	
 	@PostMapping("/insertReview.do")
 	public String boardEnroll(
-			Review review, 
+			Review review, @RequestParam String userId,
 			@RequestParam(name = "upFile") List<MultipartFile> upFileList, 
 			RedirectAttributes redirectAttr) 
 					throws IllegalStateException, IOException {
@@ -154,7 +159,7 @@ public class ReviewController {
 		
 		// db저장
 		int result = reviewService.insertReview(review);
-		
+		result = userService.giveTo100Point(userId);
 		redirectAttr.addFlashAttribute("msg", "리뷰를 성공적으로 작성했습니다.");
 		
 		return "redirect:/userInfo/myReservation.do";

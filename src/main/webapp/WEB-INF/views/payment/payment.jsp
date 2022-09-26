@@ -55,7 +55,7 @@
 			pay_method : '<%= payMethod %>',    // 결제 수단
 			merchant_uid : '${merchantCustomId}' ,
 			name : '${payRes.campId}/<%= schedule %>',    // order 테이블에 들어갈 주문명 혹은 주문 번호
-			amount : '1',    // 결제 금액
+			amount : '10',    // 결제 금액
 			buyer_name : '${payRes.resUsername}',   //주문자명(=예약자명)
 			buyer_tel : '${payRes.resPhone}',
 			buyer_email : ''
@@ -72,7 +72,9 @@
    	    		data : {
    	    			resNo : '${payRes.resNo}',
    	    			resState : '${payRes.resState}',
-   	    			assignNo : '${assignNo}'
+   	    			assignNo : '${assignNo}',
+   	    			userId : '${payRes.userId}',
+   	    			resPrice : '${payRes.resPrice}'
    	    		},
    	    		success(response){
    	    			console.log(response);

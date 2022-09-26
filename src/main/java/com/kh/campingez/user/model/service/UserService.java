@@ -26,4 +26,8 @@ public interface UserService {
 
 	User checkPhone(String phone);
 
+	int giveTo100Point(String userId);
+
+	int giveToPoint(Map<String, Object> map);
+
 }
