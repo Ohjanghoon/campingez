@@ -54,32 +54,36 @@
     box-shadow: 0 -1px 6px 1px rgba(0,0,0,0.1);
 	background-color:#FFFFFF;
 }
-
-#comments form {
-	margin-bottom:30px;
+table#tbl-comment tr.level2 sub.comment-date {color:rgb(128, 0, 255); font-size:10px}
+table#tbl-comment textarea{margin: 4px 0 0 0;}
+table#tbl-comment button.btn-comment-enroll2{width:60px; height:23px; color:white; background:lightslategray; position:relative; top:-5px; left:10px;}
+.del-wrap {
+	display: flex;
+}
+.del-file-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 20px 10px 0;
+}
+.content-wrap {
+    min-height: 300px;
+}
+.free-badge {
+	background-color: #7A86B6;
+}
+.honey-badge {
+	background-color: #ffdf40;
+    color: black;
+}
+.btn-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-content: center;
+    margin-top: 20px;
 }
 
-#comments .btn {
-	margin-top:7px;
-}
-
-#comments form fieldset {
-	clear:both;
-}
-
-#comments form textarea {
-	height:100px;
-}
-
-#comments .media {
-	border-top:1px dashed #DDDDDD;
-	padding:20px 0;
-	margin:0;
-}
-
-#comments .media > .pull-left {
-    margin-right:20px;
-}
 
 #comments .media img {
 	max-width:100px;
@@ -133,4 +137,9 @@
 #upload-img{
 	width:400px;
 	height:auto;
+}
+.like-wrap {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
 }

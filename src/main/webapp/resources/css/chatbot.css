@@ -101,22 +101,6 @@
   }
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
 .que:first-child {
   border-top: 1px solid black;
 }
@@ -211,3 +195,36 @@
 #Accordion_wrap ul{
 	margin-right: 15px;
 }
+
+
+#tooltip {
+    display: inline-block;
+    height: 48px;
+    width: 48px;
+    border-radius: 0.5em;
+    background-color: white;
+    box-shadow: 0px 0px 5px silver;
+    position: fixed;
+    transform: translate(-50%, -100%);
+    visibility: hidden;
+    opacity: 0;
+    transition: all .4s;
+    border: 1px solid black;
+    right: 45px;
+    bottom: 100px;
+}
+}
+
+
+#chatbot_toggle:hover #tooltip{
+    transform: translate(-50%, -80%);
+    opacity: 1;
+    visibility: visible;
+}
+#chatbot:hover #tooltip{
+    transform: translate(-50%, -80%);
+    opacity: 1;
+    visibility: visible;
+}
+
+

@@ -79,12 +79,19 @@
 						</div>	
 					</div>		
 					<c:if test="${not empty campZone.campPhotos}">
-						<c:forEach items="${campZone.campPhotos}" var="photo" varStatus="vs">
-							<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-							    <input type="checkbox" class="btn-check" id="delFile${vs.count}" name="delFile" value="${photo.zonePhotoNo}">
-								<label for="delFile${vs.count}" class="btn btn-outline-danger btn-block" style="overflow: hidden" title="">첨부파일 ${photo.originalFilename} 삭제</label>
-							</div>
-						</c:forEach>
+						<div class="del-wrap">
+							<c:forEach items="${campZone.campPhotos}" var="photo" varStatus="vs">
+								<div class="del-file-wrap">
+									<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+									  	<input type="checkbox" class="btn-check" id="delFile${vs.count}" name="delFile" value="${photo.zonePhotoNo}">
+										<label for="delFile${vs.count}" class="btn btn-outline-danger btn-block" style="overflow: hidden" title="">첨부파일삭제 - ${photo.originalFilename}</label>
+									</div>
+									<div class="file-wrap">
+										<img src="${pageContext.request.contextPath}/resources/upload/campPhoto/${photo.renamedFilename}" width="150px">
+									</div>
+								</div>
+							</c:forEach>
+						</div>
 					</c:if>
 					<div class="mb-3 mt-1">
 						<input type="file" class="form-control" name="upFile" id="upFile1" multiple />

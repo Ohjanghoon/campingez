@@ -9,40 +9,12 @@
 	<jsp:param value="채팅방" name="title"/>
 </jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js">moment.locale('ko');</script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chat/myChatList.css" />
 <style>
-.targetChat {
-	list-style : none;
-	padding : 0;
-}
-.chatUserProfile {
-	cursor : pointer;
-}
-.chatUserId {
-	cursor : pointer;
-	width : 90%;
-}
-.userMsg {
-	background-color: #7A86B6;
-	color : white;
-}
-.targetMsg {
-	background-color: #C8B6E2;
-	color : white;
-}
-#chatList>thead {
-	background-color : #7A86B6 !important;
-	color : white;
-}
-.fa-circle-user {
-	color : #C8B6E2;
-	scale : 1.7;
-}
-.badge {
-	font-size : 0.5em !important;
-}
+
 </style>
 <sec:authentication property="principal.username" var="loginUser" />
-<div class="container my-5">
+<div class="container my-5" id="myChat-container">
 	<div class="row mx-auto">
 		<div class="col-lg-4" style="height: 80vh; overflow-y: scroll;">
 		<table class="table" id="chatList">
@@ -78,7 +50,7 @@
 						onclick="enterChatroom('${chatUser.chatroomId}')">
 						<strong>${chatUser.userId}</strong>
 						<br />
-						<small>${chatUser.chatLog.chatMsg}</small>
+						<small id="recentChatMsg">${chatUser.chatLog.chatMsg}</small>
 					</td>
 					<td class="text-end align-middle" onclick="deleteChatroom('${chatUser.chatroomId}')" >
 						<button type="button" class="btn p-auto" style="border: none;"
@@ -125,10 +97,10 @@ const enterChatroom = (chatroomId) => {
 		success(response){
 			console.log(response);
 			
-			let tradeNo = null;
+			const {chatLogs, chatTradeNo} = response;
 			// 불러온 채팅 내역 추가
-			response.forEach((chat) => {
-				const {userId, chatMsg, chatTime, chatTradeNo} = chat;
+			chatLogs.forEach((chat) => {
+				const {userId, chatMsg, chatTime} = chat;
 				tradeNo = chatTradeNo;
 				console.log(chatTradeNo);
 				console.log(chat);
@@ -176,10 +148,10 @@ const enterChatroom = (chatroomId) => {
 			
 			// 중고거래글 이동버튼 영역 추가
 			const btnTradeArea = document.querySelector("#goTradeBtnArea");
-			if(tradeNo != null){
+			if(chatTradeNo != null){
 				btnTradeArea.innerHTML = `
 					<button class="btn btn-borderless badge bg-warning" id="goTradeBtn"
-						onclick="goTrade('\${tradeNo}')">중고거래 글로 이동</button>
+						onclick="goTrade('\${chatTradeNo}')">중고거래 글로 이동</button>
 				`;
 			}
 			else {
@@ -247,7 +219,7 @@ setTimeout(() => {
 		
 		let tr = document.querySelector(`tr[data-chatroomid = "\${chatroomId}"]`);
 		if(tr) {
-			tr.querySelector("small").innerHTML = chatMsg;
+			tr.querySelector("#recentChatMsg").innerHTML = chatMsg;
 		}
 		else {
 			//신규채팅방인 경우

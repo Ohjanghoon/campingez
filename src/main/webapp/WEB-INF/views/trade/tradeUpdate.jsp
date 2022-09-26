@@ -56,12 +56,19 @@
 			건전한 게시판 문화를 위해 노력해주세요.🙂	
 		</div>
 		<textarea id="summernote" name="tradeContent" required>${trade.tradeContent}</textarea>
+		<div class="del-wrap">
 		<c:forEach items="${trade.photos}" var="photo" varStatus="vs">
-			<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-			  <input type="checkbox" class="btn-check" id="delFile${vs.count}" name="delFile" value="${photo.tradePhotoNo}">
-				<label for="delFile${vs.count}" class="btn btn-outline-danger btn-block" style="overflow: hidden" title="">첨부파일삭제 - ${photo.originalFilename}</label>
+			<div class="del-file-wrap">
+				<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+				  	<input type="checkbox" class="btn-check" id="delFile${vs.count}" name="delFile" value="${photo.tradePhotoNo}">
+					<label for="delFile${vs.count}" class="btn btn-outline-danger btn-block" style="overflow: hidden" title="">첨부파일삭제 - ${photo.originalFilename}</label>
+				</div>
+				<div class="file-wrap">
+					<img src="${pageContext.request.contextPath}/resources/upload/trade/${photo.renamedFilename}" width="150px">
+				</div>
 			</div>
 		</c:forEach>
+		</div>
 		<div class="mb-3">
 		  <input class="form-control" type="file" id="upFile" accept="image/*" name="upFile" multiple>
 		</div>
@@ -123,6 +130,7 @@ document.querySelector("#enroll-btn").addEventListener('click', (e) => {
 		price.focus();
 		return;
 	}
+	content.value = (content.value.replaceAll('<p>', '').replaceAll('</p>', ''));
 	price.value = Number(price.value.replaceAll(',',''));
 	document.tradeUpdateFrm.submit();
 });

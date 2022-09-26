@@ -353,10 +353,11 @@ public class TradeController {
 		return mav;
 	}
 	
-	@GetMapping("/tradeSuccess")
-	public void tradeSuccess(@RequestParam String no) {
+	@PostMapping("/tradeSuccess.do")
+	public ResponseEntity<?> tradeSuccess(@RequestParam String no) {
 		int result = tradeService.updateSuccess(no);
 		
+		return ResponseEntity.ok().body(result);
 	}
 
 	

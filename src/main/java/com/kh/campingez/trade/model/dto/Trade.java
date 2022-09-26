@@ -23,13 +23,15 @@ public class Trade extends TradeEntity {
 	// 신고 누른 회원 조회 필드
 	private String reportUserId;
 	private List<Report> reportList;
+	private String categoryName;
 	
 	public Trade(String tradeNo, String userId, String categoryId, String trade_title,
 			String trade_content, LocalDateTime trade_date, int readCount, int price, String trade_success,
-			TradeQuality tradeQuality, int like_count, String tradeIsdelete, int photoCount, String reportUserId) {
+			TradeQuality tradeQuality, int like_count, String tradeIsdelete, int photoCount, String reportUserId, String categoryName) {
 		super(tradeNo, userId, categoryId, trade_title, trade_content, trade_date, readCount, price, trade_success,
 				tradeQuality, like_count, tradeIsdelete);
 		this.photoCount = photoCount;
+		this.categoryName = categoryName;
 		this.reportUserId = reportUserId;
 	}
 	
