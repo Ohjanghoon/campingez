@@ -369,7 +369,7 @@ document.querySelector("#enroll-btn").addEventListener('click', (e) => {
 	if(!content.value) {
 		alert("빈 댓글을 등록할 수 없습니다.");
 		content.focus();
-		return;
+		return false;
 	}
 
 	document.communityCommentEnrollFrm.submit();

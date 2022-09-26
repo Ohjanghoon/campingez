@@ -594,7 +594,7 @@ const beforeTime = (alarmDate) => {
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myLikeList.do">찜 목록</a></li>
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/chat/myChatList.do">채팅 목록</a></li>
 						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userEnroll.do">로그아웃</a></li>
+						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userLogout.do">로그아웃</a></li>
 					</ul>
 				</div>
 			</sec:authorize>
@@ -663,14 +663,14 @@ const beforeTime = (alarmDate) => {
 	</div>
 	<!-- carousel end -->
 
-	<div class="title">
-    <div>
-        <div id="chatbot" class="main-card ch-collapsed">
-        <div id="tooltip">
+        <div id="tooltip" onmouseleave="mouseLeave()">
         	<a href="#" onclick="adminChat()">
         		<img src="${pageContext.request.contextPath}/resources/images/siren.png" alt="" width="100%" height="100%"/>
         	</a>
         </div>
+	<div class="title">
+    <div>
+        <div id="chatbot" class="main-card ch-collapsed">
     <button id="chatbot_toggle">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M0 0h24v24H0V0z" fill="none" />
