@@ -168,14 +168,19 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public int deleteComment(CommunityComment cc) {
-		return communityDao.deleteComment(cc);
+	public int deleteComment(String commentNo) {
+		return communityDao.deleteComment(commentNo);
 		
 	}
 	
 	@Override
 	public String getUserReportComm(Map<String, Object> param) {
 		return communityDao.getUserReportComm(param);
+	}
+
+	@Override
+	public String selectCommNoByCommentNo(String commentNo) {
+		return communityDao.selectCommNoByCommentNo(commentNo);
 	}
 	
 	
