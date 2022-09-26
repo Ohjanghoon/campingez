@@ -79,7 +79,7 @@ window.onload = () => {
 		<div class="buttonWrapper">
 			<button id="research" onclick="research()" class="btn">다시검색하기</button>
 			<div id="xyCode">
-				<input type="text" class="text_custom" id="fullAddr" name="fullAddr" placeholder="ex) 강남역">
+				<input type="text" class="text_custom" id="fullAddr" name="fullAddr" placeholder="ex) 테헤란로 10길 9">
 				<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" id="btn_select1" style="cursor: pointer;">
 				<!-- <button type id="btn_select1" class="btn btn-outline-secondary">적용하기</button> -->
 				<button id="btn_select2" onclick="lineDisplay()" class="btn">경로보기</button>

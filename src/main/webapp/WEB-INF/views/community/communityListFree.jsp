@@ -18,7 +18,7 @@
 <div class="panel" id="panel">
 			<div class="form-inline" style="display:flex; justify-content : center; margin:50px;">
 			<br />
-				<input class="btn btn-outline-dark mt-auto" id="freeBoard" type="button" value="자유게시판" style="margin-right:30px;"/>
+				<input class="btn btn-outline-dark mt-auto" id="freeBoard" type="button" value="자유게시판" style="margin: 0 15px;"/>
 				<input class="btn btn-outline-dark mt-auto" id="honeyBoard"
 				 onclick="location.href='${pageContext.request.contextPath}/community/communityListHoney.do#panel';" type="button" value="꿀팁게시판" style="margin-right:30px;"/>
 			</div>
