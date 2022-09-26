@@ -165,6 +165,7 @@
 								</div> --%>
 								
 								<div class="chat-wrap">
+									<sec:authorize access="isAuthenticated()">
 									<c:if test="${loginUser ne trade.userId}">
 									<form:form method="GET"
 										name="chatForm"
@@ -176,7 +177,7 @@
 										</button>
 									</form:form>	   
 									</c:if>
-								
+									</sec:authorize>
 								</div>
 								
 								

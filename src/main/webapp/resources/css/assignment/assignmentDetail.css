@@ -20,3 +20,37 @@
 	vertical-align : middle;
 	accent-color : #A8A4CE;
 }
+
+.container th {
+	width : 30%;
+	text-indent : 1.1rem;
+	vertical-align : middle;
+}
+#assignmentComplete {
+	position: relative;
+}
+#assignmentComplete> img {
+	opacity: 0.5;
+	width: 60%;
+	position : absolute;
+	right : -130px;
+	bottom : -80px;	
+}
+#btn_top{
+    width: 30px; 
+    height: 30px;
+    border: 1px solid #A8A4CE; 
+    color: #A8A4CE;
+    cursor: pointer;
+    position: fixed; bottom: 30%; right: 5%;
+    z-index : 2;
+}
+#btn_bottom {
+	width: 30px; 
+    height: 30px;
+    border: 1px solid #A8A4CE; 
+    color: #A8A4CE;
+    cursor: pointer;
+    position: fixed; bottom: 26%; right: 5%;
+    z-index : 2;
+}
