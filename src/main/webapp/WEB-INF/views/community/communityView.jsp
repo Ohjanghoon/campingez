@@ -71,22 +71,35 @@
       <sec:authorize access="isAuthenticated()"> 
          <c:if test="${loginMember.userId eq community.userId}">
          <div>
-            <input class="btn btn-outline-dark flex-shrink-0" type="button" value="글수정" onclick="location.href='${pageContext.request.contextPath}/community/communityUpdate.do?no=${community.commNo}';" />
-            <input class="btn btn-outline-dark flex-shrink-0" type="button" value="글삭제" id="delete" onclick="deleteComm();" />   
+            <input class="btn btn-outline-secondary flex-shrink-0" type="button" value="글수정" onclick="location.href='${pageContext.request.contextPath}/community/communityUpdate.do?no=${community.commNo}';" />
+            <input class="btn btn-outline-danger flex-shrink-0" type="button" value="글삭제" id="delete" onclick="deleteComm();" />
          </div>
          </c:if>
+            
+			<c:if test="${loginMember.userId ne community.userId}">
+				<form:form method="GET"	name="chatForm"	action="${pageContext.request.contextPath}/chat/chat.do">
+					<input type="hidden" name="chatTargetId" value="${community.userId}" />
+					<%-- <input type="hidden" name="chatTradeNo" value="${trade.tradeNo}" /> --%>
+					<button type="submit" id="chatBtn" class="btn btn-outline-primary flex-shrink-0" style="">
+						<i class="fa-solid fa-paper-plane"></i> 작성자와 채팅하기
+					</button>
+				</form:form>	   
+			</c:if>        
       </sec:authorize>
       
       
-      <!-- 댓글 작성부 -->
-      <hr style="margin-bottom:50px;"/>
+      <hr style="margin-bottom:0px;"/>
+      <p id="golist" style="width:90px; height:30px; color:gray; cursor:pointer;"> << 목록으로</p>
       
-      <div class="col-sm-20">   
+      <!-- 댓글 작성부 -->
+      <div class="col-sm-20" style="margin-top:50px;"> 
       <c:if test="${empty user.userId}">
-      	<textarea cols="60" rows="2" placeholder="로그인 후 댓글을 작성할 수 있습니다." readonly style="resize:none;"></textarea>
-        <button id="btn" class="btn btn-outline-dark flex-shrink-0">등록</button>
+      	<textarea class="form-control" id="cContent" name="cContent" placeholder="로그인 후 댓글을 작성할 수 있습니다."  style="resize:none;" readonly></textarea>
+
       </c:if>
       
+      <sec:authorize access="isAuthenticated()">
+         
       <form name="communityCommentFrm" action="${pageContext.request.contextPath}/community/commentEnroll.do" method="post">
       	<h3 class="pull-left">New Comment</h3>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -100,12 +113,15 @@
 	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
         </div>   	
       </form>
+      </sec:authorize>
                     
+                    
+	  <c:if test="${not empty commentlist}">
+	  
       <hr style="margin-top:50px;margin-bottom:50px;"/>
-                    
+      
       <h3>댓글목록</h3>
 
-	  <c:if test="${not empty commentlist}">
      	 <c:forEach items="${commentlist}" var="comment">
     	  <div class="media">
           	<c:if test="${comment.commentLevel eq 2}">
@@ -356,9 +372,10 @@ document.querySelector("#enroll-btn").addEventListener('click', (e) => {
 	document.communityCommentEnrollFrm.submit();
 });
 
+document.querySelector("#golist").addEventListener('click', (e) => {
+	history.go(-1);
+});
+
 </script>
-
-
-
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
