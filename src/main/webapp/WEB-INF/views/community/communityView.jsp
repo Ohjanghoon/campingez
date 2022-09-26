@@ -106,7 +106,7 @@
 
       </c:if>
       
-      <sec:authorize access="isAuthenticated()">
+      <sec:authorize access="${not empty user.userId} and isAuthenticated()">
          
       <form name="communityCommentFrm" action="${pageContext.request.contextPath}/community/commentEnroll.do" method="post">
       	<h3 class="pull-left">New Comment</h3>
@@ -163,7 +163,8 @@
                     </sec:authorize>
                  </ul>
             	</div>              			
-             </div>
+            	</div>              
+            </div>
             </div>
            </c:forEach>
          </c:if>
