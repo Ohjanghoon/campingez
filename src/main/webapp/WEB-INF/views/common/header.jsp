@@ -666,6 +666,11 @@ const beforeTime = (alarmDate) => {
 	<div class="title">
     <div>
         <div id="chatbot" class="main-card ch-collapsed">
+        <div id="tooltip">
+        	<a href="#" onclick="adminChat()">
+        		<img src="${pageContext.request.contextPath}/resources/images/siren.png" alt="" width="100%" height="100%"/>
+        	</a>
+        </div>
     <button id="chatbot_toggle">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M0 0h24v24H0V0z" fill="none" />
@@ -764,19 +769,29 @@ const beforeTime = (alarmDate) => {
       document.getElementById("chatbot_toggle").children[0].style.display = "none"
       document.getElementById("chatbot_toggle").children[1].style.display = ""
       document.getElementById("chatbot").style.overflowY = "scroll";
-      
+	  document.querySelector('#tooltip').style.opacity = "1";
+	  document.querySelector('#tooltip').style.visibility = "visible";
+	  document.querySelector('#tooltip').style.transform = "translate(-50%, -80%)";
+	  document.querySelector('#tooltip').style.bottom = "650px";
     }
     else {
+	  document.querySelector('#tooltip').style.bottom = "100px";
       document.getElementById("chatbot").classList.add("ch-collapsed")
       document.getElementById("chatbot_toggle").children[0].style.display = ""
       document.getElementById("chatbot_toggle").children[1].style.display = "none"
       document.getElementById("chatbot").style.overflow = "hidden";
+	  document.querySelector('#tooltip').style.opacity = "0";
+	  document.querySelector('#tooltip').style.visibility = "hidden";
     }
   }
-
+  
   $(".que").click(function () {
     $(this).next(".anw").stop().slideToggle(300);
     $(this).toggleClass('on').siblings().removeClass('on');
     $(this).next(".anw").siblings(".anw").slideUp(300); // 1개씩 펼치기
   });
+  
+  function adminChat() {
+	  console.log(123);
+  }
 </script>
