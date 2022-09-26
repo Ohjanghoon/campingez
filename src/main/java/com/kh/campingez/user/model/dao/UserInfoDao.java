@@ -1,7 +1,6 @@
 package com.kh.campingez.user.model.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,6 +12,7 @@ import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.dto.TradeEntity;
 import com.kh.campingez.user.model.dto.MyPage;
 import com.kh.campingez.user.model.dto.User;
@@ -50,8 +50,8 @@ public interface UserInfoDao {
 	
 	List<MyPage> selectTradeCnt(User user);
 
-	@Select("select t.*, trade_read_count read_count,trade_like_count like_count from trade t where user_id = #{userId}")
-	List<TradeEntity> selectTradeList(RowBounds rowBounds, User user);
+	@Select("select t.*, trade_read_count read_count,trade_like_count like_count, (select category_name from category_list where category_id = t.category_id) category_name from trade t where user_id = #{userId}")
+	List<Trade> selectTradeList(RowBounds rowBounds, User user);
 
 	@Select("select count(*) from assignment where user_id = #{userId}")
 	int getTotalAssignment(User user);

@@ -18,7 +18,7 @@
 <div class="panel" id="panel">
 			<div class="form-inline" style="display:flex; justify-content : center; margin:50px;">
 			<br />
-				<input class="btn btn-outline-dark mt-auto" id="freeBoard" type="button" value="자유게시판" style="margin-right:30px;"/>
+				<input class="btn btn-outline-dark mt-auto" id="freeBoard" type="button" value="자유게시판" style="margin: 0 15px;"/>
 				<input class="btn btn-outline-dark mt-auto" id="honeyBoard"
 				 onclick="location.href='${pageContext.request.contextPath}/community/communityListHoney.do#panel';" type="button" value="꿀팁게시판" style="margin-right:30px;"/>
 			</div>
@@ -69,7 +69,7 @@
 	      <td scope="row">
 	      	<span class="badge category-name-badge free-badge">${comm.categoryName}</span>
 	      </td>
-	      <td colspan="10" style="width:40%;" class="title">${comm.commTitle}</td>
+	      <td colspan="10" style="width:40%;" class="title">${comm.commTitle}&nbsp;&nbsp;&nbsp;<i class="fa-regular fa-comment"></i> ${comm.commentCount}</td>
 	      <td>${comm.userId}</td>
 	      <td style="width:7%;"><img src="${pageContext.request.contextPath}/resources/images/eye.png" style="width:30px;heigh:30px;" />
 	      ${comm.readCount}</td>

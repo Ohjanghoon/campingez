@@ -123,3 +123,9 @@
 #tradeTable > thead > tr > th:last-child {
 	border-top-right-radius : 30px !important;
 }
+#tradeTable tbody td {
+	vertical-align: middle;
+}
+.title {
+	text-align: left;
+}

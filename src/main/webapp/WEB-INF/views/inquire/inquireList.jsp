@@ -31,7 +31,7 @@
 				<th style="width: 5%">No</th>
 				<th style="width: 9%">문의유형</th>
 				<th>작성자</th>
-				<th>문의제목</th>
+				<th class="text-start">문의제목</th>
 				<th>작성일</th>
 				<th style="width: 12%">답변상태</th>
 			</tr>
@@ -47,7 +47,7 @@
 					<td class="text-center">${totalContent - vs.count - (cPage -1) * limit + 1}</td>
 					<td class="text-center">${inq.categoryName}</td>
 					<td class="text-center">${inq.inqWriter}</td>
-					<td class="text-left">
+					<td class="text-start">
 						<c:if test="${anonymous or notAllow}">
 							&nbsp;<i class="fa-sharp fa-solid fa-lock"></i>&nbsp;
 						</c:if>

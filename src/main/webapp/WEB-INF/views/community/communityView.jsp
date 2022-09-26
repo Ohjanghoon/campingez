@@ -9,7 +9,6 @@
    <jsp:param value="게시판 상세보기" name="title" />
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/communityView.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
 .media{
@@ -38,35 +37,43 @@
 	              <fmt:formatDate value="${commDate}" pattern="yy-MM-dd HH:mm"/>
               </div>
           <!-- Post categories-->
-          <p class="badge bg-secondary text-decoration-none link-light">${community.categoryId eq 'com1' ? '자유게시판' : '꿀팁게시판'}</p> 
-          <p style="text-align:right;">조회수 : ${community.readCount} 신고수 : ${community.reportCount} 좋아요 : ${community.likeCount} </p> 
-          <form action="${pageContext.request.contextPath}/community/like.do" name="commLikeFrm" style="text-align:right;">
-              <input type="hidden" name="no" value="${community.commNo}" />
-              <a class="heart">
-                  <img id="heart" src="${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png" style="width:30px; height:30px; cursor:pointer" ></a>
-          </form>
-          <button type="button" id="report-btn" class="btn btn-outline-dark flex-shrink-0" data-report-user-id="${reportUserId}" data-bs-toggle="modal" data-bs-target="#reportModal">
-			<i class="fa-solid fa-land-mine-on"></i> 신고하기
-		  </button>
+          ${community.categoryId eq 'com1' ? '<span class="badge category-name-badge free-badge">자유게시판</span>' : '<span class="badge category-name-badge honey-badge">꿀팁게시판</span>'} 
+          <p style="text-align:right;">조회수 ${community.readCount} | 신고수 ${community.reportCount} | 좋아요 ${community.likeCount} </p> 
+		  <div class="btn-wrap">
+			  <div class="like-wrap">
+  	  	          <form action="${pageContext.request.contextPath}/community/like.do" name="commLikeFrm" style="text-align:right;">
+		              <input type="hidden" name="no" value="${community.commNo}" />
+		              <a class="heart">
+		                  <img id="heart" src="${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png" style="width:30px; height:30px; cursor:pointer" ></a>
+		          </form>
+			  </div>
+	          <div class="report-wrap">
+		          <button type="button" id="report-btn" class="btn btn-outline-dark flex-shrink-0" data-report-user-id="${reportUserId}" data-bs-toggle="modal" data-bs-target="#reportModal">
+						<i class="fa-solid fa-land-mine-on"></i> 신고하기
+				  </button>
+	          </div>
+		  </div>
 		  
           <hr>
           
       </header>
       
-      <!-- Preview image figure-->
-      <figure class="mb-4">
-      	<c:if test="${not empty community.photos}">
-	        <c:forEach items="${community.photos}" var="photo">   
-	           <img src ="${pageContext.request.contextPath}/resources/upload/community/${photo.renamedFilename}" id="upload-img">
-	        </c:forEach>
-        </c:if>
-      </figure>
-      
-      <!-- Post content-->
-      <section class="mb-5">
-      	<p class="fs-5 mb-4">${community.commContent}</p>
-      </section>
-      
+		<div class="content-wrap">
+	      <!-- Preview image figure-->
+	      <figure class="mb-4">
+	      	<c:if test="${not empty community.photos}">
+		        <c:forEach items="${community.photos}" var="photo">   
+		           <img src ="${pageContext.request.contextPath}/resources/upload/community/${photo.renamedFilename}" id="upload-img">
+		        </c:forEach>
+	        </c:if>
+	      </figure>
+	      
+	      <!-- Post content-->
+	      <section class="mb-5">
+	      	<p class="fs-5 mb-4">${fn:replace(community.commContent, '\\n\\r', '<br/>')}</p>
+	      </section>
+		</div>
+      	
       		
       <sec:authorize access="isAuthenticated()"> 
          <c:if test="${loginMember.userId eq community.userId}">
@@ -98,7 +105,7 @@
 
       </c:if>
       
-      <sec:authorize access="isAuthenticated()">
+       <sec:authorize access="${not empty user.userId} and isAuthenticated()">
          
       <form name="communityCommentFrm" action="${pageContext.request.contextPath}/community/commentEnroll.do" method="post">
       	<h3 class="pull-left">New Comment</h3>
@@ -114,8 +121,7 @@
         </div>   	
       </form>
       </sec:authorize>
-                    
-                    
+                                       
 	  <c:if test="${not empty commentlist}">
 	  
       <hr style="margin-top:50px;margin-bottom:50px;"/>
@@ -128,7 +134,8 @@
             	<img id="heart" src="${pageContext.request.contextPath}/resources/images/reply.png" style="width:30px; height:30px;">
             </c:if>
                       
-          	<div class="media-body">
+          	<div class="media-body comment-wrap">
+          	<div class="comm-comment-wrap">
             	<h4 class="media-heading">${comment.userId}</h4>
                 <p>${comment.commentContent } </p>
                 <ul class="list-unstyled list-inline media-detail pull-left">
@@ -136,7 +143,9 @@
                     <fmt:parseDate value="${comment.commentDate}" pattern="yyyy-MM-dd'T'HH:mm" var="commentDate"/>
                     <fmt:formatDate value="${commentDate}" pattern="yy-MM-dd"/></li>
                 </ul>
+             </div>
                           
+          	<div class="comm-comment-wrap">
                 <ul class="list-unstyled list-inline media-detail pull-right">
                 	<sec:authorize access="isAuthenticated()"> 
                     <c:if test="${comment.commentLevel eq 1}">
@@ -152,6 +161,7 @@
 		            </c:if>
                     </sec:authorize>
                  </ul>
+             </div>
              </div>
             </div>
            </c:forEach>
@@ -306,16 +316,11 @@ $(document).ready(function () {
                 that.prop('name',data);
                 if(data==1) {
                     $('#heart').prop("src","${pageContext.request.contextPath}/resources/images/trade/colorHeart.png");
-                    alert("좋아요 등록!");
-                    
                 }
                 else{
                     $('#heart').prop("src","${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png");
-                    alert("좋아요 취소!");
                 }
                     window.location.reload();
-
-
             }
         });
     });
@@ -346,8 +351,8 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
 		            <input type="hidden" name="commentLevel" value="2" />
 		            <input type="hidden" name="commentRef" value="\${value}" />    
 		            	<div class="form-group col-xs-20 col-sm-13 col-lg-20">
-		    	        <textarea class="form-control" id="cContent" name="cContent" placeholder="댓글을 입력하세요." style="resize:none;"></textarea>
-		    	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
+		    	        <textarea class="form-control" id="cContent2" name="cContent" placeholder="댓글을 입력하세요." style="resize:none;"></textarea>
+		    	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn2">댓글 등록</button>
 		            </div>   	   
 		        </form>
 			</td>
@@ -356,26 +361,44 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
         const target = e.target.parentElement.parentElement; // tr
         target.insertAdjacentHTML('afterend', tr);
         
+        // 대댓글 null 방지
+        document.querySelector("#enroll-btn2").addEventListener('click', (e) => {
+        const content2 = document.querySelector("#cContent2");
+
+    	if(!content2.value) {
+    		alert("빈 댓글을 등록할 수 없습니다.");
+    		content2.focus();
+    	} else{
+    	document.communityCommentFrm.submit();	
+    	}
+    	
+    	e.preventDefault();
+        });
+        
 	}, {once: true});
 });
 
-
-document.querySelector("#enroll-btn").addEventListener('click', (e) => {
+// 댓글 null 방지
+const btn = document.querySelector("#enroll-btn")
+if(btn != null){
+btn.addEventListener('click', (e) => {
 	const content = document.querySelector("#cContent");
 
 	if(!content.value) {
 		alert("빈 댓글을 등록할 수 없습니다.");
 		content.focus();
-		return;
+	} else{
+	document.communityCommentFrm.submit();	
 	}
-
-	document.communityCommentEnrollFrm.submit();
+	
+	e.preventDefault();
 });
+}
+
 
 document.querySelector("#golist").addEventListener('click', (e) => {
 	history.go(-1);
 });
-
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

@@ -1,3 +1,4 @@
+<%@page import="com.kh.campingez.trade.model.dto.Trade"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -14,14 +15,14 @@
 	<sec:authentication property="principal.username" var="loginUser" scope="page" />
 </sec:authorize>
 <style>
-.content-wrap {
+.trade-wrap {
 	background-size: contain;
     background-repeat: no-repeat;
     padding-left:15px;
 }
 .content {
      background-color: #ffffff;
-     background-color: rgba( 255, 255, 255, 0.8 );	
+     background-color: rgba( 255, 255, 255, 0.8 );
 }
 .trade-footer-wrap {
     height: 75px;
@@ -73,14 +74,28 @@
 }
 
 #report-btn {
-    color: #ff0000c4;
-    border: 1px solid #ff0000c4;
+    color: black;
+    border: 1px solid black;
 }
 
 #report-btn:hover {
-    background-color: #ff00008f;
+    background-color: black;
     color: white;
     border: none;
+}
+.saler {
+	font-size:15px;
+	color:gray;
+	margin-left: 25px;
+}
+.trade-view-header {
+    display: flex;
+    align-items: flex-end;
+}
+.lead {
+	min-height: 150px; 
+	border: 1px solid lightgray;
+	padding: 12px;
 }
 </style>
 
@@ -89,8 +104,13 @@
 <h2 class="text-center fw-bold pt-5">중고거래</h2>
         <hr />
         
-        <!-- Product section-->  
-        <section class="py-5">
+        <!-- Product section-->
+<%
+	Trade trade = (Trade) request.getAttribute("trade");
+	pageContext.setAttribute("trade", trade);
+	pageContext.setAttribute("newLine", "\n\r");
+%>  
+        <section>
             <div class="container px-4 px-lg-5 my-5 d-flex justify-content-center">
                 <div class="row gx-4 gx-lg-5 align-items-center content">
                     <div class="col-md-6 photo-wrap">
@@ -105,24 +125,29 @@
                     <div class="col-md-6 content-wrapper">
 						<div class="card">
 							<div class="content-wrap">
-								<div class="content card-body">
-									<div class="small mb-1">${trade.categoryId eq 'tra1' ? '텐트/타프' : trade.categoryId eq 'tra2' ? '캠핑 테이블 가구' : trade.categoryId eq 'tra3' ? '캠핑용 조리도구' : '기타 캠핑용품'}
-										(${trade.tradeQuality}급 : ${trade.tradeQuality eq 'S' ? '상태 좋음' : trade.tradeQuality eq 'A' ? '상태 양호' : '아쉬운 상태'})
+								<div class="trade-wrap">
+									<div class="content trade-content card-body" style="width: 100%;">
+										<div class="small mb-1">${trade.categoryId eq 'tra1' ? '텐트/타프' : trade.categoryId eq 'tra2' ? '캠핑 테이블 가구' : trade.categoryId eq 'tra3' ? '캠핑용 조리도구' : '기타 캠핑용품'}
+											(${trade.tradeQuality}급 : ${trade.tradeQuality eq 'S' ? '상태 좋음' : trade.tradeQuality eq 'A' ? '상태 양호' : '아쉬운 상태'})
+										</div>
+										<div class="trade-view-header">
+											<h1 class="display-5 fw-bolder">${trade.tradeTitle}</h1>
+											<p class="saler">판매자 : ${trade.userId}</p>
+										</div>
+										<div class="fs-5 mb-5">
+											<span><fmt:formatNumber type="number"
+													value="${trade.tradePrice}" />원</span>
+										</div>
+										<h5 style="font-weight: bold;">상품정보</h5>
+										<div class="lead">
+											${fn:replace(trade.tradeContent, '\\n\\r', '<br/>')}
 									</div>
-									<h1 class="display-5 fw-bolder">${trade.tradeTitle}</h1>
-									<p>판매자 ${trade.userId}</p>
-									<div class="fs-5 mb-5">
-										<span><fmt:formatNumber type="number"
-												value="${trade.tradePrice}" />원</span>
+									<div class="likeAndview-wrap d-flex align-items-center">
+										<span>조회 ${trade.readCount}</span>
+										<span>관심 ${trade.likeCount}</span>
 									</div>
-									<h5 style="font-weight: bold;">상품정보</h5>
-									<p class="lead">${trade.tradeContent}</p>
 								</div>
-							</div>
-							<div class="likeAndview-wrap d-flex align-items-center">
-								<span>조회 ${trade.readCount}</span>
-								<span>관심 ${trade.likeCount}</span>
-							</div>
+								</div>
 							<div class="trade-footer-wrap">
 								<div class="jobgutdeul d-flex" style="text-align: right;">
 									<form action="${pageContext.request.contextPath}/trade/like.do" name="tradeLikeFrm" class="d-flex align-items-center">
@@ -157,29 +182,29 @@
 								
 							</div>
 						</div>
-	                        <div class="d-flex" style="margin-top:20px; height:38px;">
-                            <c:if test="${loginUser eq trade.userId}">
-                            <c:if test="${trade.tradeSuccess eq '거래 대기중'}">
-                            <button class="btn btn-outline-success flex-shrink-0" type="button" onclick="updateSuccess();" style="margin-right:10px;">
-                                <i class="bi-cart-fill me-1"></i>
-                                상품 판매 완료
-                            </button>
-                            </c:if>
-                            <button class="btn btn-outline-danger flex-shrink-0" type="button" onclick="deleteTrade();">
-
-                                <i class="bi-cart-fill me-1"></i>
-
-                                <i class="fa-solid fa-trash-can"></i>
-
-                                상품 삭제
-                            </button>
-                            <button class="btn btn-outline-primary flex-shrink-0" type="button" onclick="location.href='${pageContext.request.contextPath}/trade/tradeUpdate.do?no=${trade.tradeNo}';" style="margin-left:10px;">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                                상품 수정
-                            </button>
-                            </c:if>
-						</div>
                     </div>
+                     <div class="d-flex" style="margin-top:20px; height:38px;">
+                         <c:if test="${loginUser eq trade.userId}">
+                         <c:if test="${trade.tradeSuccess eq '거래 대기중'}">
+                         <button class="btn btn-outline-success flex-shrink-0" type="button" onclick="updateSuccess();" style="margin-right:10px;">
+                             <i class="bi-cart-fill me-1"></i>
+                             상품 판매 완료
+                         </button>
+                         </c:if>
+                         <button class="btn btn-outline-danger flex-shrink-0" type="button" onclick="deleteTrade();">
+
+                             <i class="bi-cart-fill me-1"></i>
+
+                             <i class="fa-solid fa-trash-can"></i>
+
+                             상품 삭제
+                         </button>
+                         <button class="btn btn-outline-primary flex-shrink-0" type="button" onclick="location.href='${pageContext.request.contextPath}/trade/tradeUpdate.do?no=${trade.tradeNo}';" style="margin-left:10px;">
+                             <i class="fa-regular fa-pen-to-square"></i>
+                             상품 수정
+                         </button>
+                         </c:if>
+					</div>
                 </div>
             </div>
         </section>
@@ -292,11 +317,23 @@ function deleteTrade(){
 	}else return;
 }
 
-// 상품 판매 완료 버튼(완전 야매버전)
+// 상품 판매 완료 버튼
 function updateSuccess(){
 	if(confirm("상품 판매가 완료되었나요?")){
-		location.href="${pageContext.request.contextPath}/trade/tradeSuccess.do?no=${trade.tradeNo}";
-		location.replace("${pageContext.request.contextPath}/trade/tradeView.do?no=${trade.tradeNo}");
+		const no = document.querySelector("[name=no]").value;
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/trade/tradeSuccess.do",
+			headers,
+			data : {no},
+			type : "POST",
+			success(response) {
+				location.reload();
+			},
+			error : console.log
+		});
 	}else return;
 }
 
@@ -316,10 +353,10 @@ const headers = {};
 headers['${_csrf.headerName}'] = '${_csrf.token}';
 
 $(document).ready(function () {
-	// 판매완료여부 확인/
+	// 판매완료여부 확인
 	const success = '${trade.tradeSuccess}';
-	if(success == '거래완료') {
-		document.querySelector(".content-wrap").style.backgroundImage= 	"url('${pageContext.request.contextPath}/resources/images/trade/salecomplete.png')";
+	if(success == '거래 완료') {
+		document.querySelector(".trade-wrap").style.backgroundImage= "url('${pageContext.request.contextPath}/resources/images/trade/salecomplete.png')";
 	}
 
     var heartval = ${heart};
@@ -354,12 +391,9 @@ $(document).ready(function () {
                 that.prop('name',data);
                 if(data==1) {
                     $('#heart').prop("src","${pageContext.request.contextPath}/resources/images/trade/colorHeart.png");
-                    alert("좋아요 등록!");
-                    
                 }
                 else{
                     $('#heart').prop("src","${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png");
-                    alert("좋아요 취소!");
                 }
                     window.location.reload();
 

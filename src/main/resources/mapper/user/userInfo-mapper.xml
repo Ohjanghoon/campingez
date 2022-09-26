@@ -34,7 +34,9 @@
 		res.*,
        CASE WHEN res_checkout  <![CDATA[<]]> sysdate THEN 'OK'
                  ELSE 'NO'
-                 END AS review 
+                 END AS review, 
+          (select cz.zone_name || substr(c.camp_id,3) from camp c, 
+          camp_zone cz where cz.zone_code = c.zone_code and c.camp_id = res.camp_id) zone_name
 	from
 		reservation res
 	where
@@ -45,7 +47,7 @@
   
   <resultMap type="reservation" id="reservationMap">
   	<id column="res_no" property="resNo"/>
-  	<result column="camp_id" property="campId"/>
+  	<result column="zone_name" property="campId"/>
   	<result column="user_id" property="userId"/>
   	<result column="res_username" property="resUsername"/>
   	<result column="res_phone" property="resPhone"/>
