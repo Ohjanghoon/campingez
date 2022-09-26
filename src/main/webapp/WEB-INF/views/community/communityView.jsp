@@ -9,7 +9,6 @@
    <jsp:param value="게시판 상세보기" name="title" />
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/communityView.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
 .media{
@@ -106,7 +105,7 @@
 
       </c:if>
       
-      <sec:authorize access="${not empty user.userId} and isAuthenticated()">
+       <sec:authorize access="${not empty user.userId} and isAuthenticated()">
          
       <form name="communityCommentFrm" action="${pageContext.request.contextPath}/community/commentEnroll.do" method="post">
       	<h3 class="pull-left">New Comment</h3>
@@ -116,14 +115,13 @@
         <input type="hidden" name="commentLevel" value="1" /> 
         <input type="hidden" name="commentRef" value="" />
 
-        <div class="form-group col-xs-20 col-sm-13 col-lg-20" style="margin-bottom: 40px;">
+        <div class="form-group col-xs-20 col-sm-13 col-lg-20">
 	        <textarea class="form-control" id="cContent" name="cContent" placeholder="댓글을 입력하세요."  style="resize:none;"></textarea>
-	        <button type="button" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
+	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
         </div>   	
       </form>
       </sec:authorize>
-                    
-                    
+                                       
 	  <c:if test="${not empty commentlist}">
 	  
       <hr style="margin-top:50px;margin-bottom:50px;"/>
@@ -137,17 +135,18 @@
             </c:if>
                       
           	<div class="media-body comment-wrap">
-				<div class="comm-comment-wrap">
-	            	<h4 class="media-heading">${comment.userId}</h4>
-	                <p>${comment.commentContent } </p>
-	                <ul class="list-unstyled list-inline media-detail pull-left">
-	                	<li><i class="fa fa-calendar"></i>
-	                    <fmt:parseDate value="${comment.commentDate}" pattern="yyyy-MM-dd'T'HH:mm" var="commentDate"/>
-	                    <fmt:formatDate value="${commentDate}" pattern="yy-MM-dd"/></li>
-	                </ul>
-				</div>
-            	<div class="comm-comment-btn-wrap">
-		           <ul class="list-unstyled list-inline media-detail pull-right">
+          	<div class="comm-comment-wrap">
+            	<h4 class="media-heading">${comment.userId}</h4>
+                <p>${comment.commentContent } </p>
+                <ul class="list-unstyled list-inline media-detail pull-left">
+                	<li><i class="fa fa-calendar"></i>
+                    <fmt:parseDate value="${comment.commentDate}" pattern="yyyy-MM-dd'T'HH:mm" var="commentDate"/>
+                    <fmt:formatDate value="${commentDate}" pattern="yy-MM-dd"/></li>
+                </ul>
+             </div>
+                          
+          	<div class="comm-comment-wrap">
+                <ul class="list-unstyled list-inline media-detail pull-right">
                 	<sec:authorize access="isAuthenticated()"> 
                     <c:if test="${comment.commentLevel eq 1}">
                     	<button class="btn-reply btn btn-outline-dark flex-shrink-0" value="${comment.commentNo}">답글</button>
@@ -162,8 +161,7 @@
 		            </c:if>
                     </sec:authorize>
                  </ul>
-            	</div>              
-			
+             </div>
              </div>
             </div>
            </c:forEach>
@@ -336,7 +334,7 @@ function deleteComment(){
 
 document.querySelectorAll(".btn-reply").forEach((btn) => {
 	btn.addEventListener('click', (e) => {
-		
+
 		const {value} = e.target;
 		console.log(value);
 		
@@ -352,33 +350,48 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
 				         <input type="hidden" name="writer" value="${loginMember.userId}" />
 		            <input type="hidden" name="commentLevel" value="2" />
 		            <input type="hidden" name="commentRef" value="\${value}" />    
-		            	<div class="form-group col-xs-20 col-sm-13 col-lg-20" style="margin-bottom:40px;">
-		    	        <textarea class="form-control" id="cContent" name="cContent" placeholder="댓글을 입력하세요." style="resize:none;"></textarea>
-		    	        <button type="button" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
+		            	<div class="form-group col-xs-20 col-sm-13 col-lg-20">
+		    	        <textarea class="form-control" id="cContent2" name="cContent" placeholder="댓글을 입력하세요." style="resize:none;"></textarea>
+		    	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn2">댓글 등록</button>
 		            </div>   	   
 		        </form>
 			</td>
 		</tr>`;
-		console.dir(e.target);
-        const target = e.target.parentElement.parentElement.parentElement.parentElement; // tr
-        console.dir(target);
+		
+        const target = e.target.parentElement.parentElement; // tr
         target.insertAdjacentHTML('afterend', tr);
+        
+        // 대댓글 null 방지
+        document.querySelector("#enroll-btn2").addEventListener('click', (e) => {
+        const content2 = document.querySelector("#cContent2");
+
+    	if(!content2.value) {
+    		alert("빈 댓글을 등록할 수 없습니다.");
+    		content2.focus();
+    	} else{
+    	document.communityCommentFrm.submit();	
+    	}
+    	
+    	e.preventDefault();
+        });
         
 	}, {once: true});
 });
 
-
+// 댓글 null 방지
 document.querySelector("#enroll-btn").addEventListener('click', (e) => {
 	const content = document.querySelector("#cContent");
-	if(true) return;
+
 	if(!content.value) {
 		alert("빈 댓글을 등록할 수 없습니다.");
 		content.focus();
-		return;
+	} else{
+	document.communityCommentFrm.submit();	
 	}
-
-	document.communityCommentFrm.submit();
+	
+	e.preventDefault();
 });
+
 
 document.querySelector("#golist").addEventListener('click', (e) => {
 	history.go(-1);
