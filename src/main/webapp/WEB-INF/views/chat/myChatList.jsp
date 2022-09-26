@@ -51,7 +51,7 @@
 									<br /> <small id="recentChatMsg">${chatUser.chatLog.chatMsg}</small>
 								</td>
 								<td class="text-end align-middle"
-									onclick="deleteChatroom('${chatUser.chatroomId}')">
+									onclick="deleteChatroom('${chatUser.chatroomId}', '${chatUser.userId}')">
 									<button type="button" class="btn p-auto" style="border: none;"
 										data-chatroomId="${chatUser.chatroomId}">
 										<i class="fa-solid fa-xmark"></i>
@@ -324,7 +324,7 @@ const goTrade = (tradeNo) => {
 };
 
 //채팅방 나가기 버튼 클릭시
-const deleteChatroom = (chatroomId) => {
+const deleteChatroom = (chatroomId, chatTargetId) => {
 	
 	console.log(chatroomId);
 	const userId = '${loginUser}';
@@ -349,6 +349,7 @@ const deleteChatroom = (chatroomId) => {
 					};
 					
 				stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+				stompClient.send(`/app/\${chatTargetId}/myChatList`, {}, JSON.stringify(payload));
 				
 				location.reload();
 			},
