@@ -8,20 +8,14 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
    <jsp:param value="게시판 상세보기" name="title" />
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/tradeView.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/communityView.css" />
 
 <sec:authorize access="isAuthenticated()" >
 	<sec:authentication property="principal" var="loginMember" scope="page" />
 </sec:authorize>
 	
-	<header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder" onclick="location.href='${pageContext.request.contextPath}/community/communityList.do';" style="cursor:pointer;">자유게시판</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">당신의 글을 작성하세요!</p>
-                </div>
-            </div>
-        </header>
+<h2 class="text-center fw-bold pt-5">${community.categoryId eq 'com1' ? '자유게시판' : '꿀팁게시판'}</h2>
+        <hr />
 	
    <section id="trade-container" class="container" style="margin-top:30px;">
          
@@ -34,8 +28,9 @@
                                 작성자 : ${community.userId} / 작성일 : <fmt:parseDate value="${community.commDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="commDate"/>
                                 <fmt:formatDate value="${commDate}" pattern="yy-MM-dd HH:mm"/></div>
                             <!-- Post categories-->
-                            
-                            <p class="badge bg-secondary text-decoration-none link-light">자유게시판</p> 
+                            	<p class="badge bg-secondary text-decoration-none link-light">${community.categoryId eq 'com1' ? '자유게시판' : '꿀팁게시판'}</p> 
+                         	    	    
+			  		
                             <p style="text-align:right;">조회수 : ${community.readCount} 신고수 : ${community.reportCount} 좋아요 : ${community.likeCount} </p> 
                               <form action="${pageContext.request.contextPath}/community/like.do" name="commLikeFrm" style="text-align:right;">
                               <input type="hidden" name="no" value="${community.commNo}" />
@@ -101,7 +96,6 @@
                <c:if test="${not empty commentlist}">
                	<c:forEach items="${commentlist}" var="comment">
                <table id="tbl-comment">
-					
                      <tr class="${comment.commentLevel eq 1 ? 'level1' : 'level2'}">
                         <td>
 	                        ${comment.commentContent}
@@ -121,7 +115,8 @@
 		                         
 		                         <c:if test="${loginMember.userId eq comment.userId}">
 			                         <form action="${pageContext.request.contextPath}/community/commentDelete.do">
-			                  			<input type="hidden" name="cc" value="${comment}" />
+										<input type="hidden" name="commentCommNo" id="commentCommNo" value="${comment.commentCommNo}" />
+										<input type="hidden" name="commentNo" id="commentNo" value="${comment.commentNo}" />
 			                         	<button class="btn-delete btn btn-outline-danger flex-shrink-0" type="submit">삭제</button>
 			                         </form>
 		                         </c:if>

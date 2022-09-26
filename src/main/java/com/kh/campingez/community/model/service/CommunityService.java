@@ -11,9 +11,13 @@ import com.kh.campingez.community.model.dto.CommunityPhoto;
 
 public interface CommunityService {
 
-   List<Community> selectCommList(Map<String, Integer> param);
+   List<Community> selectCommListFree(Map<String, Integer> param);
+   
+   List<Community> selectCommListHoney(Map<String, Integer> param);
 
-   int getTotalContent();
+   int getTotalContentFree();
+   
+   int getTotalContentHoney();
 
    Community selectCommByNo(String no);
 
@@ -39,13 +43,15 @@ public interface CommunityService {
 
    List<CommunityComment> selectCommentList(String commNo);
 
-   int deleteComment(CommunityComment cc);
+   int deleteComment(String commentNo);
 
    String getUserReportComm(Map<String, Object> param);
 
    List<Community> communityFind(Map<String, Integer> param, String categoryType, String searchType, String searchKeyword);
 
    int getFindTotalContent(String categoryType, String searchType, String searchKeyword);
+
+String selectCommNoByCommentNo(String commentNo);
 	
 
 }

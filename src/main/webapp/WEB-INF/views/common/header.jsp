@@ -22,6 +22,9 @@
 <script src="https://kit.fontawesome.com/e8e5c6b69c.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chatbot.css" />
 <link rel="icon" type="image/png" sizes="192x192" href="${pageContext.request.contextPath}/resources/images/android-chrome-192x192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=East+Sea+Dokdo&family=Gothic+A1:wght@300;400;600;700;800&family=Hi+Melody&family=Jua&family=Lato:wght@700&family=Luckiest+Guy&family=Nanum+Brush+Script&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Quicksand:wght@300&family=Racing+Sans+One&family=Roboto+Mono:ital,wght@0,400;1,500&family=Shrikhand&family=Ultra&display=swap" rel="stylesheet">
 <c:if test="${not empty msg}">
 	<script>
 		alert("${msg}");
@@ -32,6 +35,13 @@
 	list-style: none;
 	padding:0;
 	margin:0;
+	font-family: 'Pretendard-Regular';
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
 }
 a, a:hover {
 	text-decoration: none;
@@ -512,7 +522,7 @@ const beforeTime = (alarmDate) => {
 					<div class="collapse" id="orders-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pt-2 small">
 							<li class="mb-3"><a href="${pageContext.request.contextPath}/trade/tradeList.do" class="link-dark rounded p-2 m-3">중고거래</a></li>
-							<li><a href="${pageContext.request.contextPath}/community/communityList.do" class="link-dark rounded p-2 m-3">팁/자유게시판</a></li>
+							<li><a href="${pageContext.request.contextPath}/community/communityListFree.do" class="link-dark rounded p-2 m-3">팁/자유게시판</a></li>
 						</ul>
 					</div>
 				</li>
@@ -629,7 +639,7 @@ const beforeTime = (alarmDate) => {
 
 				<div class="container">
 					<div class="carousel-caption text-end">
-						<h2>뭘 좋아할지 몰라 다 준비해봤어..<i class="fa-regular fa-heart"></i></h2>
+						<h2>뭘 좋아할지 몰라 다 준비해봤어..<i class="fa-solid fa-heart"></i></h2>
 						<p>캠핑이지는 다양한 형태의 캠핑을 한 곳에서 즐기실 수 있습니다.</p>
 						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/reservation/intro.do">캠핑구역 보러가기</a></p>
 					</div>
@@ -688,9 +698,8 @@ const beforeTime = (alarmDate) => {
       <div class="anw">
         <span>
         <ul>
-        	<li>21시부터 08시 사이에는 오토캠핑장 자동차 출입을 삼가시기 바랍니다.</li>
-        	<li>오토캠핑장 내 차량은 5km 이내로 서행하여야 하며, 잔디밭 출입이나 세차행위는 금합니다.</li>
-        	<li><img src="${pageContext.request.contextPath}/resources/images/chatbot/NoCar.png" alt="" /></li>
+        	<li>21시부터 08시 사이에는 오토캠핑장 자동차 출입을 삼가시기 바랍니다. 오토캠핑장 내 차량은 5km 이내로 서행하여야 하며, 잔디밭 출입이나 세차행위는 금합니다.</li>
+        	<img src="${pageContext.request.contextPath}/resources/images/chatbot/NoCar.png" alt="" />
         </ul>
         </span><br />
       </div>

@@ -9,151 +9,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
-<style>
-a {
-	text-decoration: none;
-	color: black;
-}
-#adminNav {
-	display:flex;
-	justify-content: space-evenly;
-}
-.accordion-body {
-	font-size:14px;
-}
-tr > th {
-	font-size:16px;
-	vertical-align: middle;
-}
-tr > td {
-	font-size:15px;
-	vertical-align: middle;
-	height: 70px;
-}
-#selectType, #searchType, #inquireType, .selectType {
-    width: 150px;
-    margin-right: 5px;
-}
-#selectKeywordGroup, #insertInputGroup {
-	width:300px;
-}
-.searchBtn {
-	background-color: #c8b6e269;
-    border: 1px solid lightgray;
-}
-.searchBtn:hover {
-	background-color: #A8A4CE;
-    color: white;
-}
-#updateBtn, [name=updateBtn], [name=yellowCardBtn], #deleteBtn, #noProblemBtn, [name=cancelBtn], #update-btn, #delete-btn, .report-btn, #insert-btn {
-	height: 35px;
-    width: 50px;
-   	border: 1px solid #A8A4CE;
-    color: #A8A4CE;
-    background-color: white;
-}
-#updateBtn:hover, [name=updateBtn]:hover, [name=yellowCardBtn]:hover, #deleteBtn:hover, #noProblemBtn:hover, [name=cancelBtn]:hover, #update-btn:hover, .report-btn:hover, #delete-btn:hover, #insert-btn:hover {
-	background-color: #A8A4CE;
-    color:white;
-}
-.report-btn {
-	width: 100px;
-}
-#user-list-tbl, #reservation-tbl, .select-camp-wrap {
-	margin-top: 30px;
-}
-#camp-list-tbl, .camp-insert-wrap {
-	margin-top: 60px;
-}
-#camp-list-tbl tr:last-child {
-	border-bottom: 2px solid black;
-}
-.input-date {
-	width: 370px
-}
-.input-date > * {
-	vertical-align: middle;
-}
-.content-wrap {
-    width: 100%;
-    margin: 30px 20px;
-}
-.black-list-wrap {
-	margin-top: 50px;
-}
-.power {
-    font-weight: bold;
-    color: red;
-}
-.strong{
-	font-weight: bold;
-}
-.camp-name-wrap, .camp-num-wrap {
-	display: flex;
-    justify-content: space-between;
-}
-.zone-wrap, .num-wrap {
-	width: 49%;
-}
-.zone-wrap {
-	margin-top: 20px;
-}
-.check-btn {
-	margin: 0 15px;
-	border: 1px solid lightgray;
-    width: 100px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: darkslategray;
-}
-.check-btn:hover, .btn-check:checked + label {
-	border:none;
-	background-color: gray;
-	color:white;
-}
-.option-wrap, .camp-num-wrap {
-	margin: 20px 0;
-}
-.btn-wrap {
-	display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.admin-nav-wrap {
-	width:220px;
-	margin-right: 15px;
-	margin-top: 30px;
-    border: 1px solid lightgray;
-}
-.collapse-four {
-	border-bottom: 1px solid lightgray;
-}
-.tbl-camp-zone {
-	border-top: 1px solid gray;
-}
-.tbl-login-count {
-    margin: 40px 0 20px 0;
-}
-.count-wrap {
-	margin-top: 20px;
-	display: flex;
-}
-#totalCount-wrap {
-	padding-right: 20px;
-    border-right: 1px solid gray;
-}
-#totalCountByDate-wrap {
-	padding-left: 20px;
-}
-#myChart {
-	margin: 30px 0;
-}
-.zoneName-label {
-	color: gray;
-}
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css">
 <script>
 $(document).ready(function () {
     $('html, body, .container').animate({scrollTop: $('.content-wrap').offset().top - 135}, 'fast');
@@ -252,3 +108,28 @@ $(document).ready(function () {
 					</div>		
 				</nav>
 			</div>
+<script>
+document.querySelector("#loginBtn").addEventListener('click', (e) => {
+	const frm = document.loginForm;
+	const userId = frm.user_id.value;
+	const password = frm.user_pwd.value;
+	
+	if(!userId || !password) {
+		alert("아이디 혹은 비밀번호를 입력해주세요.");
+		return;
+	}
+
+	$.ajax({
+		url : "${pageContext.request.contextPath}/test/member/memberLogin",
+		type : "GET",
+		data : {userId, password},
+		content : "application/json",
+		success(response) {
+			alert("회원 로그인이 완료되었습니다.");
+			location.reload();
+		},
+		error : console.log
+	});
+})
+
+</script>

@@ -23,12 +23,21 @@ public class CommunityServiceImpl implements CommunityService {
    CommunityDao communityDao;
 
    @Override
-   public List<Community> selectCommList(Map<String, Integer> param) {
+   public List<Community> selectCommListFree(Map<String, Integer> param) {
       int limit = param.get("limit");
       int offset = (param.get("cPage") - 1) * limit;
       RowBounds rowBounds = new RowBounds(offset, limit);
-      return communityDao.selectCommList(rowBounds);
+      return communityDao.selectCommListFree(rowBounds);
       
+   }
+   
+   @Override
+   public List<Community> selectCommListHoney(Map<String, Integer> param) {
+	   int limit = param.get("limit");
+	   int offset = (param.get("cPage") - 1) * limit;
+	   RowBounds rowBounds = new RowBounds(offset, limit);
+	   return communityDao.selectCommListHoney(rowBounds);
+	   
    }
    
    @Override
@@ -42,8 +51,13 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
    @Override
-   public int getTotalContent() {
-      return communityDao.getTotalContext();
+   public int getTotalContentFree() {
+      return communityDao.getTotalContentFree();
+   }
+   
+   @Override
+   public int getTotalContentHoney() {
+	   return communityDao.getTotalContentHoney();
    }
    
    @Override
@@ -154,14 +168,19 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public int deleteComment(CommunityComment cc) {
-		return communityDao.deleteComment(cc);
+	public int deleteComment(String commentNo) {
+		return communityDao.deleteComment(commentNo);
 		
 	}
 	
 	@Override
 	public String getUserReportComm(Map<String, Object> param) {
 		return communityDao.getUserReportComm(param);
+	}
+
+	@Override
+	public String selectCommNoByCommentNo(String commentNo) {
+		return communityDao.selectCommNoByCommentNo(commentNo);
 	}
 	
 	

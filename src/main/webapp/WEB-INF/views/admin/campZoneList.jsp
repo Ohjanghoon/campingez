@@ -21,7 +21,7 @@
 }
 </style>
 			<div class="content-wrap">
-				<h2>캠핑 구역 리스트</h2>
+				<h2 class="text-center fw-bold pt-5 pb-5">캠핑 구역 리스트</h2>
 				
 				<div class="table-wrap">
 					<c:forEach items="${campZoneList}" var="zone">

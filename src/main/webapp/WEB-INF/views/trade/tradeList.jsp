@@ -15,16 +15,8 @@
 	border:none;
 }
 </style>
-<!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">중고거래</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">여러분의 물건을 자유롭게 거래하세요!</p>
-                    
-                </div>
-            </div>
-        </header>
+<h2 class="text-center fw-bold pt-5">중고거래</h2>
+        <hr />
 		<div class="panel">
 			<div class="form-inline" style="display:flex; justify-content : center; margin:50px;">
 			<br />
@@ -50,13 +42,12 @@
                             </div>
                            
                     </div>
-              	</div>
               	<sec:authorize access="isAuthenticated()">
-              	<div class="enrollBtn">
-              		<input type="hidden" name="cc" />
+              	<div class="enrollBtn" style="width:auto; display:flex; justify-content: flex-end;">
 					<input class="btn btn-outline-dark mt-auto" type="button" value="글쓰기" onclick="location.href='${pageContext.request.contextPath}/trade/tradeEnroll.do?'" />
 				</div>
 				</sec:authorize>
+              	</div>
         </section>
         <div id="pagebar" style="text-align:center;"></div>
 <script>
@@ -104,7 +95,8 @@ $(document).ready(function(){
 					html += item.tradeTitle
 					html += '&nbsp;<img src = "${pageContext.request.contextPath}/resources/images/trade/colorHeart.png" style="width:15px;height:15px;" />' + item.likeCount
 					html += '</h5>';
-					html += '<p>' + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</p>'
+					html += '<p class="fw-bolder">' + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</p>'
+					html += '<p>' + item.userId + '</p>'
 					html += '</div>';
 					html += '</div>';
 					html += '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">';

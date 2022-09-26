@@ -70,7 +70,7 @@
 </style>
 <header class="py-2 top">
 	<div class="px-4 px-lg-5 mt-5">
-		<h1 class="display-4 text-center fw-bolder">양도</h1>
+		<h2 class="text-center fw-bold pt-5">양도</h2>
 		<hr />
 	</div>
 </header>

@@ -19,7 +19,7 @@
 </style>
 				<div class="content-wrap">
 					<div class="camp-list-wrap">
-						<h2>캠핑 자리 리스트</h2>
+						<h2 class="text-center fw-bold pt-5 pb-5">캠핑 자리 리스트</h2>
 						<div class="map-wrap">
 							<img src="${pageContext.request.contextPath}/resources/images/reservation/campMap2.png" alt="캠핑구역" width="100%" height="650px"/>
 						</div>
@@ -75,7 +75,7 @@
 						</c:if>
 					</div>
 					<div class="camp-insert-wrap">
-						<h2>캠핑 자리 추가</h2>
+						<h2 class="text-center fw-bold pt-5 pb-5">캠핑 자리 추가</h2>
 						<form:form name="insertCampFrm" action="${pageContext.request.contextPath}/admin/insertCamp.do" method="POST">
 							<div class="select-wrap d-flex">
 								<select id="selectType" name="selectType" class="form-select">

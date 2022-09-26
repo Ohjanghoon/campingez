@@ -11,7 +11,7 @@
 </jsp:include>
 			<div class="content-wrap">
 				<div class="user-list-wrap">
-					<h2>회원경고</h2>
+					<h2 class="text-center fw-bold pt-5 pb-5">회원경고</h2>
 					<div class="select-wrap d-flex">
 						<select id="selectType" class="form-select">
 							<option value="" selected>전체</option>
@@ -72,7 +72,7 @@
 					</nav>
 				</div>
 				<div class="black-list-wrap">
-					<h2>블랙리스트</h2>
+					<h2 class="text-center fw-bold pt-5 pb-5">블랙리스트</h2>
 					<table id="tbl-black-list" class="table text-center">
 						<thead>
 							<tr>

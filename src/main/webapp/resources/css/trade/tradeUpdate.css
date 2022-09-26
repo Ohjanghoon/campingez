@@ -1,0 +1,38 @@
+@charset "UTF-8";
+<style>
+.trade-header > * {
+    margin: 30px 0;
+    border-bottom: 1px solid gray;
+    padding-bottom: 20px;
+}
+.spec-wrap{
+	width: 49%;
+}
+.title-wrap {
+	width:70%;
+}
+.price-wrap {
+	width: 20%;
+}
+.title-wrap {
+	margin-top: 10px;
+}
+#title {
+	width:79%;
+}
+.info-wrap {
+    height: 150px;
+    border: 1px solid lightgray;
+    background-color: #d3d3d347;
+    margin-bottom: 10px;
+    color: gray;
+    padding: 20px;
+    font-size: 14px;
+}
+.title-price-wrap {
+	margin: 10px 0 10px 0;
+}
+.trade-font-color {
+	color: gray;
+}
+</style>

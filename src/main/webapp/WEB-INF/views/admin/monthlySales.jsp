@@ -12,7 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 			<div class="content-wrap">
-				<h2>월별 매출 통계</h2>
+				<h2 class="text-center fw-bold pt-5 pb-5">월별 매출 통계</h2>
 				<div id="search-bar">
 					<select class="form-select selectType" aria-label="Default select example" name="year" id="year">
 						<option value="2022">2022</option>

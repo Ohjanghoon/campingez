@@ -86,15 +86,8 @@
 
 
 			
-<!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder" onclick="location.href='${pageContext.request.contextPath}/trade/tradeList.do';" style="cursor:pointer;">중고거래</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">당신의 물건을 보다 쉽게 사고, 파세요</p>
-                </div>
-            </div>
-        </header>
+<h2 class="text-center fw-bold pt-5">중고거래</h2>
+        <hr />
         
         <!-- Product section-->  
         <section class="py-5">

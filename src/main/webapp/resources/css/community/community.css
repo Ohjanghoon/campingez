@@ -48,3 +48,9 @@
 	background-color: #ffdf40;
     color: black;
 }
+	#inputButton{
+		height: 30px;
+	    line-height: 0px;
+	    position: relative;
+	    bottom: 2.5px;
+    }
