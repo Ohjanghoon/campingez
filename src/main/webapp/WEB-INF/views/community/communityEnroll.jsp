@@ -41,7 +41,7 @@
 		</div>
          
       <div class="btn-wrap d-flex justify-content-center">
-		<button type="button"  id="enroll-btn" class="btn btn-primary" style="margin-top:50px;">작성</button>
+		<button type="button" id="enroll-btn" class="btn btn-primary" style="margin-top:50px;">작성</button>
 		</div>
 		
    </form>

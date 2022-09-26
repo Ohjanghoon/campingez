@@ -1,28 +1,59 @@
 @charset "UTF-8";
 
+.content-item {
+    padding:30px 0;
+	background-color:#FFFFFF;
+}
 
+.content-item.grey {
+	background-color:#F0F0F0;
+	padding:50px 0;
+	height:100%;
+}
 
-#upload-img{width:300px; height:300px;}
+.content-item h2 {
+	font-weight:700;
+	font-size:35px;
+	line-height:45px;
+	text-transform:uppercase;
+	margin:20px 0;
+}
 
-table#tbl-comment{width:100%; margin:0 auto; border-collapse:collapse;} 
-table#tbl-comment tr td{border-bottom:1px solid; padding:5px; text-align:left; line-height:120%;}
+.content-item h3 {
+	font-weight:400;
+	font-size:20px;
+	color:#555555;
+	margin:10px 0 15px;
+	padding:0;
+}
 
-table#tbl-comment{width:100%; height:auto; margin:0 auto; border-collapse:collapse;} 
-table#tbl-comment tr td{border-bottom:1px solid; border-top:1px solid; padding:5px; text-align:left; line-height:120%;}
+.content-headline {
+	height:1px;
+	text-align:center;
+	margin:20px 0 70px;
+}
 
-table#tbl-comment tr td:first-of-type{padding: 5px 5px 5px 50px;}
-table#tbl-comment tr td:last-of-type {text-align:right; width: 100px;}
-table#tbl-comment button.btn-reply{display:none;}
-table#tbl-comment sub.comment-writer {color:navy; font-size:14px}
-table#tbl-comment sub.comment-date {color:rgb(128, 0, 255); font-size:10px}
+.content-headline h2 {
+	background-color:#FFFFFF;
+	display:inline-block;
+	margin:-20px auto 0;
+	padding:0 20px;
+}
 
-table#tbl-comment tr.level2 {color:gray; font-size: 14px;}
-table#tbl-comment tr.level2 td:first-of-type{padding-left:100px;}
+.grey .content-headline h2 {
+	background-color:#F0F0F0;
+}
 
-table#tbl-comment tr.level2 sub.comment-writer {color:rgb(0, 0, 0); font-size:14px}
+.content-headline h3 {
+	font-size:14px;
+	color:#AAAAAA;
+	display:block;
+}
 
-table#tbl-comment tr.level2 sub.comment-writer {color:black; font-size:14px}
-
+#comments {
+    box-shadow: 0 -1px 6px 1px rgba(0,0,0,0.1);
+	background-color:#FFFFFF;
+}
 table#tbl-comment tr.level2 sub.comment-date {color:rgb(128, 0, 255); font-size:10px}
 table#tbl-comment textarea{margin: 4px 0 0 0;}
 table#tbl-comment button.btn-comment-enroll2{width:60px; height:23px; color:white; background:lightslategray; position:relative; top:-5px; left:10px;}
@@ -34,4 +65,3 @@ table#tbl-comment button.btn-comment-enroll2{width:60px; height:23px; color:whit
     flex-direction: column;
     align-items: center;
     margin: 10px 20px 10px 0;
-}
