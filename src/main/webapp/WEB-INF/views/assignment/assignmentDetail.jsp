@@ -353,7 +353,7 @@ const chatBtnClick = () => {
 			
 			const payload = {
 				chatroomId : chatroomId,
-				userId : '<sec:authentication property="principal.username"/>',
+				userId : '${loginUser}',
 				chatMsg : "",
 				chatTime : Date.now(),
 				chatTradeNo : null

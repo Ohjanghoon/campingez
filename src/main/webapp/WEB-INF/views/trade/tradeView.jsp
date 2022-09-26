@@ -244,6 +244,7 @@
 			  </div>
 			</div>
         </form:form>
+
 <script>
 // 이미지 슬라이더 슬릭
 const slider = $('.img-wrapper');
@@ -434,7 +435,7 @@ const chatBtnClick = () => {
 			
 			const payload = {
 				chatroomId : chatroomId,
-				userId : '<sec:authentication property="principal.username"/>',
+				userId : '${loginUser}',
 				chatMsg : "",
 				chatTime : Date.now(),
 				chatTradeNo : '${trade.tradeNo}'

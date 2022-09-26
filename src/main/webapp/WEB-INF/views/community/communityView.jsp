@@ -84,13 +84,10 @@
          </c:if>
             
 			<c:if test="${loginMember.userId ne community.userId}">
-				<form:form method="GET"	name="chatForm"	action="${pageContext.request.contextPath}/chat/chat.do">
-					<input type="hidden" name="chatTargetId" value="${community.userId}" />
-					<%-- <input type="hidden" name="chatTradeNo" value="${trade.tradeNo}" /> --%>
-					<button type="submit" id="chatBtn" class="btn btn-outline-primary flex-shrink-0" style="">
-						<i class="fa-solid fa-paper-plane"></i> 작성자와 채팅하기
-					</button>
-				</form:form>	   
+				<button type="button" id="chatBtn" class="btn btn-outline-primary flex-shrink-0" style=""
+					onclick="chatBtnClick()">
+					<i class="fa-solid fa-paper-plane"></i> 작성자와 채팅하기
+				</button>
 			</c:if>        
       </sec:authorize>
       
@@ -399,6 +396,46 @@ btn.addEventListener('click', (e) => {
 document.querySelector("#golist").addEventListener('click', (e) => {
 	history.go(-1);
 });
+
+// 채팅하기 클릭시
+const chatBtnClick = () => {
+	
+	const chatTargetId = '${community.userId}';
+	//const chatTradeNo = null;
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+	
+	$.ajax({
+		
+		url : '${pageContext.request.contextPath}/chat/chat.do',
+		headers,
+		method : 'post',
+		data : {chatTargetId},
+		success(response){
+			
+			console.log(response);
+			
+			const {chatroomId} = response;
+			
+			const payload = {
+				chatroomId : chatroomId,
+				userId : '${loginMember.username}',
+				chatMsg : "",
+				chatTime : Date.now(),
+				chatTradeNo : null
+				
+			};
+			
+			stompClient.send('/app/${community.userId}/myChatList', {}, JSON.stringify(payload));
+			
+			location.href="${pageContext.request.contextPath}/chat/myChatList.do";
+		},
+		error : console.log
+		
+	});
+	
+};
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
