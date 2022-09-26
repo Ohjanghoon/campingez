@@ -23,4 +23,5 @@ public class ChatUserEntity {
 	private long lastCheck;
 	private LocalDateTime createdAt;
 	private LocalDateTime deletedAt;
+	private String chatTradeNo;
 }

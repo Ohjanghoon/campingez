@@ -18,8 +18,8 @@ public class ChatServiceImpl implements ChatService {
 	ChatDao chatDao;
 
 	@Override
-	public ChatUser findChatUserByUserId(String userId, String chatTargetId) {
-		return chatDao.findChatUserByUserId(userId, chatTargetId);
+	public ChatUser findChatUserByUserId(String userId, String chatTargetId, String chatTradeNo) {
+		return chatDao.findChatUserByUserId(userId, chatTargetId, chatTradeNo);
 	}
 
 	@Override
@@ -49,4 +49,6 @@ public class ChatServiceImpl implements ChatService {
 	public int deleteChatroom(ChatUser chatUser) {
 		return chatDao.deleteChatroom(chatUser);
 	}
+	
+	
 }
