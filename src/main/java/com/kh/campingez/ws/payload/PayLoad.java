@@ -15,4 +15,5 @@ public class PayLoad {
 	private String to;
 	private String msg;
 	private long time;
+	private String chatTradeNo;
 }

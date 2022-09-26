@@ -43,8 +43,8 @@ public class ChatController {
 	@Autowired
 	AlarmService alarmService;
 	
-	@GetMapping("/chat.do")
-	public String chat(
+	@PostMapping("/chat.do")
+	public ResponseEntity<?> chat(
 			@RequestParam("chatTargetId") String chatTargetId, 
 			@RequestParam(name = "chatTradeNo", required = false) String chatTradeNo,
 			Authentication auth, Model model) {
@@ -59,9 +59,8 @@ public class ChatController {
 		ChatUser chatUser = chatService.findChatUserByUserId(userId, chatTargetId, chatTradeNo);
 		log.debug("chatUser = {}", chatUser);
 		
-		
 		String chatroomId = null;
-		List<ChatLog> chatLogs = new ArrayList<>();
+//		List<ChatLog> chatLogs = new ArrayList<>();
 		
 		if(chatUser == null) {
 			// 처음
@@ -77,20 +76,26 @@ public class ChatController {
 
 			chatUserList.add(chatUser);
 			chatUserList.add(chatTargetUser);
+			//채팅방 생성
 			chatService.insertChatUsers(chatUserList);
+			//채팅방 생성 완료 시 알림
 			alarmService.insertChatroomAlarm(userId, chatTargetId);
 		}
 		else {
 			// 재입장
 			chatroomId = chatUser.getChatroomId();
-			chatLogs = chatService.findChatLogByChatroomId(chatroomId);
-			log.debug("chatLogs = {}", chatLogs);
+//			chatLogs = chatService.findChatLogByChatroomId(chatroomId);
+//			log.debug("chatLogs = {}", chatLogs);
+			
 		}
 		
-		model.addAttribute("chatroomId", chatroomId);
-		model.addAttribute("chatLogs", chatLogs);	//판매자ID
+//		model.addAttribute("chatroomId", chatroomId);
+//		model.addAttribute("chatLogs", chatLogs);	//판매자ID
 		
-		return "redirect:/chat/myChatList.do";
+//		return null;
+		Map<String, Object> map = new HashMap<>();
+		map.put("chatroomId", chatroomId);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(map);
 	}
 
 	private String generateChatroomId() {
