@@ -520,7 +520,7 @@
             				   				
        						
             				document.querySelector("#Rpoint").addEventListener("blur", (e) => {
-            					if(e.target.value > <sec:authentication property='principal.point' />){
+            					if(e.target.value > <sec:authentication property='principal.point' /> || e.target.value < 0){
             						e.target.value = <sec:authentication property='principal.point' />;
             					}
                 				 

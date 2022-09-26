@@ -63,4 +63,14 @@ public class UserServiceImpl implements UserService {
 	public User checkPhone(String phone) {
 		return userDao.checkPhone(phone);
 	}
+	
+	@Override
+	public int giveTo100Point(String userId) {
+		return userDao.giveTo100Point(userId);
+	}
+	
+	@Override
+	public int giveToPoint(Map<String, Object> map) {
+		return userDao.giveToPoint(map);
+	}
 }
