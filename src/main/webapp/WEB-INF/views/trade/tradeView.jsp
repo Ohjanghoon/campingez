@@ -144,15 +144,12 @@
 								<div class="chat-wrap">
 									<sec:authorize access="isAuthenticated()">
 									<c:if test="${loginUser ne trade.userId}">
-									<form:form method="GET"
-										name="chatForm"
-										action="${pageContext.request.contextPath}/chat/chat.do">
-										<input type="hidden" name="chatTargetId" value="${trade.userId}" />
-										<input type="hidden" name="chatTradeNo" value="${trade.tradeNo}" />
-										<button type="submit" id="chatBtn" class="btn btn-outline-dark flex-shrink-0">
+									
+										<button type="button" id="chatBtn" class="btn btn-outline-dark flex-shrink-0"
+											onclick="chatBtnClick()">
 											<i class="fa-solid fa-paper-plane"></i> 판매자와 채팅하기
 										</button>
-									</form:form>	   
+									   
 									</c:if>
 									</sec:authorize>
 								</div>
@@ -372,19 +369,52 @@ $(document).ready(function () {
     });
 });
 
-
-$(document).ready(function () {
-	$("#chatBtn").on('click', (e) => {
-		const userId = "${user.userId}";
-		if(!userId) {
-			alert("로그인 후 이용 가능합니다.");
-			location.href = "${pageContext.request.contextPath}/user/userLogin.do";
-			return;
-		}
-		localStorage.setItem("tradeNo", ${tradeNo});
+const chatBtnClick = () => {
+	
+	/* <form:form method="POST"
+		name="chatForm"
+		action="${pageContext.request.contextPath}/chat/chat.do">
+	</form:form>	
+	<input type="hidden" name="chatTargetId" value="" />
+		<input type="hidden" name="chatTradeNo" value="${trade.tradeNo}" /> */
+	
+	//const frm = document.chatForm;
+	//frm.submit();
+	const chatTargetId = '${trade.userId}';
+	const chatTradeNo = '${trade.tradeNo}';
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+	
+	$.ajax({
+		
+		url : '${pageContext.request.contextPath}/chat/chat.do',
+		headers,
+		method : 'post',
+		data : {chatTargetId, chatTradeNo},
+		success(response){
+			
+			console.log(response);
+			
+			const {chatroomId} = response;
+			
+			const payload = {
+				chatroomId : chatroomId,
+				userId : '<sec:authentication property="principal.username"/>',
+				chatMsg : "",
+				chatTime : Date.now(),
+				chatTradeNo : '${trade.tradeNo}'
+				
+			};
+			
+			stompClient.send('/app/${trade.userId}/myChatList', {}, JSON.stringify(payload));
+		},
+		error : console.log
+		
 	});
-});
-
+	
+	
+};
 </script>
 
 
