@@ -1,0 +1,31 @@
+@charset "UTF-8";
+#myChat-container .targetChat {
+	list-style : none;
+	padding : 0;
+}
+#myChat-container .chatUserProfile {
+	cursor : pointer;
+}
+#myChat-container .chatUserId {
+	cursor : pointer;
+	width : 90%;
+}
+#myChat-container .userMsg {
+	background-color: #7A86B6;
+	color : white;
+}
+#myChat-container .targetMsg {
+	background-color: #C8B6E2;
+	color : white;
+}
+#myChat-container #chatList>thead {
+	background-color : #7A86B6 !important;
+	color : white;
+}
+#myChat-container .fa-circle-user {
+	color : #C8B6E2;
+	scale : 1.7;
+}
+#myChat-container .badge {
+	font-size : 0.5em !important;
+}

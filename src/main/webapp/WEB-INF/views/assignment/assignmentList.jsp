@@ -22,51 +22,7 @@
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/assignment/assignmentList.css" />
 <style>
-[name=assignInfo] {
-	cursor: pointer;
-}
 
-#btn-assignment-enroll {
-	font-weight : bold;
-	background-color : #A8A4CE;
-	color : white;
-}
-
-.assignTitle .assignState {
-	padding : 0.5rem;
-	border-radius : 0.5rem;
-	border : 1px solid #495C83;
-	color : #495C83;
-	vertical-align : text-top;
-}
-#btn-more-container {
-	position : relative;
-}
-#btn_top{
-    width: 30px; 
-    height: 30px;
-    border: 1px solid #A8A4CE; 
-    color: #A8A4CE;
-    cursor: pointer;
-    position: fixed; bottom: 30%; right: 5%;
-    z-index : 2;
-}
-#btn_bottom {
-	width: 30px; 
-    height: 30px;
-    border: 1px solid #A8A4CE; 
-    color: #A8A4CE;
-    cursor: pointer;
-    position: fixed; bottom: 26%; right: 5%;
-    z-index : 2;
-}
-#assignListHeader {
-	height : 20%;
-	background-color : black;
-}
-
-#zoneSelect {
-}
 </style>
 <header class="py-2 top">
 	<div class="px-4 px-lg-5 mt-5">

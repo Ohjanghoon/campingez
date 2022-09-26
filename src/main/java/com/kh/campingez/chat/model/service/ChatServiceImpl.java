@@ -27,7 +27,6 @@ public class ChatServiceImpl implements ChatService {
 		for(ChatUser chatUser : chatUserList) {
 			chatDao.insertChatUser(chatUser);
 		}
-		
 	}
 
 	@Override
@@ -50,5 +49,8 @@ public class ChatServiceImpl implements ChatService {
 		return chatDao.deleteChatroom(chatUser);
 	}
 	
-	
+	@Override
+	public String findChatTradeNo(String chatroomId) {
+		return chatDao.findChatTradeNo(chatroomId);
+	}
 }
