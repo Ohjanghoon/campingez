@@ -37,6 +37,9 @@
 	color : #C8B6E2;
 	scale : 1.7;
 }
+.badge {
+	font-size : 0.5em !important;
+}
 </style>
 <sec:authentication property="principal.username" var="loginUser" />
 <div class="container my-5">
@@ -57,8 +60,19 @@
 			<c:if test="${not empty chatUsers}">
 			<c:forEach items="${chatUsers}" var="chatUser">
 				<tr data-chatroomid="${chatUser.chatroomId}">
-					<td class="align-middle chatUserProfile" onclick="enterChatroom('${chatUser.chatroomId}')">
+					<td class="text-center align-middle chatUserProfile" onclick="enterChatroom('${chatUser.chatroomId}')">
 						<i class="fa-solid fa-circle-user"></i>
+						<br />
+						<span>
+							<c:choose>
+								<c:when test="${chatUser.chatTradeNo eq null}">
+									<small class="badge bg-primary">1:1</small>
+								</c:when>
+								<c:when test="${chatUser.chatTradeNo ne null}">
+									<small class="badge bg-warning">중고거래</small>
+								</c:when>
+							</c:choose>
+						</span>
 					</td>
 					<td class="px-3 chatUserId"
 						onclick="enterChatroom('${chatUser.chatroomId}')">
@@ -85,6 +99,9 @@
 			<div class="input-group" id="chatBtn">
 			
 			</div>
+			<div id="goTradeBtnArea">
+			
+			</div>
 		</div>
 	</div>
 </div>
@@ -108,9 +125,13 @@ const enterChatroom = (chatroomId) => {
 		success(response){
 			console.log(response);
 			
+			let tradeNo = null;
+			// 불러온 채팅 내역 추가
 			response.forEach((chat) => {
-				const {userId, chatMsg, chatTime} = chat;
-				console.log(chatTime);
+				const {userId, chatMsg, chatTime, chatTradeNo} = chat;
+				tradeNo = chatTradeNo;
+				console.log(chatTradeNo);
+				console.log(chat);
 				//const date = new Date(chatTime).toLocaleTimeString();
 				const date = moment(chatTime).format("YY.MM.D HH:mm");
 				console.log(date);
@@ -139,6 +160,8 @@ const enterChatroom = (chatroomId) => {
 				chatLog.insertAdjacentHTML('beforeend', html);
 				
 			});
+			
+			// 전송 버튼 영역 추가
 			const btnArea = document.querySelector("#chatBtn");
 			
 			btnArea.innerHTML = "";
@@ -150,6 +173,19 @@ const enterChatroom = (chatroomId) => {
 				  	onclick="sendMsg('\${chatroomId}')"><i class="fa-solid fa-paper-plane"></i> Send</button>
 				</div>
 			`;
+			
+			// 중고거래글 이동버튼 영역 추가
+			const btnTradeArea = document.querySelector("#goTradeBtnArea");
+			if(tradeNo != null){
+				btnTradeArea.innerHTML = `
+					<button class="btn btn-borderless badge bg-warning" id="goTradeBtn"
+						onclick="goTrade('\${tradeNo}')">중고거래 글로 이동</button>
+				`;
+			}
+			else {
+				btnTradeArea.innerHTML = "";
+			}
+			
 			chatLog.scrollTop = chatLog.scrollHeight;
 			
 			document.querySelector("#msg").addEventListener('keyup', (e) => {
@@ -263,7 +299,28 @@ const sendMsg = (chatroomId) => {
 	
 	document.querySelector("#msg").value = "";
 	
+};
+
+//중고거래 글 이동 버튼 클릭시
+const goTrade = (tradeNo) => {
 	
+	$.ajax({
+		url : '${pageContext.request.contextPath}/chat/goTrade.do',
+		data : {tradeNo},
+		success(response){
+			console.log(response);
+			
+			if(response == null){
+				alert("해당 중고거래 글은 열람이 불가합니다.");
+				return;
+			}
+			else {
+				location.href="${pageContext.request.contextPath}/trade/tradeView.do?no=" + tradeNo;
+			}
+		},
+		error : console.log
+			
+	});
 };
 
 //채팅방 나가기 버튼 클릭시

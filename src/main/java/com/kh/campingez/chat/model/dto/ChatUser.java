@@ -18,18 +18,17 @@ public class ChatUser extends ChatUserEntity{
 	
 	private ChatLog chatLog;
 
-	
-	public ChatUser(@NonNull String chatroomId, @NonNull String userId, long lastCheck, LocalDateTime createdAt,
-			LocalDateTime deletedAt) {
-		super(chatroomId, userId, lastCheck, createdAt, deletedAt);
-		// TODO Auto-generated constructor stub
-	}
-
-
 	public ChatUser(@NonNull String chatroomId, @NonNull String userId) {
 		super(chatroomId, userId);
 		// TODO Auto-generated constructor stub
 	}
+
+	public ChatUser(@NonNull String chatroomId, @NonNull String userId, long lastCheck, LocalDateTime createdAt,
+			LocalDateTime deletedAt, String chatTradeNo) {
+		super(chatroomId, userId, lastCheck, createdAt, deletedAt, chatTradeNo);
+		// TODO Auto-generated constructor stub
+	}
+	
 
 	
 }

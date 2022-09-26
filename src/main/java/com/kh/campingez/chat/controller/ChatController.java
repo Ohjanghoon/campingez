@@ -1,7 +1,6 @@
 package com.kh.campingez.chat.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -18,9 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.campingez.alarm.model.service.AlarmService;
 import com.kh.campingez.chat.model.dto.ChatLog;
 import com.kh.campingez.chat.model.dto.ChatUser;
 import com.kh.campingez.chat.model.service.ChatService;
+import com.kh.campingez.trade.model.dto.Trade;
+import com.kh.campingez.trade.model.service.TradeService;
 import com.kh.campingez.user.model.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,18 +35,26 @@ public class ChatController {
 	@Autowired
 	ChatService chatService;
 	
+	@Autowired
+	TradeService tradeService;
+	
+	@Autowired
+	AlarmService alarmService;
 	
 	@GetMapping("/chat.do")
-	public String chat(@RequestParam("chatTargetId") String chatTargetId, Authentication auth, Model model) {
-
+	public String chat(
+			@RequestParam("chatTargetId") String chatTargetId, 
+			@RequestParam(name = "chatTradeNo", required = false) String chatTradeNo,
+			Authentication auth, Model model) {
+		
+		log.debug("chatTargetId = {}, chatTradeNo = {}", chatTargetId, chatTradeNo);
 		// 1. 채팅방 유무 조회
 		User user = (User) auth.getPrincipal();
 		String userId = user.getUserId();
 		log.debug("userId = {}", userId);
 		log.debug("chatTargetId = {}", chatTargetId);
 		
-		// null 이 나오는 상황!! dao 쿼리문제 같은데 조금 헷갈려요 ㅠㅠ
-		ChatUser chatUser = chatService.findChatUserByUserId(userId, chatTargetId);
+		ChatUser chatUser = chatService.findChatUserByUserId(userId, chatTargetId, chatTradeNo);
 		log.debug("chatUser = {}", chatUser);
 		
 		
@@ -56,10 +66,17 @@ public class ChatController {
 			chatroomId = generateChatroomId();
 			log.debug("chatroomId = {}", chatroomId);
 			// chatuser insert 2행
-			List<ChatUser> chatUserList = Arrays.asList(
-					new ChatUser(chatroomId, userId),
-					new ChatUser(chatroomId, chatTargetId));
+			List<ChatUser> chatUserList = new ArrayList<>();
+			chatUser = new ChatUser(chatroomId, userId);
+			chatUser.setChatTradeNo(chatTradeNo);
+			
+			ChatUser chatTargetUser = new ChatUser(chatroomId, chatTargetId);
+			chatTargetUser.setChatTradeNo(chatTradeNo);
+
+			chatUserList.add(chatUser);
+			chatUserList.add(chatTargetUser);
 			chatService.insertChatUsers(chatUserList);
+			alarmService.insertChatroomAlarm(userId, chatTargetId);
 		}
 		else {
 			// 재입장
@@ -129,5 +146,15 @@ public class ChatController {
 		int result = chatService.deleteChatroom(chatUser);
 		
 		return ResponseEntity.ok(result);
+	}
+	
+	@GetMapping("/goTrade.do")
+	public ResponseEntity<?> selectTradeByNo(@RequestParam String tradeNo){
+		
+		Trade trade = tradeService.selectTradeByNo(tradeNo);
+		
+		return ResponseEntity.status(HttpStatus.OK)
+					.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.body(trade);
 	}
 }

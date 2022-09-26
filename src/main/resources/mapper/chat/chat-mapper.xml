@@ -41,6 +41,7 @@
   	<result column="last_check" property="lastCheck" />
   	<result column="created_at" property="createdAt" />
   	<result column="deleted_at" property="deletedAt" />
+  	<result column="chat_trade_no" property="chatTradeNo" />
   	<association property="chatLog" javaType="chatLog">
 	  	<result column="chat_msg" property="chatMsg" />
 	  	<result column="chat_time" property="chatTime" />
