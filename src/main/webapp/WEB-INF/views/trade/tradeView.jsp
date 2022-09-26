@@ -1,3 +1,4 @@
+<%@page import="com.kh.campingez.trade.model.dto.Trade"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -21,7 +22,7 @@
 }
 .content {
      background-color: #ffffff;
-     background-color: rgba( 255, 255, 255, 0.8 );	
+     background-color: rgba( 255, 255, 255, 0.8 );
 }
 .trade-footer-wrap {
     height: 75px;
@@ -73,14 +74,28 @@
 }
 
 #report-btn {
-    color: #ff0000c4;
-    border: 1px solid #ff0000c4;
+    color: black;
+    border: 1px solid black;
 }
 
 #report-btn:hover {
-    background-color: #ff00008f;
+    background-color: black;
     color: white;
     border: none;
+}
+.saler {
+	font-size:15px;
+	color:gray;
+	margin-left: 25px;
+}
+.trade-view-header {
+    display: flex;
+    align-items: flex-end;
+}
+.lead {
+	min-height: 150px; 
+	border: 1px solid lightgray;
+	padding: 12px;
 }
 </style>
 
@@ -89,8 +104,13 @@
 <h2 class="text-center fw-bold pt-5">중고거래</h2>
         <hr />
         
-        <!-- Product section-->  
-        <section class="py-5">
+        <!-- Product section-->
+<%
+	Trade trade = (Trade) request.getAttribute("trade");
+	pageContext.setAttribute("trade", trade);
+	pageContext.setAttribute("newLine", "\n\r");
+%>  
+        <section>
             <div class="container px-4 px-lg-5 my-5 d-flex justify-content-center">
                 <div class="row gx-4 gx-lg-5 align-items-center content">
                     <div class="col-md-6 photo-wrap">
@@ -105,19 +125,22 @@
                     <div class="col-md-6 content-wrapper">
 						<div class="card">
 							<div class="content-wrap">
-								<div class="content card-body">
+								<div class="content card-body" style="width: 100%;">
 									<div class="small mb-1">${trade.categoryId eq 'tra1' ? '텐트/타프' : trade.categoryId eq 'tra2' ? '캠핑 테이블 가구' : trade.categoryId eq 'tra3' ? '캠핑용 조리도구' : '기타 캠핑용품'}
 										(${trade.tradeQuality}급 : ${trade.tradeQuality eq 'S' ? '상태 좋음' : trade.tradeQuality eq 'A' ? '상태 양호' : '아쉬운 상태'})
 									</div>
-									<h1 class="display-5 fw-bolder">${trade.tradeTitle}</h1>
-									<p>판매자 ${trade.userId}</p>
+									<div class="trade-view-header">
+										<h1 class="display-5 fw-bolder">${trade.tradeTitle}</h1>
+										<p class="saler">판매자 : ${trade.userId}</p>
+									</div>
 									<div class="fs-5 mb-5">
 										<span><fmt:formatNumber type="number"
 												value="${trade.tradePrice}" />원</span>
 									</div>
 									<h5 style="font-weight: bold;">상품정보</h5>
-									<p class="lead">${trade.tradeContent}</p>
-								</div>
+									<div class="lead">
+										${fn:replace(trade.tradeContent, '\\n\\r', '<br/>')}
+									</div>
 							</div>
 							<div class="likeAndview-wrap d-flex align-items-center">
 								<span>조회 ${trade.readCount}</span>
@@ -370,12 +393,9 @@ $(document).ready(function () {
                 that.prop('name',data);
                 if(data==1) {
                     $('#heart').prop("src","${pageContext.request.contextPath}/resources/images/trade/colorHeart.png");
-                    alert("좋아요 등록!");
-                    
                 }
                 else{
                     $('#heart').prop("src","${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png");
-                    alert("좋아요 취소!");
                 }
                     window.location.reload();
 

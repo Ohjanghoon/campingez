@@ -74,7 +74,6 @@ document.querySelector("#enroll-btn").addEventListener('click', (e) => {
 		title.focus();
 		return;
 	}
-	content.value = (content.value.replaceAll('<p>', '').replaceAll('</p>', ''));
 	document.communityEnrollFrm.submit();
 });
 </script>

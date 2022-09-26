@@ -115,7 +115,7 @@ function tradePaingAjax(cPage){
 								'<td>'+results[i].tradeTitle+'</td>'+
 								'<td>'+
 								'<div class="content">'+
-									results[i].tradeContent +
+									results[i].tradeContent.replaceAll("<p>",'').replaceAll("</p>",'') +
 								'</div>'+
 								'</td>' +
 								'<td>'+results[i].tradePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원</td>'+

@@ -14,6 +14,19 @@
 	color: white;
 	border:none;
 }
+.like-wrap {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+}
+.like-wrap > img {
+	margin-right:5px;
+}
+.saler {
+	font-size:15px;
+	color: gray;
+}
 </style>
 <h2 class="text-center fw-bold pt-5">중고거래</h2>
         <hr />
@@ -91,12 +104,12 @@ $(document).ready(function(){
 					
 					html += '<div class="card-body p-4">';
 					html += '<div class="text-center">';
-					html += '<h5 class="fw-bolder">'
+					html += '<h5 class="fw-bolder" style="display: flex; justify-content: center;">'
 					html += item.tradeTitle
-					html += '&nbsp;<img src = "${pageContext.request.contextPath}/resources/images/trade/colorHeart.png" style="width:15px;height:15px;" />' + item.likeCount
+					html += '&nbsp;<div class="like-wrap"><img src = "${pageContext.request.contextPath}/resources/images/trade/colorHeart.png" style="width:20px;height:20px;" />' + item.likeCount + '</div>'
 					html += '</h5>';
 					html += '<p class="fw-bolder">' + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</p>'
-					html += '<p>' + item.userId + '</p>'
+					html += '<p class="saler"> 판매자 : ' + item.userId + '</p>'
 					html += '</div>';
 					html += '</div>';
 					html += '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">';
