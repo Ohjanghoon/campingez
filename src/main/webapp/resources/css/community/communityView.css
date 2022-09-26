@@ -68,6 +68,7 @@ table#tbl-comment button.btn-comment-enroll2{width:60px; height:23px; color:whit
 }
 .content-wrap {
     min-height: 300px;
+    text-align: center;
 }
 .free-badge {
 	background-color: #7A86B6;
@@ -142,4 +143,10 @@ table#tbl-comment button.btn-comment-enroll2{width:60px; height:23px; color:whit
     display: flex;
     align-items: center;
     padding-right: 20px;
+}
+.comment-wrap {
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 20px;
 }
