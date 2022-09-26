@@ -119,7 +119,7 @@ Element.prototype.setStyle = function(styles) {
 								<span style="font-size: 22pt;">${result.userName} 님</span><br>
 								<br> <span>아이디 : ${result.userId}</span><br> <span>경고횟수
 									: ${result.yellowCard}</span><br> <span>잔여 포인트 : <fmt:formatNumber
-										value="${result.point}" pattern="#,###" />point
+										value="${result.point}" pattern="#,###" />P
 								</span><br>
 							</div>
 						</div>

@@ -297,8 +297,22 @@ function deleteTrade(){
 // 상품 판매 완료 버튼(완전 야매버전)
 function updateSuccess(){
 	if(confirm("상품 판매가 완료되었나요?")){
-		location.href="${pageContext.request.contextPath}/trade/tradeSuccess.do?no=${trade.tradeNo}";
-		location.replace("${pageContext.request.contextPath}/trade/tradeView.do?no=${trade.tradeNo}");
+		const no = document.querySelector("[name=no]").value;
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/trade/tradeSuccess.do",
+			headers,
+			data : {no},
+			type : "POST",
+			success(response) {
+				location.reload();
+			},
+			error : console.log
+		});
+		
+		
 	}else return;
 }
 
@@ -318,9 +332,9 @@ const headers = {};
 headers['${_csrf.headerName}'] = '${_csrf.token}';
 
 $(document).ready(function () {
-	// 판매완료여부 확인/
+	// 판매완료여부 확인
 	const success = '${trade.tradeSuccess}';
-	if(success == '거래완료') {
+	if(success == '거래 완료') {
 		document.querySelector(".content-wrap").style.backgroundImage= 	"url('${pageContext.request.contextPath}/resources/images/trade/salecomplete.png')";
 	}
 
