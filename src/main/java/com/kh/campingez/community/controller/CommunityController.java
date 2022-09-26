@@ -278,7 +278,7 @@ public class CommunityController {
           
           redirectAttr.addFlashAttribute("msg", "게시글 등록 완료");
           
-          return "redirect:/community/communityList.do";
+          return "redirect:/community/communityListFree.do";
        }
        
        @GetMapping("/communityUpdate.do")
@@ -344,7 +344,7 @@ public class CommunityController {
        public String communityDelete(RedirectAttributes redirectattr, @RequestParam String no) {
           int result = communityService.deleteComm(no);
           
-          return "redirect:/community/communityList.do";
+          return "redirect:/community/communityListFree.do";
        }
        
        @ResponseBody
