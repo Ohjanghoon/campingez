@@ -9,6 +9,9 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
    <jsp:param value="커뮤니티게시판" name="title" />
 </jsp:include>
+<script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.js"></script>
+<script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.css">
 
 <section id="community-container" class="container">
 
@@ -41,7 +44,7 @@ enctype="multipart/form-data" >
          <hr style="margin-top:30px;"/>   
       
       <input type="hidden" name="userId" value="${loginMember.userId}" readonly><br> 
-         <textarea rows="5" cols="30" name="commContent" id="commContent" style="resize:none;display:block;width:100%;height:25em;border:none;;outline: none">${community.commContent}</textarea>
+         <textarea name="commContent" id="summernote">${community.commContent}</textarea>
          
          <c:forEach items="${community.photos}" var="photo" varStatus="vs">
          <div class="btn-group-toggle p-0 mb-3" data-toggle="buttons">
@@ -62,7 +65,20 @@ enctype="multipart/form-data" >
    </form>
 </section>
 <script>
-const content = document.querySelector("#commContent");
+
+$(document).ready(function() {
+	$('#summernote').summernote({
+		  height: 500,                 
+		  minHeight: null,             
+		  maxHeight: null,             
+		  focus: true,                  
+		  lang: "ko-KR",					
+		  placeholder: '중고거래 게시판에 올릴 게시글 내용을 작성해주세요.'
+          
+	});
+});
+
+const content = document.querySelector("#summernote");
 const title = document.querySelector("#commTitle");
 
 title.focus();

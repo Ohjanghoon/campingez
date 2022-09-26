@@ -4,13 +4,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%-- <script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.js"></script>
-<script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.css"> --%>
 <sec:authentication property="principal" var="loginMember" scope="page" />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
    <jsp:param value="커뮤니티게시판" name="title" />
 </jsp:include>
+<script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.js"></script>
+<script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.css">
 
 <section id="community-container" class="container">
 	
@@ -35,7 +35,7 @@
          <hr style="margin-top:30px;"/>   
       
       <input type="hidden" name="userId" value="${loginMember.userId}" readonly><br> 
-         <textarea rows="5" cols="30" name="commContent" id="commContent" placeholder="내용을 입력하세요." style="resize:none;display:block;width:100%;height:25em;border:none;;outline: none"></textarea>
+         <textarea id="summernote" name="commContent" required></textarea>
          
          <div class="mb-3">
 		  <input class="form-control" type="file" id="upFile" accept="image/*" name="upFile" multiple>
@@ -48,8 +48,22 @@
    </form>
 </section>
 <script>
+$(document).ready(function() {
+	$('#summernote').summernote({
+		  height: 500,                 
+		  minHeight: null,             
+		  maxHeight: null,             
+		  focus: true,                  
+		  lang: "ko-KR",					
+		  placeholder: '게시판에 올릴 게시글 내용을 작성해주세요.'
+          
+	});
+});
+
+
+
 document.querySelector("#enroll-btn").addEventListener('click', (e) => {
-	const content = document.querySelector("#commContent");
+	const content = document.querySelector("#summernote");
 	const title = document.querySelector("#commTitle");
 
 	if(!content.value) {
