@@ -4,6 +4,33 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.campingez.chat.model.dao.ChatDao">
   
+  <select id="findChatUserByUserId" resultMap="chatUserMap">
+  	select 
+  		c.*
+	from
+	    chat_user c join chat_user t 
+	    on c.chatroom_id = t.chatroom_id
+	<where>
+	    (c.user_id = #{userId} and t.user_id = #{chatTargetId})
+	    and
+	    (c.deleted_at is null and t.deleted_at is null)
+	    <if test="chatTradeNo != null and chatTradeNo != ''">
+	    and
+	    c.chat_trade_no = #{chatTradeNo}
+	    </if>
+	</where>
+  </select>
+  
+  <resultMap type="chatUser" id="chatUserMap">
+  	<id column="chatroom_id" property="chatroomId"/>
+  	<result column="user_id" property="userId" />
+  	<result column="last_check" property="lastCheck" />
+  	<result column="created_at" property="createdAt" />
+  	<result column="deleted_at" property="deletedAt" />
+  	<result column="chat_trade_no" property="chatTradeNo" />
+  </resultMap>
+  
+  
   <select id="findMyChat" resultMap="recentChatListMap">
   	select
 	    tar.*,

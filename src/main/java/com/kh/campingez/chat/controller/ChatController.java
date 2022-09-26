@@ -1,7 +1,9 @@
 package com.kh.campingez.chat.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,9 +135,15 @@ public class ChatController {
 		chatLogs = chatService.findChatLogByChatroomId(chatroomId);
 		log.debug("chatLogs = {}", chatLogs);
 		
+		String chatTradeNo = chatService.findChatTradeNo(chatroomId);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("chatLogs", chatLogs);
+		map.put("chatTradeNo", chatTradeNo);
+		
 		return ResponseEntity.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.body(chatLogs);
+				.body(map);
 	}
 	
 	@PostMapping("/chatroomDelete.do")

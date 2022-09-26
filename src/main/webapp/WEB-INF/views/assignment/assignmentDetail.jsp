@@ -34,39 +34,7 @@
 	pageContext.setAttribute("newLine", "\n");
 %>
 <style>
-.container th {
-	width : 30%;
-	text-indent : 1.1rem;
-	vertical-align : middle;
-}
-#assignmentComplete {
-	position: relative;
-}
-#assignmentComplete> img {
-	opacity: 0.5;
-	width: 60%;
-	position : absolute;
-	right : -130px;
-	bottom : -80px;	
-}
-#btn_top{
-    width: 30px; 
-    height: 30px;
-    border: 1px solid #A8A4CE; 
-    color: #A8A4CE;
-    cursor: pointer;
-    position: fixed; bottom: 30%; right: 5%;
-    z-index : 2;
-}
-#btn_bottom {
-	width: 30px; 
-    height: 30px;
-    border: 1px solid #A8A4CE; 
-    color: #A8A4CE;
-    cursor: pointer;
-    position: fixed; bottom: 26%; right: 5%;
-    z-index : 2;
-}
+
 </style>
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal.username" var="loginUser"/>
@@ -84,7 +52,23 @@
 			</tr>
 			<tr>
 				<th>작성자</th>
-				<td>${assign.userId}</td>
+				<td class="d-flex justify-content-between align-items-center">
+					<span>${assign.userId}</span>
+					<div class="chat-wrap">
+					<sec:authorize access="isAuthenticated()">
+						<c:if test="${loginUser ne assign.userId}">
+						<form:form method="GET"
+							name="chatForm"
+							action="${pageContext.request.contextPath}/chat/chat.do">
+							<input type="hidden" name="chatTargetId" value="${assign.userId}" />
+							<button type="submit" id="chatBtn" class="btn btn-outline-dark flex-shrink-0">
+								<i class="fa-solid fa-paper-plane"></i> 작성자와 채팅하기
+							</button>
+						</form:form>	   
+						</c:if>
+					</sec:authorize>
+					</div>
+				</td>
 			</tr>
 			<tr>
 				<th class="py-5 pl-5">내용</th>
