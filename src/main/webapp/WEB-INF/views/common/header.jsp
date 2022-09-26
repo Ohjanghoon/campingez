@@ -681,7 +681,7 @@ const beforeTime = (alarmDate) => {
         d="M32,224H64V416H32A31.96166,31.96166,0,0,1,0,384V256A31.96166,31.96166,0,0,1,32,224Zm512-48V448a64.06328,64.06328,0,0,1-64,64H160a64.06328,64.06328,0,0,1-64-64V176a79.974,79.974,0,0,1,80-80H288V32a32,32,0,0,1,64,0V96H464A79.974,79.974,0,0,1,544,176ZM264,256a40,40,0,1,0-40,40A39.997,39.997,0,0,0,264,256Zm-8,128H192v32h64Zm96,0H288v32h64ZM456,256a40,40,0,1,0-40,40A39.997,39.997,0,0,0,456,256Zm-8,128H384v32h64ZM640,256V384a31.96166,31.96166,0,0,1-32,32H576V224h32A31.96166,31.96166,0,0,1,640,256Z" />
       </svg>
     </div>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <p style="width: 165px;">&nbsp;</p>
     <button class="input-send" style="width: 40px;" type="button" onclick="location.href='${pageContext.request.contextPath}/inquire/inquireList.do';">
       <svg style="width:24px;height:24px">
         <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
@@ -698,8 +698,8 @@ const beforeTime = (alarmDate) => {
       <div class="anw">
         <span>
         <ul>
-        	<li>21시부터 08시 사이에는 오토캠핑장 자동차 출입을 삼가시기 바랍니다. 오토캠핑장 내 차량은 5km 이내로 서행하여야 하며, 잔디밭 출입이나 세차행위는 금합니다.</li>
-        	<img src="${pageContext.request.contextPath}/resources/images/chatbot/NoCar.png" alt="" />
+        	<li>21시부터 08시 사이에는 오토캠핑장 자동차 출입을 삼가시기 바랍니다. 오토캠핑장 내 차량은 5km 이내로 서행하여야 하며, 잔디밭 출입이나 세차행위는 금합니다.</li><br />
+        	<img src="${pageContext.request.contextPath}/resources/images/chatbot/parking.jpg" alt="" style="width:330px;"/>
         </ul>
         </span><br />
       </div>
@@ -709,7 +709,8 @@ const beforeTime = (alarmDate) => {
       <div class="anw">
         <span>
 	        <ul>
-	        	<li>주차요금은 무료입니다. 오토캠핑장 이용시 1사이트 당 1대의 주차가 가능하며, 그 외 캠핑장 이용시 별도의 주차장에 주차하시면 됩니다.</li>
+	        	<li>주차요금은 무료입니다. 오토캠핑장 이용시 1사이트 당 1대의 주차가 가능하며, 그 외 캠핑장 이용시 별도의 주차장에 주차하시면 됩니다.</li><br />
+	        	<img src="${pageContext.request.contextPath}/resources/images/chatbot/freeParking.png" alt="" style="width:330px;"/>
 	        </ul>
         </span>
       </div>
@@ -730,7 +731,20 @@ const beforeTime = (alarmDate) => {
         <div class="anw">
         <span>
         	<ul>
-        		<li>입실은 오후 2시 이후 가능하며 퇴실은 사용 종료일 정오 12시 입니다.</li>
+        		<li>입실은 오후 2시 이후 가능하며 퇴실은 사용 종료일 정오 12시 입니다.</li><br />
+	        	<img src="${pageContext.request.contextPath}/resources/images/chatbot/checkInOut.png" alt="" style="width:330px;"/>
+        	</ul>
+       </span>
+      </div>
+      <div class="que">
+        <span>캠핑장 안에 매점이 있나요??</span>
+      </div>
+        <div class="anw">
+        <span>
+        	<ul>
+        		<li>캠핑장 내 매점은 애견동반존과 카라반존 사이에 위치하고있습니다.</li><br />
+	        	<img src="${pageContext.request.contextPath}/resources/images/chatbot/rest2.png" alt="" style="width:330px;"/><br /><br />
+	        	<img src="${pageContext.request.contextPath}/resources/images/chatbot/rest1.png" alt="" style="width:330px;"/>
         	</ul>
        </span>
       </div>

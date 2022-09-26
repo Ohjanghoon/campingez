@@ -325,12 +325,12 @@ var map;
                         + ((resultData[0].properties.totalTime / 60)
                             .toFixed(0) % 60) + "분";
                     var tFare = " 총 요금 : "
-                        + resultData[0].properties.totalFare
+                        + (resultData[0].properties.totalFare).toLocaleString('ko-KR')
                         + "원";
                     var taxiFare = " 예상 택시 요금 : "
-                        + resultData[0].properties.taxiFare
+                        + (resultData[0].properties.taxiFare).toLocaleString('ko-KR')
                         + "원";
-
+					
                     $("#result1").html(
                     `<li style="list-style: none;"><i class="fa-solid fa-route fa-2x"></i>&nbsp;&nbsp;&nbsp;${tDistance}</li>`
                         );
