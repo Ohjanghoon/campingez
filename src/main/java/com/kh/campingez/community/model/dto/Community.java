@@ -24,14 +24,16 @@ public class Community extends CommunityEntity {
 	// 신고 누른 회원 조회 필드
 	private String reportUserId;
 	private List<Report> reportList;
+	private String categoryName;
 	
 	public Community(String commNo, String userId, String categoryId, String commTitle, String commContent,
 			LocalDateTime commDate, int readCount, int reportCount,
-			isDelete isDelete, int likeCount, int photoCount, String reportUserId, List<Report> reportList) {
+			isDelete isDelete, int likeCount, int photoCount, String reportUserId, List<Report> reportList, String categoryName) {
 		super(commNo, userId, categoryId, commTitle, commContent, commDate, readCount, reportCount, isDelete, likeCount);
 		this.photoCount = photoCount;
 		this.reportUserId = reportUserId;
 		this.reportList = reportList;
+		this.categoryName = categoryName;
 	}
 	
 	public void add(CommunityPhoto attach) {

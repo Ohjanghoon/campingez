@@ -21,10 +21,15 @@ import com.kh.campingez.community.model.dto.CommunityPhoto;
 public interface CommunityDao {
    
 //   @Select("select * from community")
-   List<Community> selectCommList(RowBounds rowBounds);
+   List<Community> selectCommListFree(RowBounds rowBounds);
    
-   @Select("select count(*) from community")
-   int getTotalContext();
+   List<Community> selectCommListHoney(RowBounds rowBounds);
+   
+   @Select("select count(*) from community where comm_isdelete = 'N' and category_id = 'com1'")
+   int getTotalContentFree();
+   
+   @Select("select count(*) from community where comm_isdelete = 'N' and category_id = 'com2'")
+   int getTotalContentHoney();
    
 //   @Select("select * from community where comm_no = #{commNo}")
    Community selectCommByNo(String no);
@@ -48,7 +53,7 @@ public interface CommunityDao {
    void insertCommLike(CommunityLike cl);
    
    @Insert("insert into community values('C' || seq_community_comm_no.nextval, #{userId}, #{categoryId}, #{commTitle}, " 
-         + "#{commContent}, default, default, 0, default, default)")
+         + "#{commContent}, default, 0, default, default)")
    @SelectKey(statement = "select 'C' || seq_community_comm_no.currval from dual" , before = false, keyProperty = "commNo", resultType = String.class)
    int insertComm(Community community);
    
@@ -79,7 +84,7 @@ public interface CommunityDao {
    @Select("select (select user_id from report where comm_no = c.comm_no and user_id = #{userId}) report_user_id from community c where comm_no = #{no}")
    String getUserReportComm(Map<String, Object> param);
 
-   @Select("select * from community where comm_isdelete = 'N' and category_id = #{categoryType} and ${searchType} like '%' || #{searchKeyword} || '%'")
+   @Select("select c.*, (select category_name from category_list where c.category_id = category_id) category_name  from community c where comm_isdelete = 'N' and category_id = #{categoryType} and ${searchType} like '%' || #{searchKeyword} || '%'")
    List<Community> communityFind(RowBounds rowBounds, @Param("categoryType")String categoryType, @Param("searchType")String searchType, @Param("searchKeyword")String searchKeyword);
 
    @Select("select count(*) from community where comm_isdelete = 'N' and category_id = #{categoryType} and ${searchType} like '%' || #{searchKeyword} || '%'")

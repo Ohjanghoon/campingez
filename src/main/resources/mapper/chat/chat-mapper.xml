@@ -12,7 +12,7 @@
 	from
 	    chat_user c
 	    join chat_user tar on c.chatroom_id = tar.chatroom_id
-	    join (
+	    left join (
 	        select
 	        	*
         	from (
@@ -31,6 +31,7 @@
 	    and
 	    c.deleted_at is null
 	order by
+	    c.created_at desc,
 		chat_time desc
   </select>
   
