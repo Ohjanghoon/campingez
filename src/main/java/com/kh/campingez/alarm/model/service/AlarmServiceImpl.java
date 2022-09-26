@@ -311,4 +311,27 @@ public class AlarmServiceImpl implements AlarmService {
 	public int allDeleteAlarm(String userId) {
 		return alarmDao.allDeleteAlarm(userId);
 	}
+	
+	@Override
+	public void insertChatroomAlarm(String userId, String chatTargetId) {
+
+		String msg = "[채팅방] '" + userId + "' 님과의 채팅이 시작되었습니다.";
+		String location = "/chat/myChatList.do";
+		
+		AlarmEntity alarm = (AlarmEntity)Alarm.builder()
+				.targetUserId(chatTargetId)
+				.alrType(AlarmType.CHAT)
+				.alrMessage(msg)
+				.alrUrl(location).build();
+		
+		int result = alarmDao.insertAlarmWithContentId(alarm);
+		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
+		int notReadCount = alarmDao.getNotReadCount(chatTargetId);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("alarm", alarm);
+		map.put("notReadCount", notReadCount);
+		
+		simpMessagingTemplate.convertAndSend("/app/notice/" + alarm.getTargetUserId(), map);
+	}
 }

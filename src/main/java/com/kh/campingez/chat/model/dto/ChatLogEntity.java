@@ -10,15 +10,17 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatLog extends ChatLogEntity {
+public class ChatLogEntity {
+		
 	
-	private String chatTradeNo;
+		private long no;
+		private String chatroomId;
+		private String userId;
+		private String chatMsg;
+		private long chatTime;
+		
 
-	public ChatLog(long no, String chatroomId, String userId, String chatMsg, long chatTime) {
-		super(no, chatroomId, userId, chatMsg, chatTime);
-		// TODO Auto-generated constructor stub
-	}
-	
 }

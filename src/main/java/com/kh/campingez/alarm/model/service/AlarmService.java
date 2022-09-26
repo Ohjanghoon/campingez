@@ -33,4 +33,6 @@ public interface AlarmService {
 
 	int allDeleteAlarm(String userId);
 
+	void insertChatroomAlarm(String userId, String chatTargetId);
+
 }

@@ -147,6 +147,7 @@
 										name="chatForm"
 										action="${pageContext.request.contextPath}/chat/chat.do">
 										<input type="hidden" name="chatTargetId" value="${trade.userId}" />
+										<input type="hidden" name="chatTradeNo" value="${trade.tradeNo}" />
 										<button type="submit" id="chatBtn" class="btn btn-outline-dark flex-shrink-0">
 											<i class="fa-solid fa-paper-plane"></i> 판매자와 채팅하기
 										</button>

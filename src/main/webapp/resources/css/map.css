@@ -1,5 +1,10 @@
 @charset "UTF-8";
   
+  .buttonWrapper{
+  	float: left;
+  	margin-left: 70px;
+  }
+  
   .text_custom {
     position: relative;
     width: 220px;
@@ -35,9 +40,15 @@
   	color : #7A86B6;
   	background-color : white;
   	border : 1px solid #7A86B6;
+  	display: none;
   }
   
   #research:hover{
   	color : white;
   	background-color : #C8B6E2;
+  }
+  
+  #xyCode{
+  	display: inline;
+  	position: relative;
   }

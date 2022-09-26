@@ -30,7 +30,6 @@ window.onload = () => {
                 <p class="lead">캠핑이지는 고객님들의 편의를 위해 날씨정보를 제공합니다.</p>
             </div>
             <div class="col-md-5">
-            	<!-- 해석님 여기 날씨 이미지가 상단에 고정되서 나와유 ㅠㅠ -->
             	<div class="weatherContainer" style="height: 400px;">
 					<article class="widget">
 					    <div class="weatherIcon" style="text-align: center;"></div>
@@ -215,7 +214,6 @@ window.onload = () => {
 		    var options = 'top=10, left=10, width=1000, height=900, status=no, menubar=no, toolbar=no, resizable=no';
 		    window.open(url, name, options);
 		}
-
 		const clockString = () => {
 	        const f = (n) => {
 	            return n <10 ? "0" + n : n;
@@ -344,7 +342,6 @@ window.onload = () => {
 				error : console.log
 			});
 		};
-
 var d = new Date();
 document.getElementById("day").innerHTML = d.getDate();
 var month = new Array();
