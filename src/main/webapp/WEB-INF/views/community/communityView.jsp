@@ -379,7 +379,9 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
 });
 
 // 댓글 null 방지
-document.querySelector("#enroll-btn").addEventListener('click', (e) => {
+const btn = document.querySelector("#enroll-btn")
+if(btn != null){
+btn.addEventListener('click', (e) => {
 	const content = document.querySelector("#cContent");
 
 	if(!content.value) {
@@ -391,12 +393,12 @@ document.querySelector("#enroll-btn").addEventListener('click', (e) => {
 	
 	e.preventDefault();
 });
+}
 
 
 document.querySelector("#golist").addEventListener('click', (e) => {
 	history.go(-1);
 });
-
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
