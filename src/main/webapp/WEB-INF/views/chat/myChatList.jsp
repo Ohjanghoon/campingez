@@ -107,7 +107,9 @@ const enterChatroom = (chatroomId, chatTargetId) => {
 		success(response){
 			console.log(response);
 			
-			const {chatLogs, chatTradeNo} = response;
+			const {chatLogs, chatTradeNo, deleteCheckUser} = response;
+			
+			//채팅 내역 화면에 출력
 			chatLogs.forEach((chat) => {
 				
 				const {userId, chatMsg, chatTime} = chat;
@@ -121,6 +123,7 @@ const enterChatroom = (chatroomId, chatTargetId) => {
 				//console.log("${loginUser}");
 				//console.log(userId, chatMsg, chatTime);
 				
+				//내 채팅 정렬
 				if("${loginUser}" === userId) {
 					html += `
 						<ul class="list-unstyled list-group d-flex align-items-end">
@@ -129,6 +132,7 @@ const enterChatroom = (chatroomId, chatTargetId) => {
 						</ul>
 					`;
 				}
+				//상대방 채팅 정렬
 				else {
 					html += `
 						<ul class="list-unstyled list-group d-flex align-items-start" >
@@ -146,14 +150,27 @@ const enterChatroom = (chatroomId, chatTargetId) => {
 			const btnArea = document.querySelector("#chatBtn");
 			
 			btnArea.innerHTML = ``;
-			btnArea.innerHTML += `
-				<input type="text" id="msg" class="form-control" placeholder="Message">
-
-				<div class="input-group-append" style="padding: 0px;">
-				  <button id="sendBtn" class="btn btn-outline-secondary" type="button"
-				  	onclick="sendMsg('\${chatroomId}', '\${chatTargetId}')"><i class="fa-solid fa-paper-plane"></i> Send</button>
-				</div>
-			`;
+			
+			//아무도 채팅방을 나가지 않을 경우
+			if(deleteCheckUser == null){
+				btnArea.innerHTML += `
+					<input type="text" id="msg" class="form-control" placeholder="Message">
+	
+					<div class="input-group-append" style="padding: 0px;">
+					  <button id="sendBtn" class="btn btn-outline-secondary" type="button"
+					  	onclick="sendMsg('\${chatroomId}', '\${chatTargetId}')"><i class="fa-solid fa-paper-plane"></i> Send</button>
+					</div>
+				`;
+				
+				document.querySelector("#msg").addEventListener('keyup', (e) => {
+					
+					if(e.key === 'Enter') sendMsg(`\${chatroomId}`, `\${chatTargetId}`);
+				});
+			}
+			//상대방이 채팅방을 나갔을 경우
+			else {
+				btnArea.innerHTML += `<input type="text" class="form-control" placeholder="대화 상대가 없습니다." readonly>`;
+			}
 			
 			// 중고거래글 이동버튼 영역 추가
 			const btnTradeArea = document.querySelector("#goTradeBtnArea");
@@ -167,15 +184,16 @@ const enterChatroom = (chatroomId, chatTargetId) => {
 				btnTradeArea.innerHTML = "";
 			}
 			
+			//채팅방 화면 최하단으로 이동
 			chatLog.scrollTop = chatLog.scrollHeight;
 			
-			document.querySelector("#msg").addEventListener('keyup', (e) => {
-				
-				if(e.key === 'Enter') sendMsg(`\${chatroomId}`, `\${chatTargetId}`);
-			});
-			
+			//채팅방 내역 받기 구독
 			stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
 				subChatLog(message);
+			});
+			
+			stompClient.subscribe(`/app/deleteChat/\${chatroomId}`, () => {
+				btnArea.innerHTML = `<input type="text" class="form-control" placeholder="대화 상대가 없습니다." readonly>`;
 			});
 		},
 		error : console.log
@@ -341,15 +359,20 @@ const deleteChatroom = (chatroomId, chatTargetId) => {
 			success(response){
 				console.log(response);
 				
-				const payload = {
+				const {deleteChatUser} = response;
+				
+				if(deleteChatUser == null){
+					const payload = {
 						chatroomId : chatroomId,
 						userId : '<sec:authentication property="principal.username"/>',
-						chatMsg : `-------- \${userId} 님이 채팅방을 나갔습니다. --------`,
+						chatMsg : `💥 \${userId} 님이 채팅방을 나갔습니다. 💥`,
 						chatTime : Date.now()
 					};
-					
-				stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
-				stompClient.send(`/app/\${chatTargetId}/myChatList`, {}, JSON.stringify(payload));
+				
+					stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+					stompClient.send(`/app/\${chatTargetId}/myChatList`, {}, JSON.stringify(payload));
+					stompClient.send(`/app/deleteChat/\${chatroomId}`);
+				}
 				
 				location.reload();
 			},
