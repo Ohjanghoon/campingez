@@ -80,8 +80,14 @@ stompClient.connect({}, (frame) => {
 		
 		document.querySelectorAll("#alarmLink").forEach((li) => {
 			li.addEventListener('click', (e) => {
-				const alrId = e.target.offsetParent.dataset.alrId;
-				console.log(alrId);
+				let parent = e.target.parentElement.parentElement;
+				let alrId;
+				
+				if(parent.id == 'alarm-content-wrap') {
+					alrId = e.target.parentElement.parentElement.parentElement.dataset.alrId;
+				} else {
+					alrId = parent.dataset.alrId;
+				}
 				if(alrId == undefined) return;
 					const token = $("meta[name='_csrf']").attr("content");
 					const header = $("meta[name='_csrf_header']").attr("content");
