@@ -30,7 +30,7 @@
 		<tbody>
 			<c:if test="${not empty list}">
 				<c:forEach items="${list}" var="list" >
-					<tr data-notice-no="${list.noticeNo}">
+					<tr data-notice-no="${list.noticeNo}" style="cursor:pointer;">
 						<td><i class="fa-regular fa-clipboard"></i></td>
 						<td>${list.categoryId == 'not1' ? '공지사항' : '이벤트'}</td>
 						<td>${list.noticeTitle} [${list.noticeType}]</td>

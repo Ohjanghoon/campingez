@@ -153,6 +153,7 @@ document.querySelector("#enroll-btn").addEventListener('click', (e) => {
 		price.focus();
 		return;
 	}
+	content.value = (content.value.replaceAll('<p>', '').replaceAll('</p>', ''));
 	price.value = Number(price.value.replaceAll(',',''));
 	document.tradeEnrollFrm.submit();
 });

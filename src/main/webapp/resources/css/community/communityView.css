@@ -26,3 +26,12 @@ table#tbl-comment tr.level2 sub.comment-writer {color:black; font-size:14px}
 table#tbl-comment tr.level2 sub.comment-date {color:rgb(128, 0, 255); font-size:10px}
 table#tbl-comment textarea{margin: 4px 0 0 0;}
 table#tbl-comment button.btn-comment-enroll2{width:60px; height:23px; color:white; background:lightslategray; position:relative; top:-5px; left:10px;}
+.del-wrap {
+	display: flex;
+}
+.del-file-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 20px 10px 0;
+}

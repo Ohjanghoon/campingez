@@ -11,6 +11,7 @@ import com.kh.campingez.assignment.model.dto.AssignmentEntity;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
+import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.dto.TradeEntity;
 import com.kh.campingez.user.model.dao.UserInfoDao;
 import com.kh.campingez.user.model.dto.MyPage;
@@ -60,7 +61,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return userInfoDao.selectTradeCnt(user);
 	}
 	@Override
-	public List<TradeEntity> selectTradeList(Map<String, Object> param, User user) {
+	public List<Trade> selectTradeList(Map<String, Object> param, User user) {
 		return userInfoDao.selectTradeList(getRowBounds(param), user);
 	}
 	@Override
