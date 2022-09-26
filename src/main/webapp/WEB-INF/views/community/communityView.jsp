@@ -116,7 +116,7 @@
         <input type="hidden" name="commentLevel" value="1" /> 
         <input type="hidden" name="commentRef" value="" />
 
-        <div class="form-group col-xs-20 col-sm-13 col-lg-20">
+        <div class="form-group col-xs-20 col-sm-13 col-lg-20" style="margin-bottom: 40px;">
 	        <textarea class="form-control" id="cContent" name="cContent" placeholder="댓글을 입력하세요."  style="resize:none;"></textarea>
 	        <button type="button" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
         </div>   	
@@ -336,7 +336,7 @@ function deleteComment(){
 
 document.querySelectorAll(".btn-reply").forEach((btn) => {
 	btn.addEventListener('click', (e) => {
-
+		
 		const {value} = e.target;
 		console.log(value);
 		
@@ -352,15 +352,16 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
 				         <input type="hidden" name="writer" value="${loginMember.userId}" />
 		            <input type="hidden" name="commentLevel" value="2" />
 		            <input type="hidden" name="commentRef" value="\${value}" />    
-		            	<div class="form-group col-xs-20 col-sm-13 col-lg-20">
+		            	<div class="form-group col-xs-20 col-sm-13 col-lg-20" style="margin-bottom:40px;">
 		    	        <textarea class="form-control" id="cContent" name="cContent" placeholder="댓글을 입력하세요." style="resize:none;"></textarea>
-		    	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
+		    	        <button type="button" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
 		            </div>   	   
 		        </form>
 			</td>
 		</tr>`;
-		
-        const target = e.target.parentElement.parentElement; // tr
+		console.dir(e.target);
+        const target = e.target.parentElement.parentElement.parentElement.parentElement; // tr
+        console.dir(target);
         target.insertAdjacentHTML('afterend', tr);
         
 	}, {once: true});
@@ -369,7 +370,7 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
 
 document.querySelector("#enroll-btn").addEventListener('click', (e) => {
 	const content = document.querySelector("#cContent");
-
+	if(true) return;
 	if(!content.value) {
 		alert("빈 댓글을 등록할 수 없습니다.");
 		content.focus();
