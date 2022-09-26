@@ -147,7 +147,7 @@
                           
           	<div class="comm-comment-wrap">
                 <ul class="list-unstyled list-inline media-detail pull-right">
-                	<sec:authorize access="isAuthenticated()"> 
+                	<sec:authorize access="${not empty user.userId} and isAuthenticated()"> 
                     <c:if test="${comment.commentLevel eq 1}">
                     	<button class="btn-reply btn btn-outline-dark flex-shrink-0" value="${comment.commentNo}">답글</button>
                     </c:if>
