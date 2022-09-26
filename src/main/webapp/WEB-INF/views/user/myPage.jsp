@@ -11,7 +11,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<div id="my_modal">
+<div id="my_modal" style="display: none;">
 <%@ include file="/WEB-INF/views/user/authentication.jsp" %>
 </div>
 <jsp:include page="/WEB-INF/views/common/header.jsp">

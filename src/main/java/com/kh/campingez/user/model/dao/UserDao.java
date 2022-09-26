@@ -41,4 +41,10 @@ public interface UserDao {
 	@Select("select * from ez_user where phone = #{phone}")
 	User checkPhone(String phone);
 
+	@Update("update ez_user set point = point + 100 where user_id = #{userId}")
+	int giveTo100Point(String userId);
+
+	@Update("update ez_user set point = point + #{point} where user_id = #{userId}")
+	int giveToPoint(Map<String, Object> map);
+
 }

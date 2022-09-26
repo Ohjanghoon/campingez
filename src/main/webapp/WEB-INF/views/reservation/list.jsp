@@ -371,7 +371,7 @@
 
             				          <div class="col-12">
             				            <label for="Rcar" class="form-label">차량번호</label>
-            				            <input type="text" class="form-control" name="Rcar" id="Rcar" placeholder="ex) 11가1111">
+            				            <input type="text" class="form-control" name="Rcar" id="Rcar" placeholder="ex) 11가1111" required>
             				            <div class="invalid-feedback">
             				              차량번호를 입력해주세요.
             				            </div>
@@ -379,7 +379,7 @@
 
             				          <div class="col-12">
             				            <label for="Rrequest" class="form-label">요청사항</label>
-            				            <input type="text" class="form-control" name="Rrequest" id="Rrequest" placeholder="요청사항을 입력하세요.">
+            				            <input type="text" class="form-control" name="Rrequest" id="Rrequest" placeholder="요청사항을 입력하세요." required>
             				          </div>
 
             				          <div class="col-md-5">
@@ -520,7 +520,7 @@
             				   				
        						
             				document.querySelector("#Rpoint").addEventListener("blur", (e) => {
-            					if(e.target.value > <sec:authentication property='principal.point' />){
+            					if(e.target.value > <sec:authentication property='principal.point' /> || e.target.value < 0){
             						e.target.value = <sec:authentication property='principal.point' />;
             					}
                 				 
@@ -534,10 +534,16 @@
             				});
             				
             				couponList.addEventListener("blur", (e) => {
-            					document.querySelector("#Rcoupon").innerHTML = (e.target.value.split('@'))[0];
-            					let minuspoint = document.querySelector("#Rpoint").value;
+            					
+            					if(e.target.value == ""){
+            						document.querySelector("#Rcoupon").innerHTML = 0;
+            					}
+            					else{
+	            					document.querySelector("#Rcoupon").innerHTML = (e.target.value.split('@'))[0];
+            					}
+            					
             					let minuscoupon = (couponList.value.split('@'))[0];
-    						
+            					let minuspoint = document.querySelector("#Rpoint").value;
     							let price = Number(document.querySelector("#zonePrice").innerHTML);
                 				let resPrice = ((price-(price*(minuscoupon/100)))-minuspoint).toLocaleString('ko-KR');
                 				document.querySelector("#Rprice").innerHTML = `₩`+resPrice;	
