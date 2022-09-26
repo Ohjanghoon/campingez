@@ -52,9 +52,8 @@
 </style>
 <section id="trade-container" class="container">
 	<sec:authentication property="principal.username" var="loginUser"/>
-	<div class="trade-header">
-		<h2>중고거래 작성</h2>
-	</div>
+<h2 class="text-center fw-bold pt-5">중고거래 게시글 작성</h2>
+        <hr />
 	<form:form name="tradeEnrollFrm" action="${pageContext.request.contextPath}/trade/tradeEnroll.do" method="post" enctype="multipart/form-data">	
 		<div class="trade-select-wrap d-flex justify-content-between">
 			<div class="form-floating spec-wrap">

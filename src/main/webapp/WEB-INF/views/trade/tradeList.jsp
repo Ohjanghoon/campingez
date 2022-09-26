@@ -15,16 +15,8 @@
 	border:none;
 }
 </style>
-<!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">중고거래</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">여러분의 물건을 자유롭게 거래하세요!</p>
-                    
-                </div>
-            </div>
-        </header>
+<h2 class="text-center fw-bold pt-5">중고거래</h2>
+        <hr />
 		<div class="panel">
 			<div class="form-inline" style="display:flex; justify-content : center; margin:50px;">
 			<br />

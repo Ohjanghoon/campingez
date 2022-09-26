@@ -12,48 +12,12 @@
 <script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.js"></script>
 <script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.css">
-<style>
-.trade-header > * {
-    margin: 30px 0;
-    border-bottom: 1px solid gray;
-    padding-bottom: 20px;
-}
-.spec-wrap{
-	width: 49%;
-}
-.title-wrap {
-	width:70%;
-}
-.price-wrap {
-	width: 20%;
-}
-.title-wrap {
-	margin-top: 10px;
-}
-#title {
-	width:79%;
-}
-.info-wrap {
-    height: 150px;
-    border: 1px solid lightgray;
-    background-color: #d3d3d347;
-    margin-bottom: 10px;
-    color: gray;
-    padding: 20px;
-    font-size: 14px;
-}
-.title-price-wrap {
-	margin: 10px 0 10px 0;
-}
-.trade-font-color {
-	color: gray;
-}
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trade/tradeUpdate.css">
+
 <section id="trade-container" class="container">
 	<sec:authentication property="principal.username" var="loginUser"/>
-	<div class="trade-header">
-		<h2>게시글 수정</h2>
-	</div>
+<h2 class="text-center fw-bold pt-5">중고거래 게시글 수정</h2>
+        <hr />
 	<form name="tradeUpdateFrm" action="${pageContext.request.contextPath}/trade/tradeUpdate.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data" >
 		<input type="hidden" name="tradeNo" value="${trade.tradeNo}" />
 		<div class="trade-select-wrap d-flex justify-content-between">
