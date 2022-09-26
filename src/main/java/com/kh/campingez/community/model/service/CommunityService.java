@@ -39,13 +39,15 @@ public interface CommunityService {
 
    List<CommunityComment> selectCommentList(String commNo);
 
-   int deleteComment(CommunityComment cc);
+   int deleteComment(String commentNo);
 
    String getUserReportComm(Map<String, Object> param);
 
    List<Community> communityFind(Map<String, Integer> param, String categoryType, String searchType, String searchKeyword);
 
    int getFindTotalContent(String categoryType, String searchType, String searchKeyword);
+
+String selectCommNoByCommentNo(String commentNo);
 	
 
 }

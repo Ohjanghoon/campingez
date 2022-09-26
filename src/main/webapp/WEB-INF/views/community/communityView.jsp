@@ -34,8 +34,9 @@
                                 작성자 : ${community.userId} / 작성일 : <fmt:parseDate value="${community.commDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="commDate"/>
                                 <fmt:formatDate value="${commDate}" pattern="yy-MM-dd HH:mm"/></div>
                             <!-- Post categories-->
-                            
-                            <p class="badge bg-secondary text-decoration-none link-light">자유게시판</p> 
+                            	<p class="badge bg-secondary text-decoration-none link-light">${community.categoryId eq 'com1' ? '자유게시판' : '꿀팁게시판'}</p> 
+                         	    	    
+			  		
                             <p style="text-align:right;">조회수 : ${community.readCount} 신고수 : ${community.reportCount} 좋아요 : ${community.likeCount} </p> 
                               <form action="${pageContext.request.contextPath}/community/like.do" name="commLikeFrm" style="text-align:right;">
                               <input type="hidden" name="no" value="${community.commNo}" />
@@ -101,7 +102,6 @@
                <c:if test="${not empty commentlist}">
                	<c:forEach items="${commentlist}" var="comment">
                <table id="tbl-comment">
-					
                      <tr class="${comment.commentLevel eq 1 ? 'level1' : 'level2'}">
                         <td>
 	                        ${comment.commentContent}
@@ -121,7 +121,8 @@
 		                         
 		                         <c:if test="${loginMember.userId eq comment.userId}">
 			                         <form action="${pageContext.request.contextPath}/community/commentDelete.do">
-			                  			<input type="hidden" name="cc" value="${comment}" />
+										<input type="hidden" name="commentCommNo" id="commentCommNo" value="${comment.commentCommNo}" />
+										<input type="hidden" name="commentNo" id="commentNo" value="${comment.commentNo}" />
 			                         	<button class="btn-delete btn btn-outline-danger flex-shrink-0" type="submit">삭제</button>
 			                         </form>
 		                         </c:if>

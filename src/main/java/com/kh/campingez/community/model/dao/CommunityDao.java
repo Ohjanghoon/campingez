@@ -74,7 +74,7 @@ public interface CommunityDao {
    List<CommunityComment> selectCommentList(String commNo);
    
    @Delete("delete from comm_comment where comment_no = #{commentNo}")
-   int deleteComment(CommunityComment cc);
+   int deleteComment(String commentNo);
    
    @Select("select (select user_id from report where comm_no = c.comm_no and user_id = #{userId}) report_user_id from community c where comm_no = #{no}")
    String getUserReportComm(Map<String, Object> param);
@@ -87,5 +87,8 @@ public interface CommunityDao {
 
    @Select("select * from comm_comment where comment_no = #{commentRef}")
    CommunityComment getCommentByCommentNo(String commentRef);
+   
+   @Select("select comm_no as comment_comm_no from comm_comment where comment_no = #{commentNo}")
+   String selectCommNoByCommentNo(String commentNo);
    
 }

@@ -4,51 +4,66 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<%-- <script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.js"></script>
+<script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.css"> --%>
 <sec:authentication property="principal" var="loginMember" scope="page" />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
    <jsp:param value="커뮤니티게시판" name="title" />
 </jsp:include>
 
 <section id="community-container" class="container">
+	
+	<h1 style="margin-top:50px;">게시판 글 작성</h1>
+	
+	<hr style="margin-top:30px;"/>
 
    <form name="communityEnrollFrm" action="${pageContext.request.contextPath}/community/communityEnroll.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
-   
-      <div>
-      <p>게시판 선택</p>
-         <input type="radio" name="categoryId" value="com1" checked>자유게시판
-         <input type="radio" name="categoryId" value="com2">캠핑꿀팁게시판
-      </div>
-   
-      <p>글제목: </p><input type="text" name="commTitle"><br>
-      
-      <p>작성자: </p><input type="text" name="userId" value="${loginMember.userId}" readonly><br> 
+         
 
-      <p>글내용: </p>
-         <textarea rows="5" cols="30" name="commContent"></textarea>
+    <div class="form-floating spec-wrap" style="width:250px;margin-bottom:30px;">
+			  <select class="form-select" id="category" name="categoryId">
+			    <option value="com1" selected>자유게시판</option>
+			    <option value="com2">꿀팁게시판</option>
+			    
+			  </select>
+			  <label for="category">게시판 선택</label>
+			</div>
+         
+ 	 <input type="text" id="commTitle" name="commTitle" placeholder="제목" style="display:block;width:100%;border:none; font-size:40px;outline: none;">
+         
+         <hr style="margin-top:30px;"/>   
       
-      <br /><br />
-      
-      <div class="input-group-prepend" style="padding:0px;">
-                <span class="input-group-text">첨부파일1</span>
-              </div>
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" name="upFile" id="upFile1" accept="image/*" multiple>
-                <label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
-              </div>
-      <br><br>
-      <input type="submit" value="저장">
+      <input type="hidden" name="userId" value="${loginMember.userId}" readonly><br> 
+         <textarea rows="5" cols="30" name="commContent" id="commContent" placeholder="내용을 입력하세요." style="resize:none;display:block;width:100%;height:25em;border:none;;outline: none"></textarea>
+         
+         <div class="mb-3">
+		  <input class="form-control" type="file" id="upFile" accept="image/*" name="upFile" multiple>
+		</div>
+         
+      <div class="btn-wrap d-flex justify-content-center">
+		<button type="button"  id="enroll-btn" class="btn btn-primary" style="margin-top:50px;">작성</button>
+		</div>
+		
    </form>
 </section>
 <script>
-const file = $("#upFile1").val();
+document.querySelector("#enroll-btn").addEventListener('click', (e) => {
+	const content = document.querySelector("#commContent");
+	const title = document.querySelector("#commTitle");
 
-if(file == null){
-   alert("사진 등록은 필수입니다.");
-   file.focus();
-   return;
-}
+	if(!content.value) {
+		alert("게시글 내용을 입력해주세요.");
+		content.focus();
+		return;
+	} else if(!title.value) {
+		alert("게시글 제목을 입력해주세요.");
+		title.focus();
+		return;
+	}
 
+	document.communityEnrollFrm.submit();
+});
 </script>
 
 

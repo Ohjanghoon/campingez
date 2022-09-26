@@ -393,13 +393,19 @@ public class CommunityController {
        
        
        @GetMapping("/commentDelete.do")
-       public String deleteComment(RedirectAttributes redirectAttr, @RequestParam("cc") CommunityComment cc) {
-
-    	   int result = communityService.deleteComment(cc);
+       public String deleteComment(RedirectAttributes redirectAttr, @RequestParam String commentCommNo, String commentNo, Model model) {
+    	   model.addAttribute("commentNo", commentNo);
     	   
-    	   String commNo = cc.getCommentCommNo();
+    	   commentCommNo = communityService.selectCommNoByCommentNo(commentNo);
     	   
-    	   return "redirect:/community/communityView.do?no=" + commNo;
+    	   model.addAttribute("commentCommNo", commentCommNo);
+    	   log.debug("commentNo = {}",commentNo);
+    	   log.debug("commentCommNo = {}", commentCommNo);
+    	   int result = communityService.deleteComment(commentNo);
+    	   
+    	   
+    	   
+    	   return "redirect:/community/communityView.do?no=" + commentCommNo;
        }
        
 } 

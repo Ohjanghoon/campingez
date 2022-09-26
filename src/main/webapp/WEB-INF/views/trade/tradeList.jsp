@@ -48,13 +48,12 @@
                             </div>
                            
                     </div>
-              	</div>
               	<sec:authorize access="isAuthenticated()">
-              	<div class="enrollBtn">
-              		<input type="hidden" name="cc" />
+              	<div class="enrollBtn" style="width:auto; display:flex; justify-content: flex-end;">
 					<input class="btn btn-outline-dark mt-auto" type="button" value="글쓰기" onclick="location.href='${pageContext.request.contextPath}/trade/tradeEnroll.do?'" />
 				</div>
 				</sec:authorize>
+              	</div>
         </section>
         <div id="pagebar" style="text-align:center;"></div>
 <script>
@@ -101,7 +100,8 @@ $(document).ready(function(){
 					html += item.tradeTitle
 					html += '&nbsp;<img src = "${pageContext.request.contextPath}/resources/images/trade/colorHeart.png" style="width:15px;height:15px;" />' + item.likeCount
 					html += '</h5>';
-					html += '<p>' + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</p>'
+					html += '<p class="fw-bolder">' + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원</p>'
+					html += '<p>' + item.userId + '</p>'
 					html += '</div>';
 					html += '</div>';
 					html += '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">';
