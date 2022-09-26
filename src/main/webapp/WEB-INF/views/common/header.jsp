@@ -22,6 +22,9 @@
 <script src="https://kit.fontawesome.com/e8e5c6b69c.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chatbot.css" />
 <link rel="icon" type="image/png" sizes="192x192" href="${pageContext.request.contextPath}/resources/images/android-chrome-192x192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=East+Sea+Dokdo&family=Gothic+A1:wght@300;400;600;700;800&family=Hi+Melody&family=Jua&family=Lato:wght@700&family=Luckiest+Guy&family=Nanum+Brush+Script&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Quicksand:wght@300&family=Racing+Sans+One&family=Roboto+Mono:ital,wght@0,400;1,500&family=Shrikhand&family=Ultra&display=swap" rel="stylesheet">
 <c:if test="${not empty msg}">
 	<script>
 		alert("${msg}");
@@ -32,6 +35,13 @@
 	list-style: none;
 	padding:0;
 	margin:0;
+	font-family: 'Pretendard-Regular';
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
 }
 a, a:hover {
 	text-decoration: none;
@@ -629,7 +639,7 @@ const beforeTime = (alarmDate) => {
 
 				<div class="container">
 					<div class="carousel-caption text-end">
-						<h2>뭘 좋아할지 몰라 다 준비해봤어..<i class="fa-regular fa-heart"></i></h2>
+						<h2>뭘 좋아할지 몰라 다 준비해봤어..<i class="fa-solid fa-heart"></i></h2>
 						<p>캠핑이지는 다양한 형태의 캠핑을 한 곳에서 즐기실 수 있습니다.</p>
 						<p><a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/reservation/intro.do">캠핑구역 보러가기</a></p>
 					</div>

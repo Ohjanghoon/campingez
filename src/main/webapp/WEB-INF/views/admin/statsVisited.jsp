@@ -14,7 +14,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 			<div class="content-wrap">
-				<h2>날짜별 로그인 회원 통계</h2>
+				<h2 class="text-center fw-bold pt-5 pb-5">날짜별 로그인 회원 통계</h2>
 				<div id="search-bar-wrap" class="d-flex">
 					<select class="form-select selectType" aria-label="Default select example" name="year" id="year">
 						<option value="2022">2022</option>

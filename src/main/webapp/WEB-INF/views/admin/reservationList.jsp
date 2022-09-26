@@ -10,7 +10,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 			<div class="content-wrap">
-				<h2>예약관리</h2>
+				<h2 class="text-center fw-bold pt-5 pb-5">예약관리</h2>
 				
 				<div id="select-wrap d-flex">
 					<form action="${pageContext.request.contextPath}/admin/reservationListBySelectType.do" method="GET" name="searchFrm" class="d-flex">

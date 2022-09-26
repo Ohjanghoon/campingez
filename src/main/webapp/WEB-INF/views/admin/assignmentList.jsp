@@ -11,7 +11,7 @@
 </jsp:include>
 			<div class="content-wrap">
 				<div class="assign-ing-wrap">
-					<h2>양도 현황 - ${totalContent}건</h2>
+					<h2 class="text-center fw-bold pt-5 pb-5">양도 현황 - ${totalContent}건</h2>
 					<div class="select-wrap d-flex">
 						<select id="selectType" class="form-select">
 							<option value="" selected>전체</option>
@@ -59,7 +59,7 @@
 					</div>
 				</div>
 				<div class="assign-before-wrap">
-					<h2>양도실패 - ${expireTotalContent}건</h2>
+					<h2 class="text-center fw-bold pt-5 pb-5">양도실패 - ${expireTotalContent}건</h2>
 					<table class="table text-center">
 						<thead>
 							<tr>

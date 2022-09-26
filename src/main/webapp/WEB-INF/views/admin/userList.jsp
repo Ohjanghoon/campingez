@@ -14,7 +14,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 			<div class="content-wrap">
-				<h2>회원관리</h2>
+				<h2 class="text-center fw-bold pt-5 pb-5">회원관리</h2>
 				<div class="select-wrap d-flex">
 					<select id="selectType" class="form-select">
 						<option value="" selected>전체</option>

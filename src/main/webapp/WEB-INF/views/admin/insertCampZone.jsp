@@ -10,7 +10,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 			<div class="content-wrap">
-				<h2>기존 구역 리스트</h2>
+				<h2 class="text-center fw-bold pt-5 pb-5">기존 구역 리스트</h2>
 				<table class="table text-center">
 					<thead>
 						<tr>
@@ -37,7 +37,7 @@
 					</tbody>
 				</table>
 				
-				<h2>캠프 구역 추가</h2>
+				<h2 class="text-center fw-bold pt-5 pb-5">캠프 구역 추가</h2>
 				<form:form action="${pageContext.request.contextPath}/admin/insertCampZone.do" method="POST" name="insertCampZoneFrm" enctype="multipart/form-data">
 					<div class="camp-name-wrap">
 						<div class="form-floating zone-wrap">

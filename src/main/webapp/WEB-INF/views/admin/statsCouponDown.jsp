@@ -11,7 +11,7 @@
 </jsp:include>
 			<div class="content-wrap">
 				<div class="ing-coupon-wrap">
-					<h2>진행 중인 이벤트</h2>
+					<h2 class="text-center fw-bold pt-5 pb-5">진행 중인 이벤트</h2>
 					<table class="table text-center" >
 						<thead>
 							<tr>
@@ -54,7 +54,7 @@
 					</nav>
 				</div>
 				<div class="expire-coupon-wrap">
-					<h2>지난 이벤트</h2>
+					<h2 class="text-center fw-bold pt-5 pb-5">지난 이벤트</h2>
 					<table class="table text-center">
 						<thead>
 							<tr>
