@@ -25,6 +25,7 @@ public class Community extends CommunityEntity {
 	private String reportUserId;
 	private List<Report> reportList;
 	private String categoryName;
+	private int commentCount;
 	
 	public Community(String commNo, String userId, String categoryId, String commTitle, String commContent,
 			LocalDateTime commDate, int readCount, int reportCount,

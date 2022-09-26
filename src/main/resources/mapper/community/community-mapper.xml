@@ -7,7 +7,8 @@
 select
       c.*,
       (select count(*) from report where c.comm_no = comm_no) comm_report_count,
-      (select category_name from category_list where c.category_id = category_id) category_name 
+      (select category_name from category_list where c.category_id = category_id) category_name,
+      (select count(*) from comm_comment where comm_no = c.comm_no) comment_count
 from
       community c
 where
@@ -19,7 +20,8 @@ order by
 select
       c.*,
       (select count(*) from report where c.comm_no = comm_no) comm_report_count,
-      (select category_name from category_list where c.category_id = category_id) category_name 
+      (select category_name from category_list where c.category_id = category_id) category_name,
+      (select count(*) from comm_comment where comm_no = c.comm_no) comment_count
 from
       community c
 where
@@ -39,6 +41,7 @@ order by
    <result column="comm_isdelete" property="isDelete" />
    <result column="comm_like_count" property="likeCount" />
    <result column="category_name" property="categoryName" />
+   <result column="comment_count" property="commentCount" />
    <collection property="photos" ofType="CommunityPhoto">
          <id column="comm_photo_no" property="commPhotoNo" />
          <result column="comm_no" property="cmNo"/>

@@ -33,14 +33,12 @@ import com.kh.campingez.common.CampingEzUtils;
 import com.kh.campingez.coupon.model.dto.Coupon;
 import com.kh.campingez.inquire.model.dto.Inquire;
 import com.kh.campingez.reservation.model.dto.Reservation;
-import com.kh.campingez.review.model.dto.ReviewEntity;
-import com.kh.campingez.review.model.dto.ReviewPhoto;
+import com.kh.campingez.trade.model.dto.Trade;
 import com.kh.campingez.trade.model.dto.TradeEntity;
 import com.kh.campingez.user.model.dto.MyPage;
 import com.kh.campingez.user.model.dto.User;
 import com.kh.campingez.user.model.service.UserInfoService;
 import com.kh.security.model.service.UserSecurityService;
-
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -323,7 +321,7 @@ public class UserInfoController {
 		param.put("limit", limit);
 		
 		User principal = (User)authentication.getPrincipal();
-		List<TradeEntity> result = userInfoService.selectTradeList(param, principal);
+		List<Trade> result = userInfoService.selectTradeList(param, principal);
 		log.debug("list = {}", result);
 		
 		int totalTrade =  userInfoService.getTotalTrade(principal);
@@ -348,7 +346,7 @@ public class UserInfoController {
 		param.put("limit", limit);
 		
 		User principal = (User)authentication.getPrincipal();
-		List<TradeEntity> result = userInfoService.selectTradeList(param, principal);
+		List<Trade> result = userInfoService.selectTradeList(param, principal);
 		log.debug("list = {}", result);
 		
 		int totalTrade =  userInfoService.getTotalTrade(principal);

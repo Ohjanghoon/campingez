@@ -69,7 +69,7 @@
 	      <td scope="row">
 	      	<span class="badge category-name-badge honey-badge">${comm.categoryName}</span>
 	      </td>
-	      <td colspan="10" style="width:40%;" class="title">${comm.commTitle}</td>
+	      <td colspan="10" style="width:40%;" class="title">${comm.commTitle}&nbsp;&nbsp;&nbsp;<i class="fa-regular fa-comment"></i> ${comm.commentCount}</td>
 	      <td>${comm.userId}</td>
 	      <td style="width:7%;"><img src="${pageContext.request.contextPath}/resources/images/eye.png" style="width:30px;heigh:30px;" />
 	      ${comm.readCount}</td>
