@@ -367,10 +367,15 @@ const beforeTime = (alarmDate) => {
 				
 				document.querySelectorAll("#alarmLink").forEach((li) => {
 					li.addEventListener('click', (e) => {
-					
-						const alrId = e.target.offsetParent.dataset.alrId;
-						console.dir(e.target);
-						console.log(alrId);
+						let parent = e.target.parentElement.parentElement;
+						let alrId;
+						
+						if(parent.id == 'alarm-content-wrap') {
+							alrId = e.target.parentElement.parentElement.parentElement.dataset.alrId;
+						} else {
+							alrId = parent.dataset.alrId;
+						}
+						
 						if(alrId == undefined) return;
 						
 						const headers = {};

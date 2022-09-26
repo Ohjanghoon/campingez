@@ -15,6 +15,20 @@
 	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxa5222b687369489dad174bcba92f1a00"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/tmap.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/map.css" />
+<style>
+* {
+	list-style: none;
+	padding:0;
+	margin:0;
+	font-family: 'Pretendard-Regular';
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+</style>
 </head>
 <body>
  <script>
