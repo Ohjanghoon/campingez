@@ -57,14 +57,10 @@
 					<div class="chat-wrap">
 					<sec:authorize access="isAuthenticated()">
 						<c:if test="${loginUser ne assign.userId}">
-						<form:form method="GET"
-							name="chatForm"
-							action="${pageContext.request.contextPath}/chat/chat.do">
-							<input type="hidden" name="chatTargetId" value="${assign.userId}" />
-							<button type="submit" id="chatBtn" class="btn btn-outline-dark flex-shrink-0">
+							<button type="submit" id="chatBtn" class="btn btn-outline-dark flex-shrink-0"
+								onclick="chatBtnClick()">
 								<i class="fa-solid fa-paper-plane"></i> 작성자와 채팅하기
 							</button>
-						</form:form>	   
 						</c:if>
 					</sec:authorize>
 					</div>
@@ -334,5 +330,45 @@ const scrollToTop = () => {
 const scrollToBottom = () => {
 	window.scrollTo(0, document.body.scrollHeight);
 }
+
+const chatBtnClick = () => {
+	
+	const chatTargetId = '${assign.userId}';
+	//const chatTradeNo = null;
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+	
+	$.ajax({
+		
+		url : '${pageContext.request.contextPath}/chat/chat.do',
+		headers,
+		method : 'post',
+		data : {chatTargetId},
+		success(response){
+			
+			console.log(response);
+			
+			const {chatroomId} = response;
+			
+			const payload = {
+				chatroomId : chatroomId,
+				userId : '<sec:authentication property="principal.username"/>',
+				chatMsg : "",
+				chatTime : Date.now(),
+				chatTradeNo : null
+				
+			};
+			
+			stompClient.send('/app/${assign.userId}/myChatList', {}, JSON.stringify(payload));
+			
+			location.href="${pageContext.request.contextPath}/chat/myChatList.do";
+		},
+		error : console.log
+		
+	});
+	
+	
+};
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

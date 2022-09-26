@@ -207,6 +207,7 @@ const beforeTime = (alarmDate) => {
 </script>
 
 <sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal.username" var="loginUser"/>
 	<script>
 	const userId = "<sec:authentication property='principal.username'/>";
 	
@@ -667,7 +668,7 @@ const beforeTime = (alarmDate) => {
     <div>
         <div id="chatbot" class="main-card ch-collapsed">
         <div id="tooltip">
-        	<a href="#" onclick="adminChat()">
+        	<a href="#" onclick="adminChat();">
         		<img src="${pageContext.request.contextPath}/resources/images/siren.png" alt="" width="100%" height="100%"/>
         	</a>
         </div>
@@ -792,6 +793,42 @@ const beforeTime = (alarmDate) => {
   });
   
   function adminChat() {
-	  console.log(123);
-  }
+	
+	<sec:authorize access="isAnonymous()">
+		alert("로그인해주세요.");
+		location.href="${pageContext.request.contextPath}/user/userLogin.do"
+	</sec:authorize>
+	
+	const chatTargetId = 'admin';
+	//const chatTradeNo = null;
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+			
+	$.ajax({
+		url : '${pageContext.request.contextPath}/chat/chat.do',
+		headers,
+		method : 'post',
+		data : {chatTargetId},
+		success(response){
+			console.log(response);
+			
+			const {chatroomId} = response;
+			const payload = {
+				chatroomId : chatroomId,
+				userId : '${loginUser}',
+				chatMsg : "",
+				chatTime : Date.now(),
+				chatTradeNo : null
+				
+			};
+					
+			stompClient.send('/app/admin/myChatList', {}, JSON.stringify(payload));
+					
+			location.href="${pageContext.request.contextPath}/chat/myChatList.do";
+		},
+		error : console.log
+				
+	});
+			
+};
 </script>

@@ -442,6 +442,8 @@ const chatBtnClick = () => {
 			};
 			
 			stompClient.send('/app/${trade.userId}/myChatList', {}, JSON.stringify(payload));
+			
+			location.href="${pageContext.request.contextPath}/chat/myChatList.do";
 		},
 		error : console.log
 		
