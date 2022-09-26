@@ -7,7 +7,7 @@
 }
 #select {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
 }
 #select > * {
 	padding: 0 3px;
@@ -48,9 +48,10 @@
 	background-color: #ffdf40;
     color: black;
 }
-	#inputButton{
-		height: 30px;
-	    line-height: 0px;
-	    position: relative;
-	    bottom: 2.5px;
-    }
+	
+#inputButton{
+	height: 30px;
+	line-height: 0px;
+	position: relative;
+	bottom: 2.5px;
+}
