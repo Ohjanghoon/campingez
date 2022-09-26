@@ -46,6 +46,9 @@
 			logout-url="/user/userLogout.do"
 			logout-success-url="/"/>
 		<csrf disabled="false"/>
+		
+		<!-- 에러페이지 전송 -->
+		<access-denied-handler error-page="/error/accessDenied.do"/> 
 			
 	</http>
 	
