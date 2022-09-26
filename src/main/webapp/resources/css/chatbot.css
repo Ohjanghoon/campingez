@@ -207,3 +207,7 @@
   fill: rgb(255, 255, 255);
   margin: 11px 8px;
 }
+
+#Accordion_wrap ul{
+	margin-right: 15px;
+}
