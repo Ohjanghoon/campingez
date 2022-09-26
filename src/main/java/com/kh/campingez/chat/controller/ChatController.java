@@ -142,9 +142,13 @@ public class ChatController {
 		
 		String chatTradeNo = chatService.findChatTradeNo(chatroomId);
 		
+		//상대방이 나갔는지 체크여부
+		ChatUser deleteCheckUser = chatService.deleteCheck(chatroomId);
+		
 		Map<String, Object> map = new HashMap<>();
 		map.put("chatLogs", chatLogs);
 		map.put("chatTradeNo", chatTradeNo);
+		map.put("deleteCheckUser", deleteCheckUser);
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -158,7 +162,16 @@ public class ChatController {
 		
 		int result = chatService.deleteChatroom(chatUser);
 		
-		return ResponseEntity.ok(result);
+		//상대방이 나갔는지 체크여부
+		ChatUser deleteCheckUser = chatService.deleteCheck(chatUser.getChatroomId());
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", result);
+		map.put("deleteCheckUser", deleteCheckUser);
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.body(map);
 	}
 	
 	@GetMapping("/goTrade.do")
