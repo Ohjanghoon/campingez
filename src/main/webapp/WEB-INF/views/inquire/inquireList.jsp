@@ -11,10 +11,8 @@
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/mypage.css" />
 	<div class="container" id="inquireList">
-		<h3 style="margin-top:20px;" id="titleLeft">
-			<img style="margin-right:20px;" src="${pageContext.request.contextPath}/resources/images/mypage/question.png" width="50px">
-			1:1 문의
-		</h3>
+		<h2 class="text-center fw-bold pt-5">1:1 문의</h2>
+		<hr />
 		<c:if test="${empty prePageName}">
 			<sec:authorize access="isAuthenticated()">
 				<div class="my-3 d-flex justify-content-end">
