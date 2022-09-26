@@ -106,7 +106,7 @@
 
       </c:if>
       
-      <sec:authorize access="isAuthenticated()">
+      <sec:authorize access="${not empty user.userId} and isAuthenticated()">
          
       <form name="communityCommentFrm" action="${pageContext.request.contextPath}/community/commentEnroll.do" method="post">
       	<h3 class="pull-left">New Comment</h3>
@@ -118,7 +118,7 @@
 
         <div class="form-group col-xs-20 col-sm-13 col-lg-20">
 	        <textarea class="form-control" id="cContent" name="cContent" placeholder="댓글을 입력하세요."  style="resize:none;"></textarea>
-	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
+	        <button type="button" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
         </div>   	
       </form>
       </sec:authorize>
@@ -136,16 +136,18 @@
             	<img id="heart" src="${pageContext.request.contextPath}/resources/images/reply.png" style="width:30px; height:30px;">
             </c:if>
                       
-          	<div class="media-body">
-            	<h4 class="media-heading">${comment.userId}</h4>
-                <p>${comment.commentContent } </p>
-                <ul class="list-unstyled list-inline media-detail pull-left">
-                	<li><i class="fa fa-calendar"></i>
-                    <fmt:parseDate value="${comment.commentDate}" pattern="yyyy-MM-dd'T'HH:mm" var="commentDate"/>
-                    <fmt:formatDate value="${commentDate}" pattern="yy-MM-dd"/></li>
-                </ul>
-                          
-                <ul class="list-unstyled list-inline media-detail pull-right">
+          	<div class="media-body comment-wrap">
+				<div class="comm-comment-wrap">
+	            	<h4 class="media-heading">${comment.userId}</h4>
+	                <p>${comment.commentContent } </p>
+	                <ul class="list-unstyled list-inline media-detail pull-left">
+	                	<li><i class="fa fa-calendar"></i>
+	                    <fmt:parseDate value="${comment.commentDate}" pattern="yyyy-MM-dd'T'HH:mm" var="commentDate"/>
+	                    <fmt:formatDate value="${commentDate}" pattern="yy-MM-dd"/></li>
+	                </ul>
+				</div>
+            	<div class="comm-comment-btn-wrap">
+		           <ul class="list-unstyled list-inline media-detail pull-right">
                 	<sec:authorize access="isAuthenticated()"> 
                     <c:if test="${comment.commentLevel eq 1}">
                     	<button class="btn-reply btn btn-outline-dark flex-shrink-0" value="${comment.commentNo}">답글</button>
@@ -160,6 +162,8 @@
 		            </c:if>
                     </sec:authorize>
                  </ul>
+            	</div>              
+			
              </div>
             </div>
            </c:forEach>
@@ -372,7 +376,7 @@ document.querySelector("#enroll-btn").addEventListener('click', (e) => {
 		return;
 	}
 
-	document.communityCommentEnrollFrm.submit();
+	document.communityCommentFrm.submit();
 });
 
 document.querySelector("#golist").addEventListener('click', (e) => {
