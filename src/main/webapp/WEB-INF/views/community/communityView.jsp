@@ -38,35 +38,43 @@
 	              <fmt:formatDate value="${commDate}" pattern="yy-MM-dd HH:mm"/>
               </div>
           <!-- Post categories-->
-          <p class="badge bg-secondary text-decoration-none link-light">${community.categoryId eq 'com1' ? '자유게시판' : '꿀팁게시판'}</p> 
-          <p style="text-align:right;">조회수 : ${community.readCount} 신고수 : ${community.reportCount} 좋아요 : ${community.likeCount} </p> 
-          <form action="${pageContext.request.contextPath}/community/like.do" name="commLikeFrm" style="text-align:right;">
-              <input type="hidden" name="no" value="${community.commNo}" />
-              <a class="heart">
-                  <img id="heart" src="${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png" style="width:30px; height:30px; cursor:pointer" ></a>
-          </form>
-          <button type="button" id="report-btn" class="btn btn-outline-dark flex-shrink-0" data-report-user-id="${reportUserId}" data-bs-toggle="modal" data-bs-target="#reportModal">
-			<i class="fa-solid fa-land-mine-on"></i> 신고하기
-		  </button>
+          ${community.categoryId eq 'com1' ? '<span class="badge category-name-badge free-badge">자유게시판</span>' : '<span class="badge category-name-badge honey-badge">꿀팁게시판</span>'} 
+          <p style="text-align:right;">조회수 ${community.readCount} | 신고수 ${community.reportCount} | 좋아요 ${community.likeCount} </p> 
+		  <div class="btn-wrap">
+			  <div class="like-wrap">
+  	  	          <form action="${pageContext.request.contextPath}/community/like.do" name="commLikeFrm" style="text-align:right;">
+		              <input type="hidden" name="no" value="${community.commNo}" />
+		              <a class="heart">
+		                  <img id="heart" src="${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png" style="width:30px; height:30px; cursor:pointer" ></a>
+		          </form>
+			  </div>
+	          <div class="report-wrap">
+		          <button type="button" id="report-btn" class="btn btn-outline-dark flex-shrink-0" data-report-user-id="${reportUserId}" data-bs-toggle="modal" data-bs-target="#reportModal">
+						<i class="fa-solid fa-land-mine-on"></i> 신고하기
+				  </button>
+	          </div>
+		  </div>
 		  
           <hr>
           
       </header>
       
-      <!-- Preview image figure-->
-      <figure class="mb-4">
-      	<c:if test="${not empty community.photos}">
-	        <c:forEach items="${community.photos}" var="photo">   
-	           <img src ="${pageContext.request.contextPath}/resources/upload/community/${photo.renamedFilename}" id="upload-img">
-	        </c:forEach>
-        </c:if>
-      </figure>
-      
-      <!-- Post content-->
-      <section class="mb-5">
-      	<p class="fs-5 mb-4">${community.commContent}</p>
-      </section>
-      
+		<div class="content-wrap">
+	      <!-- Preview image figure-->
+	      <figure class="mb-4">
+	      	<c:if test="${not empty community.photos}">
+		        <c:forEach items="${community.photos}" var="photo">   
+		           <img src ="${pageContext.request.contextPath}/resources/upload/community/${photo.renamedFilename}" id="upload-img">
+		        </c:forEach>
+	        </c:if>
+	      </figure>
+	      
+	      <!-- Post content-->
+	      <section class="mb-5">
+	      	<p class="fs-5 mb-4">${fn:replace(community.commContent, '\\n\\r', '<br/>')}</p>
+	      </section>
+		</div>
+      	
       		
       <sec:authorize access="isAuthenticated()"> 
          <c:if test="${loginMember.userId eq community.userId}">
@@ -306,16 +314,11 @@ $(document).ready(function () {
                 that.prop('name',data);
                 if(data==1) {
                     $('#heart').prop("src","${pageContext.request.contextPath}/resources/images/trade/colorHeart.png");
-                    alert("좋아요 등록!");
-                    
                 }
                 else{
                     $('#heart').prop("src","${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png");
-                    alert("좋아요 취소!");
                 }
                     window.location.reload();
-
-
             }
         });
     });

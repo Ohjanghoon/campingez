@@ -31,72 +31,70 @@
 
 </style>
 <script>
- 	function popup() {
-		/* var url = "${pageContext.request.contextPath}/userInfo/popupAuthentication.do";
-		var name = "info authentication";
-		var option = "width = 700, height = 700, top = 150, left = 600, location = no"
-		window.open(url, name, option); */
+function popup() {
+	/* var url = "${pageContext.request.contextPath}/userInfo/popupAuthentication.do";
+	var name = "info authentication";
+	var option = "width = 700, height = 700, top = 150, left = 600, location = no"
+	window.open(url, name, option); */
 
- 	    modal('my_modal');
-	} 
-	function inquire() {
-		document.getElementById('inquire').submit();
-	}
-	function trade() {
-		document.getElementById('trade').submit();
-	}
-	
-	//화면 호출 시 인증 화면 가져와서 #modal에 append (ajax)
+	    modal('my_modal');
+} 
+function inquire() {
+	document.getElementById('inquire').submit();
+}
+function trade() {
+	document.getElementById('trade').submit();
+}
 
-	//모달창 열고 닫기
-     function modal(id) {
-        var zIndex = 9999;
-        var modal = document.getElementById(id);
+//화면 호출 시 인증 화면 가져와서 #modal에 append (ajax)
 
-        // 모달 div 뒤에 희끄무레한 레이어
-        var bg = document.createElement('div');
-        bg.setStyle({
-            position: 'fixed',
-            zIndex: zIndex,
-            left: '0px',
-            top: '0px',
-            width: '100%',
-            overflow: 'auto',
-            // 레이어 색갈은 여기서 바꾸면 됨
-             backgroundColor: 'rgba(0,0,0,0.4)'
-        });
-        document.body.append(bg);
+//모달창 열고 닫기
+ function modal(id) {
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
 
-        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
-        modal.querySelector('.modal_close_btn').addEventListener('click', function() {
-            bg.remove();
-            modal.style.display = 'none';
-        });
+    // 모달 div 뒤에 희끄무레한 레이어
+    var bg = document.createElement('div');
+    bg.setStyle({
+        position: 'fixed',
+        zIndex: zIndex,
+        left: '0px',
+        top: '0px',
+        width: '100%',
+        overflow: 'auto',
+        // 레이어 색갈은 여기서 바꾸면 됨
+         backgroundColor: 'rgba(0,0,0,0.4)'
+    });
+    document.body.append(bg);
 
-        modal.setStyle({
-            position: 'fixed',
-            display: 'block',
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+        bg.remove();
+        modal.style.display = 'none';
+    });
 
-            // 시꺼먼 레이어 보다 한칸 위에 보이기
-            zIndex: zIndex + 1,
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
 
-            // div center 정렬
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            msTransform: 'translate(-50%, -50%)',
-            webkitTransform: 'translate(-50%, -50%)'
-        });
-    }
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
 
-    // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
-    Element.prototype.setStyle = function(styles) {
-        for (var k in styles) this.style[k] = styles[k];
-        return this;
-    };
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+}
 
+// Element 에 style 한번에 오브젝트로 설정하는 함수 추가
+Element.prototype.setStyle = function(styles) {
+    for (var k in styles) this.style[k] = styles[k];
+    return this;
+};
 </script>
-<body>
 	<div class="container">
 		<h3 style="margin: 40px;">마이페이지</h3>
 		<hr style="color: #c6b5e1;">
@@ -121,7 +119,7 @@
 								<span style="font-size: 22pt;">${result.userName} 님</span><br>
 								<br> <span>아이디 : ${result.userId}</span><br> <span>경고횟수
 									: ${result.yellowCard}</span><br> <span>잔여 포인트 : <fmt:formatNumber
-										value="${result.point}" pattern="#,###" />point
+										value="${result.point}" pattern="#,###" />P
 								</span><br>
 							</div>
 						</div>
@@ -184,7 +182,7 @@
 							src="${pageContext.request.contextPath}/resources/images/mypage/coupon.png"
 							width="50px">내 쿠폰함
 						</span>
-						<table class="table">
+						<table class="table text-center">
 							<tr>
 								<th scope="col">쿠폰이름</th>
 								<th scope="col">쿠폰코드</th>
@@ -225,10 +223,10 @@
 							등록한 양도글 확인
 							</span>
 							<button style="margin-left: 480px; margin-bottom: 20px;" type="submit" class="btn btn-outline-dark">상세 보기</button>
-							<table class="table">
+							<table class="table text-center">
 								<tr>
 									<th scope="col">예약번호</th>
-									<th scope="col">제목</th>
+									<th scope="col" class="title">제목</th>
 									<th scope="col">양도 가격</th>
 									<th scope="col">양도마감 일자</th>
 									<th scope="col">상태</th>
@@ -237,7 +235,7 @@
 									begin="0" end="2">
 									<tr>
 										<td>${assign.resNo}</td>
-										<td>${assign.assignTitle}</td>
+										<td class="title">${assign.assignTitle}</td>
 										<td><fmt:formatNumber value="${assign.assignPrice}"
 												pattern="#,###" />원</td>
 										<td><fmt:parseDate value="${assign.assignDate}"
@@ -254,6 +252,4 @@
 			</div>
 		</div>
 	</div>
-</body>
-</html>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

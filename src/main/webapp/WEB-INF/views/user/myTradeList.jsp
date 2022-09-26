@@ -49,11 +49,11 @@
 					<td>${vs.count}</td>
 					<td>${trade.tradeNo}</td>
 					<td>${trade.userId}</td>
-					<td>${trade.categoryId}</td>
+					<td>${trade.categoryName}</td>
 					<td>${trade.tradeTitle}</td>
 					<td>
 						<div class="content">
-						${trade.tradeContent}
+							${trade.tradeContent}
 						</div>
 					</td>
 					<td><fmt:formatNumber value="${trade.tradePrice}" pattern="#,###"/>원</td>
@@ -111,11 +111,11 @@ function tradePaingAjax(cPage){
 								'<td>'+ (i+1) +'</td>'+
 								'<td>'+results[i].tradeNo+'</td>'+
 								'<td>'+results[i].userId+'</td>'+
-								'<td>'+results[i].categoryId+'</td>'+
+								'<td>'+results[i].categoryName+'</td>'+
 								'<td>'+results[i].tradeTitle+'</td>'+
 								'<td>'+
 								'<div class="content">'+
-									results[i].tradeContent +
+									results[i].tradeContent.replaceAll("<p>",'').replaceAll("</p>",'') +
 								'</div>'+
 								'</td>' +
 								'<td>'+results[i].tradePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')+'원</td>'+

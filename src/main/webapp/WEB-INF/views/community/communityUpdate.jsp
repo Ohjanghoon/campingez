@@ -12,6 +12,7 @@
 <script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.js"></script>
 <script src="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/summernote-0.8.18-dist/summernote.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/communityView.css">
 
 <section id="community-container" class="container">
 
@@ -44,15 +45,25 @@ enctype="multipart/form-data" >
       
       <input type="hidden" name="userId" value="${loginMember.userId}" readonly><br> 
          <textarea name="commContent" id="summernote">${community.commContent}</textarea>
-         
+         <div class="del-wrap">
          <c:forEach items="${community.photos}" var="photo" varStatus="vs">
-         <div class="btn-group-toggle p-0 mb-3" data-toggle="buttons">
+    		<div class="del-file-wrap">
+				<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+				  	<input type="checkbox" class="btn-check" id="delFile${vs.count}" name="delFile" value="${photo.commPhotoNo}">
+					<label for="delFile${vs.count}" class="btn btn-outline-danger btn-block" style="overflow: hidden" title="">첨부파일삭제 - ${photo.originalFilename}</label>
+				</div>
+				<div class="file-wrap">
+					<img src="${pageContext.request.contextPath}/resources/upload/community/${photo.renamedFilename}" width="150px">
+				</div>
+			</div>
+<%--          <div class="btn-group-toggle p-0 mb-3" data-toggle="buttons">
             <label class="btn btn-outline-danger btn-block" style="overflow: hidden" title="">
                <input type="checkbox" id="delFile${vs.count}" name="delFile" value="${photo.commPhotoNo}">
                첨부파일삭제 - ${photo.originalFilename}
             </label>
-         </div>
+         </div> --%>
       </c:forEach>
+      </div>
          <div class="mb-3">
 		  <input class="form-control" type="file" id="upFile" accept="image/*" name="upFile" multiple>
 		</div>
@@ -94,7 +105,7 @@ document.querySelector("#update-btn").addEventListener('click', (e) => {
 		title.focus();
 		return;
 	}
-
+	content.value = (content.value.replaceAll('<p>', '').replaceAll('</p>', ''));
 	document.communityUpdateFrm.submit();
 });
 </script>
