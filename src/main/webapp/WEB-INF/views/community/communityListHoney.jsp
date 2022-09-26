@@ -10,23 +10,8 @@
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/community.css" />
 <sec:authentication property="principal" var="loginMember" scope="page" />
-<style>
-	#inputButton{
-		height: 30px;
-	    line-height: 0px;
-	    position: relative;
-	    bottom: 2.5px;
-    }
-</style>
-
-<header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder" style="cursor:pointer;">꿀팁게시판</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">당신의 글을 작성하세요!</p>
-                </div>
-            </div>
-        </header>
+<h2 class="text-center fw-bold pt-5">꿀팁게시판</h2>
+        <hr />
 
 
 <div class="panel" id="panel">

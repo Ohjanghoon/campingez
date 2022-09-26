@@ -8,20 +8,14 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
    <jsp:param value="게시판 상세보기" name="title" />
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/tradeView.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/communityView.css" />
 
 <sec:authorize access="isAuthenticated()" >
 	<sec:authentication property="principal" var="loginMember" scope="page" />
 </sec:authorize>
 	
-	<header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder" onclick="location.href='${pageContext.request.contextPath}/community/communityList.do';" style="cursor:pointer;">자유게시판</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">당신의 글을 작성하세요!</p>
-                </div>
-            </div>
-        </header>
+<h2 class="text-center fw-bold pt-5">${community.categoryId eq 'com1' ? '자유게시판' : '꿀팁게시판'}</h2>
+        <hr />
 	
    <section id="trade-container" class="container" style="margin-top:30px;">
          

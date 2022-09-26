@@ -15,9 +15,8 @@
 
 <section id="community-container" class="container">
 
-	<h1 style="margin-top:50px;">게시판 글 수정</h1>
-	
-	<hr style="margin-top:30px;"/>
+<h2 class="text-center fw-bold pt-5">게시글 수정</h2>
+        <hr />
 
 <form name="communityUpdateFrm" action="${pageContext.request.contextPath}/community/communityUpdate.do?${_csrf.parameterName}=${_csrf.token}" method="post" 
 enctype="multipart/form-data" >
