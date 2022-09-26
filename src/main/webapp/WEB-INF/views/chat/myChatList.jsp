@@ -27,15 +27,17 @@
 				<tbody>
 					<c:if test="${empty chatUsers}">
 						<tr>
-							<td class="text-center p-3">현재 채팅가능한 채팅방이 없습니다.</td>
+							<td class="text-center p-3" id="nothingChat">현재 채팅가능한 채팅방이 없습니다.</td>
 						</tr>
 					</c:if>
 					<c:if test="${not empty chatUsers}">
 						<c:forEach items="${chatUsers}" var="chatUser">
 							<tr data-chatroomid="${chatUser.chatroomId}">
 								<td class="text-center align-middle chatUserProfile"
-									onclick="enterChatroom('${chatUser.chatroomId}')"><i
-									class="fa-solid fa-circle-user"></i> <br /> <span> <c:choose>
+									onclick="enterChatroom('${chatUser.chatroomId}', '${chatUser.userId}')">
+									<i class="fa-solid fa-circle-user"></i>
+									<br />
+									<span> <c:choose>
 											<c:when test="${chatUser.chatTradeNo eq null}">
 												<small class="badge bg-primary">1:1</small>
 											</c:when>
@@ -45,7 +47,7 @@
 										</c:choose>
 								</span></td>
 								<td class="px-3 chatUserId"
-									onclick="enterChatroom('${chatUser.chatroomId}')"><strong>${chatUser.userId}</strong>
+									onclick="enterChatroom('${chatUser.chatroomId}', '${chatUser.userId}')"><strong>${chatUser.userId}</strong>
 									<br /> <small id="recentChatMsg">${chatUser.chatLog.chatMsg}</small>
 								</td>
 								<td class="text-end align-middle"
@@ -91,10 +93,11 @@ setTimeout(() => {
 
 
 //채팅방 입장시
-const enterChatroom = (chatroomId) => {
+const enterChatroom = (chatroomId, chatTargetId) => {
 	//const tr = e.target.parentElement;
 	//const chatroomId = tr.dataset.chatroomid;
-	//console.log(chatroomId);
+	console.log("채팅방 입장시 chatroomId = ", chatroomId);
+	console.log("채팅방 입장시 chatTargetId = ", chatTargetId);
 	const chatLog = document.querySelector("#chatLog");
 	chatLog.innerHTML = "";
 
@@ -109,14 +112,14 @@ const enterChatroom = (chatroomId) => {
 				
 				const {userId, chatMsg, chatTime} = chat;
 				tradeNo = chatTradeNo;
-				console.log(chatTradeNo);
-				console.log(chat);
+				//console.log(chatTradeNo);
+				//console.log(chat);
 				//const date = new Date(chatTime).toLocaleTimeString();
 				const date = moment(chatTime).format("YY.MM.D HH:mm");
-				console.log(date);
+				//console.log(date);
 				let html = "";
-				console.log("${loginUser}");
-				console.log(userId, chatMsg, chatTime);
+				//console.log("${loginUser}");
+				//console.log(userId, chatMsg, chatTime);
 				
 				if("${loginUser}" === userId) {
 					html += `
@@ -148,7 +151,7 @@ const enterChatroom = (chatroomId) => {
 
 				<div class="input-group-append" style="padding: 0px;">
 				  <button id="sendBtn" class="btn btn-outline-secondary" type="button"
-				  	onclick="sendMsg('\${chatroomId}')"><i class="fa-solid fa-paper-plane"></i> Send</button>
+				  	onclick="sendMsg('\${chatroomId}', '\${chatTargetId}')"><i class="fa-solid fa-paper-plane"></i> Send</button>
 				</div>
 			`;
 			
@@ -168,10 +171,12 @@ const enterChatroom = (chatroomId) => {
 			
 			document.querySelector("#msg").addEventListener('keyup', (e) => {
 				
-				if(e.key === 'Enter') sendMsg(`\${chatroomId}`);
+				if(e.key === 'Enter') sendMsg(`\${chatroomId}`, `\${chatTargetId}`);
 			});
 			
-			
+			stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
+				subChatLog(message);
+			});
 		},
 		error : console.log
 		
@@ -192,7 +197,7 @@ const subMyChatList = (message) => {
 		tr.dataset.chatroomid = chatroomId;
 		
 		let html = `
-			<td class="text-center align-middle chatUserProfile" onclick="enterChatroom('\${chatroomId}')">
+			<td class="text-center align-middle chatUserProfile" onclick="enterChatroom('\${chatroomId}', '\${userId}')">
 				<i class="fa-solid fa-circle-user"></i>
 				<br />
 				<span>
@@ -209,10 +214,10 @@ const subMyChatList = (message) => {
 				</span>
 			</td>
 			<td class="px-3 chatUserId"
-				onclick="enterChatroom('\${chatroomId}')">
+				onclick="enterChatroom('\${chatroomId}', '\${userId}')">
 				<strong>\${userId}</strong>
 				<br />
-				<small>\${chatMsg}</small>
+				<small id="recentChatMsg">\${chatMsg}</small>
 			</td>
 			<td class="text-end align-middle" onclick="deleteChatroom('\${chatroomId}')" >
 				<button type="button" class="btn p-auto" style="border: none;"
@@ -222,8 +227,12 @@ const subMyChatList = (message) => {
 			</td>
 		`;
 		
+		if(document.querySelector("#nothingChat")){
+			tbody.innerHTML = "";
+		}
+		
 		tr.insertAdjacentHTML("afterbegin", html);
-		tbody.innerHTML = "";
+		
 		
 	} //else
 	
@@ -234,6 +243,9 @@ const subMyChatList = (message) => {
 
 
 const subChatLog = (message) => {
+	
+	const {"content-type" : contentType} = message.headers;
+	if(!contentType) return;
 	
 	const chatLog = document.querySelector("#chatLog");	
 	
@@ -268,9 +280,12 @@ const subChatLog = (message) => {
 
 
 // 메세지 전송 버튼 클릭시
-const sendMsg = (chatroomId) => {
-	console.log("chatroomId = ", chatroomId);
+const sendMsg = (chatroomId, chatTargetId) => {
+	console.log("전송버튼 클릭시 chatroomId = ", chatroomId);
+	console.log("전송버튼 클릭시 chatTargetId = ", chatTargetId);
 	const chatMsg = document.querySelector("#msg").value;
+	console.log("chatMsg = ", chatMsg);
+	
 	if(!chatMsg) return;
 	const payload = {
 		chatroomId,
@@ -280,7 +295,7 @@ const sendMsg = (chatroomId) => {
 	};
 	
 	stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
-	//stompClient.send(`/app/\${chatTargetId}/myChatList`, {}, JSON.stringify(payload));
+	stompClient.send(`/app/\${chatTargetId}/myChatList`, {}, JSON.stringify(payload));
 	
 	document.querySelector("#msg").value = "";
 	
