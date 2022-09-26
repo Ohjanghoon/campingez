@@ -47,6 +47,7 @@
 <main>
 <div class="container">
 	<form:form action="${pageContext.request.contextPath}/review/insertReview.do" id="reviewFrm" name="reviewFrm" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="userId" value="<sec:authentication property='principal.username' />"/>
 		<div class="form-floating m-3">
 			<input class="form-control" value="${resNo}" name="resNo" readonly/>
 			<label>예약번호</label>
