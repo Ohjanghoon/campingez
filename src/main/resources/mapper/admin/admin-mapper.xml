@@ -291,7 +291,6 @@
             c.comm_content,
             c.comm_date,
             c.comm_read_count,
-            c.comm_report_count,
             c.comm_isdelete,
             c.comm_like_count,
 	        count(*) over(partition by r.comm_no) as report_count,

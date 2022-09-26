@@ -10,7 +10,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 				<div class="content-wrap">
-					<h2>중고거래 신고 내역 - 3건 이상</h2>
+					<h2 class="text-center fw-bold pt-5 pb-5">중고거래 신고 내역 - 3건 이상</h2>
 					<table class="table text-center">
 						<thead>
 							<tr>
@@ -45,8 +45,8 @@
 												<fmt:formatDate value="${reportDate}" pattern="yy/MM/dd"/>
 											</td>
 											<td scope="row" rowspan="${fn:length(trade.reportList)}">
-												<button type="button" id="deleteBtn" class="report-btn" data-comm-no="${trade.tradeNo}" onclick="deleteComm(event);">삭제처리</button>
-												<button type="button" id="noProblemBtn" class="report-btn" data-comm-no="${trade.tradeNo}" onclick="noProblemUpdate(event);">문제없음</button>
+												<button type="button" class="report-btn report-del-btn" data-comm-no="${trade.tradeNo}" onclick="deleteComm(event);">삭제처리</button>
+												<button type="button" class="report-btn" data-comm-no="${trade.tradeNo}" onclick="noProblemUpdate(event);">문제없음</button>
 											</td>
 										</c:if>
 										<c:if test="${not vs.first}">
@@ -75,7 +75,7 @@
 						${tradePagebar}
 					</nav>
 					
-					<h2>중고거래 신고 내역 - 회원 별 누적 신고</h2>
+					<h2 class="text-center fw-bold pt-5 pb-5">중고거래 신고 내역 - 회원 별 누적 신고</h2>
 					<table class="table text-center">
 						<thead>
 							<tr>
@@ -91,7 +91,7 @@
 									<tr>
 										<td>${report.commUserId}</td>
 										<td>${report.totalReport}회</td>
-										<td>${report.isBlacklist == null ? '' : report.isBlacklist}</td>
+										<td>${report.isBlacklist == null ? '<i class="fa-solid fa-x"></i>' : '<i class="fa-solid fa-o"></i>'}</td>
 										<td>
 											<button type="button" class="report-btn" onclick="location.href='${pageContext.request.contextPath}/admin/blackList.do'">경고하러가기</button>
 										</td>

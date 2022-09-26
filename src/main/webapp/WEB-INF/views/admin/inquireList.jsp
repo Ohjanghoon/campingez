@@ -10,7 +10,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 			<div class="content-wrap">
-				<h2>1:1 문의 리스트</h2>
+				<h2 class="text-center fw-bold pt-5 pb-5">1:1 문의 리스트</h2>
 				<div id="select-bar">
 					<select name="inquireType" id="inquireType" class="form-select">
 						<option value="" selected>전체</option>
