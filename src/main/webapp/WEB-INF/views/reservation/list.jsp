@@ -292,7 +292,6 @@
             			method : "POST", 
             			data : {checkin, checkout, userId},
             			success(response){
-             				console.log(response.userCoupon[0].coupons);
             				
             				const list = document.querySelector("#list");
             				list.innerHTML = "";
