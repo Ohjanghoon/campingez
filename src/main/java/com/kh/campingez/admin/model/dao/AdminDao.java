@@ -51,7 +51,6 @@ public interface AdminDao {
 	@Update("update ez_user set yellowcard = yellowcard - 1 where user_id = #{userId}")
 	int updateCancelWarningToUser(String userId);
 	
-	@Select("select * from ez_user where ${selectType} like '%' || #{selectKeyword} || '%' order by enroll_date desc")
 	List<User> selectUserByKeyword(RowBounds rowBounds, Map<String, Object> param);
 	
 	@Select("select * from ez_user where ${selectType} like '%' || #{selectKeyword} || '%' and yellowcard < 3 order by enroll_date desc")

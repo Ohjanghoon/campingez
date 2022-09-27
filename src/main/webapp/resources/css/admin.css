@@ -168,3 +168,6 @@ tr > td {
     align-items: center;
     margin: 10px 20px 10px 0;
 }
+.user-select-bar {
+	display: none;
+}

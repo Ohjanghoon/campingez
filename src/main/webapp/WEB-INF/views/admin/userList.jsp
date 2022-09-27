@@ -21,7 +21,7 @@
 						<option value="user_id">회원아이디</option>
 						<option value="user_name">회원이름</option>
 					</select>
-					<div class="input-group" id="selectKeywordGroup">
+					<div class="input-group user-select-bar" id="selectKeywordGroup">
 						<input type="text" id="selectKeyword" class="form-control" />
 					    <button class="btn searchBtn" type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
 					</div>
@@ -54,7 +54,7 @@
 									<td scope="row" id="yellowCardCount">${user.yellowCard}</td>
 									<td scope="row">${user.point}</td>
 									<td scope="row">
-										<select name="auth" id="auth" data-user-id="${user.userId}">
+										<select name="auth" id="auth" data-user-id="${user.userId}" onchange="changeAuth(this);">
 										<c:forEach items="${user.authorityList}" var="auth" varStatus="vs">
 											<c:if test="${auth.auth == 'ROLE_ADMIN'}">
 												<option value="ROLE_ADMIN" selected>관리자</option>
@@ -89,10 +89,6 @@
 	</section>
 </main>
 <script>
-const updateUser = (button) => {
-	console.log(button.id);
-};
-
 function clickPaging() {
 	var id = this.id;
 	var page = id.substring(4);
@@ -130,41 +126,66 @@ function userListAjax(cPage) {
 			const nav = document.querySelector("#userPagebar");
 			nav.innerHTML = pagebar;
 			
+			let html = '';
 			if(userList.length == 0) {
-				tbody.innerHTML = `
+				html += `
 				<tr>
 					<td colspan="11">조회된 회원 목록이 없습니다.</td>
 				</tr>
 				`;
+				tbody.insertAdjacentHTML('beforeend', html);
 				return;
 			}
 			
 			for(let i = 0; i < userList.length; i++) {
-				const {userId, userName, email, phone, gender, yellowCard, point, enrollType, enrollDate} = userList[i];
-				const [yy, mm, dd] = enrollDate;
-
-				tbody.innerHTML += `
+				html = '';
+				const {userId, userName, email, phone, gender, yellowCard, point, enrollType, enrollDate, authorityList} = userList[i];
+				const [yy, _mm, dd] = enrollDate;
+				const mm = _mm < 10 ? '0' + _mm : _mm;
+				
+				html += `
 				<tr>
-					<td>\${i+1}</td>
-					<td>\${userId}</td>
-					<td>\${userName}</td>
-					<td>\${email}</td>
-					<td>\${phone}</td>
-					<td>\${gender}</td>
-					<td id="yellowCardCount">\${yellowCard}</td>
-					<td>\${point}</td>
-					<td>권한</td>
-					<td>\${enrollType}</td>
-					<td>
-						\${yy}/\${mm}/\${dd}
+					<td scope="row">\${i+1}</td>
+					<td scope="row" id="userId">\${userId}</td>
+					<td scope="row">\${userName}</td>
+					<td scope="row">\${email}</td>
+					<td scope="row">\${phone}</td>
+					<td scope="row">\${gender}</td>
+					<td scope="row" id="yellowCardCount">\${yellowCard}</td>
+					<td scope="row">\${point}</td>
+					<td scope="row">
+						<select name="auth" id="auth" data-user-id="\${userId}" onchange="changeAuth(this);">
+				`;
+				
+				for(let i = 0; i < authorityList.length; i++) {
+					if(authorityList[i].auth == 'ROLE_ADMIN') {
+						console.log(123);
+						html += `
+							<option value="ROLE_ADMIN" selected>관리자</option>
+							<option value="ROLE_USER">일반</option>
+						`;
+					} else if(authorityList[i].auth == 'ROLE_USER' && i < 1) {
+						console.log(234);
+						html += `
+							<option value="ROLE_ADMIN">관리자</option>
+							<option value="ROLE_USER" selected>일반</option>
+						`;
+						
+					}
+				};
+				
+				html += `
+						</select>
 					</td>
-					<td>
-						<button type="button" name="updateBtn" id="\${userId}">수정</button>
-						<button type="button" name="yellowCardBtn" id="\${userId}" onclick="warningToUser(event)">경고</button>
-					</td>
+					<td scope="row">\${yy}/\${mm}/\${dd}</td>
 				</tr>
 				`;
+				tbody.insertAdjacentHTML('beforeend', html);
 			};
+			
+			// 
+			
+			// 비동기 페이징 처리
 			const pagings = document.querySelectorAll(".paging");
 
 			pagings.forEach(paging => {
@@ -176,35 +197,47 @@ function userListAjax(cPage) {
 	
 }
 
+const changeAuth = (e) => {
+	if(e.dataset == undefined) return;
+	
+	const userId = e.dataset.userId;
+	const changeAuth = e.selectedOptions[0].innerHTML; 
+	const changeAuthVal = e.value;
+
+	if(confirm(`[\${userId}]님의 권한을 '\${changeAuth}회원'으로 변경하시겠습니까?`)) {
+		const headers = {};
+		headers['${_csrf.headerName}'] = '${_csrf.token}';
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/admin/updateUserRole.do",
+			data : {userId, changeAuth:changeAuthVal},
+			headers,
+			method : "POST",
+			success(response) {
+				e.selected = true;
+			},
+			error : console.log
+		});
+	} else {
+		console.log(e.querySelector("[selected]").selected);
+		e.querySelector("[selected]").selected = true;
+	}
+}
+
 document.querySelectorAll("#auth").forEach((select) => {
 	select.addEventListener('change', (e) => {
-		const userId = e.target.dataset.userId;
-		const changeAuth = e.target.selectedOptions[0].innerHTML; 
-		const changeAuthVal = e.target.value;
-
-		if(confirm(`[\${userId}]님의 권한을 '\${changeAuth}회원'으로 변경하시겠습니까?`)) {
-			const headers = {};
-			headers['${_csrf.headerName}'] = '${_csrf.token}';
-			
-			$.ajax({
-				url : "${pageContext.request.contextPath}/admin/updateUserRole.do",
-				data : {userId, changeAuth:changeAuthVal},
-				headers,
-				method : "POST",
-				success(response) {
-					e.target.selected = true;
-				},
-				error : console.log
-			});
-		} else {
-			e.target.querySelector("[selected]").selected = true;
-		}
+		changeAuth(e);
 	});
 });
 
 document.querySelector("#selectType").addEventListener('change', (e) => {
 	if(!e.target.value) {
+		document.querySelector(".user-select-bar").style.display = 'none';
+		document.querySelector("#selectKeyword").value = '';
 		location.reload();
+	} else {
+		document.querySelector(".user-select-bar").style.display = 'inherit';
+		document.querySelector("#selectKeyword").value = '';
 	}
 });
 

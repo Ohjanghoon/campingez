@@ -15,6 +15,20 @@
         enroll_date desc
   </select>
   
+  <select id="selectUserByKeyword" resultMap="userMap">
+	select 
+	    	u.*,
+	    	a.user_id auth_user_id,
+	    	a.auth
+	from 
+	    ez_user u join authority a
+	        on u.user_id = a.user_id
+	where 
+	    u.${selectType} like '%' || #{selectKeyword} || '%'
+	order by 
+	    enroll_date desc  
+  </select>
+  
   <select id="findAllBlackList" resultMap="userMap">
   	select
   		u.*,
