@@ -61,8 +61,8 @@
 				</div>
 				</sec:authorize>
               	</div>
-        </section>
         <div id="pagebar" style="text-align:center;"></div>
+        </section>
 <script>
 const headers = {};
 headers['${_csrf.headerName}'] = '${_csrf.token}';
@@ -74,11 +74,12 @@ $(document).ready(function(){
 	        headers,
 	        data : {
 	           categoryId : value,
-	           cPage
+	           cPage,
 	        },
 	        success(data){
 				
 				$('#list').html('');
+				$('#pagebar').html('');
 				if(data.list == null){
 					$('#list').html('<p>등록된 게시물이 없습니다</p>');
 				}
@@ -123,8 +124,9 @@ $(document).ready(function(){
 					
 					$('#list').append(html);
 				}
+				console.log(data.pagebar);
+				$('#pagebar').html(data.pagebar);
 				
-				$('#pagebar').html(data.pagebar)
 	 			//const url = "${pageContext.request.contextPath}/trade/tradeList.do?category=" + value;
 				//location.replace(url); 
 				
@@ -146,8 +148,9 @@ $(document).ready(function(){
 	        error : console.log
 	    });
 	} 
-	
+		
 	selectTrade('all', 1);
+
 	
 	// 카테고리 선택 처리
 	const selectCategory = (value) => {		
@@ -167,7 +170,8 @@ $(document).ready(function(){
 
 			selectTrade(value);
 		    selectCategory(btn.value);
-		})
+		    
+		});
 	});
 });
 </script>

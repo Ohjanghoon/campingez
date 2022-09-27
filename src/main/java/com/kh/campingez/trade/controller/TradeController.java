@@ -340,6 +340,7 @@ public class TradeController {
 		else {
 			list = tradeService.selectTradeListKind(param, categoryId);
 			totalContent = tradeService.getTotalContentKind(categoryId);
+			log.debug("totalContent = {} ", totalContent);
 		}
 		
 		mav.addObject("list", list);
