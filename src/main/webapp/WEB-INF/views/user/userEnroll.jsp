@@ -539,6 +539,7 @@ $('#mail-Check-Btn').click(function() {
 			email
 		},
 		success(data){
+			alert('이메일이 발송되었습니다.');
 			console.log(data);
 			checkInput.attr("disabled",false);
 			//document.querySelector('.mail-check-input').value = data;
