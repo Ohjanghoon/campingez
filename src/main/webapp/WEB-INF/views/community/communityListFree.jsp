@@ -77,7 +77,7 @@
 	      ${comm.reportCount}</td>
 	      <td style="width:7%;"><img id="heart" src="${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png" style="width:15px; heigh:15px;" />
 	      ${comm.likeCount}</td>
-	      <td><fmt:parseDate value="${comm.commDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="commDate"/>
+	      <td><fmt:parseDate value="${comm.commDate}" pattern="yyyy-MM-dd'T'HH:mm" var="commDate"/>
 	          <fmt:formatDate value="${commDate}" pattern="yy-MM-dd HH:mm"/></td>
 		</tr>
 

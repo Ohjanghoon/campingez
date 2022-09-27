@@ -235,10 +235,11 @@ public class ReviewController {
 	}
 	//리뷰 삭제
 	@RequestMapping("/deleteReview.do")
-	public String deleteReview(@RequestParam (name = "resNo") String resNo, RedirectAttributes redirectAttr) {
+	public String deleteReview(@RequestParam (name = "resNo") String resNo, RedirectAttributes redirectAttr, HttpServletRequest request) {
 		int result = reviewService.deleteReview(resNo);
 		redirectAttr.addFlashAttribute("msg", "리뷰 삭제 성공!");
-		return "redirect:/userInfo/myReservation.do";
+		
+		return "redirect:" + (request.getHeader("Referer").indexOf("reviewList") > -1 ? request.getHeader("Referer") : "/userInfo/myReservation.do");
 	}
 	
 	

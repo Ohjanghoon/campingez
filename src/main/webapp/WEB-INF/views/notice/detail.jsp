@@ -8,6 +8,9 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
+<%
+	pageContext.setAttribute("newLine", "\n");
+%>
 <main>
 	<div class="container">
 	<h2 class="text-center fw-bold pt-5">공지사항</h2>
