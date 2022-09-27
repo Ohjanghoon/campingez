@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Select;
 
 import com.kh.campingez.chat.model.dto.ChatLog;
 import com.kh.campingez.chat.model.dto.ChatUser;
+import com.kh.campingez.trade.model.dto.Trade;
 
 @Mapper
 public interface ChatDao {
@@ -39,5 +40,8 @@ public interface ChatDao {
 
 	@Select("select c.* from chat_user c join chat_user t on c.chatroom_id = t.chatroom_id where c.chatroom_id = #{chatroomId} and c.deleted_at is null and t.deleted_at is not null")
 	ChatUser deleteCheck(String chatroomId);
+
+	@Select("select * from trade where trade_no = #{tradeNo}")
+	Trade selectGoTradeByNo(String tradeNo);
 
 }

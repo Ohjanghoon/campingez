@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kh.campingez.chat.model.dao.ChatDao;
 import com.kh.campingez.chat.model.dto.ChatLog;
 import com.kh.campingez.chat.model.dto.ChatUser;
+import com.kh.campingez.trade.model.dto.Trade;
 
 import lombok.NonNull;
 
@@ -57,5 +58,10 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public ChatUser deleteCheck(String chatroomId) {
 		return chatDao.deleteCheck(chatroomId);
+	}
+	
+	@Override
+	public Trade selectGoTradeByNo(String tradeNo) {
+		return chatDao.selectGoTradeByNo(tradeNo);
 	}
 }

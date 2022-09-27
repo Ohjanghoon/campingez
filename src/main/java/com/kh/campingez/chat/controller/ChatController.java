@@ -180,10 +180,14 @@ public class ChatController {
 	@GetMapping("/goTrade.do")
 	public ResponseEntity<?> selectTradeByNo(@RequestParam String tradeNo){
 		
-		Trade trade = tradeService.selectTradeByNo(tradeNo);
+		
+		Trade trade = chatService.selectGoTradeByNo(tradeNo);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("trade", trade);
 		
 		return ResponseEntity.status(HttpStatus.OK)
 					.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.body(trade);
+					.body(map);
 	}
 }
