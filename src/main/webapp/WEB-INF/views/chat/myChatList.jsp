@@ -365,8 +365,9 @@ const goTrade = (tradeNo) => {
 		data : {tradeNo},
 		success(response){
 			console.log(response);
+			const {trade} = response;
 			
-			if(response == null){
+			if(trade == null){
 				alert("해당 중고거래 글은 열람이 불가합니다.");
 				return;
 			}
