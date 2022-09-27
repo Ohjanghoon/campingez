@@ -75,6 +75,8 @@
 //화면 로드시 스크롤 이동
 $(document).ready(function () {
 	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
+	
+	history.replaceState({}, null, location.pathname);
 });
 
 
@@ -84,12 +86,14 @@ setTimeout(() => {
 		subMyChatList(message);
 	});
 	
+	
 	/* stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
 		
 	}); */
 	//document.querySelectorAll(tr[data-chatroomid
 	
 }, 500);
+
 
 
 //채팅방 입장시
@@ -201,6 +205,8 @@ const enterChatroom = (chatroomId, chatTargetId) => {
 	});
 	
 };
+
+
 
 const subMyChatList = (message) => {
 	const {chatroomId, userId, chatMsg, chatTradeNo} = JSON.parse(message.body);
@@ -381,5 +387,7 @@ const deleteChatroom = (chatroomId, chatTargetId) => {
 		});
 	}
 };
+
+//enterChatroom('${chatroomId}', '${chatTargetId}');
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

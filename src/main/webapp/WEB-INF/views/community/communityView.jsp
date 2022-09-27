@@ -416,19 +416,22 @@ const chatBtnClick = () => {
 			
 			console.log(response);
 			
-			const {chatroomId} = response;
+			const {chatroomId, checkBegin} = response;
 			
-			const payload = {
-				chatroomId : chatroomId,
-				userId : '${loginMember.username}',
-				chatMsg : "",
-				chatTime : Date.now(),
-				chatTradeNo : null
-				
-			};
+			if(checkBegin) {
+				const payload = {
+					chatroomId : chatroomId,
+					userId : '${loginMember.username}',
+					chatMsg : '👋 ${loginMember.username} 님이 채팅을 시작했습니다. 👋',
+					chatTime : Date.now(),
+					chatTradeNo : null
+					
+				};
 			
-			stompClient.send('/app/${community.userId}/myChatList', {}, JSON.stringify(payload));
-			
+				stompClient.send('/app/${community.userId}/myChatList', {}, JSON.stringify(payload));
+				stompClient.send('/app/${loginMember.username}/myChatList', {}, JSON.stringify(payload));
+				stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+			}	
 			location.href="${pageContext.request.contextPath}/chat/myChatList.do";
 		},
 		error : console.log

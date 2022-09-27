@@ -60,6 +60,7 @@ public class ChatController {
 		log.debug("chatUser = {}", chatUser);
 		
 		String chatroomId = null;
+		int checkBegin = 1;
 //		List<ChatLog> chatLogs = new ArrayList<>();
 		
 		if(chatUser == null) {
@@ -84,6 +85,7 @@ public class ChatController {
 		else {
 			// 재입장
 			chatroomId = chatUser.getChatroomId();
+			checkBegin = 0;
 //			chatLogs = chatService.findChatLogByChatroomId(chatroomId);
 //			log.debug("chatLogs = {}", chatLogs);
 			
@@ -95,6 +97,7 @@ public class ChatController {
 //		return null;
 		Map<String, Object> map = new HashMap<>();
 		map.put("chatroomId", chatroomId);
+		map.put("checkBegin", checkBegin);
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(map);
 	}
 
