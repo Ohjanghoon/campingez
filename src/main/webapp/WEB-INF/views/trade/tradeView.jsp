@@ -110,6 +110,9 @@
 	pageContext.setAttribute("trade", trade);
 	pageContext.setAttribute("newLine", "\n\r");
 %>  
+<sec:authorize access="isAuthenticated()" >
+	<sec:authentication property="principal" var="loginMember" scope="page" />
+</sec:authorize>
         <section>
             <div class="container px-4 px-lg-5 my-5 d-flex justify-content-center">
                 <div class="row gx-4 gx-lg-5 align-items-center content">

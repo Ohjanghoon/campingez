@@ -18,7 +18,7 @@
 							<option value="user_id">회원아이디</option>
 							<option value="user_name">회원이름</option>
 						</select>
-						<div class="input-group" id="selectKeywordGroup">
+						<div class="input-group user-select-bar" id="selectKeywordGroup">
 							<input type="text" id="selectKeyword" class="form-control"/>
 							<button type="button" id="searchBtn" class="btn searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
 						</div>
@@ -262,6 +262,11 @@ const cancelYellowCard = (userId, isBlack) => {
 document.querySelector("#selectType").addEventListener('change', (e) => {
 	if(!e.target.value) {
 		location.reload();
+		document.querySelector(".user-select-bar").style.display = 'none';
+		document.querySelector("#selectKeyword").value = '';
+	} else {
+		document.querySelector(".user-select-bar").style.display = 'inherit';
+		document.querySelector("#selectKeyword").value = '';
 	}
 });
 
