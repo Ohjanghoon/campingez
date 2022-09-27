@@ -75,16 +75,22 @@
 			<input type="submit" value="정보수정" class="btn btn-outline-dark">
 		</form:form>
 		<form:form
+			name="deleteFrm"
 			action="${pageContext.request.contextPath}/userInfo/profileDelete.do"
 			method="POST" class="row g-3">
 			<input type="hidden" name="userId" id="userId"
 				value="${result.userId}" readonly required>
-			<input type="submit" value="회원탈퇴" class="btn btn-outline-dark">
+			<input type="button" onclick="rtn()" value="회원탈퇴" class="btn btn-outline-dark">
 		</form:form>
 	</div>
 </div>
 <script>
-	
+function rtn(){
+	if(confirm("적립된 포인트가 사라집니다. 정말 탈퇴하시겠습니까?")){ 
+		const frm = document.deleteFrm;
+		frm.submit();
+	} else return;
+}
 </script>
 </body>
 </html>
