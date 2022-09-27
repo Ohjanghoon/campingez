@@ -664,11 +664,6 @@ const beforeTime = (alarmDate) => {
 
 	<div class="title">
     <div>
-        <div id="tooltip">
-        	<a href="#" onclick="adminChat();">
-        		<img src="${pageContext.request.contextPath}/resources/images/siren.png" alt="" width="100%" height="100%"/>
-        	</a>
-        </div>
         <div id="chatbot" class="main-card ch-collapsed">
     <button id="chatbot_toggle">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -700,7 +695,7 @@ const beforeTime = (alarmDate) => {
       <a href="${pageContext.request.contextPath}/inquire/inquireList.do" style="text-decoration: none; color: white;">문의하기</a>
     </div>
     </div>
-    <div id="Accordion_wrap">
+    <div id="Accordion_wrap" style="height: 83.5%;">
       <div class="que">
         <span>자동차 출입이 가능한가요??</span>
       </div>
@@ -758,6 +753,9 @@ const beforeTime = (alarmDate) => {
        </span>
       </div>
     </div>
+      <div style="width:100%; height: 50px;">
+      		<button class="btn btn-outline-primary" onclick="adminChat()" style="width:100%; height: 100%;">관리자와 채팅하기</button>
+      </div>
   </div>
 </div>
     </div>
@@ -767,19 +765,13 @@ const beforeTime = (alarmDate) => {
       document.getElementById("chatbot").classList.remove("ch-collapsed")
       document.getElementById("chatbot_toggle").children[0].style.display = "none"
       document.getElementById("chatbot_toggle").children[1].style.display = ""
-      document.getElementById("chatbot").style.overflowY = "scroll";
-	  document.querySelector('#tooltip').style.opacity = "1";
-	  document.querySelector('#tooltip').style.visibility = "visible";
-	  document.querySelector('#tooltip').style.top = "28%";
+      document.getElementById("Accordion_wrap").style.overflowY = "scroll";
     }
     else {
-	  document.querySelector('#tooltip').style.top = "95%";
       document.getElementById("chatbot").classList.add("ch-collapsed")
       document.getElementById("chatbot_toggle").children[0].style.display = ""
       document.getElementById("chatbot_toggle").children[1].style.display = "none"
       document.getElementById("chatbot").style.overflow = "hidden";
-	  document.querySelector('#tooltip').style.opacity = "0";
-	  document.querySelector('#tooltip').style.visibility = "hidden";
     }
   }
   
