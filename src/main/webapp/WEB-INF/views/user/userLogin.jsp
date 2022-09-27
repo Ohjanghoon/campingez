@@ -274,5 +274,9 @@ inputs.forEach(input => {
             modalOff()
         }
     })
+    //화면 로드시 스크롤 이동
+$(document).ready(function () {
+    $('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
+});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

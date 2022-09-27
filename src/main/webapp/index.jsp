@@ -234,10 +234,8 @@ window.onload = () => {
             }
             const now = new Date();
             now.setMinutes(now.getMinutes() - 30);
-            //const hh = f(now.getHours() > 12 ? now.getHours() - 12 : now.getHours());
             const hh = f(now.getHours());
             const mm = f(now.getMinutes());
-            console.log(hh, mm)
             return "" + hh + mm;
         }
 		
