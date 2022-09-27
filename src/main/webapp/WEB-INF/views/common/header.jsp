@@ -165,7 +165,6 @@ a, a:hover {
 //스크롤 배경색 변경
 //스크롤 200px이상일때 박스 상단 따라다니기 및 배경색 변경
 $(window).scroll(function() {
-
 	if($(this).scrollTop() > 200) {
 		$("#navbar").css('background','rgba(60, 60, 60, 0.7)');
 	}
@@ -173,7 +172,6 @@ $(window).scroll(function() {
 		$("#navbar").css('background','rgba(250, 250, 250, 0)');
 	}
 });
-
 const beforeTime = (alarmDate) => {
 	  const millis = new Date().getTime() - new Date(alarmDate).getTime();
 	  const seconds = Math.floor(millis / 1000);
@@ -773,7 +771,7 @@ const beforeTime = (alarmDate) => {
 	  document.querySelector('#tooltip').style.opacity = "1";
 	  document.querySelector('#tooltip').style.visibility = "visible";
 	  document.querySelector('#tooltip').style.transform = "translate(-50%, -80%)";
-	  document.querySelector('#tooltip').style.bottom = "650px";
+	  document.querySelector('#tooltip').style.bottom = "68%";
     }
     else {
 	  document.querySelector('#tooltip').style.bottom = "100px";

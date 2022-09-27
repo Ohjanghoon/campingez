@@ -209,22 +209,8 @@
     visibility: hidden;
     opacity: 0;
     transition: all .4s;
-    border: 1px solid black;
     right: 45px;
     bottom: 100px;
-}
-}
-
-
-#chatbot_toggle:hover #tooltip{
-    transform: translate(-50%, -80%);
-    opacity: 1;
-    visibility: visible;
-}
-#chatbot:hover #tooltip{
-    transform: translate(-50%, -80%);
-    opacity: 1;
-    visibility: visible;
 }
 
 

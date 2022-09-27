@@ -215,7 +215,6 @@ document.querySelector("#report-content").addEventListener('input', (e) => {
 		count.style.color = 'black';
 	}
 });
-
 document.querySelector("#report-btn").addEventListener('click', (e) => {
 	const userId = "${user.userId}";
 	if(!userId) {
@@ -225,7 +224,6 @@ document.querySelector("#report-btn").addEventListener('click', (e) => {
 		return;
 	}
 });
-
 // 최종 신고
 document.querySelector("#report").addEventListener('click', (e) => {
 	const count = document.querySelector("#text-count");
@@ -243,7 +241,6 @@ document.querySelector("#report").addEventListener('click', (e) => {
 		}
 	}
 });
-
 // 이미 신고한 게시글이라면 모달창 안 열림
 document.querySelector("#reportModal").addEventListener('show.bs.modal', (e) => {
 	const reportUserId = document.querySelector("#report-btn").dataset.reportUserId;
@@ -253,16 +250,12 @@ document.querySelector("#reportModal").addEventListener('show.bs.modal', (e) => 
 		e.preventDefault();
 	}
 });
-
-
 // 게시글 삭제
 function deleteComm(){
    if(confirm("삭제하실건가요?")){
       location.href="${pageContext.request.contextPath}/community/communityDelete.do?no=${community.commNo}";
    }else return;
 }
-
-
 // 조회수 새로고침
 window.onload = function() {
     if(!window.location.hash) {
@@ -272,15 +265,11 @@ window.onload = function() {
         }, 50)
     }
 }
-
 //좋아요
 const headers = {};
 headers['${_csrf.headerName}'] = '${_csrf.token}';
-
 $(document).ready(function () {
-
     var heartval = ${heart};
-
     if(heartval > 0) {
         console.log(heartval);
         $("#heart").prop("src", "${pageContext.request.contextPath}/resources/images/trade/colorHeart.png");
@@ -291,7 +280,6 @@ $(document).ready(function () {
         $("#heart").prop("src", "${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png");
         $(".heart").prop('name',heartval)
     }
-
     $(".heart").on("click", function () {
     	
     	const userId = "${user.userId}";
@@ -300,9 +288,7 @@ $(document).ready(function () {
     		location.href = "${pageContext.request.contextPath}/user/userLogin.do";
     		return;
     	}
-
         var that = $(".heart");
-
         var sendData = {'commNo' : '${community.commNo}', 'heart' : that.prop('name')};
         $.ajax({
             url :'${pageContext.request.contextPath}/community/heart',
@@ -322,16 +308,13 @@ $(document).ready(function () {
         });
     });
 });
-
 function deleteComment(){
 	if(confirm("삭제하실건가요?")){
 	  location.href="${pageContext.request.contextPath}/community/commentDelete.do?no=${comment.commentCommNo}";
 	}else return;
 }
-
 document.querySelectorAll(".btn-reply").forEach((btn) => {
 	btn.addEventListener('click', (e) => {
-
 		const {value} = e.target;
 		console.log(value);
 		
@@ -361,7 +344,6 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
         // 대댓글 null 방지
         document.querySelector("#enroll-btn2").addEventListener('click', (e) => {
         const content2 = document.querySelector("#cContent2");
-
     	if(!content2.value) {
     		alert("빈 댓글을 등록할 수 없습니다.");
     		content2.focus();
@@ -374,13 +356,11 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
         
 	}, {once: true});
 });
-
 // 댓글 null 방지
 const btn = document.querySelector("#enroll-btn")
 if(btn != null){
 btn.addEventListener('click', (e) => {
 	const content = document.querySelector("#cContent");
-
 	if(!content.value) {
 		alert("빈 댓글을 등록할 수 없습니다.");
 		content.focus();
@@ -391,12 +371,9 @@ btn.addEventListener('click', (e) => {
 	e.preventDefault();
 });
 }
-
-
 document.querySelector("#golist").addEventListener('click', (e) => {
 	history.go(-1);
 });
-
 // 채팅하기 클릭시
 const chatBtnClick = () => {
 	
