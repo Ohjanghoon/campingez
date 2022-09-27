@@ -76,7 +76,6 @@ from
 where
 		trade_no = #{tdNo}
 
-
 </select>
 <resultMap type="tradePhoto" id="tradePhotoMap">
 			<id column="trade_photo_no" property="tradePhotoNo" />
@@ -112,6 +111,17 @@ order by
 
 </select>
 
+<select id="getTotalContentKind" resultType="int">
+select 
+		count(*) 
+from 
+		trade 
+where 
+		category_id = #{categoryId} 
+		and 
+		trade_isdelete = 'N'
+</select>
+
 <select id="selectCurrentTrade" resultMap="tradeListMap">
 	select 
 		* 
@@ -119,5 +129,8 @@ order by
 		(select * from (select * from trade order by trade_date desc) where rownum &lt;= 3) join trade_photo using (trade_no)
 	
 </select>
+
+
+
 
 </mapper>

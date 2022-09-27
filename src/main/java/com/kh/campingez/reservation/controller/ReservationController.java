@@ -87,27 +87,32 @@ public class ReservationController {
 		reservation.setResCheckin(checkin);
 		reservation.setResCheckout(checkout);
 		log.debug("couponCode = {}", couponCode);
+		log.debug("point = {}", point);
 		
 		// 할인 결제시
-		if(couponCode != "" || point != 0) {
+		if(couponCode != "" || point > 0) {
 			
 			Map<Object, Object> map = new HashMap<>();
 			map.put("userId", reservation.getUserId());
 			map.put("point", point);
 			
+			int resultPrice = reservation.getResPrice();
 			int effect = 0;
 			
 			if(couponCode != "") {
 				int dc = couponCode.indexOf('@');
-				int resultPrice = reservation.getResPrice() - (reservation.getResPrice() / (Integer.parseInt(couponCode.substring(0, dc)))) - point;
+				resultPrice = reservation.getResPrice() - (reservation.getResPrice() / (Integer.parseInt(couponCode.substring(0, dc))));
 				reservation.setResPrice(resultPrice);
 				couponCode = couponCode.substring(dc+1, couponCode.length());
 				map.put("couponCode", couponCode);
 				effect = userService.userUseCoupon(map);
 			}
-			if(point != 0) {
+			if(point > 0) {
+				resultPrice = resultPrice - point;
+				reservation.setResPrice(resultPrice);
 				effect = userService.userUsePoint(map);
 			}
+			
 			// 예약 
 			Reservation result = reservationService.insertReservation(reservation);
 			redirectAttr.addFlashAttribute("payRes", result);

@@ -178,22 +178,24 @@ window.onload = () => {
 						const { renamedFilename } = list.photos[0];
 						tradeCards.innerHTML += `
 							<div class="col">
-							<div class="card card-cover h-10 text-white bg-dark rounded-5 shadow-lg" style="background-image: url('${pageContext.request.contextPath}/resources/upload/trade/\${renamedFilename}'); ">
-				            <div class="d-flex flex-column h-10 p-5 pb-3">
-				                <h2 class="pt-5 mt-5 mb-5 display-9 lh-1  text-wihte text-shadow-1">\${list.tradeTitle}</h2>
-				                <ul class="d-flex list-unstyled mt-auto">
+							<div class="card card-cover h-10 text-white bg-dark rounded-5 shadow-lg" style="background-image: url('${pageContext.request.contextPath}/resources/upload/trade/\${renamedFilename}');background-repeat:no-repeat;background-size:cover;border:none;">
+				                
+				            <div class="d-flex flex-column h-10 p-5 pb-3" style="background-color:rgba(255, 255, 255, 0.2);width:100%;">
+				                <h2 class="pt-5 mt-5 mb-5 display-9 lh-1  text-white text-shadow-1" style="text-shadow:3px 3px 5px black;">\${list.tradeTitle}</h2>
+				                <ul class="d-flex list-unstyled mt-auto";">
 				                  <li class="me-auto">
 				                    <img src="${pageContext.request.contextPath}/resources/images/campingEasyLogo.png" width="32" height="32" class="rounded-circle border border-white">
 				                  </li>
-				                  <li class="d-flex align-items-center me-3 text-black text-shadow-1">
+				                  <li class="d-flex align-items-center me-3 text-black text-shadow-1"  style="text-shadow:3px 3px 4px white;">
 				                    <i class="fa-solid fa-heart"></i>&nbsp;
 				                    <small>\${list.likeCount}</small>
 				                  </li>
-				                  <li class="d-flex align-items-center text-black text-shadow-1">
+				                  <li class="d-flex align-items-center text-black text-shadow-1" >
 				                   	₩&nbsp;
 				                    <small>\${list.tradePrice}</small>
 				                  </li>
 				                </ul>
+				               
 				              </div>
 				            </div>
 				          </div>
@@ -232,10 +234,8 @@ window.onload = () => {
             }
             const now = new Date();
             now.setMinutes(now.getMinutes() - 30);
-            //const hh = f(now.getHours() > 12 ? now.getHours() - 12 : now.getHours());
             const hh = f(now.getHours());
             const mm = f(now.getMinutes());
-            console.log(hh, mm)
             return "" + hh + mm;
         }
 		
