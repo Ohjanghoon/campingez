@@ -146,14 +146,14 @@
 				<tr>
 					<th style="text-align: left;">이름>&nbsp;</th>
 					<td><input type="text" class="form-control" name="findUserName"
-						id="findUserName" value="신사임당" required></td>
+						id="findUserName" value="" required></td>
 				</tr>
 				<tr><th>&nbsp;</th></tr>
 				<tr>
 					<th>휴대폰>&nbsp;&nbsp;</th>
 					<td><input type="tel" class="form-control"
 						placeholder="(-없이)01012345678" name="findPhone" id="findPhone"
-						maxlength="11" value="01098989898" required></td>
+						maxlength="11" value="" required></td>
 				</tr><tr><th>&nbsp;</th></tr>
 				<tr>
 					<th>&nbsp;</th>
