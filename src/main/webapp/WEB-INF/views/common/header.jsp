@@ -165,7 +165,6 @@ a, a:hover {
 //스크롤 배경색 변경
 //스크롤 200px이상일때 박스 상단 따라다니기 및 배경색 변경
 $(window).scroll(function() {
-
 	if($(this).scrollTop() > 200) {
 		$("#navbar").css('background','rgba(60, 60, 60, 0.7)');
 	}
@@ -173,7 +172,6 @@ $(window).scroll(function() {
 		$("#navbar").css('background','rgba(250, 250, 250, 0)');
 	}
 });
-
 const beforeTime = (alarmDate) => {
 	  const millis = new Date().getTime() - new Date(alarmDate).getTime();
 	  const seconds = Math.floor(millis / 1000);
@@ -207,6 +205,7 @@ const beforeTime = (alarmDate) => {
 </script>
 
 <sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal.username" var="loginUser"/>
 	<script>
 	const userId = "<sec:authentication property='principal.username'/>";
 	
@@ -594,7 +593,7 @@ const beforeTime = (alarmDate) => {
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myLikeList.do">찜 목록</a></li>
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/chat/myChatList.do">채팅 목록</a></li>
 						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userLogout.do">로그아웃</a></li>
+						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userEnroll.do">로그아웃</a></li>
 					</ul>
 				</div>
 			</sec:authorize>
@@ -663,14 +662,14 @@ const beforeTime = (alarmDate) => {
 	</div>
 	<!-- carousel end -->
 
-        <div id="tooltip" onmouseleave="mouseLeave()">
-        	<a href="#" onclick="adminChat()">
-        		<img src="${pageContext.request.contextPath}/resources/images/siren.png" alt="" width="100%" height="100%"/>
-        	</a>
-        </div>
 	<div class="title">
     <div>
         <div id="chatbot" class="main-card ch-collapsed">
+        <div id="tooltip">
+        	<a href="#" onclick="adminChat();">
+        		<img src="${pageContext.request.contextPath}/resources/images/siren.png" alt="" width="100%" height="100%"/>
+        	</a>
+        </div>
     <button id="chatbot_toggle">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M0 0h24v24H0V0z" fill="none" />
@@ -772,7 +771,7 @@ const beforeTime = (alarmDate) => {
 	  document.querySelector('#tooltip').style.opacity = "1";
 	  document.querySelector('#tooltip').style.visibility = "visible";
 	  document.querySelector('#tooltip').style.transform = "translate(-50%, -80%)";
-	  document.querySelector('#tooltip').style.bottom = "650px";
+	  document.querySelector('#tooltip').style.bottom = "68%";
     }
     else {
 	  document.querySelector('#tooltip').style.bottom = "100px";
@@ -792,6 +791,47 @@ const beforeTime = (alarmDate) => {
   });
   
   function adminChat() {
-	  console.log(123);
-  }
+	
+	<sec:authorize access="isAnonymous()">
+		alert("로그인해주세요.");
+		location.href="${pageContext.request.contextPath}/user/userLogin.do"
+	</sec:authorize>
+	
+	const chatTargetId = 'admin';
+	//const chatTradeNo = null;
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+			
+	$.ajax({
+		url : '${pageContext.request.contextPath}/chat/chat.do',
+		headers,
+		method : 'post',
+		data : {chatTargetId},
+		success(response){
+			console.log(response);
+			
+			const {chatroomId, checkBegin} = response;
+			
+			if(checkBegin) {
+				const payload = {
+					chatroomId : chatroomId,
+					userId : '${loginUser}',
+					chatMsg : '👋 ${loginUser} 님이 채팅을 시작했습니다. 👋',
+					chatTime : Date.now(),
+					chatTradeNo : null
+					
+				};
+					
+				stompClient.send('/app/admin/myChatList', {}, JSON.stringify(payload));
+				stompClient.send('/app/${loginUser}/myChatList', {}, JSON.stringify(payload));
+				stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+			}
+			
+			location.href="${pageContext.request.contextPath}/chat/myChatList.do";
+		},
+		error : console.log
+				
+	});
+			
+};
 </script>
