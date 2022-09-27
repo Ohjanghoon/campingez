@@ -371,9 +371,19 @@ btn.addEventListener('click', (e) => {
 	e.preventDefault();
 });
 }
+
+// 목록으로
 document.querySelector("#golist").addEventListener('click', (e) => {
-	history.go(-1);
+	const category = '${community.categoryId}';
+	
+	if(category == 'com1'){
+		location.href="${pageContext.request.contextPath}/community/communityListFree.do";
+	} else{
+		location.href="${pageContext.request.contextPath}/community/communityListHoney.do";
+	}
 });
+
+
 // 채팅하기 클릭시
 const chatBtnClick = () => {
 	
