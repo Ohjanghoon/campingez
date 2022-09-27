@@ -56,7 +56,7 @@ public class UserInfoController {
 	@Autowired
 	private UserSecurityService userSecurityService;
 	
-	//회원 마이페이지 jsp 호추루루룰
+	//회원 마이페이지 jsp 호출(테이블에 대한 모든 정보 조회)
 	@GetMapping("/myPage.do")
 	public ModelAndView myPage(@RequestParam(defaultValue = "1") int cPage, Authentication authentication, ModelAndView mav, Model model) {
 		User principal = (User)authentication.getPrincipal();
