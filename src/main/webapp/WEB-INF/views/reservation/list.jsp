@@ -249,7 +249,10 @@
 		alert("당신은 블랙리스트입니다.");
 		history.back();
 	</sec:authorize>
-
+	
+	<sec:authentication property='principal.point' var="mP"/>
+	const myPoint = ${mP};
+	
 	// 달력
 	document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -289,7 +292,7 @@
             			method : "POST", 
             			data : {checkin, checkout, userId},
             			success(response){
-            				console.log(response);
+             				console.log(response.userCoupon[0].coupons);
             				
             				const list = document.querySelector("#list");
             				list.innerHTML = "";
@@ -407,7 +410,7 @@
             				            </div>
             				          </div>
             				          <div class="col-md-5">
-            				            <label for="point" class="form-label">포인트</label>&nbsp;(잔여 포인트 : <sec:authentication property='principal.point' />P)
+            				            <label for="point" class="form-label">포인트</label><small class="text-muted">&nbsp;(잔여 포인트 : \${myPoint.toLocaleString('ko-KR')}P)</small>
             				            <input type="number" class="form-control" id="Rpoint" name="Rpoint" value="0" min="0" max="<sec:authentication property='principal.point' />" step="100">
             				            <div class="invalid-feedback">
             				              포인트 입력
@@ -508,15 +511,12 @@
             				        <button class="w-100 btn btn-primary btn-lg" type="button" id="doPay">결제하기</button>
             				`;
             				
-            				response.userCoupon.forEach((coupon) => {
-                                const {coupons} = coupon;
-                                const [{couponName, couponCode, couponDiscount}] = coupons;
-                                const couponList = document.querySelector("#couponList");
-                                const option = `
-                                	<option value="\${couponDiscount}@\${couponCode}">[\${couponDiscount}%]\${couponName}<option/>
+            				response.userCoupon[0].coupons.forEach((coupon) => {
+            					const {couponName, couponCode, couponDiscount} = coupon;
+                                document.querySelector("#couponList").innerHTML += `
+                                	<option value="\${couponDiscount}@\${couponCode}">[\${couponDiscount}%]\${couponName}</option>
                                 `;
-                                couponList.innerHTML += option;
-                             });
+                            });
             				   				
        						
             				document.querySelector("#Rpoint").addEventListener("blur", (e) => {
