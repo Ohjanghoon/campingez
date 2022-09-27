@@ -467,7 +467,7 @@ const beforeTime = (alarmDate) => {
 									id="new-alarm">N <span class="visually-hidden">New alerts</span>
 								</span>
 							<div class="header-layer shadow mb-5 bg-body rounded"></div>
-							<form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
+							<form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="GET">
 								<div class="header-layer shadow mb-5 bg-body rounded"></div>
 								<button class="btn btn-primary" type="submit">로그아웃</button>
 							</form:form>
