@@ -108,28 +108,3 @@ $(document).ready(function () {
 					</div>		
 				</nav>
 			</div>
-<script>
-document.querySelector("#loginBtn").addEventListener('click', (e) => {
-	const frm = document.loginForm;
-	const userId = frm.user_id.value;
-	const password = frm.user_pwd.value;
-	
-	if(!userId || !password) {
-		alert("아이디 혹은 비밀번호를 입력해주세요.");
-		return;
-	}
-
-	$.ajax({
-		url : "${pageContext.request.contextPath}/test/member/memberLogin",
-		type : "GET",
-		data : {userId, password},
-		content : "application/json",
-		success(response) {
-			alert("회원 로그인이 완료되었습니다.");
-			location.reload();
-		},
-		error : console.log
-	});
-})
-
-</script>
