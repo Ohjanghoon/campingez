@@ -53,4 +53,9 @@ public class ChatServiceImpl implements ChatService {
 	public String findChatTradeNo(String chatroomId) {
 		return chatDao.findChatTradeNo(chatroomId);
 	}
+	
+	@Override
+	public ChatUser deleteCheck(String chatroomId) {
+		return chatDao.deleteCheck(chatroomId);
+	}
 }
