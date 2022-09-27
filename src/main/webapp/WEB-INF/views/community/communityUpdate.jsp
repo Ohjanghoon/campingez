@@ -105,7 +105,6 @@ document.querySelector("#update-btn").addEventListener('click', (e) => {
 		title.focus();
 		return;
 	}
-	content.value = (content.value.replaceAll('<p>', '').replaceAll('</p>', ''));
 	document.communityUpdateFrm.submit();
 });
 </script>

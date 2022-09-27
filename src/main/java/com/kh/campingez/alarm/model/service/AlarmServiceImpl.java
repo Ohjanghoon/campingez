@@ -100,18 +100,20 @@ public class AlarmServiceImpl implements AlarmService {
 		int yellowcard = adminDao.findUserByUserId(targetUserId).getYellowCard();
 		
 		String msg = null;
-		
+		String location = null;
 		if(yellowcard >= 3) {
 			msg = "[블랙리스트 대상자 안내] '" + (String)param.get("reason") + "'(으)로 경고처리 되셨습니다.";
+			location = "/notice/detail.do?noticeNo=N193";
 		} else {
 			msg = "[" + yellowcard + "회 경고] '" + (String)param.get("reason") + "'(으)로 경고처리 되셨습니다.";
+			location = "/notice/detail.do?noticeNo=N192";
 		}
 		
 		AlarmEntity alarm = (AlarmEntity)Alarm.builder()
 					.targetUserId(targetUserId)
 					.alrType(AlarmType.REPORT)
 					.alrMessage(msg)
-					.alrUrl((String)param.get("location")).build();
+					.alrUrl(location).build();
 		int result = alarmDao.insertAlarmWithoutContentId(alarm);
 		alarm = alarmDao.selectAlarmByAlrId(alarm.getAlrId());
 		int notReadCount = alarmDao.getNotReadCount(targetUserId);

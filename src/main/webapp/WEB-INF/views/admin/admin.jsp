@@ -11,8 +11,9 @@
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css">
 <script>
+//화면 로드시 스크롤 이동
 $(document).ready(function () {
-    $('html, body, .container').animate({scrollTop: $('.content-wrap').offset().top - 135}, 'fast');
+    $('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
 });
 </script>
 <main>
