@@ -49,7 +49,7 @@ public class TradeServiceImpl implements TradeService {
 	@Override
 	public int getTotalContentKind(String categoryId) {
 
-		return tradeDao.getTotalContentKind();
+		return tradeDao.getTotalContentKind(categoryId);
 	}
 
 
