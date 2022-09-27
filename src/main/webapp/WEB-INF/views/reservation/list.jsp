@@ -292,7 +292,7 @@
             			method : "POST", 
             			data : {checkin, checkout, userId},
             			success(response){
-            				
+            				console.log(response);
             				const list = document.querySelector("#list");
             				list.innerHTML = "";
             				list.innerHTML = `
@@ -510,12 +510,14 @@
             				        <button class="w-100 btn btn-primary btn-lg" type="button" id="doPay">결제하기</button>
             				`;
             				
-            				response.userCoupon[0].coupons.forEach((coupon) => {
-            					const {couponName, couponCode, couponDiscount} = coupon;
-                                document.querySelector("#couponList").innerHTML += `
-                                	<option value="\${couponDiscount}@\${couponCode}">[\${couponDiscount}%]\${couponName}</option>
-                                `;
-                            });
+            				if(response.userCoupon.length > 0){
+	            				response.userCoupon[0].coupons.forEach((coupon) => {
+	            					const {couponName, couponCode, couponDiscount} = coupon;
+	                                document.querySelector("#couponList").innerHTML += `
+	                                	<option value="\${couponDiscount}@\${couponCode}">[\${couponDiscount}%]\${couponName}</option>
+	                                `;
+                          		});
+            				}
             				   				
        						
             				document.querySelector("#Rpoint").addEventListener("blur", (e) => {
