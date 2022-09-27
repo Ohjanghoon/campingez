@@ -695,7 +695,7 @@ const beforeTime = (alarmDate) => {
       <a href="${pageContext.request.contextPath}/inquire/inquireList.do" style="text-decoration: none; color: white;">문의하기</a>
     </div>
     </div>
-    <div id="Accordion_wrap" style="height: 83.5%;">
+    <div id="Accordion_wrap" style="height: calc(100% - 95px);">
       <div class="que">
         <span>자동차 출입이 가능한가요??</span>
       </div>
