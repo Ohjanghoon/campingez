@@ -127,7 +127,7 @@ const deleteReviewPhoto = (reviewId,reservationNo) => {
 		data : { revId : reviewId, resNo : reservationNo},
 		method : "POST",
 		success(response) {
-			console.log("성공스 ㅋ");
+			console.log("성공");
 			$("#preview").attr("src","");
 			$("#deletePhoto").attr("hidden","hidden");
 		},

@@ -23,12 +23,6 @@
 				<div class="resType"><!--결제 수단-->
 					${res.resPayment}
 				</div>
-<%-- 				<div class="resNo"><!-- 예약번호 -->
-					${res.resNo}
-				</div>
-				<div class="resUser"><!-- 예약자 이름 -->
-					${res.resUsername}
-				</div> --%>
 			</div>
 			<div class="resStart"><!-- 입실일자 -->
 				<fmt:parseDate value="${res.resCheckin}" pattern="yyyy-MM-dd" var="resCheckin" />
