@@ -16,22 +16,54 @@
 
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
-		<intercept-url pattern="/user/userEnroll.do" access="isAnonymous()"/>
-		<intercept-url pattern="/user/userLogin.do" access="isAnonymous()"/>
-		<intercept-url pattern="/user/userIdCheck.do" access="permitAll"/>
-		<intercept-url pattern="/userInfo/profileUpdate.do" access="permitAll"/>
+		<intercept-url pattern="/index.jsp" access="permitAll"/>
+		<!-- 로그인 -->
+		<intercept-url pattern="/user/user**" access="isAnonymous()"/>
+		<!-- <intercept-url pattern="/user/userLogin.do" access="isAnonymous()"/>
+		<intercept-url pattern="/user/userFindPassword.do" access="isAnonymous()"/>
+		<intercept-url pattern="/user/userPasswordUpdate.do" access="isAnonymous()"/> -->
 		<intercept-url pattern="/user/userLogout.do" access="permitAll"/>
-		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/reservation/list.do" access="isAuthenticated()"/>
-		<intercept-url pattern="/inquire/inquireForm.do" access="isAuthenticated()"/>
+		<!-- 게시판들 -->
+		<intercept-url pattern="/data/**" access="permitAll"/>
+		
+		<intercept-url pattern="/assignment/assignmentList**.do" access="permitAll"/>
+		<intercept-url pattern="/assignment/resInfo.do" access="permitAll"/>
+		<intercept-url pattern="/assignment/assignmentDetail.do" access="permitAll"/>
+		
+		<intercept-url pattern="/camp/**" access="permitAll"/>
+		
+		<intercept-url pattern="/community/communityView.do" access="permitAll"/>
+		<intercept-url pattern="/community/communityList**.do" access="permitAll"/>
+		<intercept-url pattern="/community/communityFind.do" access="permitAll"/>
+		
+		<intercept-url pattern="/payment/**" access="permitAll"/>
+		
+		
+		<intercept-url pattern="/trade/tradeView.do" access="permitAll"/>
 		<intercept-url pattern="/trade/tradeList.do" access="permitAll"/>
-		<intercept-url pattern="/chat/**" access="permitAll"/>
-		<intercept-url pattern="/echo/**" access="permitAll"/>
+		<intercept-url pattern="/trade/align.do" access="permitAll"/>
+		<intercept-url pattern="/trade/selectCurrentTrade.do" access="permitAll"/>
+		
+		<intercept-url pattern="/inquire/inquireList.do" access="permitAll"/>
+		<intercept-url pattern="/inquire/inquireDetail.do" access="permitAll"/>
+		
+		<intercept-url pattern="/notice/list" access="permitAll"/>
+		<intercept-url pattern="/notice/detail.do" access="permitAll"/>
 		<intercept-url pattern="/notice/enrollEvent.do" access="hasRole('ROLE_ADMIN')"/>
 		<intercept-url pattern="/notice/enrollNotice.do" access="hasRole('ROLE_ADMIN')"/>
 		<intercept-url pattern="/notice/update.do" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/notice/delete.do" access="hasRole('ROLE_ADMIN')"/>
 		
-		<!-- <intercept-url pattern="/**" access="isAuthenticated()"/> -->
+		<intercept-url pattern="/reservation/intro.do" access="permitAll"/>
+		<intercept-url pattern="/reservation//bestReviewByCampzone.do" access="permitAll"/>
+		
+		<intercept-url pattern="/review/reviewListBySearchType.do" access="permitAll"/>
+		<intercept-url pattern="/review/reviewList.do" access="permitAll"/>
+		
+		<intercept-url pattern="/coupon/insertCoupon.do" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+		
+		<intercept-url pattern="/**" access="isAuthenticated()"/>
 		
 		<form-login 
 			login-page="/user/userLogin.do"
