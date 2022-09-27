@@ -48,7 +48,7 @@
 					<td>${vs.count}</td>
 					<td>${trade.tradeNo}</td>
 					<td>${trade.userId}</td>
-					<td>${trade.categoryId}</td>
+					<td>${trade.categoryId eq 'tra1' ? '텐트/타프' : trade.categoryId eq 'tra2' ? '캠핑 테이블 가구' : trade.categoryId eq 'tra3' ? '캠핑용 조리도구' : '기타 캠핑용품'}</td>
 					<td>${trade.tradeTitle}</td>
 					<td>
 						<div class="content">
