@@ -101,7 +101,8 @@ public class ReservationController {
 			
 			if(couponCode != "") {
 				int dc = couponCode.indexOf('@');
-				resultPrice = reservation.getResPrice() - (reservation.getResPrice() / (Integer.parseInt(couponCode.substring(0, dc))));
+				Double halin = ((double)(Integer.parseInt(couponCode.substring(0, dc)))/100);
+				resultPrice = (int) (resultPrice - (resultPrice * halin));
 				reservation.setResPrice(resultPrice);
 				couponCode = couponCode.substring(dc+1, couponCode.length());
 				map.put("couponCode", couponCode);
