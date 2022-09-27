@@ -19,7 +19,6 @@ public class Item {
     private String category;
     private int nx;
     private int ny;
-    //private double obsrValue;
     private String fcstDate;
     private String fcstTime;
     private String fcstValue;

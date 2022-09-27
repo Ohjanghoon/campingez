@@ -8,6 +8,9 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
+<%
+	pageContext.setAttribute("newLine", "\n");
+%>
 <main>
 	<div class="container">
 	<h2 class="text-center fw-bold pt-5">공지사항</h2>
@@ -28,14 +31,11 @@
 		      <p class="lead mb-5">${notice.noticeContent}</p>
 		    </div>
 			<div class="container px-5">
-				<c:if test="${not empty notice.photos}">
-					<c:forEach items="${notice.photos}" var="photo">	
+				<c:forEach items="${notice.photos}" var="photo">	
+					<c:if test="${photo.noticeRenamedFilename != null}">
 						<img src ="${pageContext.request.contextPath}/resources/upload/notice/${photo.noticeRenamedFilename}" class="img-fluid border rounded-3 shadow-lg mb-4" width="700" height="500">
-					</c:forEach>
-				</c:if>
-				<c:if test="${empty notice.photos}">
-					<img src="${pageContext.request.contextPath}/resources/images/reservation/noimages.png" alt="" />
-				</c:if>
+					</c:if>
+				</c:forEach>
 			</div>
 		  </div>
 	</c:if>
@@ -46,11 +46,11 @@
 		    <h6>${notice.noticeDate}</h6>
 			<div class="coupon p-5 d-flex justify-content-center"></div>
 			<div class="container px-5">
-				<c:if test="${not empty notice.photos}">
-					<c:forEach items="${notice.photos}" var="photo">	
+				<c:forEach items="${notice.photos}" var="photo">	
+					<c:if test="${photo.noticeRenamedFilename != null}">
 						<img src ="${pageContext.request.contextPath}/resources/upload/notice/${photo.noticeRenamedFilename}" class="img-fluid border rounded-3 shadow-lg mb-4" width="700" height="500">
-					</c:forEach>
-				</c:if>
+					</c:if>
+				</c:forEach>
 			</div>
 		</div>
 	</c:if>

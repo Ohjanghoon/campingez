@@ -61,6 +61,7 @@
 		<intercept-url pattern="/review/reviewList.do" access="permitAll"/>
 		
 		<intercept-url pattern="/coupon/insertCoupon.do" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/coupon/couponDown" access="permitAll"/>
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 		
 		<intercept-url pattern="/**" access="isAuthenticated()"/>

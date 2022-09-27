@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kh.campingez.chat.model.dto.ChatLog;
 import com.kh.campingez.chat.model.dto.ChatUser;
+import com.kh.campingez.trade.model.dto.Trade;
 
 import lombok.NonNull;
 
@@ -24,5 +25,7 @@ public interface ChatService {
 	String findChatTradeNo(String chatroomId);
 
 	ChatUser deleteCheck(String chatroomId);
+
+	Trade selectGoTradeByNo(String tradeNo);
 
 }

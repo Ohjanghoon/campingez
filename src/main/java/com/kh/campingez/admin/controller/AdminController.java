@@ -104,11 +104,9 @@ public class AdminController {
 
 	@PostMapping("/warning.do")
 	public ResponseEntity<?> warning(@RequestParam String userId, @RequestParam String reason) {
-		String location = "/notice/detail.do?noticeNo=N17";
 		Map<String, Object> param = new HashMap<>();
 		param.put("userId", userId);
 		param.put("reason", reason);
-		param.put("location", location);
 		
 		int result = adminService.updateWarningToUser(param);
 		result = alarmService.warningToUserAlarm(param);

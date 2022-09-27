@@ -80,7 +80,7 @@
 	  		<label for="title" class="trade-font-color">게시글 제목</label>
  			<div class="form-floating price-wrap">
 			  <input type="text" class="form-control" id="price" placeholder="\ 판매가격" name="tradePrice" value="0" required> 
-			  <label for="price" class="trade-font-color">\ 판매가격</label>
+			  <label for="price" class="trade-font-color">판매가격</label>
 			</div>	
 		</div>	
 		<div class="info-wrap">

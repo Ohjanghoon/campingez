@@ -33,7 +33,7 @@
 	      <h1 class="fw-bolder mb-1">${community.commTitle}</h1>
               <!-- Post meta content-->
               <div class="text-muted fst-italic mb-2">
-	              작성자 : ${community.userId} / 작성일 : <fmt:parseDate value="${community.commDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="commDate"/>
+	              작성자 : ${community.userId} / 작성일 : <fmt:parseDate value="${community.commDate}" pattern="yyyy-MM-dd'T'HH:mm" var="commDate"/>
 	              <fmt:formatDate value="${commDate}" pattern="yy-MM-dd HH:mm"/>
               </div>
           <!-- Post categories-->
@@ -330,7 +330,7 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
 				         <input type="hidden" name="writer" value="${loginMember.userId}" />
 		            <input type="hidden" name="commentLevel" value="2" />
 		            <input type="hidden" name="commentRef" value="\${value}" />    
-		            	<div class="form-group col-xs-20 col-sm-13 col-lg-20">
+		            	<div class="form-group col-xs-20 col-sm-13 col-lg-20 ">
 		    	        <textarea class="form-control" id="cContent2" name="cContent" placeholder="댓글을 입력하세요." style="resize:none;"></textarea>
 		    	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn2">댓글 등록</button>
 		            </div>   	   
@@ -338,7 +338,7 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
 			</td>
 		</tr>`;
 		
-        const target = e.target.parentElement.parentElement; // tr
+        const target = e.target.parentElement.parentElement.parentElement.parentElement; // tr
         target.insertAdjacentHTML('afterend', tr);
         
         // 대댓글 null 방지
@@ -371,9 +371,19 @@ btn.addEventListener('click', (e) => {
 	e.preventDefault();
 });
 }
+
+// 목록으로
 document.querySelector("#golist").addEventListener('click', (e) => {
-	history.go(-1);
+	const category = '${community.categoryId}';
+	
+	if(category == 'com1'){
+		location.href="${pageContext.request.contextPath}/community/communityListFree.do";
+	} else{
+		location.href="${pageContext.request.contextPath}/community/communityListHoney.do";
+	}
 });
+
+
 // 채팅하기 클릭시
 const chatBtnClick = () => {
 	
