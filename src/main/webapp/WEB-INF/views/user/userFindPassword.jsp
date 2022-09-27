@@ -20,36 +20,33 @@
 					<th>&nbsp;</th>
 					<td>
 					<div class="group">      
-			          <input type="text" required name="userId" id="userId" value="sinsa">
+			          <input type="text" required name="userId" id="userId" value="">
 			          <span class="highlight"></span>
 			          <span class="bar"></span>
 			          <label>Id</label>
 			        </div>
-						<!-- <input type="text" name="userId" id="userId" placeholder="아이디를 입력하세요" required value="sinsa"/> -->
 					</td>
 				</tr>
 				<tr>
 					<th>&nbsp;</th>
 					<td>
 						<div class="group">      
-				          <input type="text" required name="phone" id="phone" value="01098989898">
+				          <input type="text" required name="phone" id="phone" value="">
 				          <span class="highlight"></span>
 				          <span class="bar"></span>
 				          <label>Phone</label>
 				        </div>
-						<!-- <input type="text" name="phone" id="phone" placeholder="휴대폰번호 (- 제외)" required maxlength="13" value="01098989898"/> -->
 					</td>
 				</tr>
 				<tr>
 					<th>&nbsp;</th>
 					<td>
 						<div class="group">      
-				          <input type="text" required name="email" id="email" value="honggd@gmail.com">
+				          <input type="text" required name="email" id="email" value="">
 				          <span class="highlight"></span>
 				          <span class="bar"></span>
 				          <label>Email</label>
 				        </div>
-						<!-- <input type="email" placeholder="abc@xyz.com" name="email" id="email" value="honggd@gmail.com"> -->
 					</td>
 				</tr>
 				<tr>

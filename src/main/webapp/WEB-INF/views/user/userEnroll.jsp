@@ -528,7 +528,7 @@ var code = "";
 
 $('#mail-Check-Btn').click(function() {
 	const email = $('#email').val(); // 이메일 주소값 얻어오기!
-	console.log('이메일 : ' + email); // 이메일 오는지 확인
+	//console.log('이메일 : ' + email); // 이메일 오는지 확인
 	const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
 	const emailCheck = document.querySelector('#mail-Check-Btn');
 	emailCheck.disabled = true;
@@ -540,7 +540,7 @@ $('#mail-Check-Btn').click(function() {
 		},
 		success(data){
 			alert('이메일이 발송되었습니다.');
-			console.log(data);
+			//console.log(data);
 			checkInput.attr("disabled",false);
 			//document.querySelector('.mail-check-input').value = data;
 			code = data;
@@ -556,14 +556,14 @@ $(".mail-check-input").on('input', function(){
 	const mailCheckVal = document.querySelector('#mailCheckVal').value;
 	
     if(inputCode == code){
-    	console.log('일치');
+    	//console.log('일치');
         checkResult.innerHTML = "인증번호가 일치합니다.";
         checkResult.classList.remove("incorrect");
         checkResult.classList.add("correct");
         document.querySelector('#mailCheckVal').value = "1";
         
     } else {
-    	console.log('불일치');
+    	//console.log('불일치');
         checkResult.innerHTML = "인증번호를 다시 확인해주세요."
         checkResult.classList.remove("correct");
         checkResult.classList.add("incorrect");
@@ -707,7 +707,7 @@ passwordCheck.addEventListener('input', (e) => {
 document.querySelector("#all-check").addEventListener('click', (e) => {
 	const checkes = document.querySelectorAll("#rule-check");
 	const allCheck = e.target.checked;
-	console.log(e.target.checked);
+	//console.log(e.target.checked);
 	
 	checkes.forEach((check) => {
 		check.checked = allCheck;
