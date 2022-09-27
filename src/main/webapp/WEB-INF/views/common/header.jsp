@@ -467,7 +467,7 @@ const beforeTime = (alarmDate) => {
 									id="new-alarm">N <span class="visually-hidden">New alerts</span>
 								</span>
 							<div class="header-layer shadow mb-5 bg-body rounded"></div>
-							<form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="GET">
+							<form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
 								<div class="header-layer shadow mb-5 bg-body rounded"></div>
 								<button class="btn btn-primary" type="submit">로그아웃</button>
 							</form:form>
@@ -593,7 +593,9 @@ const beforeTime = (alarmDate) => {
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/userInfo/myLikeList.do">찜 목록</a></li>
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/chat/myChatList.do">채팅 목록</a></li>
 						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/userLogout.do">로그아웃</a></li>
+						<form:form action="${pageContext.request.contextPath}/user/userLogout.do" method="POST">
+							<li><button class="dropdown-item">로그아웃</button></li>
+						</form:form>
 					</ul>
 				</div>
 			</sec:authorize>
