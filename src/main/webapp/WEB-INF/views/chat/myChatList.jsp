@@ -1,79 +1,80 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="채팅방" name="title"/>
+	<jsp:param value="채팅방" name="title" />
 </jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js">moment.locale('ko');</script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chat/myChatList.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/chat/myChatList.css" />
 <style>
-
 </style>
 <sec:authentication property="principal.username" var="loginUser" />
 <div class="container my-5" id="myChat-container">
 	<div class="row mx-auto">
 		<div class="col-lg-4" style="height: 80vh; overflow-y: scroll;">
-		<table class="table" id="chatList">
-			<thead>
-				<tr class="text-center">
-					<th colspan="3" class="py-2">채팅목록</th>
-				</tr>
-			</thead>
-			<tbody>
-			<c:if test="${empty chatUsers}">
-				<tr>
-					<td class="text-center p-3">현재 채팅가능한 채팅방이 없습니다.</td>
-				</tr>
-			</c:if>
-			<c:if test="${not empty chatUsers}">
-			<c:forEach items="${chatUsers}" var="chatUser">
-				<tr data-chatroomid="${chatUser.chatroomId}">
-					<td class="text-center align-middle chatUserProfile" onclick="enterChatroom('${chatUser.chatroomId}')">
-						<i class="fa-solid fa-circle-user"></i>
-						<br />
-						<span>
-							<c:choose>
-								<c:when test="${chatUser.chatTradeNo eq null}">
-									<small class="badge bg-primary">1:1</small>
-								</c:when>
-								<c:when test="${chatUser.chatTradeNo ne null}">
-									<small class="badge bg-warning">중고거래</small>
-								</c:when>
-							</c:choose>
-						</span>
-					</td>
-					<td class="px-3 chatUserId"
-						onclick="enterChatroom('${chatUser.chatroomId}')">
-						<strong>${chatUser.userId}</strong>
-						<br />
-						<small id="recentChatMsg">${chatUser.chatLog.chatMsg}</small>
-					</td>
-					<td class="text-end align-middle" onclick="deleteChatroom('${chatUser.chatroomId}')" >
-						<button type="button" class="btn p-auto" style="border: none;"
-							data-chatroomId="${chatUser.chatroomId}">
-							<i class="fa-solid fa-xmark"></i>
-						</button>
-					</td>
-				</tr>
-			</c:forEach>
-			</c:if>
-			</tbody>
-		</table>
+			<table class="table" id="chatList">
+				<thead>
+					<tr class="text-center">
+						<th colspan="3" class="py-2">채팅목록</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:if test="${empty chatUsers}">
+						<tr>
+							<td class="text-center p-3" id="nothingChat">현재 채팅가능한 채팅방이 없습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${not empty chatUsers}">
+						<c:forEach items="${chatUsers}" var="chatUser">
+							<tr data-chatroomid="${chatUser.chatroomId}">
+								<td class="text-center align-middle chatUserProfile"
+									onclick="enterChatroom('${chatUser.chatroomId}', '${chatUser.userId}')">
+									<i class="fa-solid fa-circle-user"></i>
+									<br />
+									<span> 
+										<c:choose>
+											<c:when test="${chatUser.chatTradeNo eq null}">
+												<small class="badge bg-primary">1:1</small>
+											</c:when>
+											<c:when test="${chatUser.chatTradeNo ne null}">
+												<small class="badge bg-warning">중고거래</small>
+											</c:when>
+										</c:choose>
+									</span>
+								</td>
+								<td class="px-3 chatUserId"
+									onclick="enterChatroom('${chatUser.chatroomId}', '${chatUser.userId}')">
+									
+									<div class="d-flex justify-content-between">
+										<strong>${chatUser.userId}</strong>
+										<small class="align-middle chatTime">${chatUser.chatLog.chatTime}</small>
+									</div>
+									<small id="recentChatMsg">${chatUser.chatLog.chatMsg}</small>
+								</td>
+								<td class="text-end align-middle"
+									onclick="deleteChatroom('${chatUser.chatroomId}', '${chatUser.userId}')">
+									<button type="button" class="btn p-auto" style="border: none;"
+										data-chatroomId="${chatUser.chatroomId}">
+										<i class="fa-solid fa-xmark"></i>
+									</button>
+								</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
 		</div>
 		<div class="col-lg-8 card py-2" style="height: 80vh;">
-			<div class="w-100 p-2" id="chatLog" style="height: 80vh; overflow-y: scroll;">
-				
-			</div>
-			<div class="input-group" id="chatBtn">
-			
-			</div>
-			<div id="goTradeBtnArea">
-			
-			</div>
+			<div class="w-100 p-2" id="chatLog"
+				style="height: 80vh; overflow-y: scroll;"></div>
+			<div class="input-group" id="chatBtn"></div>
+			<div id="goTradeBtnArea"></div>
 		</div>
 	</div>
 </div>
@@ -81,36 +82,78 @@
 //화면 로드시 스크롤 이동
 $(document).ready(function () {
 	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
+	
+	history.replaceState({}, null, location.pathname);
+	
+	
 });
 
+window.onload = () => {
+
+	const chatTimes = document.querySelectorAll('.chatTime');
+	
+	if(chatTimes != null){
+		chatTimes.forEach((span) => {
+			console.log(typeof parseInt(span.innerHTML));
+			let chatTime = span.innerHTML;
+			
+			if(!chatTime.includes('전')){
+				chatTIme =  parseInt(`${chatTime}`); 
+				span.innerHTML = beforeTime(parseInt(span.innerHTML));
+			}
+			
+		});
+	}
+		
+};
+setTimeout(() => {
+	stompClient.subscribe('/app/${loginUser}/myChatList', (message) => {
+		console.log('[구독시작!] /app/${loginUser}/myChatList : ', message);
+		subMyChatList(message);
+	});
+	
+	
+	/* stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
+		
+	}); */
+	//document.querySelectorAll(tr[data-chatroomid
+	
+}, 500);
+
+
+
 //채팅방 입장시
-const enterChatroom = (chatroomId) => {
+const enterChatroom = (chatroomId, chatTargetId) => {
 	//const tr = e.target.parentElement;
 	//const chatroomId = tr.dataset.chatroomid;
-	//console.log(chatroomId);
+	console.log("채팅방 입장시 chatroomId = ", chatroomId);
+	console.log("채팅방 입장시 chatTargetId = ", chatTargetId);
 	const chatLog = document.querySelector("#chatLog");
-	
 	chatLog.innerHTML = "";
+
 	$.ajax({
 		url : '${pageContext.request.contextPath}/chat/enterChatroom.do',
 		data : {chatroomId},
 		success(response){
 			console.log(response);
 			
-			const {chatLogs, chatTradeNo} = response;
-			// 불러온 채팅 내역 추가
+			const {chatLogs, chatTradeNo, deleteCheckUser} = response;
+			
+			//채팅 내역 화면에 출력
 			chatLogs.forEach((chat) => {
+				
 				const {userId, chatMsg, chatTime} = chat;
 				tradeNo = chatTradeNo;
-				console.log(chatTradeNo);
-				console.log(chat);
+				//console.log(chatTradeNo);
+				//console.log(chat);
 				//const date = new Date(chatTime).toLocaleTimeString();
 				const date = moment(chatTime).format("YY.MM.D HH:mm");
-				console.log(date);
+				//console.log(date);
 				let html = "";
-				console.log("${loginUser}");
-				console.log(userId, chatMsg, chatTime);
+				//console.log("${loginUser}");
+				//console.log(userId, chatMsg, chatTime);
 				
+				//내 채팅 정렬
 				if("${loginUser}" === userId) {
 					html += `
 						<ul class="list-unstyled list-group d-flex align-items-end">
@@ -119,6 +162,7 @@ const enterChatroom = (chatroomId) => {
 						</ul>
 					`;
 				}
+				//상대방 채팅 정렬
 				else {
 					html += `
 						<ul class="list-unstyled list-group d-flex align-items-start" >
@@ -128,23 +172,35 @@ const enterChatroom = (chatroomId) => {
 						</ul>
 					`;
 				}
-
-				chatLog.insertAdjacentHTML('beforeend', html);
 				
+				chatLog.insertAdjacentHTML('beforeend', html);
 			});
 			
 			// 전송 버튼 영역 추가
 			const btnArea = document.querySelector("#chatBtn");
 			
-			btnArea.innerHTML = "";
-			btnArea.innerHTML += `
-				<input type="text" id="msg" class="form-control" placeholder="Message">
-
-				<div class="input-group-append" style="padding: 0px;">
-				  <button id="sendBtn" class="btn btn-outline-secondary" type="button"
-				  	onclick="sendMsg('\${chatroomId}')"><i class="fa-solid fa-paper-plane"></i> Send</button>
-				</div>
-			`;
+			btnArea.innerHTML = ``;
+			
+			//아무도 채팅방을 나가지 않을 경우
+			if(deleteCheckUser == null){
+				btnArea.innerHTML += `
+					<input type="text" id="msg" class="form-control" placeholder="Message">
+	
+					<div class="input-group-append" style="padding: 0px;">
+					  <button id="sendBtn" class="btn btn-outline-secondary" type="button"
+					  	onclick="sendMsg('\${chatroomId}', '\${chatTargetId}')"><i class="fa-solid fa-paper-plane"></i> Send</button>
+					</div>
+				`;
+				
+				document.querySelector("#msg").addEventListener('keyup', (e) => {
+					
+					if(e.key === 'Enter') sendMsg(`\${chatroomId}`, `\${chatTargetId}`);
+				});
+			}
+			//상대방이 채팅방을 나갔을 경우
+			else {
+				btnArea.innerHTML += `<input type="text" class="form-control" placeholder="대화 상대가 없습니다." readonly>`;
+			}
 			
 			// 중고거래글 이동버튼 영역 추가
 			const btnTradeArea = document.querySelector("#goTradeBtnArea");
@@ -158,116 +214,144 @@ const enterChatroom = (chatroomId) => {
 				btnTradeArea.innerHTML = "";
 			}
 			
+			//채팅방 화면 최하단으로 이동
 			chatLog.scrollTop = chatLog.scrollHeight;
 			
-			document.querySelector("#msg").addEventListener('keyup', (e) => {
-				
-				if(e.key === 'Enter'){
-					sendMsg(`\${chatroomId}`);
-				}
+			//채팅방 내역 받기 구독
+			stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
+				subChatLog(message);
+			});
+			
+			//채팅방 나가기 구독
+			stompClient.subscribe(`/app/deleteChat/\${chatroomId}`, () => {
+				btnArea.innerHTML = `<input type="text" class="form-control" placeholder="대화 상대가 없습니다." readonly>`;
 			});
 		},
-		error : console.log,
-		complete() {
-			
-			stompClient.subscribe(`/app/chat/\${chatroomId}`, (message) => {
-				const {"content-type" : contentType} = message.headers;
-				if(!contentType) return;
-					
-				console.log(`/app/chat/\${chatroomId} : `, message);
-
-				const chatLog = document.querySelector("#chatLog");	
-				
-				const {userId, chatMsg, chatTime} = JSON.parse(message.body);
-				//const date = new Date(chatTime).toLocaleTimeString();
-				const date = moment(chatTime).format("YY.MM.D HH:mm");
-				console.log(date);
-				let html = "";
-				if("${loginUser}" === userId) {
-					html += `
-						<ul class="list-unstyled list-group d-flex align-items-end">
-							<li class="list-item mt-2"><span class="card userMsg p-2" title="">\${chatMsg}</span></li>
-							<li class="list-item w-50 text-end"><small>\${date}</small></li>
-						</ul>
-					`;
-				}
-				else {
-					html += `
-						<ul class="list-unstyled list-group d-flex align-items-start" >
-							<li class="list-item w-50 mt-2 mb-1"><strong>\${userId}</strong></li>
-							<li class="list-item"><span class="card targetMsg p-2">\${chatMsg}</span></li>
-							<li class="list-item w-50"><small>\${date}</small></li>
-						</ul>
-					`;
-				}
-				
-				chatLog.insertAdjacentHTML('beforeend', html);
-				
-				chatLog.scrollTop = chatLog.scrollHeight;
-				
-			});	
-		}
+		error : console.log
+		
 	});
 	
 };
 
-setTimeout(() => {
-	stompClient.subscribe(`/app/chat/myChatList`, (message) => {
-		console.log(`/app/chat/myChatList : `, message);
+
+
+const subMyChatList = (message) => {
+	let {chatroomId, userId, chatMsg, chatTime, chatTradeNo} = JSON.parse(message.body);
+	
+	const tbody = document.querySelector("#chatList tbody");
+	let tr = document.querySelector(`tr[data-chatroomid = "\${chatroomId}"]`);
+	chatTime = beforeTime(chatTime);
+	if(tr) {
+		tr.querySelector("#recentChatMsg").innerHTML = chatMsg;
+		tr.querySelector(".chatTime").innerHTML = chatTime;
+	} //if
+	else {
+		//신규채팅방인 경우
+		tr = document.createElement("tr");
+		tr.dataset.chatroomid = chatroomId;
 		
-		const {chatroomId, userId, chatMsg} = JSON.parse(message.body);
-		
-		let tr = document.querySelector(`tr[data-chatroomid = "\${chatroomId}"]`);
-		if(tr) {
-			tr.querySelector("#recentChatMsg").innerHTML = chatMsg;
-		}
+		let html = `
+			<td class="text-center align-middle chatUserProfile" onclick="enterChatroom('\${chatroomId}', '\${userId}')">
+				<i class="fa-solid fa-circle-user"></i>
+				<br />
+				<span>
+		`;
+
+		if(chatTradeNo == null){
+			html += `<small class="badge bg-primary">1:1</small>`;
+		} // if
 		else {
-			//신규채팅방인 경우
-			tr = document.createElement("tr");
-			tr.dataset.chatroomid = chatroomId;
-			
-			let html = `
-				<td class="align-middle chatUserProfile" onclick="enterChatroom('\${chatroomId}')">
-					<i class="fa-solid fa-circle-user"></i>
-				</td>
-				<td class="px-3 chatUserId"
-					onclick="enterChatroom('\${chatroomId}')">
+			html += `<small class="badge bg-warning">중고거래</small>`;
+		} //else
+		
+		html += `
+				</span>
+			</td>
+			<td class="px-3 chatUserId"
+				onclick="enterChatroom('\${chatroomId}', '\${userId}')">
+				<div class="d-flex justify-content-between">
 					<strong>\${userId}</strong>
-					<br />
-					<small>\${chatMsg}</small>
-				</td>
-				<td class="text-end align-middle" onclick="deleteChatroom('\${chatroomId}')" >
-					<button type="button" class="btn p-auto" style="border: none;"
-						data-chatroomId="\${chatroomId}">
-						<i class="fa-solid fa-xmark"></i>
-					</button>
-				</td>
-			`;
-			
-			tr.insertAdjacentHTML("afterbegin", html);
-			
+					<small class="align-middle chatTime">\${chatTime}</small>
+				</div>
+				<small id="recentChatMsg">\${chatMsg}</small>
+			</td>
+			<td class="text-end align-middle" onclick="deleteChatroom('\${chatroomId}')" >
+				<button type="button" class="btn p-auto" style="border: none;"
+					data-chatroomId="\${chatroomId}">
+					<i class="fa-solid fa-xmark"></i>
+				</button>
+			</td>
+		`;
+		
+		if(document.querySelector("#nothingChat")){
+			tbody.innerHTML = "";
 		}
 		
-		//끌어올리기
-		const tbody = document.querySelector("#chatList tbody");
-		tbody.insertAdjacentElement('afterbegin', tr);
-	});
+		tr.insertAdjacentHTML("afterbegin", html);
 		
-}, 500);
+		
+	} //else
+	
+	//끌어올리기
+	tbody.insertAdjacentElement('afterbegin', tr);
+	
+};
+
+
+const subChatLog = (message) => {
+	
+	const {"content-type" : contentType} = message.headers;
+	if(!contentType) return;
+	
+	const chatLog = document.querySelector("#chatLog");	
+	
+	const {userId, chatMsg, chatTime} = JSON.parse(message.body);
+	//const date = new Date(chatTime).toLocaleTimeString();
+	const date = moment(chatTime).format("YY.MM.D HH:mm");
+	console.log(date);
+	let html = "";
+	if("${loginUser}" === userId) {
+		html += `
+			<ul class="list-unstyled list-group d-flex align-items-end">
+				<li class="list-item mt-2"><span class="card userMsg p-2" title="">\${chatMsg}</span></li>
+				<li class="list-item w-50 text-end"><small>\${date}</small></li>
+			</ul>
+		`;
+	}
+	else {
+		html += `
+			<ul class="list-unstyled list-group d-flex align-items-start" >
+				<li class="list-item w-50 mt-2 mb-1"><strong>\${userId}</strong></li>
+				<li class="list-item"><span class="card targetMsg p-2">\${chatMsg}</span></li>
+				<li class="list-item w-50"><small>\${date}</small></li>
+			</ul>
+		`;
+	}
+	
+	chatLog.insertAdjacentHTML('beforeend', html);
+	
+	chatLog.scrollTop = chatLog.scrollHeight;
+	subMyChatList(message);
+};
+
 
 // 메세지 전송 버튼 클릭시
-const sendMsg = (chatroomId) => {
-	console.log("chatroomId = ", chatroomId);
+const sendMsg = (chatroomId, chatTargetId) => {
+	console.log("전송버튼 클릭시 chatroomId = ", chatroomId);
+	console.log("전송버튼 클릭시 chatTargetId = ", chatTargetId);
 	const chatMsg = document.querySelector("#msg").value;
+	console.log("chatMsg = ", chatMsg);
+	
 	if(!chatMsg) return;
 	const payload = {
-		chatroomId : chatroomId,
-		userId : '<sec:authentication property="principal.username"/>',
+		chatroomId,
+		userId : '${loginUser}',
 		chatMsg,
 		chatTime : Date.now()
 	};
 	
 	stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+	stompClient.send(`/app/\${chatTargetId}/myChatList`, {}, JSON.stringify(payload));
 	
 	document.querySelector("#msg").value = "";
 	
@@ -296,7 +380,8 @@ const goTrade = (tradeNo) => {
 };
 
 //채팅방 나가기 버튼 클릭시
-const deleteChatroom = (chatroomId) => {
+const deleteChatroom = (chatroomId, chatTargetId) => {
+	
 	console.log(chatroomId);
 	const userId = '${loginUser}';
 	
@@ -312,14 +397,20 @@ const deleteChatroom = (chatroomId) => {
 			success(response){
 				console.log(response);
 				
-				const payload = {
+				const {deleteChatUser} = response;
+				
+				if(deleteChatUser == null){
+					const payload = {
 						chatroomId : chatroomId,
 						userId : '<sec:authentication property="principal.username"/>',
-						chatMsg : `-------- \${userId} 님이 채팅방을 나갔습니다. --------`,
+						chatMsg : `💥 \${userId} 님이 채팅방을 나갔습니다. 💥`,
 						chatTime : Date.now()
 					};
-					
-				stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+				
+					stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+					stompClient.send(`/app/\${chatTargetId}/myChatList`, {}, JSON.stringify(payload));
+					stompClient.send(`/app/deleteChat/\${chatroomId}`);
+				}
 				
 				location.reload();
 			},
@@ -328,5 +419,7 @@ const deleteChatroom = (chatroomId) => {
 		});
 	}
 };
+
+//enterChatroom('${chatroomId}', '${chatTargetId}');
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

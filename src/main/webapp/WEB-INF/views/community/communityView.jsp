@@ -9,7 +9,6 @@
    <jsp:param value="게시판 상세보기" name="title" />
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/communityView.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
 .media{
@@ -85,13 +84,10 @@
          </c:if>
             
 			<c:if test="${loginMember.userId ne community.userId}">
-				<form:form method="GET"	name="chatForm"	action="${pageContext.request.contextPath}/chat/chat.do">
-					<input type="hidden" name="chatTargetId" value="${community.userId}" />
-					<%-- <input type="hidden" name="chatTradeNo" value="${trade.tradeNo}" /> --%>
-					<button type="submit" id="chatBtn" class="btn btn-outline-primary flex-shrink-0" style="">
-						<i class="fa-solid fa-paper-plane"></i> 작성자와 채팅하기
-					</button>
-				</form:form>	   
+				<button type="button" id="chatBtn" class="btn btn-outline-primary flex-shrink-0" style=""
+					onclick="chatBtnClick()">
+					<i class="fa-solid fa-paper-plane"></i> 작성자와 채팅하기
+				</button>
 			</c:if>        
       </sec:authorize>
       
@@ -106,7 +102,7 @@
 
       </c:if>
       
-      <sec:authorize access="${not empty user.userId} and isAuthenticated()">
+       <sec:authorize access="${not empty user.userId} and isAuthenticated()">
          
       <form name="communityCommentFrm" action="${pageContext.request.contextPath}/community/commentEnroll.do" method="post">
       	<h3 class="pull-left">New Comment</h3>
@@ -118,12 +114,11 @@
 
         <div class="form-group col-xs-20 col-sm-13 col-lg-20">
 	        <textarea class="form-control" id="cContent" name="cContent" placeholder="댓글을 입력하세요."  style="resize:none;"></textarea>
-	        <button type="button" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
+	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
         </div>   	
       </form>
       </sec:authorize>
-                    
-                    
+                                       
 	  <c:if test="${not empty commentlist}">
 	  
       <hr style="margin-top:50px;margin-bottom:50px;"/>
@@ -137,17 +132,18 @@
             </c:if>
                       
           	<div class="media-body comment-wrap">
-				<div class="comm-comment-wrap">
-	            	<h4 class="media-heading">${comment.userId}</h4>
-	                <p>${comment.commentContent } </p>
-	                <ul class="list-unstyled list-inline media-detail pull-left">
-	                	<li><i class="fa fa-calendar"></i>
-	                    <fmt:parseDate value="${comment.commentDate}" pattern="yyyy-MM-dd'T'HH:mm" var="commentDate"/>
-	                    <fmt:formatDate value="${commentDate}" pattern="yy-MM-dd"/></li>
-	                </ul>
-				</div>
-            	<div class="comm-comment-btn-wrap">
-		           <ul class="list-unstyled list-inline media-detail pull-right">
+          	<div class="comm-comment-wrap">
+            	<h4 class="media-heading">${comment.userId}</h4>
+                <p>${comment.commentContent } </p>
+                <ul class="list-unstyled list-inline media-detail pull-left">
+                	<li><i class="fa fa-calendar"></i>
+                    <fmt:parseDate value="${comment.commentDate}" pattern="yyyy-MM-dd'T'HH:mm" var="commentDate"/>
+                    <fmt:formatDate value="${commentDate}" pattern="yy-MM-dd"/></li>
+                </ul>
+             </div>
+                          
+          	<div class="comm-comment-wrap">
+                <ul class="list-unstyled list-inline media-detail pull-right">
                 	<sec:authorize access="isAuthenticated()"> 
                     <c:if test="${comment.commentLevel eq 1}">
                     	<button class="btn-reply btn btn-outline-dark flex-shrink-0" value="${comment.commentNo}">답글</button>
@@ -162,8 +158,7 @@
 		            </c:if>
                     </sec:authorize>
                  </ul>
-            	</div>              
-			
+             </div>
              </div>
             </div>
            </c:forEach>
@@ -220,7 +215,6 @@ document.querySelector("#report-content").addEventListener('input', (e) => {
 		count.style.color = 'black';
 	}
 });
-
 document.querySelector("#report-btn").addEventListener('click', (e) => {
 	const userId = "${user.userId}";
 	if(!userId) {
@@ -230,7 +224,6 @@ document.querySelector("#report-btn").addEventListener('click', (e) => {
 		return;
 	}
 });
-
 // 최종 신고
 document.querySelector("#report").addEventListener('click', (e) => {
 	const count = document.querySelector("#text-count");
@@ -248,7 +241,6 @@ document.querySelector("#report").addEventListener('click', (e) => {
 		}
 	}
 });
-
 // 이미 신고한 게시글이라면 모달창 안 열림
 document.querySelector("#reportModal").addEventListener('show.bs.modal', (e) => {
 	const reportUserId = document.querySelector("#report-btn").dataset.reportUserId;
@@ -258,16 +250,12 @@ document.querySelector("#reportModal").addEventListener('show.bs.modal', (e) => 
 		e.preventDefault();
 	}
 });
-
-
 // 게시글 삭제
 function deleteComm(){
    if(confirm("삭제하실건가요?")){
       location.href="${pageContext.request.contextPath}/community/communityDelete.do?no=${community.commNo}";
    }else return;
 }
-
-
 // 조회수 새로고침
 window.onload = function() {
     if(!window.location.hash) {
@@ -277,15 +265,11 @@ window.onload = function() {
         }, 50)
     }
 }
-
 //좋아요
 const headers = {};
 headers['${_csrf.headerName}'] = '${_csrf.token}';
-
 $(document).ready(function () {
-
     var heartval = ${heart};
-
     if(heartval > 0) {
         console.log(heartval);
         $("#heart").prop("src", "${pageContext.request.contextPath}/resources/images/trade/colorHeart.png");
@@ -296,7 +280,6 @@ $(document).ready(function () {
         $("#heart").prop("src", "${pageContext.request.contextPath}/resources/images/trade/emptyHeart.png");
         $(".heart").prop('name',heartval)
     }
-
     $(".heart").on("click", function () {
     	
     	const userId = "${user.userId}";
@@ -305,9 +288,7 @@ $(document).ready(function () {
     		location.href = "${pageContext.request.contextPath}/user/userLogin.do";
     		return;
     	}
-
         var that = $(".heart");
-
         var sendData = {'commNo' : '${community.commNo}', 'heart' : that.prop('name')};
         $.ajax({
             url :'${pageContext.request.contextPath}/community/heart',
@@ -327,16 +308,13 @@ $(document).ready(function () {
         });
     });
 });
-
 function deleteComment(){
 	if(confirm("삭제하실건가요?")){
 	  location.href="${pageContext.request.contextPath}/community/commentDelete.do?no=${comment.commentCommNo}";
 	}else return;
 }
-
 document.querySelectorAll(".btn-reply").forEach((btn) => {
 	btn.addEventListener('click', (e) => {
-
 		const {value} = e.target;
 		console.log(value);
 		
@@ -353,8 +331,8 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
 		            <input type="hidden" name="commentLevel" value="2" />
 		            <input type="hidden" name="commentRef" value="\${value}" />    
 		            	<div class="form-group col-xs-20 col-sm-13 col-lg-20">
-		    	        <textarea class="form-control" id="cContent" name="cContent" placeholder="댓글을 입력하세요." style="resize:none;"></textarea>
-		    	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn">댓글 등록</button>
+		    	        <textarea class="form-control" id="cContent2" name="cContent" placeholder="댓글을 입력하세요." style="resize:none;"></textarea>
+		    	        <button type="submit" class="btn btn-normal pull-right" id="enroll-btn2">댓글 등록</button>
 		            </div>   	   
 		        </form>
 			</td>
@@ -363,26 +341,81 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
         const target = e.target.parentElement.parentElement; // tr
         target.insertAdjacentHTML('afterend', tr);
         
+        // 대댓글 null 방지
+        document.querySelector("#enroll-btn2").addEventListener('click', (e) => {
+        const content2 = document.querySelector("#cContent2");
+    	if(!content2.value) {
+    		alert("빈 댓글을 등록할 수 없습니다.");
+    		content2.focus();
+    	} else{
+    	document.communityCommentFrm.submit();	
+    	}
+    	
+    	e.preventDefault();
+        });
+        
 	}, {once: true});
 });
-
-
-document.querySelector("#enroll-btn").addEventListener('click', (e) => {
+// 댓글 null 방지
+const btn = document.querySelector("#enroll-btn")
+if(btn != null){
+btn.addEventListener('click', (e) => {
 	const content = document.querySelector("#cContent");
-
 	if(!content.value) {
 		alert("빈 댓글을 등록할 수 없습니다.");
 		content.focus();
-		return;
+	} else{
+	document.communityCommentFrm.submit();	
 	}
-
-	document.communityCommentFrm.submit();
+	
+	e.preventDefault();
 });
-
+}
 document.querySelector("#golist").addEventListener('click', (e) => {
 	history.go(-1);
 });
-
+// 채팅하기 클릭시
+const chatBtnClick = () => {
+	
+	const chatTargetId = '${community.userId}';
+	//const chatTradeNo = null;
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+	
+	$.ajax({
+		
+		url : '${pageContext.request.contextPath}/chat/chat.do',
+		headers,
+		method : 'post',
+		data : {chatTargetId},
+		success(response){
+			
+			console.log(response);
+			
+			const {chatroomId, checkBegin} = response;
+			
+			if(checkBegin) {
+				const payload = {
+					chatroomId : chatroomId,
+					userId : '${loginMember.username}',
+					chatMsg : '👋 ${loginMember.username} 님이 채팅을 시작했습니다. 👋',
+					chatTime : Date.now(),
+					chatTradeNo : null
+					
+				};
+			
+				stompClient.send('/app/${community.userId}/myChatList', {}, JSON.stringify(payload));
+				stompClient.send('/app/${loginMember.username}/myChatList', {}, JSON.stringify(payload));
+				stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+			}	
+			location.href="${pageContext.request.contextPath}/chat/myChatList.do";
+		},
+		error : console.log
+		
+	});
+	
+};
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

@@ -37,4 +37,7 @@ public interface ChatDao {
 	@Select("select chat_trade_no from chat_user where chatroom_id = #{chatroomId} group by chat_trade_no")
 	String findChatTradeNo(String chatroomId);
 
+	@Select("select c.* from chat_user c join chat_user t on c.chatroom_id = t.chatroom_id where c.chatroom_id = #{chatroomId} and c.deleted_at is null and t.deleted_at is not null")
+	ChatUser deleteCheck(String chatroomId);
+
 }

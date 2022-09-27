@@ -23,4 +23,6 @@ public interface ChatService {
 
 	String findChatTradeNo(String chatroomId);
 
+	ChatUser deleteCheck(String chatroomId);
+
 }

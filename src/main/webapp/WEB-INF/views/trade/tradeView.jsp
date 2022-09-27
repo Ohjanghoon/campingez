@@ -15,7 +15,7 @@
 	<sec:authentication property="principal.username" var="loginUser" scope="page" />
 </sec:authorize>
 <style>
-.content-wrap {
+.trade-wrap {
 	background-size: contain;
     background-repeat: no-repeat;
     padding-left:15px;
@@ -125,27 +125,29 @@
                     <div class="col-md-6 content-wrapper">
 						<div class="card">
 							<div class="content-wrap">
-								<div class="content card-body" style="width: 100%;">
-									<div class="small mb-1">${trade.categoryId eq 'tra1' ? '텐트/타프' : trade.categoryId eq 'tra2' ? '캠핑 테이블 가구' : trade.categoryId eq 'tra3' ? '캠핑용 조리도구' : '기타 캠핑용품'}
-										(${trade.tradeQuality}급 : ${trade.tradeQuality eq 'S' ? '상태 좋음' : trade.tradeQuality eq 'A' ? '상태 양호' : '아쉬운 상태'})
+								<div class="trade-wrap">
+									<div class="content trade-content card-body" style="width: 100%;">
+										<div class="small mb-1">${trade.categoryId eq 'tra1' ? '텐트/타프' : trade.categoryId eq 'tra2' ? '캠핑 테이블 가구' : trade.categoryId eq 'tra3' ? '캠핑용 조리도구' : '기타 캠핑용품'}
+											(${trade.tradeQuality}급 : ${trade.tradeQuality eq 'S' ? '상태 좋음' : trade.tradeQuality eq 'A' ? '상태 양호' : '아쉬운 상태'})
+										</div>
+										<div class="trade-view-header">
+											<h1 class="display-5 fw-bolder">${trade.tradeTitle}</h1>
+											<p class="saler">판매자 : ${trade.userId}</p>
+										</div>
+										<div class="fs-5 mb-5">
+											<span><fmt:formatNumber type="number"
+													value="${trade.tradePrice}" />원</span>
+										</div>
+										<h5 style="font-weight: bold;">상품정보</h5>
+										<div class="lead">
+											${fn:replace(trade.tradeContent, '\\n\\r', '<br/>')}
 									</div>
-									<div class="trade-view-header">
-										<h1 class="display-5 fw-bolder">${trade.tradeTitle}</h1>
-										<p class="saler">판매자 : ${trade.userId}</p>
+									<div class="likeAndview-wrap d-flex align-items-center">
+										<span>조회 ${trade.readCount}</span>
+										<span>관심 ${trade.likeCount}</span>
 									</div>
-									<div class="fs-5 mb-5">
-										<span><fmt:formatNumber type="number"
-												value="${trade.tradePrice}" />원</span>
-									</div>
-									<h5 style="font-weight: bold;">상품정보</h5>
-									<div class="lead">
-										${fn:replace(trade.tradeContent, '\\n\\r', '<br/>')}
-									</div>
-							</div>
-							<div class="likeAndview-wrap d-flex align-items-center">
-								<span>조회 ${trade.readCount}</span>
-								<span>관심 ${trade.likeCount}</span>
-							</div>
+								</div>
+								</div>
 							<div class="trade-footer-wrap">
 								<div class="jobgutdeul d-flex" style="text-align: right;">
 									<form action="${pageContext.request.contextPath}/trade/like.do" name="tradeLikeFrm" class="d-flex align-items-center">
@@ -167,15 +169,12 @@
 								<div class="chat-wrap">
 									<sec:authorize access="isAuthenticated()">
 									<c:if test="${loginUser ne trade.userId}">
-									<form:form method="GET"
-										name="chatForm"
-										action="${pageContext.request.contextPath}/chat/chat.do">
-										<input type="hidden" name="chatTargetId" value="${trade.userId}" />
-										<input type="hidden" name="chatTradeNo" value="${trade.tradeNo}" />
-										<button type="submit" id="chatBtn" class="btn btn-outline-dark flex-shrink-0">
+									
+										<button type="button" id="chatBtn" class="btn btn-outline-dark flex-shrink-0"
+											onclick="chatBtnClick()">
 											<i class="fa-solid fa-paper-plane"></i> 판매자와 채팅하기
 										</button>
-									</form:form>	   
+									   
 									</c:if>
 									</sec:authorize>
 								</div>
@@ -183,29 +182,29 @@
 								
 							</div>
 						</div>
-	                        <div class="d-flex" style="margin-top:20px; height:38px;">
-                            <c:if test="${loginUser eq trade.userId}">
-                            <c:if test="${trade.tradeSuccess eq '거래 대기중'}">
-                            <button class="btn btn-outline-success flex-shrink-0" type="button" onclick="updateSuccess();" style="margin-right:10px;">
-                                <i class="bi-cart-fill me-1"></i>
-                                상품 판매 완료
-                            </button>
-                            </c:if>
-                            <button class="btn btn-outline-danger flex-shrink-0" type="button" onclick="deleteTrade();">
-
-                                <i class="bi-cart-fill me-1"></i>
-
-                                <i class="fa-solid fa-trash-can"></i>
-
-                                상품 삭제
-                            </button>
-                            <button class="btn btn-outline-primary flex-shrink-0" type="button" onclick="location.href='${pageContext.request.contextPath}/trade/tradeUpdate.do?no=${trade.tradeNo}';" style="margin-left:10px;">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                                상품 수정
-                            </button>
-                            </c:if>
-						</div>
                     </div>
+                     <div class="d-flex" style="margin-top:20px; height:38px;">
+                         <c:if test="${loginUser eq trade.userId}">
+                         <c:if test="${trade.tradeSuccess eq '거래 대기중'}">
+                         <button class="btn btn-outline-success flex-shrink-0" type="button" onclick="updateSuccess();" style="margin-right:10px;">
+                             <i class="bi-cart-fill me-1"></i>
+                             상품 판매 완료
+                         </button>
+                         </c:if>
+                         <button class="btn btn-outline-danger flex-shrink-0" type="button" onclick="deleteTrade();">
+
+                             <i class="bi-cart-fill me-1"></i>
+
+                             <i class="fa-solid fa-trash-can"></i>
+
+                             상품 삭제
+                         </button>
+                         <button class="btn btn-outline-primary flex-shrink-0" type="button" onclick="location.href='${pageContext.request.contextPath}/trade/tradeUpdate.do?no=${trade.tradeNo}';" style="margin-left:10px;">
+                             <i class="fa-regular fa-pen-to-square"></i>
+                             상품 수정
+                         </button>
+                         </c:if>
+					</div>
                 </div>
             </div>
         </section>
@@ -245,6 +244,7 @@
 			  </div>
 			</div>
         </form:form>
+
 <script>
 // 이미지 슬라이더 슬릭
 const slider = $('.img-wrapper');
@@ -318,7 +318,7 @@ function deleteTrade(){
 	}else return;
 }
 
-// 상품 판매 완료 버튼(완전 야매버전)
+// 상품 판매 완료 버튼
 function updateSuccess(){
 	if(confirm("상품 판매가 완료되었나요?")){
 		const no = document.querySelector("[name=no]").value;
@@ -335,8 +335,6 @@ function updateSuccess(){
 			},
 			error : console.log
 		});
-		
-		
 	}else return;
 }
 
@@ -359,7 +357,7 @@ $(document).ready(function () {
 	// 판매완료여부 확인
 	const success = '${trade.tradeSuccess}';
 	if(success == '거래 완료') {
-		document.querySelector(".content-wrap").style.backgroundImage= 	"url('${pageContext.request.contextPath}/resources/images/trade/salecomplete.png')";
+		document.querySelector(".trade-wrap").style.backgroundImage= "url('${pageContext.request.contextPath}/resources/images/trade/salecomplete.png')";
 	}
 
     var heartval = ${heart};
@@ -406,19 +404,59 @@ $(document).ready(function () {
     });
 });
 
-
-$(document).ready(function () {
-	$("#chatBtn").on('click', (e) => {
-		const userId = "${user.userId}";
-		if(!userId) {
-			alert("로그인 후 이용 가능합니다.");
-			location.href = "${pageContext.request.contextPath}/user/userLogin.do";
-			return;
-		}
-		localStorage.setItem("tradeNo", ${tradeNo});
+const chatBtnClick = () => {
+	
+	/* <form:form method="POST"
+		name="chatForm"
+		action="${pageContext.request.contextPath}/chat/chat.do">
+	</form:form>	
+	<input type="hidden" name="chatTargetId" value="" />
+		<input type="hidden" name="chatTradeNo" value="${trade.tradeNo}" /> */
+	
+	//const frm = document.chatForm;
+	//frm.submit();
+	const chatTargetId = '${trade.userId}';
+	const chatTradeNo = '${trade.tradeNo}';
+	const headers = {};
+	headers['${_csrf.headerName}'] = '${_csrf.token}';
+	
+	
+	$.ajax({
+		
+		url : '${pageContext.request.contextPath}/chat/chat.do',
+		headers,
+		method : 'post',
+		data : {chatTargetId, chatTradeNo},
+		success(response){
+			
+			console.log(response);
+			
+			const {chatroomId, checkBegin} = response;
+			
+			if(checkBegin) {
+				const payload = {
+					chatroomId : chatroomId,
+					userId : '${loginUser}',
+					chatMsg : '👋 ${loginUser} 님이 채팅을 시작했습니다. 👋',
+					chatTime : Date.now(),
+					chatTradeNo : '${trade.tradeNo}'
+					
+				};
+				
+				stompClient.send('/app/${trade.userId}/myChatList', {}, JSON.stringify(payload));
+				stompClient.send('/app/${loginUser}/myChatList', {}, JSON.stringify(payload));
+				stompClient.send(`/app/chat/\${chatroomId}`, {}, JSON.stringify(payload));
+				
+			}
+			
+			location.href="${pageContext.request.contextPath}/chat/myChatList.do";
+		},
+		error : console.log
+		
 	});
-});
-
+	
+	
+};
 </script>
 
 
