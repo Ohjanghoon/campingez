@@ -72,8 +72,8 @@ public interface TradeDao {
 //	@Select("select * from trade where category_id = #{categoryId}")
 	List<Trade> selectTradeListKind(RowBounds rowBounds, String categoryId);
 	
-	@Select("select count(*) from trade where category_id = #{categoryId} and trade_isdelete = 'N'")
-	int getTotalContentKind();
+//	@Select("select count(*) from trade where category_id = #{categoryId} and trade_isdelete = 'N'")
+	int getTotalContentKind(String categoryId);
 	
 	@Update("update trade set trade_success = '거래 완료' where trade_no = #{tradeNo} and trade_isdelete = 'N'")
 	int updateSuccess(String no);
