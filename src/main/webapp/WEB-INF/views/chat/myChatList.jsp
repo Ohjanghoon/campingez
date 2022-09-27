@@ -37,7 +37,8 @@
 									onclick="enterChatroom('${chatUser.chatroomId}', '${chatUser.userId}')">
 									<i class="fa-solid fa-circle-user"></i>
 									<br />
-									<span> <c:choose>
+									<span> 
+										<c:choose>
 											<c:when test="${chatUser.chatTradeNo eq null}">
 												<small class="badge bg-primary">1:1</small>
 											</c:when>
@@ -45,10 +46,16 @@
 												<small class="badge bg-warning">중고거래</small>
 											</c:when>
 										</c:choose>
-								</span></td>
+									</span>
+								</td>
 								<td class="px-3 chatUserId"
-									onclick="enterChatroom('${chatUser.chatroomId}', '${chatUser.userId}')"><strong>${chatUser.userId}</strong>
-									<br /> <small id="recentChatMsg">${chatUser.chatLog.chatMsg}</small>
+									onclick="enterChatroom('${chatUser.chatroomId}', '${chatUser.userId}')">
+									
+									<div class="d-flex justify-content-between">
+										<strong>${chatUser.userId}</strong>
+										<small class="align-middle chatTime">${chatUser.chatLog.chatTime}</small>
+									</div>
+									<small id="recentChatMsg">${chatUser.chatLog.chatMsg}</small>
 								</td>
 								<td class="text-end align-middle"
 									onclick="deleteChatroom('${chatUser.chatroomId}', '${chatUser.userId}')">
@@ -77,12 +84,31 @@ $(document).ready(function () {
 	$('html, body, .container').animate({scrollTop: $('#myCarousel').outerHeight(true) - $('.blog-header').outerHeight(true) }, 'fast');
 	
 	history.replaceState({}, null, location.pathname);
+	
+	
 });
 
+window.onload = () => {
 
+	const chatTimes = document.querySelectorAll('.chatTime');
+	
+	if(chatTimes != null){
+		chatTimes.forEach((span) => {
+			console.log(typeof parseInt(span.innerHTML));
+			let chatTime = span.innerHTML;
+			
+			if(!chatTime.includes('전')){
+				chatTIme =  parseInt(`${chatTime}`); 
+				span.innerHTML = beforeTime(parseInt(span.innerHTML));
+			}
+			
+		});
+	}
+		
+};
 setTimeout(() => {
 	stompClient.subscribe('/app/${loginUser}/myChatList', (message) => {
-		console.log('/app/${loginUser}/myChatList : ', message);
+		console.log('[구독시작!] /app/${loginUser}/myChatList : ', message);
 		subMyChatList(message);
 	});
 	
@@ -196,6 +222,7 @@ const enterChatroom = (chatroomId, chatTargetId) => {
 				subChatLog(message);
 			});
 			
+			//채팅방 나가기 구독
 			stompClient.subscribe(`/app/deleteChat/\${chatroomId}`, () => {
 				btnArea.innerHTML = `<input type="text" class="form-control" placeholder="대화 상대가 없습니다." readonly>`;
 			});
@@ -209,11 +236,14 @@ const enterChatroom = (chatroomId, chatTargetId) => {
 
 
 const subMyChatList = (message) => {
-	const {chatroomId, userId, chatMsg, chatTradeNo} = JSON.parse(message.body);
+	let {chatroomId, userId, chatMsg, chatTime, chatTradeNo} = JSON.parse(message.body);
+	
 	const tbody = document.querySelector("#chatList tbody");
 	let tr = document.querySelector(`tr[data-chatroomid = "\${chatroomId}"]`);
+	chatTime = beforeTime(chatTime);
 	if(tr) {
 		tr.querySelector("#recentChatMsg").innerHTML = chatMsg;
+		tr.querySelector(".chatTime").innerHTML = chatTime;
 	} //if
 	else {
 		//신규채팅방인 경우
@@ -239,8 +269,10 @@ const subMyChatList = (message) => {
 			</td>
 			<td class="px-3 chatUserId"
 				onclick="enterChatroom('\${chatroomId}', '\${userId}')">
-				<strong>\${userId}</strong>
-				<br />
+				<div class="d-flex justify-content-between">
+					<strong>\${userId}</strong>
+					<small class="align-middle chatTime">\${chatTime}</small>
+				</div>
 				<small id="recentChatMsg">\${chatMsg}</small>
 			</td>
 			<td class="text-end align-middle" onclick="deleteChatroom('\${chatroomId}')" >
