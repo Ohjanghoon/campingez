@@ -274,14 +274,13 @@ const beforeTime = (alarmDate) => {
 	const getAlarmList = (userId) => {
 		const div = document.querySelector(".header-layer");
 		$.ajax({
-			url : "${pageContext.request.contextPath}/user/alarmList.do",
-			data : {userId},
+			url : `${pageContext.request.contextPath}/user/alarmList.do?userId=\${userId}`,
 			content : "application/json",
 			success(response) {
 				const {notReadCount, alarmList} = response;
-				
 				div.innerHTML = '';
 				
+				// 새소식 div
 				let html = `
 				<div id="notReadCount-wrap">
 					<div class="new-wrap d-flex">
@@ -300,21 +299,26 @@ const beforeTime = (alarmDate) => {
 				`;
 				
 				let targetUrl;
+				// 알림 없을 경우
 				if(alarmList.length < 1) {
 					html += `
 						<li id="alarm" class="list-group-item d-flex justify-content-between align-items-center no-alarm">알림이 없습니다.</li>
 					`;
-				} else {
+				} 
+				// 알림이 존재하는 경우
+				else {
 					alarmList.forEach((alarm) => {
 						const {alrId, alrMessage, alrType, alrUrl, alrDatetime, alrReadDatetime} = alarm;
 						targetUrl = alrUrl == null ? '#' : `${pageContext.request.contextPath}\${alrUrl}`;
 						const [yy, MM, dd, HH, mm, ss] = alrDatetime;
-	
+						
+						// 읽지 않은 알람인 경우
 						if(!alrReadDatetime) {
 							html += `
 							<div class="alarm-wrap no-read">
 								<a href="\${targetUrl}" id="alarmLink" >
-									<li data-alr-id=\${alrId} id="alarm"  class="d-flex justify-content-between align-items-center alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+									<li data-alr-id=\${alrId} id="alarm"  class="d-flex justify-content-between align-items-center alarmList" 
+										data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
 										<span id="badge-wrap">
 												<span class="badge bg-danger rounded-pill" id="newBadge">N</span>
 										</span>
@@ -331,11 +335,14 @@ const beforeTime = (alarmDate) => {
 								</button>
 							</div>
 							`;							
-						} else {
+						}
+						// 읽은 알람인 경우
+						else {
 							html += `
 							<div class="alarm-wrap read">
 								<a href="\${targetUrl}" id="alarmLink">
-									<li data-alr-id=\${alrId} id="alarm" class="d-flex justify-content-between align-items-center alarmList" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
+									<li data-alr-id=\${alrId} id="alarm" class="d-flex justify-content-between align-items-center alarmList" 
+										data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="\${alrMessage}">
 										<span id="badge-wrap"></span>
 										<div id="alarm-content-wrap">
 											<div id="alr-msg">\${alrMessage}</div>
@@ -356,14 +363,17 @@ const beforeTime = (alarmDate) => {
 				html += `
 				</ul>
 				`;
+				// div에 추가
 				div.insertAdjacentHTML('beforeend', html);
 				$('.alarmList').tooltip();
 				
+				// 몇분전 랜더링
 				document.querySelectorAll("#alarm-date").forEach((span) => {
 					const alarmDate = span.innerHTML;
 					span.innerHTML = beforeTime(alarmDate);
 				});
 				
+				// 알림 읽음 처리 및 페이지 이동
 				document.querySelectorAll("#alarmLink").forEach((li) => {
 					li.addEventListener('click', (e) => {
 						let parent = e.target.parentElement.parentElement;
@@ -397,9 +407,9 @@ const beforeTime = (alarmDate) => {
 			error : console.log
 		});
 		
+		// 안 읽은 알림 수
 		$.ajax({
-			url : "${pageContext.request.contextPath}/user/getNotReadAlarm.do",
-			data : {userId},
+			url : `${pageContext.request.contextPath}/user/getNotReadAlarm.do?userId=\${userId}`,
 			POST : "GET",
 			success(notReadCount) {
 				const newAlarm = document.querySelector("#new-alarm");

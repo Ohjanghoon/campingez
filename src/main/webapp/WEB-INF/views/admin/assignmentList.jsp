@@ -97,7 +97,7 @@
 							</c:if>
 							<c:if test="${empty expireAssignmentList}">
 								<tr>
-									<td colspan="7" scope="row">조회된 양도 건이 없습니다.</td>
+									<td colspan="8" scope="row">조회된 양도 건이 없습니다.</td>
 								</tr>
 							</c:if>
 						</tbody>

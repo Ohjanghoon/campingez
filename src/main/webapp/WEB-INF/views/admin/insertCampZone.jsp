@@ -55,16 +55,16 @@
 						</div>
 						<div class="option-check-wrap">
 							<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo1" value="매점" autocomplete="off"/>
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo1" value="매점" />
 								<label class="check-btn" for="zoneInfo1">매점</label>
 							
-								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo2" value="장작판매" autocomplete="off"/>
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo2" value="장작판매" />
 								<label class="check-btn" for="zoneInfo2">장작판매</label>
 		
-								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo3" value="샤워시설" autocomplete="off"/>
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo3" value="샤워시설" />
 								<label class="check-btn" for="zoneInfo3">샤워시설</label>
 							
-								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo4" value="전기" autocomplete="off"/>
+								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo4" value="전기" />
 								<label class="check-btn" for="zoneInfo4">전기</label>
 		
 								<input type="checkbox" name="zoneInfo" class="btn-check" id="zoneInfo5" value="와이파이"/>
@@ -98,7 +98,7 @@
 						</div>	
 					</div>				
 					<div class="mb-3">
-						<input type="file" class="form-control" name="upFile" id="upFile1" />
+						<input type="file" class="form-control" name="upFile" id="upFile1" multiple />
 					</div>
 					<div class="btn-wrap">
 						<button type="button" id="insert-btn">등록</button>

@@ -43,7 +43,6 @@ from
 		trade t
 where
 		trade_no = #{tradeNo}
-		and trade_isdelete = 'N'
 
 </select>
 <resultMap type="trade" id="tradeViewMap">

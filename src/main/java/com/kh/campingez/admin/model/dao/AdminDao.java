@@ -195,7 +195,7 @@ public interface AdminDao {
 
 	List<Assignment> findAllExpireAssignmentList(RowBounds rowBounds);
 	
-	@Select("select count(*) from  assignment a left join reservation r on a.res_no = r.res_no where res_checkin <= current_date")
+	@Select("select count(*) from  assignment a left join reservation r on a.res_no = r.res_no where res_checkin <= current_date and assign_state != '양도완료'")
 	int getExpireAssignmentTotalContent();
 	
 	List<Trade> findAllTradeReportList(RowBounds rowBounds);

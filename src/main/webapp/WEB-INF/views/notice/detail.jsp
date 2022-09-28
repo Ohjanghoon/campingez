@@ -28,7 +28,7 @@
 		    <h5 class="display-10 fw-bold">${notice.noticeTitle} [${notice.noticeType}]</h5>
 		    <h6>${notice.noticeDate}</h6>
 		    <div class="col-lg-6 mx-auto">
-		      <p class="lead mb-5">${notice.noticeContent}</p>
+		      <p class="lead mb-5">${fn:replace(notice.noticeContent, newLine, '<br/>')}</p>
 		    </div>
 			<div class="container px-5">
 				<c:forEach items="${notice.photos}" var="photo">	

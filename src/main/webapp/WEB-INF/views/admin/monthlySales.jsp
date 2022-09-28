@@ -60,8 +60,7 @@ document.querySelectorAll("#year").forEach((opt) => {
 
 const monthlyGraph = (year) => {
 	$.ajax({
-		url : "${pageContext.request.contextPath}/admin/monthlySalesList.do",
-		data : {year},
+		url : `${pageContext.request.contextPath}/admin/monthlySalesList.do?year=\${year}`,
 		content : "application/json",
 		success(response) {
 			const {year, saleList, totalPrice, yearTotalPrice} = response;
@@ -152,8 +151,7 @@ const monthlyGraph = (year) => {
 		    	    		
 		    	    		const wrapper = document.querySelector("#sale-chart-wrap");
 		    	    		$.ajax({
-		    	    			url : "${pageContext.request.contextPath}/admin/saleListByMonth.do",
-		    	    			data : {year, searchMon},
+		    	    			url : `${pageContext.request.contextPath}/admin/saleListByMonth.do?year=\${year}&searchMon=\${searchMon}`,
 		    	    			content : "application/json",
 		    	    			success(response) {
 		    	    				dailyGraph(response);
@@ -215,7 +213,7 @@ const dailyGraph = (response) => {
 	
 	const canvas = document.createElement("canvas");
 	canvas.id = 'dailyChart';
-	canvas.width = '1024';
+	canvas.width = '1030';
 	canvas.height = '500';
 	wrap.append(canvas);
 	
