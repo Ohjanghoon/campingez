@@ -44,7 +44,7 @@
 										${inquire.answerStatus == 0 ? '답변대기' : '답변완료'}
 									</td>
 									<td scope="row" ${inquire.answerStatus == 0 ? 'class="strong"' : ''}>
-										<fmt:parseDate value="${inquire.inqDate}" var="inqDate" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+										<fmt:parseDate value="${inquire.inqDate}" var="inqDate" pattern="yyyy-MM-dd'T'HH:mm"/>
 										<fmt:formatDate value="${inqDate}" pattern="yyyy/MM/dd HH:mm"/>
 									</td>
 								</tr>

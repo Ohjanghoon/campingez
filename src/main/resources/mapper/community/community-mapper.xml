@@ -60,8 +60,6 @@ from
       community c
 where
       comm_no = #{commNo}
-
-
 </select>
 <resultMap type="community" id="commViewMap">
    <id column="comm_no" property="commNo"/>

@@ -26,9 +26,9 @@
 						</thead>
 						<tbody>
 							<c:if test="${not empty tradeReportList}">
-								<c:forEach items="${tradeReportList}" var="trade">
+								<c:forEach items="${tradeReportList}" var="trade" varStatus="vs">
 									<tr>
-										<td scope="row" rowspan="${fn:length(trade.reportList)}">1</td>
+										<td scope="row" rowspan="${fn:length(trade.reportList)}">${vs.count}</td>
 										<td scope="row" rowspan="${fn:length(trade.reportList)}">
 											<a href="${pageContext.request.contextPath}/trade/tradeView.do?no=${trade.tradeNo}">
 												${trade.tradeNo}

@@ -61,7 +61,7 @@ textarea {
 			<!-- 문의 작성일자 -->
 			<tr>
 				<td class="py-0 text-end" colspan="2">
-					<fmt:parseDate value="${inquire.inqDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="inqDate" />
+					<fmt:parseDate value="${inquire.inqDate}" pattern="yyyy-MM-dd'T'HH:mm" var="inqDate" />
 					<fmt:formatDate value="${inqDate}" pattern="yyyy-MM-dd HH:mm:ss" />
 				</td>
 			</tr>
@@ -162,6 +162,16 @@ const deleteAnswer = (e) => {
 	}
 };
 
+const answerUpdate = (e) => {
+	const frm = document.updateFrm;
+	frm.submit();
+}
+
+const answerCancel = (e) => {
+	location.reload();	
+};
+
+
 const updateAnswer = (e) => {
 	const oldAnswerContent = document.querySelector("#answerContent").innerHTML;
 	const wrapper = document.querySelector("#answer");
@@ -196,7 +206,7 @@ const updateAnswer = (e) => {
 	wrapper.innerHTML = '';
 	btnWrapper.innerHTML = '';
 	wrapper.appendChild(frm); */
-	
+
 	const form = `
 	<form action="${pageContext.request.contextPath}/admin/updateAnswer.do" method="POST" name="updateFrm">
 		<h3>답변 수정</h3>
@@ -205,23 +215,14 @@ const updateAnswer = (e) => {
 			<textarea name="answerContent" rows="10" cols="30">\${oldAnswerContent}</textarea>
 			<input type="hidden" name="answerNo" value="${inquire.answer.answerNo}"/>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			<button id="btn-answer-update" type="button">수정</button>
-			<button id="btn-answer-update-cancel" type="button">취소</button>
+			<button id="btn-answer-update" class="btn btn-outline-dark" type="button" onclick="answerUpdate(this);">수정</button>
+			<button id="btn-answer-update-cancel" class="btn btn-outline-dark" type="button" onclick="answerCancel(this);">취소</button>
 	</form>
 	`;
 	
 	wrapper.innerHTML = '';
 	btnWrapper.innerHTML = '';
-	wrapper.innerHTML = form;
-	
-	document.querySelector("#btn-answer-update").addEventListener('click', (e) => {
-		const frm = document.updateFrm;
-		frm.submit();
-	});
-	
-	document.querySelector("#btn-answer-update-cancel").addEventListener('click', (e) => {
-		location.reload();	
-	});
+	wrapper.insertAdjacentHTML('beforeend', form);
 };
 
 //화면 로드시 스크롤 이동

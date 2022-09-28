@@ -86,6 +86,9 @@ public interface TradeDao {
 
 	List<Trade> selectCurrentTrade();
 	
+	@Select("select t.* from trade t where trade_no = #{commNo}")
+	Trade selectTradeByNoIsDeletedY(String commNo);
+	
 	
 	
 	

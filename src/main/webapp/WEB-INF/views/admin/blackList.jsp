@@ -172,14 +172,16 @@ function blackListAjax(cPage) {
 					<td scope="row">\${phone}</td>
 					<td scope="row">\${yellowCard}</td>
 					<td scope="row">
-						<select id="yellowCardType">
+						<select id="yellowCardType" class="form-select">
 							<option value="" selected disabled>사유를 선택하세요.</option>
 							<option value="violation">이용수칙위반</option>
 							<option value="noshow">노쇼</option>
+							<option value="report">커뮤니티이용수칙위반</option>
 						</select>
 					</td>
 					<td scope="row">
 						<button type="button" name="yellowCardBtn" id="\${userId}" onclick="warningToUser(event)">경고</button>
+						<button type="button" name="cancelBtn" id="\${userId}" onclick="cancelWarningToUser(event)">취소</button>
 					</td>
 				</tr>
 				`;
