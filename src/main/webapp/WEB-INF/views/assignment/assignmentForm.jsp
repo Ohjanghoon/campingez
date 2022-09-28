@@ -47,6 +47,7 @@
 				</c:forEach>
 			</c:if>
 		</select>
+		<small><i class="fa-solid fa-circle-exclamation"></i> 입실일 기준 하루 전까지만 양도 가능합니다.</small>
 	</div>
 	
 	<!-- 예약정보 -->

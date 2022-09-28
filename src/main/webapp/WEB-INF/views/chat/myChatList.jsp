@@ -144,14 +144,8 @@ const enterChatroom = (chatroomId, chatTargetId) => {
 				
 				const {userId, chatMsg, chatTime} = chat;
 				tradeNo = chatTradeNo;
-				//console.log(chatTradeNo);
-				//console.log(chat);
-				//const date = new Date(chatTime).toLocaleTimeString();
 				const date = moment(chatTime).format("YY.MM.D HH:mm");
-				//console.log(date);
 				let html = "";
-				//console.log("${loginUser}");
-				//console.log(userId, chatMsg, chatTime);
 				
 				//내 채팅 정렬
 				if("${loginUser}" === userId) {
