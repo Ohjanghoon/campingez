@@ -165,6 +165,7 @@ public class AlarmServiceImpl implements AlarmService {
 		// 중고거래인 경우
 		if(String.valueOf('T').equals(type)) {
 			trade = tradeDao.selectTradeByNo(commNo);
+			log.debug("trade = {}", trade);
 			title = trade.getTradeTitle();
 			commWriter = trade.getUserId();
 		}

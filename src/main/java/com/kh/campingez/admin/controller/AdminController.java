@@ -428,12 +428,17 @@ public class AdminController {
 	
 	@GetMapping("/monthlySalesList.do")
 	public ResponseEntity<?> monthlySalesList(@RequestParam int year) {
+		// 년도 - 월별 매출 통계
 		List<Stats> saleList = adminService.getMonthlySalesListByYear(year);
+		// 전체 매출 통계
 		int totalPrice = adminService.getTotalSalesPrice();
+		
 		Map<String, Object> param = new HashMap<>();
 		param.put("year", year);
 		param.put("saleList", saleList);
 		param.put("totalPrice", totalPrice);
+		
+		// 해당 년도의 매출 통계
 		int yearTotalPrice = adminService.getYearTotalSalesPrice(param);
 		param.put("yearTotalPrice", yearTotalPrice);
 		

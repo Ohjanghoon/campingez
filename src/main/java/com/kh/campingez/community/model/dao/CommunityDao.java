@@ -95,5 +95,4 @@ public interface CommunityDao {
    
    @Select("select comm_no as comment_comm_no from comm_comment where comment_no = #{commentNo}")
    String selectCommNoByCommentNo(String commentNo);
-   
 }

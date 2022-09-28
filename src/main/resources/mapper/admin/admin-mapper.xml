@@ -250,6 +250,8 @@
 		            on r.comm_no = t.trade_no
 		    where
 		        substr(r.comm_no, 1, 1) = 'T'
+                and
+                t.trade_isdelete = 'N'
 		    group by
 		        t.user_id
 		) a
@@ -272,6 +274,8 @@
 		            on r.comm_no = c.comm_no
 		    where
 		        substr(r.comm_no, 1, 1) = 'C'
+		        and
+		        c.comm_isdelete = 'N'
 		    group by
 		        c.user_id
 		) a
