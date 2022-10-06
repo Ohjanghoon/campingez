@@ -122,6 +122,24 @@ document.querySelector("#insert-btn").addEventListener('click', (e) => {
 		}
 	}
 	document.querySelector("#zonePrice").value = Number(document.querySelector("#zonePrice").value.replaceAll(',',''));
+	
+	if(frm.zoneCode.value == 'Z') {
+		alert("반드시 구역 코드를 입력해주세요.");
+		frm.zoneCode.focus();
+		return;
+	} else if(!frm.zoneName.value) {
+		alert("반드시 구역 이름을 입력해주세요.");
+		frm.zoneName.focus();
+		return;
+	} else if(!frm.zonePrice.value) {
+		alert("반드시 구역 가격을 입력해주세요.");
+		frm.zonePrice.focus();
+		return;
+	} else if(frm.upFile.files.length < 1) {
+		alert("반드시 하나 이상의 구역 사진을 등록해주세요.");
+		frm.upFile.focus();
+		return;
+	}
 	frm.submit();
 });
 

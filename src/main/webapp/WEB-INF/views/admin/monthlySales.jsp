@@ -88,6 +88,7 @@ const monthlyGraph = (year) => {
 					result.push(0);
 				}
 			};
+			console.log(result);
 			
 			// 기존 차트가 존재한다면 destroy 처리
 			const chartStatus = Chart.getChart("myChart");
