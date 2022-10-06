@@ -160,7 +160,7 @@ public interface AdminDao {
 	@Select("select user_id, count(*) visit_date_count from stats_daily_visit where to_date(visit_date, 'YY/MM/DD') = to_date(#{searchDate}, 'YYYY-MM-DD') group by user_id order by visit_date_count desc")
 	List<Stats> getLoginMemberListByDate(String searchDate);
 
-	@Select("select to_char(res_date, 'Mon') month, sum(res_price) total_price from reservation where extract(year from res_date) = #{year} and res_state = '예약완료' group by to_char(res_date, 'Mon')")
+	@Select("select to_char(res_date, 'Mon') month, sum(res_price) total_price from reservation where extract(year from res_date) = #{year} and res_state = '예약완료' group by to_char(res_date, 'Mon') order by month desc")
 	List<Stats> getMonthlySalesListByYear(int year);
 	
 	@Select("select sum(res_price) total_price, to_date(res_date, 'YY/MM/DD') res_date from reservation where extract(year from res_date) = #{year} and extract(month from res_date) = #{month} and res_state = '예약완료' group by to_date(res_date, 'YY/MM/DD') order by res_date")

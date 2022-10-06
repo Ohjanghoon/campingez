@@ -11,7 +11,7 @@
 	<jsp:param name="title" value="캠핑이지" />
 </jsp:include>
 <script>
-const renderStart = (score, revId) => {
+const renderStar = (score, revId) => {
 	const revScore = document.querySelector(`#review-score-\${revId}`);
 
 	for(let i = 0; i < 5; i++) {
@@ -82,7 +82,7 @@ const renderStart = (score, revId) => {
 							<br />							
 							<small class="text-muted">
 									<code id="review-score-${review.revId}" class="card-text">
-											<script>renderStart(${review.revScore}, ${review.revId});</script>
+											<script>renderStar(${review.revScore}, ${review.revId});</script>
 											(${review.revScore}/5)
 									</code>
 									<br />

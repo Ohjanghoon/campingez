@@ -66,7 +66,7 @@
 						</thead>
 						<tbody>
 							<c:if test="${not empty expireCouponList}">
-								<c:forEach items="${expireCouponList}" var="expireCoupon" varStatus="">
+								<c:forEach items="${expireCouponList}" var="expireCoupon" varStatus="vs">
 									<tr>
 										<td scope="row">${vs.count}</td>
 										<td scope="row">${expireCoupon.couponName}</td>
